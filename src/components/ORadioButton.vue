@@ -1,7 +1,37 @@
+<script setup>
+import { toRefs, ref } from 'vue';
+
+const props = defineProps({
+  radioItem: {
+    type: Array,
+    default() {
+      return null;
+    },
+  },
+  radioActive: {
+    type: String,
+    default() {
+      return '';
+    },
+  },
+});
+const emit = defineEmits(['radio-click']);
+const { radioActive, radioItem } = toRefs(props);
+const activeItem = ref(radioActive.value);
+
+// 选中事件
+const radioButtonChange = (item) => {
+  if (item != radioActive.value) {
+    activeItem.value = item;
+    emit('radio-click', item);
+  }
+};
+</script>
+
 <template>
   <div ref="radiogroup" class="radio-group">
     <label
-      v-for="item in grouplist"
+      v-for="item in radioItem"
       :key="item.id"
       class="radio-button"
       :class="item.label == activeItem ? 'active' : ''"
@@ -11,35 +41,7 @@
   </div>
 </template>
 
-<script setup>
-import { toRefs, ref } from 'vue';
-const props = defineProps({
-  grouplist: {
-    type: Array,
-    default() {
-      return null;
-    },
-  },
-  actives: {
-    type: String,
-    default() {
-      return '';
-    },
-  },
-});
-const emit = defineEmits(['click']);
-const { actives, grouplist } = toRefs(props);
-const activeItem = ref(actives.value);
-
-// 选中事件
-function radioButtonChange(item) {
-  if (item != actives.value) {
-    activeItem.value = item;
-    emit('click', item);
-  }
-}
-</script>
-<style lang="scss">
+<style lang="scss" scoped>
 :root {
   --color-primary: #409eff;
 }

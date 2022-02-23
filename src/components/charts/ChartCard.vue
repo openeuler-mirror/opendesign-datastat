@@ -1,25 +1,6 @@
-<template>
-  <div class="card-chart">
-    <div class="card-box">
-      <p class="card-title">{{ title }}</p>
-      <div class="card-total">
-        <strong class="num">{{ formatNumber(total) }}</strong
-        >in total
-      </div>
-    </div>
-    <div class="chart-box">
-      <p>
-        <span class="num">{{ amount }}</span
-        >in last 24h
-      </p>
-      <ChartView :options="setOptions()" :height="'70px'"></ChartView>
-    </div>
-  </div>
-</template>
-
 <script setup>
-import { ref, toRefs, watch } from 'vue';
-import { formatNumber } from '../shared/utils';
+import { ref, toRefs, watch, computed } from 'vue';
+import { formatNumber } from '../../shared/utils';
 const props = defineProps({
   title: {
     type: String,
@@ -35,15 +16,15 @@ const props = defineProps({
   },
   options: {
     type: Array,
-    default: null,
+    default: () => {
+      return [];
+    },
   },
 });
 
-const { title, total, options, amount } = toRefs(props);
+const { title, total, amount, options } = toRefs(props);
 const seriesData = ref(options.value);
-
-// 图表数据
-function setOptions() {
+const setOptions = computed(() => {
   return {
     xAxis: {
       type: 'category',
@@ -91,7 +72,8 @@ function setOptions() {
       },
     ],
   };
-}
+});
+
 // 监听数据变动
 watch(
   options,
@@ -104,6 +86,25 @@ watch(
   { deep: true }
 );
 </script>
+
+<template>
+  <div class="card-chart">
+    <div class="card-box">
+      <p class="card-title">{{ title }}</p>
+      <div class="card-total">
+        <strong class="num">{{ formatNumber(total) }}</strong
+        >in total
+      </div>
+    </div>
+    <div class="chart-box">
+      <p>
+        <span class="num">{{ amount }}</span
+        >in last 24h
+      </p>
+      <chart-module :options="setOptions" :height="'70px'"></chart-module>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 .card-chart {

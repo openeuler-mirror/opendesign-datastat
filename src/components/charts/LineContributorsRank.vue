@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRefs, watch } from 'vue';
+import { ref, toRefs, watch, computed } from 'vue';
 
 const props = defineProps({
   options: {
@@ -14,7 +14,7 @@ const { options } = toRefs(props);
 const optionsItem = ref(options.value);
 
 // 动态处理数据
-function seriesOpt(data) {
+const seriesOpt = (data) => {
   const list = [];
   for (let i = 0; i < data.length; i++) {
     list.push({
@@ -33,13 +33,29 @@ function seriesOpt(data) {
     });
   }
   return list;
-}
+};
 
 // 图表数据
-function setOptions() {
+const setOptions = computed(() => {
   // x上下轴
-  const xAxisDataTop = ['2021.06', '2021.06', '2021.06', '2021.06', '2021.06', '2021.06', '2021.06'];
-  const xAxisDataBottom = ['2021.06', '2021.06', '2021.06', '2021.06', '2021.06', '2021.06', '2021.06'];
+  const xAxisDataTop = [
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+  ];
+  const xAxisDataBottom = [
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+  ];
 
   return {
     tooltip: {
@@ -107,7 +123,8 @@ function setOptions() {
     },
     series: seriesOpt(optionsItem.value),
   };
-}
+});
+
 // 监听数据变动
 watch(
   options,
@@ -120,7 +137,9 @@ watch(
   { deep: true }
 );
 </script>
+
 <template>
-  <ChartView :options="setOptions()" :height="'500px'"></ChartView>
+  <chart-module :options="setOptions" :height="'500px'"></chart-module>
 </template>
+
 <style lang="scss" scoped></style>

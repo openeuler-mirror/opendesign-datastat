@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRefs, watch } from 'vue';
+import { ref, toRefs, watch, computed } from 'vue';
 
 const props = defineProps({
   options: {
@@ -12,14 +12,19 @@ const props = defineProps({
 
 const { seriesData } = toRefs(props.options);
 const optionsItem = ref(seriesData.value);
-// chart bar 图表
-function setOptions() {
+
+// chart treemap
+const setOptions = computed(() => {
   return {
     label: {
       position: 'insideTopLeft',
       formatter: function (params) {
         let arr = [
-          '{value|' + params.data.value + '} {label|' + params.data.label + '} ',
+          '{value|' +
+            params.data.value +
+            '} {label|' +
+            params.data.label +
+            '} ',
           '{name|' + params.name + '}',
         ];
         //   console.log(params);
@@ -64,7 +69,8 @@ function setOptions() {
       },
     ],
   };
-}
+});
+
 // 监听数据变动
 watch(
   seriesData,
@@ -77,8 +83,9 @@ watch(
   { deep: true }
 );
 </script>
+
 <template>
-  <h1>合作企业开发者数量占比</h1>
-  <ChartView :options="setOptions()" :height="'500px'"></ChartView>
+  <chart-module :options="setOptions" :height="'500px'"></chart-module>
 </template>
+
 <style lang="scss" scoped></style>

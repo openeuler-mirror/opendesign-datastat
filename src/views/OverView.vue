@@ -1,24 +1,6 @@
-<template>
-  <AppBanner>
-    <div class="banner-content">
-      <div class="content-title">
-        <p>The Real-time State of</p>
-        <h3>openEuler Community</h3>
-      </div>
-      <div class="content-grid">
-        <IconText :icon="usersInfo.icon" style="grid-row: 1/3"></IconText>
-        <IconText :icon="develoersInfo.icon" :title="develoersInfo.title" :amount="develoersInfo.amount"></IconText>
-        <IconText :icon="sigsInfo.icon" :title="sigsInfo.title" :amount="sigsInfo.amount"></IconText>
-        <IconText :icon="productsInfo.icon" :title="productsInfo.title" :amount="productsInfo.amount"></IconText>
-        <IconText :icon="vendorsInfo.icon" :title="vendorsInfo.title" :amount="vendorsInfo.amount"></IconText>
-      </div>
-    </div>
-  </AppBanner>
-</template>
-
 <script setup>
 import { ref } from 'vue';
-import AppBanner from '../components/AppBanner.vue';
+import OBanner from '../components/OBanner.vue';
 import IconText from '../components/IconText.vue';
 
 const usersInfo = ref({ icon: 'temp', title: 'Developers', amount: 404000 });
@@ -27,6 +9,40 @@ const sigsInfo = ref({ icon: 'temp', title: 'SIGs', amount: 95 });
 const productsInfo = ref({ icon: 'temp', title: 'Products', amount: 8744 });
 const vendorsInfo = ref({ icon: 'temp', title: 'OS Vendors', amount: 11 });
 </script>
+
+<template>
+  <o-banner>
+    <div class="banner-content">
+      <div class="content-title">
+        <p>The Real-time State of</p>
+        <h3>openEuler Community</h3>
+      </div>
+      <div class="content-grid">
+        <icon-text :icon="usersInfo.icon" style="grid-row: 1/3"></icon-text>
+        <icon-text
+          :icon="develoersInfo.icon"
+          :title="develoersInfo.title"
+          :amount="develoersInfo.amount"
+        ></icon-text>
+        <icon-text
+          :icon="sigsInfo.icon"
+          :title="sigsInfo.title"
+          :amount="sigsInfo.amount"
+        ></icon-text>
+        <icon-text
+          :icon="productsInfo.icon"
+          :title="productsInfo.title"
+          :amount="productsInfo.amount"
+        ></icon-text>
+        <icon-text
+          :icon="vendorsInfo.icon"
+          :title="vendorsInfo.title"
+          :amount="vendorsInfo.amount"
+        ></icon-text>
+      </div>
+    </div>
+  </o-banner>
+</template>
 
 <style lang="scss" scoped>
 .banner-content {

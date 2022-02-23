@@ -1,10 +1,14 @@
 <template>
   <header>
-    <AppHeader :active-nav="activeNav" :nav-items="navItems" @nav-click="handleNavClick">
+    <app-header
+      :active-nav="activeNav"
+      :nav-items="navItems"
+      @nav-click="handleNavClick"
+    >
       <template #logo>
         <img src="@/assets/openeuler-logo.png" alt="" style="height: 100%" />
       </template>
-    </AppHeader>
+    </app-header>
   </header>
   <main>
     <router-view></router-view>

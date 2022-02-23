@@ -1,18 +1,18 @@
+<script setup></script>
+
 <template>
-  <div class="banner">
-    <div class="banner-wrap">
+  <div class="o-banner">
+    <div class="o-banner-wrap">
       <slot></slot>
     </div>
   </div>
 </template>
 
-<script setup></script>
-
 <style lang="scss" scoped>
-.banner {
+.o-banner {
   width: 100%;
   background: #060612;
-  .banner-wrap {
+  .o-banner-wrap {
     max-width: 1168px;
     padding: 0 24px;
     margin: 0 auto;

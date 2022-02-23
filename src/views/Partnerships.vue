@@ -1,14 +1,6 @@
-<template>
-  <div class="wrap">
-    <EnterpriseLine :options="lineData" />
-    <br />
-    <EnterpriseTreemap :options="treeData" />
-  </div>
-</template>
-
 <script setup>
-import EnterpriseLine from '../components/EnterpriseLine.vue';
-import EnterpriseTreemap from '../components/EnterpriseTreemap.vue';
+import LinePartnershipsTotal from '../components/charts/LinePartnershipsTotal.vue';
+import TreemapPartnershipsDevelopers from '../components/charts/TreemapPartnershipsDevelopers.vue';
 import { ref } from 'vue';
 const lineData = ref({
   optData: [0, 1, 6, 20, 46, 122, 352],
@@ -75,4 +67,23 @@ const treeData = ref({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<template>
+  <div class="wrap">
+    <line-partnerships-total :options="lineData" />
+    <br />
+    <div class="partnerships-developers">
+      <h3 class="title">合作企业开发者数量占比</h3>
+      <treemap-partnerships-developers :options="treeData" />
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.partnerships-developers {
+  margin-top: 40px;
+  .title {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+}
+</style>
