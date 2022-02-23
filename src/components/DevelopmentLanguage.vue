@@ -1,29 +1,27 @@
+<script setup>
+const info = [
+  { title: 'Java', count: 29 },
+  { title: 'C', count: 25 },
+  { title: 'C/C++', count: 10 },
+  { title: 'Go', count: 10 },
+  { title: 'Python', count: 6 },
+];
+</script>
+
 <template>
   <div class="development-language">
-    <div>
-      <p>Java<span>29%</span></p>
-    </div>
-    <div>
-      <p>C<span>25%</span></p>
-    </div>
-    <div>
-      <p>C/C++<span>10%</span></p>
-    </div>
-    <div>
-      <p>Go<span>10%</span></p>
-    </div>
-    <div>
-      <p>Go<span>10%</span></p>
+    <div v-for="item in info" :key="item.title" class="item">
+      <p class="text">
+        {{ item.title }}<span class="val">{{ item.count + '%' }}</span>
+      </p>
     </div>
   </div>
 </template>
 
-<script setup></script>
-
 <style lang="scss" scoped>
 .development-language {
   position: relative;
-  div {
+  .item {
     position: absolute;
     border-radius: 50%;
     display: flex;
@@ -34,14 +32,15 @@
 
     animation: 0.5s ease-out backwards;
     animation-name: fadeinT;
-    p {
+    .text {
       text-align: center;
+      .val {
+        display: block;
+        font-size: 24px;
+        margin-top: 8px;
+      }
     }
-    span {
-      display: block;
-      font-size: 24px;
-      margin-top: 8px;
-    }
+
     &:nth-child(1) {
       background-color: #0a2255;
       width: 260px;

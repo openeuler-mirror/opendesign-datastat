@@ -1,19 +1,3 @@
-<template>
-  <nav class="header-nav">
-    <ul class="nav-list">
-      <li
-        v-for="item in navItems"
-        :key="item.id"
-        class="nav-item"
-        :class="[activeItem === item.id ? 'active' : '']"
-        @click="handleClick(item.id)"
-      >
-        {{ item.label }}
-      </li>
-    </ul>
-  </nav>
-</template>
-
 <script setup>
 import { ref, toRefs, watch } from 'vue';
 
@@ -40,21 +24,37 @@ watch(defaultActive, (val) => {
   activeItem.value = val;
 });
 
-const emits = defineEmits(['navClick']);
+const emits = defineEmits(['nav-click']);
 
 const handleClick = (id) => {
   activeItem.value = id;
-  emits('navClick', id);
+  emits('nav-click', id);
 };
 </script>
 
+<template>
+  <nav class="o-nav">
+    <ul class="o-nav-list">
+      <li
+        v-for="item in navItems"
+        :key="item.id"
+        class="o-nav-item"
+        :class="[activeItem === item.id ? 'active' : '']"
+        @click="handleClick(item.id)"
+      >
+        {{ item.label }}
+      </li>
+    </ul>
+  </nav>
+</template>
+
 <style lang="scss" scoped>
 $color: #ffffff;
-.header-nav {
+.o-nav {
   height: 100%;
-  .nav-list {
+  .o-nav-list {
     height: 100%;
-    .nav-item {
+    .o-nav-item {
       position: relative;
       display: inline-flex;
       align-items: center;

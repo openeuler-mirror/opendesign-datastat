@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRefs, watch } from 'vue';
+import { ref, toRefs, watch, computed } from 'vue';
 
 const props = defineProps({
   options: {
@@ -14,8 +14,16 @@ const { optData } = toRefs(props.options);
 const optionsItem = ref(optData.value);
 
 // chart bar 图表
-function setOptions() {
-  const xAxisData = ['2021.06', '2021.06', '2021.06', '2021.06', '2021.06', '2021.06', '2021.06'];
+const setOptions = computed(() => {
+  const xAxisData = [
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+    '2021.06',
+  ];
 
   return {
     tooltip: {
@@ -70,7 +78,8 @@ function setOptions() {
       },
     ],
   };
-}
+});
+
 // 监听数据变动
 watch(
   optData,
@@ -83,7 +92,9 @@ watch(
   { deep: true }
 );
 </script>
+
 <template>
-  <ChartView :options="setOptions()" :height="'220px'"></ChartView>
+  <chart-module :options="setOptions" :height="'220px'"></chart-module>
 </template>
+
 <style lang="scss" scoped></style>

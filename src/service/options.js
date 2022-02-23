@@ -1,4 +1,4 @@
-export const prOpt = [
+export const prOptions = [
   {
     name: 'prOpt',
     data: [1, 1, 1, 1, 1, 1, 1],
@@ -24,7 +24,7 @@ export const prOpt = [
     data: [, , 6, 6, 6, 6, 6],
   },
 ];
-export const issuseOpt = [
+export const issuseOptions = [
   {
     name: 'issuseOpt',
     data: [1, 1, 1, 1, 1, 1, 1],
@@ -50,7 +50,7 @@ export const issuseOpt = [
     data: [, , 6, 6, 6, 6, 6],
   },
 ];
-export const commitOpt = [
+export const commitOptions = [
   {
     name: 'commitOpt',
     data: [1, 1, 1, 1, 1, 1, 1],

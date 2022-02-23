@@ -1,5 +1,13 @@
 <script setup>
-import { onMounted, onUnmounted, ref, watch, toRefs, computed } from 'vue';
+import {
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  toRefs,
+  computed,
+  nextTick,
+} from 'vue';
 import * as echarts from 'echarts';
 const props = defineProps({
   options: {
@@ -25,12 +33,13 @@ const chartDom = ref(null);
 const chart = ref(null);
 const { options, width, height } = toRefs(props);
 const optionsItem = ref(options.value);
+
 // 初始化图表
-function initChart() {
+const initChart = () => {
   chart.value = echarts.init(chartDom.value);
   chart.value.setOption(optionsItem.value);
-}
-// 样式数据
+};
+// 动态样式设置
 const style = computed(() => {
   return {
     height: height.value,
@@ -39,16 +48,18 @@ const style = computed(() => {
 });
 
 // 销毁图表
-function destroyChart() {
+const destroyChart = () => {
   if (!chart.value) {
     return;
   }
   chart.value.dispose();
   chart.value = null;
-}
+};
 
 onMounted(() => {
-  initChart();
+  nextTick(() => {
+    initChart();
+  });
 });
 
 watch(
@@ -71,14 +82,16 @@ watch(
   },
   { deep: true }
 );
+
 onUnmounted(() => {
-  //   console.log('我被销毁了！！');
   destroyChart();
 });
 </script>
+
 <template>
   <div ref="chartDom" class="chartDom" :style="style"></div>
 </template>
+
 <style lang="scss" scoped>
 .chartDom {
   width: 100%;

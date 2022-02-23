@@ -1,15 +1,3 @@
-<template>
-  <div class="icon-text">
-    <div class="icon-text-left">
-      <SvgIcon :name="icon"></SvgIcon>
-    </div>
-    <div class="icon-text-right">
-      <p>{{ title }}</p>
-      <p>{{ formatNumber(amount) }}</p>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { toRefs } from 'vue';
 import { formatNumber } from '../shared/utils';
@@ -32,6 +20,18 @@ const props = defineProps({
 const { icon, title, amount } = toRefs(props);
 </script>
 
+<template>
+  <div class="icon-text">
+    <div class="icon-text-left">
+      <svg-icon :name="icon"></svg-icon>
+    </div>
+    <div class="icon-text-right">
+      <p>{{ title }}</p>
+      <p>{{ formatNumber(amount) }}</p>
+    </div>
+  </div>
+</template>
+
 <style lang="scss" scoped>
 .icon-text {
   display: flex;
@@ -42,12 +42,14 @@ const { icon, title, amount } = toRefs(props);
   .icon-text-left {
     display: flex;
     align-items: center;
-    font-size: 80px;
+    font-size: 90px;
     height: 100%;
   }
 
   .icon-text-right {
     margin-left: 20px;
+    display: grid;
+    align-content: space-evenly;
     p {
       color: #fff;
       font-size: 36px;

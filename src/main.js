@@ -9,11 +9,11 @@ import 'normalize.css/normalize.css';
 import './styles/base.scss';
 
 import SvgIcon from '@/components/SvgIcon.vue';
-import ChartView from '@/components/Chart.vue';
+import ChartModule from '@/components/charts/ChartModule.vue';
 
 const app = createApp(App);
 
 app.component('SvgIcon', SvgIcon);
-app.component('ChartView', ChartView);
+app.component('ChartModule', ChartModule);
 
 app.use(router).use(store).mount('#app');
