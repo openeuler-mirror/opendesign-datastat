@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="152px" height="32px" viewBox="0 0 152 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>DATAPERTUS</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="openEuler_Contributors" transform="translate(-252.000000, -2140.000000)" fill="#FFFFFF">
+            <g id="FOOTER/zh" transform="translate(0.000000, 2084.000000)">
+                <g id="DATAPERTUS" transform="translate(252.000000, 56.000000)">
+                    <text font-family="Arial-Black, Arial Black" font-size="20" font-weight="700" line-spacing="20">
+                        <tspan x="0" y="22">DATAPERTUS</tspan>
+                    </text>
+                    <g id="OPEN-COMMUNITY" transform="translate(23.000000, 24.000000)">
+                        <text font-family="HarmonyOS_Sans_SC_Medium, HarmonyOS Sans SC" font-size="8" font-weight="400" line-spacing="8">
+                            <tspan x="16" y="9">OPEN COMMUNITY</tspan>
+                        </text>
+                        <rect id="矩形" opacity="0.804937318" x="0" y="4" width="8" height="1" rx="0.5"></rect>
+                        <rect id="矩形备份-134" opacity="0.804937318" x="98" y="4" width="8" height="1" rx="0.5"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
