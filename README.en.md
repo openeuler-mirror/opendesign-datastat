@@ -1,18 +1,18 @@
-# opendesign-miniprogram
+# vue3-ts-starter
 
-#### Description
-The repository of OpenDesign datapertus
+### Description
+vue3 starter
 
-#### Software Architecture
-Software architecture description
+### Software Architecture
+Vue 3 + TypeScript + Vite + Scss + Vue Router + Pinia + Axios
 
-#### Installation
+### Installation
 
-1.  pnpm install
-2.  pnpm dev
-3.  pnpm build
+1. recommend using [pnpm](https://pnpm.io/installation)，you can also use ```npm```、```yarn```
+2. install:  ```pnpm install```
+3. run project: ```pnpm dev```
 
-#### Contribution
+### Contribution
 
 1.  Fork the repository
 2.  Create Feat_xxx branch

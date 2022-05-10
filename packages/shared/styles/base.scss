@@ -1,0 +1,284 @@
+@import "normalize.css";
+
+/* base */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  box-sizing: border-box;
+  font-family: "HarmonyOS Sans", "HarmonyOS Sans SC", "HarmonyOS Sans Web",
+    "HarmonyOS Sans SC Web", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* user-select: none; */
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+
+*,
+:after,
+:before {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  vertical-align: top;
+}
+
+[tabindex] {
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.website404{
+  text-align: center;
+  img{
+    width: 400px;
+  }
+}
+
+.app-header-mo {
+  .menu-bar {
+    top:15px !important;
+    .o-icon{
+      font-size: 20px;
+    }
+  }
+}
+.slide-panel{
+  .progress-inner{
+    text-align: right;
+  }
+  .box .num{
+    width: 40px;
+    text-align: right;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  th.el-table__cell{
+    font-weight: 500;
+    white-space: nowrap;
+    // .cell{
+    //   padding: 0 !important;
+    // }
+    &:last-child{
+      padding-left:43px;
+    }
+  }
+} 
+.backtop {
+  position: sticky;
+  top:0px;
+  width: 100%;
+  text-align: center;
+  background: #fff;
+  padding: 10px 0;
+  font-size: 12px;
+  color: #999;
+  z-index: 9;
+}
+.language-change.el-dropdown__popper.el-popper[role=tooltip]{
+  background: #191E27 !important;
+  box-shadow: 0px 3px 8px 0px rgba(255, 255, 255, 0.05) !important;
+  border:0 none;
+  width: 120px;
+  .el-dropdown-menu{
+    background:none;
+    padding:0 20px;
+    &__item{
+      line-height:50px;
+      border-bottom: 1px solid #363C46;
+      color: #979797;
+      padding: 0;
+      background:none !important;
+      &:last-child{
+        border-bottom:none
+      }
+      &:hover{
+        color: #fff;
+      }
+      &.active{
+        color: #fff;
+      }
+    }
+  }
+  .el-popper__arrow{
+    display:none
+  }
+}
+
+
+@media screen and (max-width: 1200px){
+  #app .ranking-list{
+      display: block;
+      .ranking-list-item:last-child{
+        .caption{
+          display: none;
+        }
+        .el-table thead{
+          display: none;
+        }
+      }
+  }
+}
+
+@media screen and (max-width: 700px) {
+   
+  #app .about-data{
+    width:100% !important; 
+    h1{
+      font-size: 30px;
+      color:#000;
+      margin-top:0px;
+    }
+    &-content{
+      padding: 12px;
+      margin: 0;
+      .title{
+        font-size: 16px;
+      }
+      .about-list{
+          margin-bottom: 20px; 
+          li{
+            grid-template-columns: 120px auto;
+            padding: 10px;
+            &.head{
+                line-height: 30px;
+              
+            }
+          }
+      }
+    }
+  }
+  #app .footer{
+    height: auto;
+    grid-template-columns: auto;
+    justify-content: center;
+    padding: 24px;
+    .footer-info{
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .footer-logo{
+      justify-content: center;
+    }
+    .footer-about{
+      justify-content: center;
+      grid-template-columns: auto auto auto;
+      gap: 10px;
+      margin-top: 20px;
+      list-style: none;
+    }
+  }
+
+}
+
+
+@keyframes chevronsDown {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(12px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes chevronsUp {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
+.area {
+  background: #f5f6f8;
+  overflow: hidden;
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active,
+.slide-up-enter-active,
+.slide-up-leave-active {
+  position: absolute; // 需要注意的地方
+  width: 100%; // 需要注意的地方，否则会出现页面渲染卡顿现象
+  will-change: transform; 
+  transition: all 0.3s ease-out;
+}
+
+.slide-down-enter-active{
+  transition: all .8s ease;
+}
+.slide-down-enter-leave{
+  opacity: 0;
+  transition: all .3s ease;
+}
+.slide-up-enter-active {
+  transition: all 0.3s ease-out;
+  position: absolute;
+}
+ 
+.slide-up-leave-active {
+  transition: all .3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.slide-down-leave-active{
+  transition: all .3s ease-out;
+  opacity: 0;
+} 
+
+.slide-down-enter-from {
+  transform: translate3d(0, -150px, 0);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+.slide-down-leave-active {
+  transform: translate3d(0, -100%, 0);
+  opacity: 0;
+}
+.slide-up-enter-active {
+  transition: all .6s ease;  
+  .o-banner{
+    background: none !important;
+  }
+}
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translate3d(0, -250px, 0);
+  opacity: 0;
+}
+
+ 
+.slide-down-leave-active {
+  .o-banner{
+    background: none !important;
+  }
+  .area{
+    background:#000;
+    opacity: 0;
+  }
+}
+ 
+
