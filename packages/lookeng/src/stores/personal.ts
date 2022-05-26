@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import { queryUserContribute, openCommunityInfo } from '@/api/index';
+import { openCommunityInfo } from '@/api/index';
+import { queryUserContribute } from 'shared/api/index';
 import { sortExp } from 'shared/utils/helper';
 interface Form {
   contributeType: string;
