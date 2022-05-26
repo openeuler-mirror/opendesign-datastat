@@ -4,7 +4,10 @@ import { useI18n } from 'vue-i18n';
 import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
 import { formatNumber } from 'shared/utils/helper';
+import { IObject } from 'shared/@types/interface';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
 const { t } = useI18n();
@@ -64,6 +67,12 @@ watch(
 
 // el-tooltip
 const showAfter = 200;
+
+// 跳转社区详情
+const goToCompany = (data: IObject) => {
+  data;
+  router.push(`/${useCommon.language}/company/${data.company_cn}`);
+};
 </script>
 
 <template>
@@ -89,6 +98,7 @@ const showAfter = 200;
                 ? item.company_cn
                 : item.company_en
             "
+            @click="goToCompany(item)"
             >{{
               useCommon.language === 'zh'
                 ? item.company_cn

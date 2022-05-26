@@ -27,6 +27,26 @@ export const routes = [
     meta: { transition: 'slide-up' },
   },
   {
+    path: '/zh/company/:name',
+    name: 'zh_company',
+    component: () => {
+      return import('@/views/company/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/sig/:name',
+    name: 'zh_sig',
+    component: () => {
+      return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
     path: '/zh/mobile',
     name: 'zh_mobile',
     component: () => {
@@ -72,6 +92,26 @@ export const routes = [
       localStorage.setItem('lang', 'en');
     },
     meta: { transition: 'slide-down' },
+  },
+  {
+    path: '/en/company/:name',
+    name: 'en_company',
+    component: () => {
+      return import('@/views/company/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/sig/:name',
+    name: 'en_sig',
+    component: () => {
+      return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
   },
   {
     path: '/en/mobile',

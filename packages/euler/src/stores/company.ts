@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
-import { queryCompanyContribute, openCommunityInfo } from '@/api/index';
+import { openCommunityInfo } from '@/api/index';
 import { sortExp } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
+import { queryCompanyContribute } from 'shared/api/index';
 import { ceil } from 'lodash-es';
 
 interface layoutStateTypes {
