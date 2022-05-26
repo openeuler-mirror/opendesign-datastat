@@ -79,7 +79,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { queryGroupActive } from '../api/index';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Right } from '@element-plus/icons-vue';
@@ -87,9 +86,9 @@ const router = useRouter();
 const showAfter = 200;
 const listData = ref([]);
 const getList = () => {
-  queryGroupActive().then((data) => {
-    listData.value = data?.data || [];
-  });
+  // queryGroupActive().then((data) => {
+  //   listData.value = data?.data || [];
+  // });
   //   console.log(listData.value);
 };
 getList();

@@ -61,10 +61,11 @@ const handleCommand = (command: IObject): void => {
   langAttr.value = command.label;
   localStorage.setItem('lang', command.value);
   locale.value = command.value;
-  const { href } = window.location;
-  const newHref = href.split('/').slice(-1).toString();
+  const { pathname } = window.location;
+  const newHref = pathname.split('/');
+  newHref[1] = command.value;
   useCommon.setLanguage(command.value);
-  router.push(`/${command.value}/${newHref}`);
+  router.push(newHref.join('/'));
 };
 const goHome = () => {
   const lang = language.value === 'zh' ? '/zh/overview' : '/en/overview';

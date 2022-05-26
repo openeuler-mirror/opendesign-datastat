@@ -14,7 +14,10 @@
     "build": "pnpm build:euler && pnpm build:gauss && pnpm build:lookeng && pnpm build:mindspore"
   },
   "dependencies": {
+    "@antv/data-set": "^0.11.8",
+    "@antv/g2": "^4.2.1",
     "axios": "^0.26.0",
+    "echarts": "^5.3.2",
     "element-plus": "^2.1.4",
     "lodash-es": "^4.17.21",
     "normalize.css": "^8.0.1",

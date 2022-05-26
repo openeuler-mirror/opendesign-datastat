@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { queryAll } from '@/api/index';
 import { IObject } from 'shared/@types/interface';
+import { queryAll } from 'shared/api/index';
 import { getNowFormatDate } from 'shared/utils/helper';
 
 interface stateTypes {
@@ -35,7 +35,7 @@ export const useCommonStore = defineStore('common', {
     },
     async getAllData() {
       try {
-        const res = await queryAll();
+        const res = await queryAll('openeuler');
         if (res.code === 200) {
           this.allData = res.data;
           // if (res.update_at) {

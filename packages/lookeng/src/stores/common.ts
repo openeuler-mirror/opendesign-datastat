@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { queryAll } from '@/api/index';
+import { queryAll } from 'shared/api/index';
 import { IObject } from 'shared/@types/interface';
 import { getNowFormatDate } from 'shared/utils/helper';
 
@@ -35,7 +35,7 @@ export const useCommonStore = defineStore('common', {
     },
     async getAllData() {
       try {
-        const res = await queryAll();
+        const res = await queryAll('openlookeng');
         if (res.code === 200) {
           this.allData = res.data;
           // if (res.update_at) {

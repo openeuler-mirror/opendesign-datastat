@@ -8,7 +8,10 @@ declare module '@vue/runtime-core' {
     AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     AppHeaderMobile: typeof import('./src/components/AppHeaderMobile.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
+<<<<<<< HEAD
     ElButton: typeof import('element-plus/es')['ElButton']
+=======
+>>>>>>> db6098db60fc0c9fabbf878317939fa62a02bf74
     ElCol: typeof import('element-plus/es')['ElCol']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
@@ -17,13 +20,19 @@ declare module '@vue/runtime-core' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
+<<<<<<< HEAD
     ElInput: typeof import('element-plus/es')['ElInput']
     ElOption: typeof import('element-plus/es')['ElOption']
+=======
+>>>>>>> db6098db60fc0c9fabbf878317939fa62a02bf74
     ElProgress: typeof import('element-plus/es')['ElProgress']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
+<<<<<<< HEAD
     ElSelect: typeof import('element-plus/es')['ElSelect']
+=======
+>>>>>>> db6098db60fc0c9fabbf878317939fa62a02bf74
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
@@ -35,7 +44,10 @@ declare module '@vue/runtime-core' {
     TheBar: typeof import('./src/components/TheBar.vue')['default']
     TheForm: typeof import('./src/components/TheForm.vue')['default']
     TheList: typeof import('./src/components/TheList.vue')['default']
+<<<<<<< HEAD
     ThePanoramagram: typeof import('./src/components/ThePanoramagram.vue')['default']
+=======
+>>>>>>> db6098db60fc0c9fabbf878317939fa62a02bf74
     TheProgress: typeof import('./src/components/TheProgress.vue')['default']
   }
 }
