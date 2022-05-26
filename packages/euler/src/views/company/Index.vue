@@ -4,17 +4,20 @@ import { useCompanyStore } from '@/stores/company';
 import { IObject } from 'shared/@types/interface';
 import OAnchor from 'shared/components/OAnchor.vue';
 import { onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
 const sencondTitle = ref('');
-const getSencondTitle = () => {
-  const { name } = route.params;
+const { t } = useI18n();
+const getSencondTitle = (value?: string) => {
+  const name = value || route.params.name;
   const findOne =
-    useCompany.companyData.find((item: IObject) => item.company_cn === name) ||
-    useCompany.companyData[0];
+    useCompany.companyData.find(
+      (item: IObject) => item.company_cn === name || item.company_en === name
+    ) || useCompany.companyData[0];
   const key = useCommon.language === 'zh' ? 'company_cn' : 'company_en';
   return (findOne && findOne[key]) || name;
 };
@@ -25,9 +28,14 @@ watch(
   },
   { deep: true }
 );
+watch(
+  () => useCommon.language,
+  () => {
+    sencondTitle.value = getSencondTitle(sencondTitle.value);
+  }
+);
 onMounted(() => {
   useCompany.getCompanyData();
-  useCompany.companyData
 });
 </script>
 <template>
@@ -35,15 +43,11 @@ onMounted(() => {
     <o-anchor top="11rem"></o-anchor>
     <div class="wrap">
       <div class="step">
-        <span class="step-one">社区贡献</span>
-        <span> > {{ useCompany.companyData[0]?.company_cn }}</span>
+        <span class="step-one">{{ t('nav.contributors') }}</span>
+        <span> > {{ sencondTitle }}</span>
       </div>
       <div class="main">
-        <div class="main-left">
-          <div v-for="(item, index) in useCompany.companyData" :key="index">
-            {{ item.company_cn }}
-          </div>
-        </div>
+        <div class="main-left">company</div>
         <div class="main-right">123w</div>
       </div>
     </div>
