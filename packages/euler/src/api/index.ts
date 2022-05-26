@@ -38,3 +38,11 @@ export function queryUserContribute(params: object) {
   const url = 'query/user/contribute';
   return request.get(url, { params }).then((res: AxiosResponse) => res.data);
 }
+/**
+ * 查询组织活跃度
+ *
+ */
+export function queryGroupActive() {
+  const url = 'query/group/Active';
+  return request.get(url).then((res: AxiosResponse) => res.data);
+}

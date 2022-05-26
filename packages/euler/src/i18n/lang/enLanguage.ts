@@ -28,6 +28,8 @@ export default {
   contributionsTitle: 'Community Contribution data',
   userContributor: 'Contribution by Individuals',
   companyContributor: 'Contribution by Organizations',
+  groupActive: 'SIG Active Degree Landscape',
+  active: 'active',
   ranking: 'Rank',
   backVitality: 'Back to Overview',
   searchTips:

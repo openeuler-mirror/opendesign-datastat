@@ -28,6 +28,8 @@ export default {
   contributionsTitle: '社区贡献数据',
   userContributor: '个人会员贡献',
   companyContributor: '单位会员贡献',
+  groupActive: '特别兴趣小组活跃度全景图',
+  active: '活跃度',
   ranking: '排名',
   backVitality: '回到数据总览',
   searchTips: '您搜索的组织在当前条件下暂无贡献，请尝试其他搜索条件',
