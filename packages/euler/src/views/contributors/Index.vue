@@ -11,7 +11,7 @@ import FormSearch from './FormSearch.vue';
 import TheForm from '@/components/TheForm.vue';
 import TheBar from '../../components/TheBar.vue';
 import useScroll from 'shared/hooks/useScroll';
-
+import TheList from '@/components/TheList.vue';
 import titleBg from '@/assets/title-bg.png';
 import chevronsUp from '~icons/app/chevrons-up';
 
@@ -211,6 +211,19 @@ watch(
             </div>
           </div>
         </div>
+        <div class="contributors-panel">
+          <h3 class="title">
+            {{ t('groupActive') }}
+          </h3>
+          <div class="activation">
+            <span class="sp">{{ t('active') }}</span>
+            <p class="spp">0</p>
+            <span class="liveness"></span>
+            <p class="spp">1</p>
+          </div>
+
+          <the-list></the-list>
+        </div>
       </div>
       <footer>
         <app-footer></app-footer>
@@ -237,6 +250,60 @@ watch(
     color: #000;
     font-weight: normal;
     margin-bottom: 20px;
+  }
+  .activation {
+    .liveness {
+      display: inline-block;
+      width: 120px;
+      height: 4px;
+      background: linear-gradient(
+        270deg,
+        #002fa7 0%,
+        rgba(0, 47, 167, 0.2) 100%
+      );
+    }
+    .sp {
+      display: inline-block;
+      width: 36px;
+      height: 16px;
+      font-size: 12px;
+      font-family: HarmonyOS_Sans_SC;
+      color: #4e5865;
+      line-height: 16px;
+      text-align: center;
+    }
+    .spp {
+      display: inline-block;
+      width: 7px;
+      height: 16px;
+      font-size: 12px;
+      font-family: HarmonyOS_Sans_SC;
+      color: #8d98aa;
+      line-height: 16px;
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+  }
+  .Form-head {
+    display: flex;
+    width: auto;
+    .Form-block {
+      width: 180px;
+      height: 80px;
+      background: #ffffff;
+      margin: 18px;
+      padding: 18px;
+      border: 2px solid #002fa7;
+      align-items: center;
+      line-height: 24px;
+      .Form-block-sp {
+        width: 163px;
+        height: 24px;
+        font-size: 12px;
+        color: #000000;
+        line-height: 24px;
+      }
+    }
   }
 }
 .ranking-list {
