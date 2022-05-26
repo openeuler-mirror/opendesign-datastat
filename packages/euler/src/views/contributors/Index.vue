@@ -14,14 +14,12 @@ import useScroll from 'shared/hooks/useScroll';
 import TheList from '@/components/TheList.vue';
 import titleBg from '@/assets/title-bg.png';
 import chevronsUp from '~icons/app/chevrons-up';
-
+import { grouprelationsList } from 'shared/utils/groupList';
 const { t, locale } = useI18n();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
 const router = useRouter();
-
 locale.value = localStorage.getItem('lang') || 'zh';
-
 const formOption = computed(() => {
   return [
     {
@@ -51,11 +49,9 @@ const formOption = computed(() => {
 // theform组件调用
 const componentName = 'personal';
 const loading = ref(true);
-
 const getContributeInfo = () => {
   usePersonal.getPersonalData();
 };
-
 onMounted(() => {
   usePersonal.getPersonalData();
   loading.value = false;
@@ -63,7 +59,8 @@ onMounted(() => {
 
 const hightRanking = computed(() => usePersonal.hightRanking);
 const lowRanking = computed(() => usePersonal.lowRanking);
-
+const hightSig = computed(() => grouprelationsList.slice(0, 10));
+const lowSig = computed(() => grouprelationsList.slice(10, 20));
 const typeLable = ref('');
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
@@ -128,7 +125,6 @@ watch(
           </div>
           <the-bar v-else></the-bar>
         </div>
-
         <div class="contributors-panel">
           <h3 class="title">{{ t('userContributor') }}</h3>
           <the-form
@@ -223,6 +219,72 @@ watch(
           </div>
 
           <the-list></the-list>
+        </div>
+        <div class="contributors-panel">
+          <h3 class="title">{{ t('groupRelations') }}</h3>
+          <div class="note-caption">{{ t('Note') }}</div>
+          <div class="ranking-list">
+            <div class="ranking-list-item">
+              <el-table
+                v-loading="loading"
+                :data="hightSig"
+                style="width: 100%"
+              >
+                <el-table-column
+                  align="center"
+                  :label="t('Committee')"
+                  width="200"
+                  show-overflow-tooltip
+                >
+                  <template #default="scope">
+                    <div class="group-father">
+                      <span class="group-name">{{ scope.row.name }}</span>
+                      <span class="group-email">{{ scope.row.email }}</span>
+                    </div>
+                  </template></el-table-column
+                >
+                <el-table-column align="left">
+                  <template #header
+                    ><div class="getheader">
+                      {{ t('interestGroup') }}
+                    </div>
+                  </template>
+                  <template #default="scope">
+                    <div class="Sgroup">
+                      <span class="group-email">{{ scope.row.group }}</span>
+                    </div>
+                  </template></el-table-column
+                >
+              </el-table>
+            </div>
+            <div class="ranking-list-item">
+              <el-table v-loading="loading" :data="lowSig" style="width: 100%">
+                <el-table-column
+                  align="center"
+                  :label="t('Committee')"
+                  width="200"
+                  show-overflow-tooltip
+                  ><template #default="scope">
+                    <div class="group-father">
+                      <span class="group-name">{{ scope.row.name }}</span>
+                      <span class="group-email">{{ scope.row.email }}</span>
+                    </div>
+                  </template></el-table-column
+                >
+                <el-table-column align="left">
+                  <template #header
+                    ><div class="getheader">
+                      {{ t('interestGroup') }}
+                    </div> </template
+                  ><template #default="scope">
+                    <div class="Sgroup">
+                      <span class="group-email">{{ scope.row.group }}</span>
+                    </div>
+                  </template></el-table-column
+                >
+              </el-table>
+            </div>
+          </div>
         </div>
       </div>
       <footer>
@@ -324,6 +386,13 @@ watch(
     }
   }
 }
+.note-caption {
+  font-size: 14px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #555555;
+  line-height: 22px;
+  margin-bottom: 16px;
+}
 .banner-title {
   height: 144px;
   text-align: center;
@@ -352,5 +421,37 @@ watch(
     font-size: 14px;
     color: #555;
   }
+}
+.group-email {
+  font-size: 14px;
+  font-family: HarmonyOS_Sans_SC_Medium;
+  color: #002fa7;
+  line-height: 22px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.group-name {
+  width: 42px;
+  height: 22px;
+  font-size: 14px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #000000;
+  line-height: 22px;
+  text-align-last: justify;
+  text-align: justify;
+  padding: 5px;
+}
+.group-father {
+  text-align-last: justify;
+  text-align: justify;
+  width: 60px;
+  margin-left: 35px;
+}
+.getheader {
+  margin-left: 65px;
+}
+.Sgroup {
+  margin-left: 65px;
 }
 </style>

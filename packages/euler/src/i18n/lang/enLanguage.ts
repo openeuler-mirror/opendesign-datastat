@@ -30,6 +30,10 @@ export default {
   companyContributor: 'Contribution by Organizations',
   groupActive: 'SIG Active Degree Landscape',
   active: 'active',
+  groupRelations: 'Relationship between technical committee members and special interest groups',
+  Note: 'Note: The following are sorted by surname pinyin',
+  Committee: 'Member of technical Committee',
+  interestGroup:'Special interest group',
   ranking: 'Rank',
   backVitality: 'Back to Overview',
   searchTips:
