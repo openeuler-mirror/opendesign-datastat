@@ -94,3 +94,40 @@ export const getNowFormatDate = () => {
   const currentdate = yearStr + seperator1 + monthStr + seperator1 + dayStr;
   return currentdate;
 };
+
+/**
+ * 将颜色值转换为有透明度的颜色值 rgb格式
+ * @param value 为带'#'的纯色格式或rgb格式
+ * @param opcity 透明度
+ * @returns rgb格式
+ */
+export const getColorOpcity = (value: string, opcity = 1) => {
+  const _value = getRGBColor(value);
+  if (_value.startsWith('rgb') || _value.startsWith('RGB')) {
+    const arr = _value.split(/\(|\)|,/);
+    return `rgba(${arr[1]},${arr[2]},${arr[3]}, ${opcity})`;
+  }
+  return '';
+};
+
+/**
+ * 将颜色值转换为有透明度的颜色值 rgb格式
+ * @param value 为带'#'的格式
+ * @returns rgb格式
+ */
+export const getRGBColor = (value: string) => {
+  if (value.startsWith('#') && [4, 7].includes(value.length)) {
+    let _value = value.slice(1);
+    if (_value.length === 3) {
+      _value = _value
+        .split('')
+        .map((item) => `${item}${item}`)
+        .join('');
+    }
+    const r = parseInt(_value.slice(0, 2), 16);
+    const g = parseInt(_value.slice(2, 4), 16);
+    const b = parseInt(_value.slice(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b})`;
+  }
+  return value;
+};
