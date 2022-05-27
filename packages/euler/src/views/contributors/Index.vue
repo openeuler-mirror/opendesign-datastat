@@ -59,8 +59,11 @@ onMounted(() => {
 
 const hightRanking = computed(() => usePersonal.hightRanking);
 const lowRanking = computed(() => usePersonal.lowRanking);
-const hightSig = computed(() => grouprelationsList.slice(0, 10));
-const lowSig = computed(() => grouprelationsList.slice(10, 20));
+const number = Math.ceil(grouprelationsList.length / 2);
+const hightSig = computed(() => grouprelationsList.slice(0, number));
+const lowSig = computed(() =>
+  grouprelationsList.slice(number, grouprelationsList.length)
+);
 const typeLable = ref('');
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
@@ -251,7 +254,12 @@ watch(
                   </template>
                   <template #default="scope">
                     <div class="Sgroup">
-                      <span class="group-email">{{ scope.row.group }}</span>
+                      <span
+                        v-for="(value, index) in scope.row.group"
+                        :key="index"
+                        class="group-email"
+                        >{{ value }}, </span
+                      >
                     </div>
                   </template></el-table-column
                 >
@@ -278,7 +286,12 @@ watch(
                     </div> </template
                   ><template #default="scope">
                     <div class="Sgroup">
-                      <span class="group-email">{{ scope.row.group }}</span>
+                      <span
+                        v-for="(value, index) in scope.row.group"
+                        :key="index"
+                        class="group-email"
+                        >{{ value }}, </span
+                      >
                     </div>
                   </template></el-table-column
                 >
