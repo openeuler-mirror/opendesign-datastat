@@ -25,6 +25,7 @@ declare module '@vue/runtime-core' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
+    RelationForm: typeof import('./src/components/RelationForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheBar: typeof import('./src/components/TheBar.vue')['default']
