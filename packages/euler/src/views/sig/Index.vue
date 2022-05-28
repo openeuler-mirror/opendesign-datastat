@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import OAnchor from 'shared/components/OAnchor.vue';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const sencondTitle = ref('');
+sencondTitle.value = route.params.name as string;
+const { t } = useI18n();
 </script>
 <template>
   <div class="container">
     <o-anchor top="11rem"></o-anchor>
     <div class="wrap">
       <div class="step">
-        <span class="step-one">社区贡献</span>
-        <span> > sig-DDE</span>
+        <span class="step-one">{{ t('nav.contributors') }}</span>
+        <span> > {{ sencondTitle }}</span>
       </div>
       <div class="main">
         <div class="main-left">123</div>
