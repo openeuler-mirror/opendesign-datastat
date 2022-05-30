@@ -79,7 +79,6 @@ const scroll = () => {
     }
     return pre;
   }, '');
-  console.log(scrollTop, clientHeight, selectId.value);
 };
 let selectId = ref('companyContributor');
 const selectAnchor = (id: string) => {
