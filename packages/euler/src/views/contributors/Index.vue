@@ -11,6 +11,8 @@ import FormSearch from './FormSearch.vue';
 import TheForm from '@/components/TheForm.vue';
 import TheBar from '../../components/TheBar.vue';
 import useScroll from 'shared/hooks/useScroll';
+import ODiagram from 'shared/components/ODiagram.vue';
+import OAnchor from 'shared/components/OAnchor.vue';
 import TheList from '@/components/TheList.vue';
 import titleBg from '@/assets/title-bg.png';
 import chevronsUp from '~icons/app/chevrons-up';
@@ -107,6 +109,28 @@ watch(
     }
   }
 );
+const anchorData = [
+  {
+    id: 'companyContributor',
+    label: t('companyContributor'),
+  },
+  {
+    id: 'userContributor',
+    label: t('userContributor'),
+  },
+  {
+    id: 'groupActive',
+    label: t('groupActive'),
+  },
+  {
+    id: 'companyRelations',
+    label: t('companyRelations'),
+  },
+  {
+    id: 'groupRelations',
+    label: t('groupRelations'),
+  },
+];
 </script>
 
 <template>
@@ -118,9 +142,12 @@ watch(
       </div>
     </o-banner>
     <div class="area">
+      <o-anchor top="18rem" :data="anchorData" :offset-value="400"></o-anchor>
       <div class="wrap">
         <div class="contributors-panel">
-          <h3 class="title">{{ t('companyContributor') }}</h3>
+          <h3 id="companyContributor" class="title">
+            {{ t('companyContributor') }}
+          </h3>
           <form-search @search-state="searchStsate" />
           <div v-if="search404" class="search404">
             <img class="cover" src="@/assets/404.png" alt="404" />
@@ -129,7 +156,7 @@ watch(
           <the-bar v-else></the-bar>
         </div>
         <div class="contributors-panel">
-          <h3 class="title">{{ t('userContributor') }}</h3>
+          <h3 id="userContributor" class="title">{{ t('userContributor') }}</h3>
           <the-form
             :option="formOption"
             :component-name="componentName"
@@ -211,7 +238,7 @@ watch(
           </div>
         </div>
         <div class="contributors-panel">
-          <h3 class="title">
+          <h3 id="groupActive" class="title">
             {{ t('groupActive') }}
           </h3>
           <div class="activation">
@@ -224,7 +251,21 @@ watch(
           <the-list></the-list>
         </div>
         <div class="contributors-panel">
-          <h3 class="title">{{ t('groupRelations') }}</h3>
+          <h3 id="companyRelations" class="title">
+            {{ t('companyRelations') }}
+          </h3>
+          <div class="diagram-legend">
+            <div class="point one-point"></div>
+            <span>{{ t('company') }}</span>
+            <div class="point two-point"></div>
+            <span>{{ t('interestGroup') }}</span>
+          </div>
+          <div class="diagram">
+            <o-diagram></o-diagram>
+          </div>
+        </div>
+        <div class="contributors-panel">
+          <h3 id="groupRelations" class="title">{{ t('groupRelations') }}</h3>
           <div class="note-caption">{{ t('Note') }}</div>
           <div class="ranking-list">
             <div class="ranking-list-item">
@@ -258,8 +299,8 @@ watch(
                         v-for="(value, index) in scope.row.group"
                         :key="index"
                         class="group-email"
-                        >{{ value }}, </span
-                      >
+                        >{{ value }},
+                      </span>
                     </div>
                   </template></el-table-column
                 >
@@ -290,8 +331,8 @@ watch(
                         v-for="(value, index) in scope.row.group"
                         :key="index"
                         class="group-email"
-                        >{{ value }}, </span
-                      >
+                        >{{ value }},
+                      </span>
                     </div>
                   </template></el-table-column
                 >
@@ -466,5 +507,28 @@ watch(
 }
 .Sgroup {
   margin-left: 65px;
+}
+.diagram-legend {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+  .point {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  .one-point {
+    background-color: #002fa7;
+  }
+  .two-point {
+    margin-left: 24px;
+    background-color: #feb32a;
+  }
+}
+.diagram {
+  display: flex;
+  justify-content: center;
 }
 </style>
