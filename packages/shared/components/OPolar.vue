@@ -52,7 +52,6 @@ dv.transform({
 });
 onMounted(() => {
   createChart();
-  console.log(opRef.value.top);
 });
 const opRef = ref<any>(null);
 const createChart = () => {

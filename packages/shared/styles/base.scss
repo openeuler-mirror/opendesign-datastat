@@ -280,5 +280,17 @@ a {
     opacity: 0;
   }
 }
- 
+
+.diagram-tooltip {
+  position: absolute;
+  padding: 12px;
+  background-color: #fff;
+  font-size: 12px;
+  box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05), 0px 0px 32px 0px rgba(10, 11, 13, 0.1);
+  color: #9097A3;
+  .mark {
+    color: #000;
+    font-weight: 500;
+  }
+}
 
