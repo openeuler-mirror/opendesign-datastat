@@ -105,7 +105,9 @@ const scrollToTop = () => {
           class="circle"
           :class="item.id === selectId ? 'selected-circle' : ''"
         ></div>
-        <a class="label" @click="selectAnchor(item.id)">{{ item.label }}</a>
+        <a :title="item.label" class="label" @click="selectAnchor(item.id)">{{
+          item.label
+        }}</a>
       </div>
     </div>
   </div>
@@ -127,6 +129,8 @@ const scrollToTop = () => {
       position: absolute;
       bottom: -3px;
       left: -7px;
+      display: flex;
+      align-items: center;
       .circle {
         width: 12px;
         height: 12px;
@@ -142,6 +146,10 @@ const scrollToTop = () => {
         font-size: 16px;
         color: #000;
         margin-left: 8px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 180px;
         cursor: pointer;
       }
     }

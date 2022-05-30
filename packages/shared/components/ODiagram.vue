@@ -2,55 +2,73 @@
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
 import { onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { IObject } from '../@types/interface';
 
-const data = {
-  name: 'flare',
-  children: [
-    {
-      name: 'sig',
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
+    default: () => ({
+      name: 'flare',
       children: [
         {
-          name: 'A',
-          imports: [],
+          name: 'sig',
+          children: [
+            {
+              name: 'A',
+              imports: [],
+            },
+            {
+              name: 'B',
+              imports: [],
+            },
+            {
+              name: 'C',
+              imports: [],
+            },
+            {
+              name: 'D',
+              imports: [],
+            },
+          ],
         },
         {
-          name: 'B',
-          imports: [],
-        },
-        {
-          name: 'C',
-          imports: [],
-        },
-        {
-          name: 'D',
-          imports: [],
+          name: 'company',
+          children: [
+            {
+              name: 'a',
+              imports: [
+                'flare.sig.A',
+                'flare.sig.B',
+                'flare.sig.C',
+                'flare.sig.D',
+              ],
+            },
+            {
+              name: 'b',
+              imports: [
+                'flare.sig.A',
+                'flare.sig.B',
+                'flare.sig.C',
+                'flare.sig.D',
+              ],
+            },
+          ],
         },
       ],
-    },
-    {
-      name: 'company',
-      children: [
-        {
-          name: 'a',
-          imports: ['flare.sig.A', 'flare.sig.B', 'flare.sig.C', 'flare.sig.D'],
-        },
-        {
-          name: 'b',
-          imports: ['flare.sig.A', 'flare.sig.B', 'flare.sig.C', 'flare.sig.D'],
-        },
-      ],
-    },
-  ],
-};
+    }),
+  },
+});
+const { t } = useI18n();
 const router = useRouter();
 const colorin = '#000';
 const colornone = '#ccc';
 const colorCompany = '#002FA7';
 const colorSig = '#FEB32A';
-const width = 954;
-const radius = width / 2;
+const width = 800;
+const radius = width / 1.8;
 const line = d3
   .lineRadial()
   .curve(d3.curveBundle.beta(0.85))
@@ -94,30 +112,44 @@ const tooltip = d3
   .on('mouseout', clearTip);
 const getTipsHtml = (d: IObject) => {
   const jump = () => {
-    router.push('/${localStorage.lang}/company/${d.data.name}')
-  }
+    router.push('/${localStorage.lang}/company/${d.data.name}');
+  };
   if (d?.parent?.data?.name === 'company') {
-    return `<div>单位会员</div>
+    return `<div>${t('company')}</div>
             <div style="padding: 8px 0">
-              <span style="font-size: 16px" class="mark">${d.data.name}</span> 共参与 <span style="font-size: 18px" class="mark">${d.outgoing.length}</span> 个特别兴趣小组
+              <span style="font-size: 16px" class="mark">${d.data.name}</span> 
+              ${t('Participated1')} 
+              <span style="font-size: 18px" class="mark">
+              ${d.outgoing.length}
+              </span> ${t('Participated2')}
             </div>
             <div class="mark" 
-                onclick="window.location.href='${window?.location?.origin}/${localStorage?.lang}/company/${d.data.name}'"
-            >查看详情 <span style="color: #002fa7">→</span></div>`;
+                onclick="window.location.href='${window?.location?.origin}/${
+      localStorage?.lang
+    }/company/${d.data.name}'"
+            >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
   }
-  return `<div>特别兴趣小组</div>
+  return `<div>${t('interestGroup')}</div>
             <div style="padding: 8px 0">
-              <span style="font-size: 16px" class="mark">${d.data.name}</span> 共有 <span style="font-size: 18px" class="mark">${d.incoming.length}</span> 个单位会员参与
+              <span style="font-size: 16px" class="mark">
+                ${d.data.name}
+              </span> 
+                ${t('Participated3')}  
+              <span style="font-size: 18px" class="mark">${
+                d.incoming.length
+              }</span> ${t('Participated4')}
             </div>
             <div class="mark"
-                onclick="window.location.href='${window?.location?.origin}/${localStorage?.lang}/sig/${d.data.name}'"
-            >查看详情 <span style="color: #002fa7">→</span></div>`;
+                onclick="window.location.href='${window?.location?.origin}/${
+    localStorage?.lang
+  }/sig/${d.data.name}'"
+            >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
 };
 const chart = () => {
   const root = tree(
     bilink(
       d3
-        .hierarchy(data)
+        .hierarchy(props.data)
         .sort(
           (a, b) =>
             d3.ascending(b.height, a.height) ||
