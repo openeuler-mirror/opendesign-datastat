@@ -2,11 +2,7 @@
 import OIcon from './OIcon.vue';
 import scrollTop from '~icons/app/scroll-top';
 import { onMounted, onUnmounted, ref } from 'vue';
-interface PreData {
-  // 跳转关联元素的id
-  id: string;
-  label: string;
-}
+import { useI18n } from 'vue-i18n';
 const props = defineProps({
   // 产生滚动条的盒子ID， 默认为body
   id: {
@@ -14,18 +10,9 @@ const props = defineProps({
     default: '',
   },
   data: {
-    type: Array as () => PreData[],
+    type: Array as () => string[],
     required: true,
-    default: () => [
-      {
-        id: 'companyContributor',
-        label: '单位会员贡献',
-      },
-      {
-        id: 'userContributor',
-        label: '个人会员贡献',
-      },
-    ],
+    default: () => ['companyContributor', 'userContributor'],
   },
   // 元素距离盒子顶部的校准值
   offsetValue: {
@@ -50,7 +37,7 @@ onUnmounted(() => {
   const body = props.id ? document.getElementById(props.id) : window;
   body?.removeEventListener('scroll', scroll);
 });
-
+const { t } = useI18n();
 const scroll = () => {
   const body = document.getElementById(props.id);
   const scrollTop =
@@ -62,9 +49,9 @@ const scroll = () => {
     document.documentElement.clientHeight ||
     document.body.clientHeight;
   const offsetTop = props.data.map((item) => {
-    const top = document.getElementById(item.id)?.offsetTop || 0;
+    const top = document.getElementById(item)?.offsetTop || 0;
     return {
-      id: item.id,
+      id: item,
       top,
     };
   });
@@ -80,11 +67,14 @@ const scroll = () => {
     return pre;
   }, '');
 };
-let selectId = ref('companyContributor');
+const selectId = ref('');
+selectId.value = props.data.slice(0, 1).shift() || '';
 const selectAnchor = (id: string) => {
   const doc = document.getElementById(id);
   doc?.scrollIntoView();
-  selectId.value = id;
+  setTimeout(() => {
+    selectId.value = id;
+  }, 20);
 };
 const scrollToTop = () => {
   const body = document.getElementById(props.id) || document.documentElement;
@@ -96,17 +86,17 @@ const scrollToTop = () => {
     <o-icon class="icon" @click="scrollToTop"><scroll-top></scroll-top></o-icon>
     <div
       v-for="(item, index) in data"
-      :key="item.id"
+      :key="item"
       class="line"
       :class="index ? '' : 'first-line'"
     >
       <div class="item">
         <div
           class="circle"
-          :class="item.id === selectId ? 'selected-circle' : ''"
+          :class="item === selectId ? 'selected-circle' : ''"
         ></div>
-        <a :title="item.label" class="label" @click="selectAnchor(item.id)">{{
-          item.label
+        <a :title="t(item)" class="label" @click="selectAnchor(item)">{{
+          t(item)
         }}</a>
       </div>
     </div>

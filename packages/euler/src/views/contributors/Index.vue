@@ -110,27 +110,12 @@ watch(
   }
 );
 const anchorData = [
-  {
-    id: 'companyContributor',
-    label: t('companyContributor'),
-  },
-  {
-    id: 'userContributor',
-    label: t('userContributor'),
-  },
-  {
-    id: 'groupActive',
-    label: t('groupActive'),
-  },
-  {
-    id: 'companyRelations',
-    label: t('companyRelations'),
-  },
-  {
-    id: 'groupRelations',
-    label: t('groupRelations'),
-  },
-];
+  'companyContributor',
+  'userContributor',
+  'groupActive',
+  'companyRelations',
+  'groupRelations',
+]
 </script>
 
 <template>
