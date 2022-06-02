@@ -31,15 +31,19 @@ export default {
   userContributor: 'Contribution by Individuals',
   companyContributor: 'Contribution by Organizations',
   groupActive: 'SIG Active Degree Landscape',
+  ecological: 'ecological',
+  staffContributor: 'staffContributor',
   active: 'active',
-  groupRelations: 'Relationship between technical committee members and special interest groups',
-  companyRelations: 'Relationship between organization members and special interest groups',
+  groupRelations:
+    'Relationship between technical committee members and special interest groups',
+  companyRelations:
+    'Relationship between organization members and special interest groups',
   currentVitalityIndex: 'Current vitality index',
   historicalVitalityIndicators: 'Historical trends in vitality indicators',
   Note: 'Note: The following are sorted by surname pinyin',
   Committee: 'Member of technical Committee',
   company: 'Organization Member',
-  interestGroup:'Special interest group',
+  interestGroup: 'Special interest group',
   ranking: 'Rank',
   backVitality: 'Back to Overview',
   searchTips:

@@ -84,12 +84,22 @@ export function queryCompanyName(name: string) {
  */
 export function queryCompanyUserContribute(params: object) {
   const url = '/query/company/usercontribute';
-  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
 }
 /**
  * 社区成员参与的sig的各项指标
  */
 export function queryCompanySigDetails(params: object) {
   const url = '/query/company/sigdetails';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 企业投入的贡献者数量
+ */
+export function queryCompanyUsers(params: object) {
+  const url = '/query/company/users';
   return request.get(url, { params }).then((res: AxiosResponse) => res.data);
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import OEchart from './OEchart.vue';
+import { watch } from 'vue';
 type EChartsOption = echarts.EChartsOption;
 interface groupItem {
   key: string;
@@ -105,22 +106,22 @@ const props = defineProps({
     default: () =>
       [
         {
-          key: 'a',
+          key: '桌面系统',
           label: '桌面/图形系统',
           color: '#002FA7',
         },
         {
-          key: 'b',
+          key: '内核',
           label: '架构/处理器/内核/驱动',
           color: '#FEB32A',
         },
         {
-          key: 'c',
+          key: '基础系统',
           label: '基础功能/特性/工具',
           color: '#4AAEAD',
         },
         {
-          key: 'd',
+          key: '应用',
           label: '行业解决方案/应用',
           color: '#FC756C',
         },
@@ -197,6 +198,12 @@ const option: EChartsOption = {
     },
   ],
 };
+
+watch(
+  () => props.value,
+
+  { deep: true }
+);
 </script>
 <template>
   <o-echart
