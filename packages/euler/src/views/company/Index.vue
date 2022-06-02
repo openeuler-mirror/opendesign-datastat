@@ -58,8 +58,20 @@ const oechartData = ref({
 const oechartTreeValue = ref([
   {
     key: '',
-    label: 'sig',
+    label: 'sig1',
     value: 1,
+    group: '内核',
+  },
+  {
+    key: '',
+    label: 'sig3',
+    value: 15,
+    group: '基础系统',
+  },
+  {
+    key: '',
+    label: 'sig2',
+    value: 10,
     group: '桌面系统',
   },
 ]);
@@ -79,11 +91,19 @@ const getoechartTreeValue = () => {
   };
   queryCompanySigDetails(query).then((data) => {
     treeData.value = treeProcessing(data?.data || []);
-    treeData.value.sigs.map((item) => {
-      oechartTreeValue.value.label = item.sig;
-      oechartTreeValue.value.value = item.D0;
-      oechartTreeValue.value.group = item.group;
-    });
+    // treeData.value.sigs.map((item) => {
+    //   oechartTreeValue.value = item;
+    //   // oechartTreeValue.value.label = item.sig;
+    //   // oechartTreeValue.value.value = item.D0;
+    //   // oechartTreeValue.value.group = item.group;
+    // });
+    for (let { sig: n, D0: f, group: p } of treeData.value.sigs) {
+      console.log(`Name: ${n}, Father: ${f},group:${p}`);
+      oechartTreeValue.value.label = n;
+      oechartTreeValue.value.value = f;
+      oechartTreeValue.value.group = p;
+      console.log(oechartTreeValue.value.label);
+    }
     console.log(oechartTreeValue.value.label);
     contributors.value = getItemListData(treeData.value.sigs, 'D0');
     oechartData.value.D0 = getItemListData(treeData.value.sigs, 'D0');
