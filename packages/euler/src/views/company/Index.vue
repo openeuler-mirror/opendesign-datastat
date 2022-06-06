@@ -17,7 +17,6 @@ import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
 import TheForm from '@/components/TheForm.vue';
 import TheProgress from '@/components/TheProgress.vue';
 import { useStaffStore } from '@/stores/staff';
-import TreemapSearch from './TreemapSearch.vue';
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -41,6 +40,7 @@ const getSencondTitle = (value?: string) => {
     const key = useCommon.language === 'zh' ? 'company_cn' : 'company_en';
     sencondTitle.value = (findOne && findOne[key]) || name;
     sencondTitleValue.value = findOne.company_cn || name;
+
     getallData();
   });
 };
@@ -55,34 +55,8 @@ const oechartData = ref({
   D1: 0,
   D2: 0,
 });
-const oechartTreeValue = ref([
-  {
-    key: '',
-    label: 'sig1',
-    value: 1,
-    group: '内核',
-  },
-  {
-    key: '',
-    label: 'sig3',
-    value: 15,
-    group: '基础系统',
-  },
-  {
-    key: '',
-    label: 'sig2',
-    value: 10,
-    group: '桌面系统',
-  },
-]);
-const oechartSecondTreeValue = ref([
-  {
-    key: '',
-    label: 'sig-KIRAN-DESKTOP',
-    value: 10,
-    group: '应用',
-  },
-]);
+const oechartTreeValue = ref([]);
+const oechartSecondTreeValue = ref([]);
 const getoechartTreeValue = () => {
   const query = {
     company: sencondTitleValue.value,
@@ -91,29 +65,28 @@ const getoechartTreeValue = () => {
   };
   queryCompanySigDetails(query).then((data) => {
     treeData.value = treeProcessing(data?.data || []);
-    // treeData.value.sigs.map((item) => {
-    //   oechartTreeValue.value = item;
-    //   // oechartTreeValue.value.label = item.sig;
-    //   // oechartTreeValue.value.value = item.D0;
-    //   // oechartTreeValue.value.group = item.group;
-    // });
-    for (let { sig: n, D0: f, group: p } of treeData.value.sigs) {
-      console.log(`Name: ${n}, Father: ${f},group:${p}`);
-      oechartTreeValue.value.label = n;
-      oechartTreeValue.value.value = f;
-      oechartTreeValue.value.group = p;
-      console.log(oechartTreeValue.value.label);
-    }
-    console.log(oechartTreeValue.value.label);
+    treeData.value.sigs.map((item) => {
+      if (item.group !== '') {
+        oechartTreeValue.value.push({
+          key: '',
+          label: item.sig,
+          value: item.D0,
+          group: item.group,
+        });
+        oechartSecondTreeValue.value.push({
+          key: '',
+          label: item.sig,
+          value: item.PR_Merged,
+          group: item.group,
+        });
+      }
+    });
     contributors.value = getItemListData(treeData.value.sigs, 'D0');
     oechartData.value.D0 = getItemListData(treeData.value.sigs, 'D0');
     oechartData.value.D1 = getItemListData(treeData.value.sigs, 'D1');
     oechartData.value.D2 = getItemListData(treeData.value.sigs, 'D2');
   });
 };
-// const getItemTreeData = (data, template) => {
-//   return data.map((item) => item[template]);
-// };
 const drownData = ref([]);
 const getDrownData = () => {
   drownData.value = allcompany.value.map((item) => {
@@ -134,22 +107,6 @@ const getSigsData = () => {
     sigsData.value = sigsProcessing(data?.data || []);
   });
 };
-// const getPieData = () => {
-//   const query = {
-//     company: sencondTitleValue.value,
-//     timeRange: 'lasthalfyear',
-//     community: 'openeuler',
-//   };
-//   queryCompanyUsers(query).then((data) => {
-//     pieData.value = pieProcessing(data?.data || []);
-//     oechartData.value.D0 = pieData.value.D0;
-//     oechartData.value.D1 = pieData.value.D1;
-//     oechartData.value.D2 = pieData.value.D2;
-//     // contributors.value = getItemPieData('Contribute');
-//     // comment.value = getItemPieData('Issue_Comment');
-//   });
-// };
-
 const getprlistData = () => {
   const query = {
     company: sencondTitleValue.value,
@@ -194,6 +151,7 @@ const getItemListData = (data, template) => {
 };
 const clickDrownItem = (item) => {
   sencondTitle.value = item.label;
+  sencondTitleValue.value = item.label;
   getallData();
 };
 
@@ -210,6 +168,8 @@ const getallData = () => {
   getDrownData();
   getSigsData();
   getoechartTreeValue();
+  getContributeInfo();
+  getTreeContributeInfo();
 };
 onMounted(() => {
   getSencondTitle();
@@ -241,11 +201,29 @@ const lastformOption = computed(() => {
     },
   ];
 });
+const firstformOption = computed(() => {
+  return [
+    {
+      label: t('from.timeRange'),
+      id: 'timeRange',
+      active: 'mother',
+      list: [
+        { label: t('from.lastonemonth'), value: 'lastonemonth' },
+        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
+        { label: t('from.lastoneyear'), value: 'lastoneyear' },
+        { label: t('from.all'), value: 'all' },
+      ],
+    },
+  ];
+});
 // theform组件调用
 const componentName = 'staff';
 const loading = ref(true);
 const getContributeInfo = () => {
-  useStaff.getStaffData();
+  useStaff.getStaffData(sencondTitleValue.value);
+};
+const getTreeContributeInfo = () => {
+  getoechartTreeValue();
 };
 const typeLable = ref('');
 const switchType = () => {
@@ -269,18 +247,6 @@ watch(
   }
 );
 const hightRanking = computed(() => useStaff.hightRanking);
-// const changeColor = (type) => {
-//   return (type) => {
-//     if (type === 'maintainers') {
-//       return { color: '225deg, #FEB32A 0%, #F6D365 100%' };
-//     } else if (type === 'contributor') {
-//       return { color: '225deg, #4AAEAD 0%, #6BFBFA 100%' };
-//     } else if (type === 'tc') {
-//       return { color: '45deg, #005CD3 0%, #002FA7 100%' };
-//     }
-//   };
-// };
-
 const anchorData = ['ecological', 'staffContributor'];
 </script>
 <template>
@@ -294,7 +260,9 @@ const anchorData = ['ecological', 'staffContributor'];
       <div class="main">
         <div class="main-left">
           <div class="main-left-top">
-            <div class="main-left-title">{{ sencondTitle }}</div>
+            <div class="main-left-title">
+              {{ sencondTitle }}
+            </div>
             <div class="edropdown">
               <el-dropdown>
                 <div class="btnc">
@@ -318,28 +286,34 @@ const anchorData = ['ecological', 'staffContributor'];
             </div>
           </div>
 
-          <div class="left-title">当前/最近一个月的贡献排名</div>
+          <div class="left-title">{{ t('Currentcontributionranking') }}</div>
           <div class="left-first">
             <div class="left-first-child">
-              <span>合并请求 PR</span>
+              <span>{{ t('Mergerequest') }} PR</span>
               <div class="left-first-child-data">{{ mergeRequest }}</div>
             </div>
             <div class="left-first-child">
-              <span>需求&问题 Issue</span>
+              <span title="Needs & Problems Issue"
+                >{{ t('NeedsProblems') }} Issue</span
+              >
               <div class="left-first-child-data">{{ issueData }}</div>
             </div>
             <div class="left-first-child">
-              <span>评审 Comment</span>
+              <span title="123">{{ t('review') }} Comment</span>
               <div class="left-first-child-data">{{ comment }}</div>
             </div>
             <div class="left-first-child">
-              <span>贡献者数量</span>
+              <span title="Number of contributors">{{
+                t('Numbercontributors')
+              }}</span>
               <div class="left-first-child-data">{{ contributors }}</div>
             </div>
           </div>
 
           <div class="circularPile">
-            <div class="circularPile-sp">贡献者分布</div>
+            <div class="circularPile-sp">
+              {{ t('Contributordistribution') }}
+            </div>
             <o-echart-circular-pile
               id="circularPile"
               :data="oechartData"
@@ -347,7 +321,7 @@ const anchorData = ['ecological', 'staffContributor'];
           </div>
 
           <div class="left-second">
-            <span class="left-second-sp">参与的SIG:</span>
+            <span class="left-second-sp">{{ t('participation') }}SIG:</span>
             <div class="atlas">
               <span
                 v-for="item in sigsData.sigs"
@@ -365,12 +339,10 @@ const anchorData = ['ecological', 'staffContributor'];
               {{ `${sencondTitle} ${t('ecological')}` }}
             </h3>
             <div class="theFirstForm">
-              <!-- <the-form
+              <the-form
                 :option="firstformOption"
-                :component-name="componentName"
                 @get-contribute-info="getTreeContributeInfo"
-              ></the-form> -->
-              <treemap-search></treemap-search>
+              ></the-form>
             </div>
             <div class="color-box">
               <div class="blue-box">
@@ -390,14 +362,14 @@ const anchorData = ['ecological', 'staffContributor'];
                 行业解决方案/应用
               </div>
             </div>
-            <div class="smalltitle">贡献者数量</div>
+            <div class="smalltitle">{{ t('Numbercontributors') }}</div>
             <div class="firstTreemap">
               <o-echart-treemap
                 id="firstTreemap"
                 :value="oechartTreeValue"
               ></o-echart-treemap>
             </div>
-            <div class="smalltitle">提交贡献</div>
+            <div class="smalltitle">{{ t('Commitcontribution') }}</div>
             <div class="secondTreemap">
               <o-echart-treemap
                 id="secondTreemap"
@@ -420,7 +392,7 @@ const anchorData = ['ecological', 'staffContributor'];
             <div class="edcolor-box">
               <div class="blue-box">
                 <div class="box">TC</div>
-                技术委员会委员
+                {{ t('Committee') }}
               </div>
               <div class="yellow-box">
                 <div class="box">Maintainer</div>
@@ -493,11 +465,10 @@ const anchorData = ['ecological', 'staffContributor'];
               <el-pagination
                 v-model:currentPage="currentPage"
                 v-model:page-size="pageSize"
-                :page-sizes="[10, 20, 30, 40]"
                 :small="small"
                 :disabled="disabled"
                 :background="background"
-                layout="total, sizes, prev, pager, next, jumper"
+                layout="total, prev, pager, next, jumper"
                 :total="100"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -560,6 +531,9 @@ const anchorData = ['ecological', 'staffContributor'];
     font-family: HarmonyOS_Sans_SC;
     color: #4e5865;
     line-height: 24px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     &-data {
       font-size: 40px;
       font-family: HarmonyOS_Sans_SC;
@@ -616,7 +590,7 @@ const anchorData = ['ecological', 'staffContributor'];
   margin-bottom: 60px;
   &-sp {
     margin-bottom: 30px;
-    width: 80px;
+    width: 280px;
     height: 24px;
     font-size: 16px;
     font-family: HarmonyOS_Sans_SC;
@@ -705,7 +679,7 @@ const anchorData = ['ecological', 'staffContributor'];
 .smalltitle {
   margin-bottom: 20px;
   margin-left: 20px;
-  width: 80px;
+  width: 280px;
   height: 24px;
   font-size: 16px;
   font-family: HarmonyOS_Sans_SC;
@@ -826,8 +800,10 @@ const anchorData = ['ecological', 'staffContributor'];
   }
 }
 .demo-pagination-block {
-  margin-left: 20px;
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .usertypecolorbox {
   margin-left: 5px;

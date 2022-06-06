@@ -17,13 +17,14 @@ export const useStaffStore = defineStore('staff', {
     } as Form,
   }),
   actions: {
-    async getStaffData() {
+    async getStaffData(companyName: any) {
       const params = {
         community: openCommunityInfo.name,
         contributeType: this.staffForm.contributeType,
         timeRange: this.staffForm.timeRange,
-        company: '华为技术有限公司',
+        company: companyName,
       };
+      console.log('params', params);
       try {
         const res = await queryCompanyUserContribute(params);
         if (res.code === 200) {
@@ -41,10 +42,6 @@ export const useStaffStore = defineStore('staff', {
     // top10
     hightRanking: (state) => {
       return state.personalData.slice(0, 10);
-    },
-    // top10-20
-    lowRanking: (state) => {
-      return state.personalData.slice(10, 20);
     },
   },
 });

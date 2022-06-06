@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import OEchart from './OEchart.vue';
-import { watch } from 'vue';
+import { watch, ref } from 'vue';
 type EChartsOption = echarts.EChartsOption;
 interface groupItem {
   key: string;
@@ -137,6 +137,7 @@ const props = defineProps({
   },
 });
 const getData = () => {
+  console.log('getData', props.value);
   const _data = props.group.map((item) => {
     const children = props.value
       .filter((it) => it.group === item.key)
@@ -154,20 +155,21 @@ const getData = () => {
   });
   return _data;
 };
-const option: EChartsOption = {
-  name: props.name,
-  tooltip: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    formatter: function (info: any) {
-      let { value, treePathInfo, color } = info;
-      let treePath = [];
-      for (let i = 1; i < treePathInfo.length; i++) {
-        treePath.push(treePathInfo[i].name);
-      }
-      const percent = ((value / treePathInfo[0].value) * 100).toFixed(1);
-      return [
-        `<div style="font-size:12px;color: #9097A3; margin-bottom: 8px">当前/全部 的 ${props.name}</div>`,
-        `<div style="font-size:12px;color: #4E5865; display: flex; align-items: center">
+const getOption = (): EChartsOption => {
+  return {
+    name: props.name,
+    tooltip: {
+      backgroundColor: 'rgba(255, 255, 255, 0.85)',
+      formatter: function (info: any) {
+        let { value, treePathInfo, color } = info;
+        let treePath = [];
+        for (let i = 1; i < treePathInfo.length; i++) {
+          treePath.push(treePathInfo[i].name);
+        }
+        const percent = ((value / treePathInfo[0].value) * 100).toFixed(1);
+        return [
+          `<div style="font-size:12px;color: #9097A3; margin-bottom: 8px">当前/全部 的 ${props.name}</div>`,
+          `<div style="font-size:12px;color: #4E5865; display: flex; align-items: center">
           <div style="display: inline-block;
                   width: 12px;
                   height: 12px;
@@ -177,31 +179,35 @@ const option: EChartsOption = {
           ${treePath.join('>')}
           <span style="font-size:16px;color: #000000;margin-left:24px; font-weight: 500">${percent}% (${value})</span>
         </div>`,
-      ].join('');
-    },
-  },
-  series: [
-    {
-      name: '111asd',
-      type: 'treemap',
-      roam: false,
-      width: '100%',
-      height: '100%',
-      nodeClick: undefined,
-      label: {
-        show: true,
+        ].join('');
       },
-      breadcrumb: {
-        show: false,
-      },
-      data: getData(),
     },
-  ],
+    series: [
+      {
+        name: '111asd',
+        type: 'treemap',
+        roam: false,
+        width: '100%',
+        height: '100%',
+        nodeClick: undefined,
+        label: {
+          show: true,
+        },
+        breadcrumb: {
+          show: false,
+        },
+        data: getData(),
+      },
+    ],
+  };
 };
-
+let option = ref({});
+option.value = getOption();
 watch(
   () => props.value,
-
+  () => {
+    option.value = getOption();
+  },
   { deep: true }
 );
 </script>
