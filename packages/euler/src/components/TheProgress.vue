@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { usePersonalStore } from '@/stores/personal';
+import { useStaffStore } from '@/stores/staff';
+import { toRefs } from 'vue';
 const props = defineProps({
   item: {
     type: Number,
@@ -8,12 +10,24 @@ const props = defineProps({
       return 0;
     },
   },
+  componentName: {
+    type: String,
+    default() {
+      return 'personal';
+    },
+  },
 });
-
+const { componentName } = toRefs(props);
 const usePersonal = usePersonalStore();
+const useStaff = useStaffStore();
 const progressColor = ref('#002FA7');
+// 动态计算参数赋值
 const progressFormat = (item: number) => {
-  return (100 / usePersonal.personalMaxNum) * item;
+  if (componentName.value === 'staff') {
+    return (100 / useStaff.staffMaxNum) * item;
+  } else {
+    return (100 / usePersonal.personalMaxNum) * item;
+  }
 };
 </script>
 

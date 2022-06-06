@@ -131,3 +131,57 @@ export const getRGBColor = (value: string) => {
   }
   return value;
 };
+
+/**
+ * 格式化返回数据
+ */
+//
+
+export const processing = (data) => {
+  const firstKeys = Object.keys(data);
+  const company = firstKeys.find((itme) => itme !== 'metrics');
+  const sigData = data[company as string];
+  const sigs = Object.keys(sigData).map((item) => {
+    const obj = { name: item };
+    data['metrics'].reduce((pre, next, index) => {
+      pre[next] = sigData[item][index];
+      return pre;
+    }, obj);
+    return obj;
+  });
+  return { company, sigs };
+};
+
+/**
+ * 格式化SIG返回数据
+ */
+//
+export const sigsProcessing = (data) => {
+  const firstKeys = Object.keys(data);
+  const company = firstKeys.find((itme) => itme !== 'metrics');
+  const sigData = data[company as string];
+  const sigs = sigData.map((item) => {
+    return item.sig;
+  });
+
+  return { company, sigs };
+};
+
+/**
+ * 格式化Treemap数据
+ */
+//
+export const treeProcessing = (data) => {
+  const firstKeys = Object.keys(data);
+  const company = firstKeys.find((itme) => itme !== 'metrics');
+  const sigData = data[company as string];
+  const sigs = sigData.map((item) => {
+    const obj = { sig: item.sig, group: item.feature };
+    data['metrics'].reduce((pre, next, index) => {
+      pre[next] = item.value[index];
+      return pre;
+    }, obj);
+    return obj;
+  });
+  return { company, sigs };
+};

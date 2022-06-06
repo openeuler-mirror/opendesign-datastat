@@ -2,9 +2,11 @@
 import { toRefs, computed } from 'vue';
 import { useCompanyStore } from '@/stores/company';
 import { usePersonalStore } from '@/stores/personal';
+import { useStaffStore } from '@/stores/staff';
 import { IObject } from 'shared/@types/interface';
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();
+const useStaff = useStaffStore();
 const props = defineProps({
   option: {
     type: Object,
@@ -29,9 +31,13 @@ const emits = defineEmits(['get-contribute-info']);
 
 // 动态计算参数赋值
 let form = computed(() => {
-  return componentName.value === 'company'
-    ? useCompany.companyForm
-    : usePersonal.personalForm;
+  if (componentName.value === 'company') {
+    return useCompany.companyForm;
+  } else if (componentName.value === 'staff') {
+    return useStaff.staffForm;
+  } else {
+    return usePersonal.personalForm;
+  }
 });
 </script>
 
