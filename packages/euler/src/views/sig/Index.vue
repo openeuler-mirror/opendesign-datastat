@@ -2,6 +2,8 @@
 import { useCommonStore } from '@/stores/common';
 import OAnchor from 'shared/components/OAnchor.vue';
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
+import HistoricalTrend from './HistoricalTrend.vue';
+import CurrentTrend from './CurrentTrend.vue';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
@@ -44,12 +46,14 @@ const anchorData = [
                 :name="t('combinedActivity')"
                 :value="0.1"
               ></o-echart-gauge>
+              <current-trend></current-trend>
             </div>
           </div>
           <div class="contributors-panel">
             <h3 id="historicalVitalityIndicators" class="title">
               {{ sencondTitle + ' ' + t('historicalVitalityIndicators') }}
             </h3>
+            <historical-trend></historical-trend>
           </div>
           <div class="contributors-panel">
             <h3 id="companyContributor" class="title">
@@ -78,7 +82,10 @@ const anchorData = [
     font-size: 16px;
     color: #000;
     font-weight: 600;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .img {
+    display: flex;
   }
 }
 .container {
