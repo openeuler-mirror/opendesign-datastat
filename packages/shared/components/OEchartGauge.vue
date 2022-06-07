@@ -25,11 +25,11 @@ const props = defineProps({
   },
   width: {
     type: String,
-    default: '300px',
+    default: '256px',
   },
   height: {
     type: String,
-    default: '300px',
+    default: '256px',
   },
 });
 const getOption = (): EChartsOption => {

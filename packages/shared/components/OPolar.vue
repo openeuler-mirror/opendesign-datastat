@@ -20,11 +20,11 @@ const props = defineProps({
   },
   width: {
     type: Number,
-    default: 300,
+    default: 256,
   },
   height: {
     type: Number,
-    default: 300,
+    default: 256,
   },
   titleKey: {
     type: String,
