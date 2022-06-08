@@ -4,10 +4,14 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import HistoricalTrend from './HistoricalTrend.vue';
 import CurrentTrend from './CurrentTrend.vue';
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-
+import TableList from './TableList.vue';
+import TheBar from '../../components/TheBar.vue';
+import TheForm from '@/components/TheForm.vue';
+import ContributList from './ContributList.vue';
+import { querySigRepos, querySigName } from 'shared/api';
 const route = useRoute();
 const sencondTitle = ref('');
 sencondTitle.value = route.params.name as string;
@@ -18,6 +22,40 @@ const anchorData = [
   'companyContributor',
   'userContributor',
 ];
+const clickDrownItem = (item) => {
+  sencondTitle.value = item;
+  getllData();
+};
+const cubeData = ref([]);
+const getCubeData = () => {
+  const query = {
+    timeRange: 'lastonemonth',
+    community: 'openeuler',
+    sig: sencondTitle.value,
+  };
+  querySigRepos(query).then((data) => {
+    const value = data?.data || [];
+    const firstKeys = Object.keys(value);
+    cubeData.value = value[firstKeys as string];
+  });
+};
+const drownData = ref([]);
+const getDrownData = () => {
+  let community = 'openeuler';
+  querySigName(community).then((data) => {
+    const value = data?.data || [];
+    const firstKeys = Object.keys(value);
+    drownData.value = value[firstKeys as string];
+  });
+};
+const getllData = () => {
+  getCubeData();
+  getDrownData();
+};
+watch(() => sencondTitle.value);
+onMounted(() => {
+  getllData();
+});
 </script>
 <template>
   <div class="container">
@@ -28,7 +66,89 @@ const anchorData = [
         <span> > {{ sencondTitle }}</span>
       </div>
       <div class="main">
-        <div class="main-left">123</div>
+        <div class="main-left">
+          <div class="main-left-top">
+            <div class="main-left-title">
+              {{ sencondTitle }}
+            </div>
+            <div class="edropdown">
+              <el-dropdown>
+                <div class="btnc"></div>
+
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-scrollbar height="400px">
+                      <el-dropdown-item
+                        v-for="item in drownData"
+                        :key="item.value"
+                        @click="clickDrownItem(item)"
+                      >
+                        {{ item }}
+                      </el-dropdown-item>
+                    </el-scrollbar>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </div>
+          <div class="main-left-sp">
+            <span>调优领域相关技术探索；AI辅助性能分析</span>
+            <div class="first">
+              <div class="home"></div>
+              <div class="List">
+                <span>前往主页</span>
+              </div>
+            </div>
+            <div class="first">
+              <div class="email"></div>
+              <div class="List">
+                <span>邮件列表</span>
+                <span class="item"> a-tune@openeuler.org </span>
+              </div>
+            </div>
+            <div class="first">
+              <div class="IRC"></div>
+              <div class="List">
+                <span>IRC频道：</span>
+                <span class="item">#openeuler-dev</span>
+              </div>
+            </div>
+            <div class="first">
+              <div class="Maintainer"></div>
+              <div class="List">
+                <span>Maintainer：</span>
+                <span class="item"> @xiezhipeng1 </span>
+                <span class="item"> @hanxinke1 </span>
+              </div>
+            </div>
+            <div class="first">
+              <div class="Mentor"></div>
+              <div class="List">
+                <span>Mentor：</span>
+                <span class="item"> @xiezhipeng1 </span>
+                <span class="item"> @hanxinke1 </span>
+              </div>
+            </div>
+            <div class="first">
+              <div class="store"></div>
+              <div class="List">
+                <span>仓库：</span>
+                <div class="atlas">
+                  <a
+                    v-for="item in cubeData"
+                    :key="item.value"
+                    class="item"
+                    :href="item"
+                    target="_blank"
+                  >
+                    ./openeuler/
+                    {{ item.split('/')[item.split('/').length - 1] }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="main-right">
           <div class="contributors-panel">
             <h3 id="currentVitalityIndex" class="title">
@@ -59,11 +179,18 @@ const anchorData = [
             <h3 id="companyContributor" class="title">
               {{ sencondTitle + ' ' + t('companyContributor') }}
             </h3>
+            <table-list :sig="sencondTitle" @search-state="searchStsate" />
+            <!-- <div v-if="search404" class="search404">
+              <img class="cover" src="@/assets/404.png" alt="404" />
+              <p class="text">{{ t('searchTips') }}</p>
+            </div>
+            <the-bar v-else></the-bar> -->
           </div>
           <div class="contributors-panel">
             <h3 id="userContributor" class="title">
               {{ sencondTitle + ' ' + t('userContributor') }}
             </h3>
+            <contribut-list :sig="sencondTitle"></contribut-list>
           </div>
         </div>
       </div>
@@ -106,6 +233,90 @@ const anchorData = [
 .main {
   display: grid;
   grid-template-columns: 28% 72%;
+  &-left {
+    .edropdown {
+      position: absolute;
+      right: 10px;
+      .btnc {
+        background-image: url('@/assets/down.png');
+        width: 24px;
+        height: 24px;
+      }
+    }
+    &-title {
+      font-size: 24px;
+      font-family: HarmonyOS_Sans_SC_Medium;
+      color: #002fa7;
+      line-height: 32px;
+      text-overflow: ellipsis;
+      width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    &-top {
+      display: flex;
+      position: relative;
+    }
+    &-sp {
+      display: flex;
+      flex-direction: column;
+      margin-top: 24px;
+      .first {
+        margin-top: 18px;
+        display: flex;
+        position: relative;
+        // align-items: center;
+        .List {
+          padding-top: 3px;
+          display: flex;
+          flex-direction: column;
+          .item {
+            margin-top: 8px;
+            font-size: 14px;
+            font-family: HarmonyOS_Sans_SC_Medium;
+            color: #002fa7;
+            line-height: 22px;
+          }
+        }
+        .home {
+          background-image: url('@/assets/home-outlined.png');
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+        .email {
+          background-image: url('@/assets/email.png');
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+        .IRC {
+          background-image: url('@/assets/chat.png');
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+        .Maintainer {
+          background-image: url('@/assets/use-square.png');
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+        .Mentor {
+          background-image: url('@/assets/user.png');
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+        .store {
+          background-image: url('@/assets/cube.png');
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
 }
 .rank {
   font-size: 12px;
@@ -115,5 +326,90 @@ const anchorData = [
     font-size: 40px;
     color: #000000;
   }
+}
+
+.stafftitle {
+  padding-left: 24px;
+  margin-bottom: 22px;
+  margin-top: 22px;
+  font-size: 16px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #000000;
+  line-height: 24px;
+}
+.topstafftitle {
+  padding: 24px;
+  font-size: 16px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #000000;
+  line-height: 24px;
+}
+.smalltitle {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  width: 280px;
+  height: 24px;
+  font-size: 16px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #000000;
+  line-height: 24px;
+}
+.color-box {
+  display: flex;
+  margin-left: 20px;
+  padding-bottom: 20px;
+  .blue-box {
+    margin-right: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .box {
+      width: 12px;
+      height: 12px;
+      background: #002fa7;
+      margin-right: 8px;
+    }
+  }
+  .yellow-box {
+    margin-right: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .box {
+      width: 12px;
+      height: 12px;
+      background: #feb32a;
+      margin-right: 8px;
+    }
+  }
+  .red-box {
+    margin-right: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .box {
+      width: 12px;
+      height: 12px;
+      background: #4aaead;
+      margin-right: 8px;
+    }
+  }
+  .green-box {
+    margin-right: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .box {
+      width: 12px;
+      height: 12px;
+      background: #fc756c;
+      margin-right: 8px;
+    }
+  }
+}
+.atlas {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
 }
 </style>

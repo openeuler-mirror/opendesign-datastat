@@ -17,6 +17,7 @@ import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
 import TheForm from '@/components/TheForm.vue';
 import TheProgress from '@/components/TheProgress.vue';
 import { useStaffStore } from '@/stores/staff';
+import OFormRadio from '@/components/OFormRadio.vue';
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -64,6 +65,20 @@ const getoechartTreeValue = () => {
     community: 'openeuler',
   };
   queryCompanySigDetails(query).then((data) => {
+    const Data = treeProcessing(data?.data || []);
+    contributors.value = getItemListData(Data.sigs, 'D0');
+    oechartData.value.D0 = getItemListData(Data.sigs, 'D0');
+    oechartData.value.D1 = getItemListData(Data.sigs, 'D1');
+    oechartData.value.D2 = getItemListData(Data.sigs, 'D2');
+  });
+};
+const param = ref({
+  company: computed(() => sencondTitleValue.value),
+  timeRange: 'lastonemonth',
+  community: 'openeuler',
+});
+const getTreeSearchValue = () => {
+  queryCompanySigDetails(param.value).then((data) => {
     treeData.value = treeProcessing(data?.data || []);
     treeData.value.sigs.map((item) => {
       if (item.group !== '') {
@@ -81,12 +96,17 @@ const getoechartTreeValue = () => {
         });
       }
     });
-    contributors.value = getItemListData(treeData.value.sigs, 'D0');
-    oechartData.value.D0 = getItemListData(treeData.value.sigs, 'D0');
-    oechartData.value.D1 = getItemListData(treeData.value.sigs, 'D1');
-    oechartData.value.D2 = getItemListData(treeData.value.sigs, 'D2');
   });
+  oechartSecondTreeValue.value = [];
+  oechartTreeValue.value = [];
 };
+// 监听变化
+watch(
+  () => sencondTitleValue.value,
+  () => {
+    getTreeSearchValue();
+  }
+);
 const drownData = ref([]);
 const getDrownData = () => {
   drownData.value = allcompany.value.map((item) => {
@@ -170,6 +190,7 @@ const getallData = () => {
   getoechartTreeValue();
   getContributeInfo();
   getTreeContributeInfo();
+  getTreeSearchValue();
 };
 onMounted(() => {
   getSencondTitle();
@@ -206,7 +227,7 @@ const firstformOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'mother',
+      active: 'lastonemonth',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
@@ -222,8 +243,10 @@ const loading = ref(true);
 const getContributeInfo = () => {
   useStaff.getStaffData(sencondTitleValue.value);
 };
-const getTreeContributeInfo = () => {
-  getoechartTreeValue();
+// 树图变换
+const getTreeContributeInfo = (e) => {
+  param.value.timeRange = e.active;
+  getTreeSearchValue();
 };
 const typeLable = ref('');
 const switchType = () => {
@@ -246,7 +269,16 @@ watch(
     switchType();
   }
 );
-const hightRanking = computed(() => useStaff.hightRanking);
+// 总数据
+const tableData = computed(() => useStaff.tableData);
+// 默认显示第1页
+const currentPage = ref(1);
+// 显示第几页
+const handleCurrentChange = (val) => {
+  // 改变默认的页数
+  currentPage.value = val;
+};
+
 const anchorData = ['ecological', 'staffContributor'];
 </script>
 <template>
@@ -339,10 +371,10 @@ const anchorData = ['ecological', 'staffContributor'];
               {{ `${sencondTitle} ${t('ecological')}` }}
             </h3>
             <div class="theFirstForm">
-              <the-form
+              <o-form-radio
                 :option="firstformOption"
-                @get-contribute-info="getTreeContributeInfo"
-              ></the-form>
+                @get-contribute-info="getTreeContributeInfo($event)"
+              ></o-form-radio>
             </div>
             <div class="color-box">
               <div class="blue-box">
@@ -409,7 +441,9 @@ const anchorData = ['ecological', 'staffContributor'];
                 <p class="caption"></p>
                 <el-table
                   v-loading="loading"
-                  :data="hightRanking"
+                  :data="
+                    tableData.slice((currentPage - 1) * 10, currentPage * 10)
+                  "
                   style="width: 100%"
                 >
                   <el-table-column
@@ -463,16 +497,15 @@ const anchorData = ['ecological', 'staffContributor'];
             </div>
             <div class="demo-pagination-block">
               <el-pagination
-                v-model:currentPage="currentPage"
-                v-model:page-size="pageSize"
-                :small="small"
-                :disabled="disabled"
-                :background="background"
+                v-show="tableData.length > 0"
+                background
+                :current-page="currentPage"
+                :page-size="10"
                 layout="total, prev, pager, next, jumper"
-                :total="100"
-                @size-change="handleSizeChange"
+                :total="tableData.length"
                 @current-change="handleCurrentChange"
-              />
+              >
+              </el-pagination>
             </div>
           </div>
         </div>
