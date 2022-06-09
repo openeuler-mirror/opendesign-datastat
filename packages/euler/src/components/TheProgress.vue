@@ -16,15 +16,42 @@ const props = defineProps({
       return 'personal';
     },
   },
+  memberList: {
+    type: Number,
+    default() {
+      return 0;
+    },
+  },
+  usertype: {
+    type: String,
+    default() {
+      return '';
+    },
+  },
 });
-const { componentName } = toRefs(props);
+const { componentName, memberList, usertype } = toRefs(props);
 const usePersonal = usePersonalStore();
 const useStaff = useStaffStore();
-const progressColor = ref('#002FA7');
+// const progressColor = ref('#002FA7');
+const progressColor = () => {
+  if (componentName.value === 'member' && usertype.value === 'contributor') {
+    return '#4AAEAD';
+  } else if (
+    componentName.value === 'member' &&
+    usertype.value === 'maintainers'
+  ) {
+    return '#FEB32A';
+  } else {
+    return '#002FA7';
+  }
+};
+
 // 动态计算参数赋值
 const progressFormat = (item: number) => {
   if (componentName.value === 'staff') {
     return (100 / useStaff.staffMaxNum) * item;
+  } else if (componentName.value === 'member') {
+    return (100 / memberList.value) * item;
   } else {
     return (100 / usePersonal.personalMaxNum) * item;
   }
@@ -35,7 +62,7 @@ const progressFormat = (item: number) => {
   <el-progress
     :show-text="false"
     :stroke-width="8"
-    :color="progressColor"
+    :color="progressColor()"
     :percentage="progressFormat(props.item)"
   />
 </template>
