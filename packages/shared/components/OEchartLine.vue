@@ -23,25 +23,12 @@ const props = defineProps({
         name: '综合活跃度',
         data: [
           {
-            time: '2022/04/08',
-            value: 0.1,
+            created_at: '2022/04/08',
+            score: 0.1,
           },
           {
-            time: '2022/04/09',
-            value: 0.3,
-          },
-        ],
-      },
-      {
-        name: '提交贡献',
-        data: [
-          {
-            time: '2022/04/08',
-            value: 0.3,
-          },
-          {
-            time: '2022/04/09',
-            value: 0.2,
+            created_at: '2022/04/09',
+            score: 0.3,
           },
         ],
       },
@@ -81,7 +68,11 @@ const getxAxisData = () => {
       }
       return pre;
     }, [])
-    .map((item) => item.time);
+    .map((item) => dealTime(item.created_at));
+};
+const dealTime = (time: string) => {
+  const _time = new Date(time);
+  return `${_time.getFullYear()}/${_time.getMonth() + 1}/${_time.getDate()}`;
 };
 const getSeriesData = (): SeriesOption[] => {
   return props.data.map(
@@ -90,7 +81,7 @@ const getSeriesData = (): SeriesOption[] => {
       type: 'line',
       smooth: true,
       showSymbol: false,
-      data: item.data.map((it: IObject) => it.value),
+      data: item.data.map((it: IObject) => it.score),
     })
   );
 };

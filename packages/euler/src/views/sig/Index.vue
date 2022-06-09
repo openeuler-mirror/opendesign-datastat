@@ -166,14 +166,14 @@ onMounted(() => {
                 :name="t('combinedActivity')"
                 :value="0.1"
               ></o-echart-gauge>
-              <current-trend></current-trend>
+              <current-trend :sig="sencondTitle"></current-trend>
             </div>
           </div>
           <div class="contributors-panel">
             <h3 id="historicalVitalityIndicators" class="title">
               {{ sencondTitle + ' ' + t('historicalVitalityIndicators') }}
             </h3>
-            <historical-trend></historical-trend>
+            <historical-trend :sig="sencondTitle"></historical-trend>
           </div>
           <div class="contributors-panel">
             <h3 id="companyContributor" class="title">

@@ -2,17 +2,17 @@
 import DataSet from '@antv/data-set';
 import { Chart } from '@antv/g2';
 import { IObject } from '../@types/interface';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 const props = defineProps({
   id: {
     type: String,
     required: true,
     default: 'container',
   },
-  value: {
-    type: Number,
+  data: {
+    type: Array,
     required: true,
-    default: 0,
+    default: () => [],
   },
   color: {
     type: Array,
@@ -32,115 +32,123 @@ const props = defineProps({
   },
   fieldsKey: {
     type: Array as () => string[],
-    default: () => ['a', 'b'],
+    default: () => ['sig', 'average'],
   },
-});
-const data = [
-  { title: 'Design', a: 70, b: 30 },
-  { title: 'Development', a: 60, b: 70 },
-  { title: 'Marketing', a: 50, b: 60 },
-  { title: 'Users', a: 40, b: 50 },
-  { title: 'Test', a: 60, b: 70 },
-];
-const { DataView } = DataSet;
-const dv = new DataView().source(data);
-dv.transform({
-  type: 'fold',
-  fields: props.fieldsKey, // 展开字段集
-  key: 'user', // key字段
-  value: 'score', // value字段
 });
 onMounted(() => {
   createChart();
 });
+watch(
+  () => props.data,
+  () => {
+    createChart();
+  },
+  { deep: true }
+);
 const opRef = ref<any>(null);
+let chart: any;
 const createChart = () => {
-  const chart = new Chart({
-    container: props.id,
-    autoFit: true,
-    limitInPlot: false,
-    width: props.width,
-    height: props.height,
+  const { DataView } = DataSet;
+  const dv = new DataView().source(props.data);
+  dv.transform({
+    type: 'fold',
+    fields: props.fieldsKey, // 展开字段集
+    key: 'user', // key字段
+    value: 'score', // value字段
   });
-  chart.data(dv.rows);
-  chart.coordinate('polar', {
-    radius: 0.7,
-  });
-  chart.scale('score', {
-    min: 0,
-    nice: true,
-    tickCount: 5,
-  });
-  chart.legend(false);
-  chart.tooltip({
-    shared: true,
-    showCrosshairs: true,
-    crosshairs: {
-      line: {
-        style: {
-          lineDash: [4, 4],
-          stroke: '#333',
-        },
-      },
-    },
-    domStyles: {
-      'g2-tooltip-value': {
-        'font-weight': 'bold',
-        'font-size': '16px',
-        color: '#000',
-      },
-      'g2-tooltip-name': {
-        'font-size': '12px',
-        color: '#4E5865',
-      },
-    },
-  });
-  chart.axis('title', {
-    line: null,
-    tickLine: null,
-    grid: {
-      line: {
-        style: {
-          lineDash: null,
-          color: '#002FA7',
-        },
-      },
-    },
-  });
-  chart.axis('score', {
-    line: null,
-    tickLine: null,
-    label: null,
-    grid: {
-      alternateColor: ['rgba(255, 255, 255, 0.3)', 'rgba(244, 246, 250, 0.3)'],
-      line: {
-        type: 'circle',
-      },
-    },
-  });
-
-  chart.line().position(`${props.titleKey}*score`).color('user').size(2);
-  chart
-    .point()
-    .position(`${props.titleKey}*score`)
-    .color('user')
-    .shape('circle')
-    .size(4)
-    .style({
-      stroke: '#fff',
-      lineWidth: 1,
-      fillOpacity: 1,
+  if (!chart) {
+    chart = new Chart({
+      container: props.id,
+      autoFit: true,
+      limitInPlot: false,
+      width: props.width,
+      height: props.height,
     });
-  chart.area().position(`${props.titleKey}*score`).color('user');
-  chart.theme({
-    styleSheet: {
-      paletteQualitative10: props.color,
-    },
-  });
-  chart.on('tooltip:change', (ev: IObject) => {
-    const { data } = ev;
-    emits('tooltip-change', data);
-  });
+    chart.data(dv.rows);
+    chart.coordinate('polar', {
+      radius: 0.7,
+    });
+    chart.scale('score', {
+      min: 0,
+      nice: true,
+      tickCount: 5,
+    });
+    chart.legend(false);
+    chart.tooltip({
+      shared: true,
+      showCrosshairs: true,
+      crosshairs: {
+        line: {
+          style: {
+            lineDash: [4, 4],
+            stroke: '#333',
+          },
+        },
+      },
+      domStyles: {
+        'g2-tooltip-value': {
+          'font-weight': 'bold',
+          'font-size': '16px',
+          color: '#000',
+        },
+        'g2-tooltip-name': {
+          'font-size': '12px',
+          color: '#4E5865',
+        },
+      },
+    });
+    chart.axis('title', {
+      line: null,
+      tickLine: null,
+      grid: {
+        line: {
+          style: {
+            lineDash: null,
+            color: '#002FA7',
+          },
+        },
+      },
+    });
+    chart.axis('score', {
+      line: null,
+      tickLine: null,
+      label: null,
+      grid: {
+        alternateColor: [
+          'rgba(255, 255, 255, 0.3)',
+          'rgba(244, 246, 250, 0.3)',
+        ],
+        line: {
+          type: 'circle',
+        },
+      },
+    });
+
+    chart.line().position(`${props.titleKey}*score`).color('user').size(2);
+    chart
+      .point()
+      .position(`${props.titleKey}*score`)
+      .color('user')
+      .shape('circle')
+      .size(4)
+      .style({
+        stroke: '#fff',
+        lineWidth: 1,
+        fillOpacity: 1,
+      });
+    chart.area().position(`${props.titleKey}*score`).color('user');
+    chart.theme({
+      styleSheet: {
+        paletteQualitative10: props.color,
+      },
+    });
+    chart.on('tooltip:change', (ev: IObject) => {
+      const { data } = ev;
+      emits('tooltip-change', data);
+    });
+  } else {
+    chart.changeData(dv.rows);
+  }
   chart.render();
 };
 const emits = defineEmits(['tooltip-change']);
