@@ -2,6 +2,31 @@ import { request } from '../plugins/axios';
 import type { AxiosResponse } from '../plugins/axios';
 
 /**
+ * 获取授权的相关回调链接
+ */
+export function queryCourse(id: string) {
+  const url = `/api/v1/auth/getDetail/${id}`;
+  return request
+    .get(url, { global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
+ * 获取指定sig活跃度及排名
+ */
+export function getSigScore(params: object) {
+  const url = '/query/sig/score';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 获取指定sig雷达图
+ */
+export function getSigRadarScore(params: object) {
+  const url = '/query/sig/radarscore';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
+
+/**
  * 查询社区贡献
  *
  */
