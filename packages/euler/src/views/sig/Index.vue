@@ -6,12 +6,15 @@ import HistoricalTrend from './HistoricalTrend.vue';
 import CurrentTrend from './CurrentTrend.vue';
 import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import TableList from './TableList.vue';
 import TheBar from '../../components/TheBar.vue';
 import TheForm from '@/components/TheForm.vue';
 import ContributList from './ContributList.vue';
-import { querySigRepos, querySigName } from 'shared/api';
+import { querySigRepos, querySigName, getSigScore } from 'shared/api';
+import { openCommunityInfo } from '@/api';
+const useCommon = useCommonStore();
+const router = useRouter();
 const route = useRoute();
 const sencondTitle = ref('');
 sencondTitle.value = route.params.name as string;
@@ -51,11 +54,28 @@ const getDrownData = () => {
 const getllData = () => {
   getCubeData();
   getDrownData();
+  querySorceData();
 };
 watch(() => sencondTitle.value);
 onMounted(() => {
   getllData();
 });
+// 获取活力指数
+const sorceData = ref([]);
+const querySorceData = () => {
+  const params = {
+    community: openCommunityInfo.name,
+    sig: sencondTitle.value,
+    timeRange: 'lastonemonth',
+  };
+  getSigScore(params).then((data) => {
+    sorceData.value = data.data.pop();
+  });
+};
+// 跳转首页
+const goToHome = () => {
+  router.push(`/${useCommon.language}/overview`);
+};
 </script>
 <template>
   <div class="container">
@@ -95,21 +115,21 @@ onMounted(() => {
             <span>调优领域相关技术探索；AI辅助性能分析</span>
             <div class="first">
               <div class="home"></div>
-              <div class="List">
-                <span>前往主页</span>
+              <div class="toHome">
+                <span @click="goToHome()"> {{ t('toHome') }}</span>
               </div>
             </div>
             <div class="first">
               <div class="email"></div>
               <div class="List">
-                <span>邮件列表</span>
+                <span>{{ t('MailingList') }}：</span>
                 <span class="item"> a-tune@openeuler.org </span>
               </div>
             </div>
             <div class="first">
               <div class="IRC"></div>
               <div class="List">
-                <span>IRC频道：</span>
+                <span>{{ t('channel') }}</span>
                 <span class="item">#openeuler-dev</span>
               </div>
             </div>
@@ -132,7 +152,7 @@ onMounted(() => {
             <div class="first">
               <div class="store"></div>
               <div class="List">
-                <span>仓库：</span>
+                <span>{{ t('warehouse') }}：</span>
                 <div class="atlas">
                   <a
                     v-for="item in cubeData"
@@ -157,14 +177,14 @@ onMounted(() => {
             <div class="rank">
               <span>{{ t('communityRankings') }}</span>
               <span> # </span>
-              <span class="rank-num">3</span>
-              <span>/97</span>
+              <span class="rank-num">{{ sorceData.rank }}</span>
+              <span>/{{ drownData.length }}</span>
             </div>
             <div class="img">
               <o-echart-gauge
                 id="combinedActivity"
                 :name="t('combinedActivity')"
-                :value="0.1"
+                :value="sorceData.score"
               ></o-echart-gauge>
               <current-trend :sig="sencondTitle"></current-trend>
             </div>
@@ -265,7 +285,11 @@ onMounted(() => {
         margin-top: 18px;
         display: flex;
         position: relative;
-        // align-items: center;
+        .toHome {
+          padding-top: 3px;
+          color: #002fa7;
+          cursor: pointer;
+        }
         .List {
           padding-top: 3px;
           display: flex;
