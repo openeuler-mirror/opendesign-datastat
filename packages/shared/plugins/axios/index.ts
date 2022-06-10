@@ -4,6 +4,7 @@ import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, Axio
 import handleResponse from './handleResponse';
 import handleError from './handleError';
 import setConfig from './setConfig';
+import { getUserAuth, tokenFailIndicateLogin } from '../../utils/login';
 
 interface RequestConfig<D = any> extends AxiosRequestConfig {
   data?: D;
@@ -51,9 +52,17 @@ const requestInterceptorId = request.interceptors.request.use(
       // 存储到请求池
       pendingPool.set(config.url, {
         cancelFn,
-        global: (config as RequestConfig).global, 
+        global: (config as RequestConfig).global,
       });
     });
+    // 使用token
+    const { token } = getUserAuth();
+    if (token) {
+      const to = {
+        token,
+      };
+      Object.assign(config.headers, to);
+    }
     return config;
   },
   (err: AxiosError) => {
@@ -84,6 +93,11 @@ const responseInterceptorId = request.interceptors.response.use(
 
     if (err.response) {
       err = handleError(err);
+
+      // 无效token跳转登录
+      if (err.code === '401') {
+        tokenFailIndicateLogin();
+      }
     }
     // 没有response(没有状态码)的情况
     // 如: 超时；断网；请求重复被取消；主动取消请求；

@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue';
+import { setStoreData } from 'shared/utils/login';
+import { openCommunityInfo } from './api';
+
+setStoreData(openCommunityInfo.name)
 </script>
 
 <template>

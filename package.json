@@ -16,6 +16,7 @@
   "dependencies": {
     "@antv/data-set": "^0.11.8",
     "@antv/g2": "^4.2.1",
+    "@authing/native-js-ui-components": "^3.1.16",
     "@types/d3": "^7.4.0",
     "axios": "^0.26.0",
     "d3": "^7.4.4",

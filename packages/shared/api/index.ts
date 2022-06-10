@@ -4,10 +4,10 @@ import type { AxiosResponse } from '../plugins/axios';
 /**
  * 获取授权的相关回调链接
  */
-export function queryCourse(id: string) {
-  const url = `/api/v1/auth/getDetail/${id}`;
+export function queryCourse(params: object) {
+  const url = '/authing/user/permission';
   return request
-    .get(url, { global: true })
+    .get(url, { params, global: true })
     .then((res: AxiosResponse) => res.data);
 }
 /**
