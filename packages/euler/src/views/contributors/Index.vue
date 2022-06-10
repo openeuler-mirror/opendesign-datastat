@@ -15,6 +15,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import titleBg from '@/assets/title-bg.png';
 import chevronsUp from '~icons/app/chevrons-up';
 import AuthorityManagement from './AuthorityManagement.vue';
+import { hasPermission } from 'shared/utils/login';
 const { t, locale } = useI18n();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -97,13 +98,17 @@ watch(
     }
   }
 );
-const anchorData = [
-  'companyContributor',
-  'userContributor',
-  'groupActive',
-  'companyRelations',
-  'groupRelations',
-];
+const anchorData = computed(() => {
+  return hasPermission('sigRead')
+    ? [
+        'companyContributor',
+        'userContributor',
+        'groupActive',
+        'companyRelations',
+        'groupRelations',
+      ]
+    : ['companyContributor', 'userContributor'];
+});
 </script>
 
 <template>
@@ -209,7 +214,9 @@ const anchorData = [
             </div>
           </div>
         </div>
-        <authority-management></authority-management>
+        <authority-management
+          v-if="hasPermission('sigRead')"
+        ></authority-management>
       </div>
       <footer>
         <app-footer></app-footer>

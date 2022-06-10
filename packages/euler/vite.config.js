@@ -40,6 +40,10 @@ export default defineConfig({
         target: 'https://omapi.osinfra.cn/',
         changeOrigin: true,
       },
+      '/authing': {
+        target: 'https://omapi.osinfra.cn/',
+        changeOrigin: true,
+      },
     },
   },
 });

@@ -7,12 +7,15 @@ import ONav from 'shared/components/ONav.vue';
 import { useRouter, useRoute } from 'vue-router';
 import AppHeaderMobile from './AppHeaderMobile.vue';
 import { IObject } from 'shared/@types/interface';
+import { showGuard, logout, useStoreData } from 'shared/utils/login';
 
 import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
 import communityLogoWhite from '@/assets/openeuler-logo.png';
 import chevronDown from '~icons/app/chevron-down';
 
+const { guardAuthClient } = useStoreData();
+let dialogVisible = ref(false);
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -140,6 +143,59 @@ watch(
           </template>
         </el-dropdown>
       </div>
+      <div class="opt-user">
+        <el-dropdown v-if="guardAuthClient.photo">
+          <div class="el-dropdown-link">
+            <img
+              :src="guardAuthClient.photo"
+              :alt="guardAuthClient.nickname || 'LogOut'"
+              class="img"
+            />
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="dialogVisible = true"
+                >Log Out</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <el-dropdown v-else>
+          <div class="el-dropdown-link">
+            <img
+              src="../assets/default-user-avatar.png"
+              alt="Login"
+              class="img"
+            />
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="showGuard(openCommunityInfo.name)"
+                >Log In</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
+      <el-dialog v-model="dialogVisible" title="Confirm" width="30%">
+        <span
+          >Are you sure you want to exit? The page is refreshed after you
+          exit.</span
+        >
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogVisible = false">Cancel</el-button>
+            <el-button
+              type="primary"
+              @click="
+                dialogVisible = false;
+                logout();
+              "
+              >Confirm</el-button
+            >
+          </span>
+        </template>
+      </el-dialog>
     </div>
   </div>
   <div v-else class="app-header-mo">
@@ -227,5 +283,14 @@ $color: #ffffff;
 }
 .el-dropdown-menu__item {
   justify-content: center;
+}
+.opt-user {
+  margin-left: 40px;
+  .img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
 }
 </style>
