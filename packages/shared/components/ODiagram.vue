@@ -17,7 +17,8 @@ const props = defineProps({
           name: 'sig',
           children: [
             {
-              name: 'A',
+              name: 'A c',
+              key: 'A',
               imports: [],
             },
             {
@@ -39,8 +40,9 @@ const props = defineProps({
           children: [
             {
               name: 'a',
+              key: '中文',
               imports: [
-                'flare.sig.A',
+                'flare.sig.A c',
                 'flare.sig.B',
                 'flare.sig.C',
                 'flare.sig.D',
@@ -126,7 +128,7 @@ const getTipsHtml = (d: IObject) => {
             <div class="mark" 
                 onclick="window.location.href='${window?.location?.origin}/${
       localStorage?.lang
-    }/company/${d.data.name}'"
+    }/company/${d.data.key}'"
             >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
   }
   return `<div>${t('interestGroup')}</div>
@@ -142,7 +144,7 @@ const getTipsHtml = (d: IObject) => {
             <div class="mark"
                 onclick="window.location.href='${window?.location?.origin}/${
     localStorage?.lang
-  }/sig/${d.data.name}'"
+  }/sig/${d.data.key}'"
             >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
 };
 const chart = () => {

@@ -6,11 +6,16 @@ import { onMounted, ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { ArrowDown } from '@element-plus/icons-vue';
-import { sigsProcessing, treeProcessing } from 'shared/utils/helper';
+import {
+  sigsProcessing,
+  treeProcessing,
+  processing,
+} from 'shared/utils/helper';
 import {
   queryCompanySigDetails,
   queryCompanyUserContribute,
   queryCompanyContribute,
+  queryCompanyUsers,
 } from 'shared/api';
 import OEchartCircularPile from 'shared/components/OEchartCircularPile.vue';
 import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
@@ -64,12 +69,12 @@ const getoechartTreeValue = () => {
     timeRange: 'lastonemonth',
     community: 'openeuler',
   };
-  queryCompanySigDetails(query).then((data) => {
-    const Data = treeProcessing(data?.data || []);
-    contributors.value = getItemListData(Data.sigs, 'D0');
-    oechartData.value.D0 = getItemListData(Data.sigs, 'D0');
-    oechartData.value.D1 = getItemListData(Data.sigs, 'D1');
-    oechartData.value.D2 = getItemListData(Data.sigs, 'D2');
+  queryCompanyUsers(query).then((data) => {
+    const Data = processing(data?.data || []);
+    contributors.value = Data.sigData['0'];
+    oechartData.value.D0 = Data.sigData['0'];
+    oechartData.value.D1 = Data.sigData['1'];
+    oechartData.value.D2 = Data.sigData['2'];
   });
 };
 const param = ref({
