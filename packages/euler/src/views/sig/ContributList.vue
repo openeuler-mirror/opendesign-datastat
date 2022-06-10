@@ -15,7 +15,7 @@ const props = defineProps({
   },
 });
 const param = ref({
-  contributeType: 'pr',
+  contributeType: 'PR',
   timeRange: 'lastonemonth',
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
@@ -144,19 +144,27 @@ const handleCurrentChange = (val) => {
           />
           <el-table-column
             prop="gitee_id"
-            align="center"
+            align="left"
             label="Gitee ID"
             show-overflow-tooltip
             width="200"
             ><template #default="scope">
               <div class="usertype-box">
                 <span
+                  v-show="scope.row.usertype !== 'committers'"
                   class="usertypecolorbox"
                   :style="{
                     '--color':
                       scope.row.usertype === 'maintainers'
-                        ? '225deg,#FEB32A 0%, #F6D365 100%'
-                        : '225deg,#4AAEAD 0%, #6BFBFA 100%',
+                        ? '#002FA7'
+                        : '#4AAEAD',
+                  }"
+                ></span>
+                <span
+                  v-show="scope.row.usertype === 'committers'"
+                  class="usertypecolorbox"
+                  :style="{
+                    '--color': '#FEB32A',
                   }"
                 ></span>
                 <span class="num">{{ scope.row.gitee_id }}</span>
@@ -226,7 +234,7 @@ const handleCurrentChange = (val) => {
     align-items: center;
     .num {
       width: 100px;
-      text-align: right;
+      text-align: left;
     }
   }
 }
@@ -296,15 +304,17 @@ const handleCurrentChange = (val) => {
 .usertypecolorbox {
   width: 12px;
   height: 12px;
-  background: linear-gradient(var(--color));
+  // background: linear-gradient(var(--color));
+  background: var(--color);
   border-radius: 50%;
+  margin-right: 8px;
 }
 .leader {
   margin-bottom: 10px;
   margin-left: 20px;
   display: flex;
   &-box {
-    width: 68px;
+    width: 58px;
     height: 16px;
     background: linear-gradient(45deg, #005cd3 0%, #002fa7 100%);
     border-radius: 2px;

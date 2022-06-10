@@ -88,6 +88,8 @@ const formOption = computed(() => {
 const getContributeInfo = (e) => {
   param.value[e.id] = e.active;
   getMemberData();
+  switchTime();
+  switchType();
 };
 // 格式化统计周期文字
 const timeRangeText = ref('');
@@ -226,11 +228,6 @@ onMounted(() => {
         class="bar-content-item"
       >
         <p class="infos">
-          <!-- <span class="index">{{
-            useCompany.searchRanking !== 0
-              ? useCompany.searchRanking
-              : +index + 1
-          }}</span> -->
           <span
             class="name"
             :title="
@@ -260,7 +257,8 @@ onMounted(() => {
         >
           <template #content>
             <div class="lable">
-              {{ timeRangeText }} <span class="text">{{ t('de') }}</span>
+              {{ timeRangeText }}
+              <span class="text">{{ t('de') }}</span>
               {{ typeLable }}
             </div>
             <div class="info">
@@ -274,12 +272,7 @@ onMounted(() => {
                     : item.company_en
                 }}
               </p>
-              <span class="num"
-                >{{ item.contribute }}
-                <!-- <span class="percentage">{{
-                  percentage(item.contribute)
-                }}</span> -->
-              </span>
+              <span class="num">{{ item.contribute }} </span>
             </div>
           </template>
           <div class="progress">
@@ -315,7 +308,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import '@/shared/styles/style.scss';
 .searchInput {
-  // padding-left: 10px;
   width: 100%;
   margin: 10px 0 20px;
   .search-icon {
@@ -354,7 +346,7 @@ onMounted(() => {
     position: absolute;
     bottom: 0;
     top: 0;
-    left: 324px;
+    left: 300px;
     display: flex;
     justify-content: space-between;
     right: 0;

@@ -462,17 +462,24 @@ const anchorData = ['ecological', 'staffContributor'];
                       <div class="usertype-box">
                         <span class="num"
                           >{{ scope.row.gitee_id
-                          }}<span
+                          }}<span v-show="scope.row.is_TC_owner" class="TCbox"
+                            >TC</span
+                          ><span
+                            v-show="scope.row.usertype === 'committer'"
                             class="usertypecolorbox"
                             :style="{
-                              '--color':
-                                scope.row.usertype === 'maintainers'
-                                  ? '225deg,#FEB32A 0%, #F6D365 100%'
-                                  : '225deg,#4AAEAD 0%, #6BFBFA 100%',
+                              '--color': '225deg,#4AAEAD 0%, #6BFBFA 100%',
                             }"
-                            >{{ scope.row.usertype }}</span
-                          ></span
-                        >
+                            >Committer</span
+                          ><span
+                            v-show="scope.row.usertype === 'maintainers'"
+                            class="usertypecolorbox"
+                            :style="{
+                              '--color': '225deg,#FEB32A 0%, #F6D365 100%',
+                            }"
+                            >Maintainer
+                          </span>
+                        </span>
                       </div>
                     </template>
                   </el-table-column>
@@ -686,10 +693,24 @@ const anchorData = ['ecological', 'staffContributor'];
   }
   .usertype-box {
     display: flex;
-
+    align-items: center;
     .num {
       width: 100px;
-      text-align: right;
+      text-align: left;
+
+      .TCbox {
+        display: inline-block;
+        width: 29px;
+        height: 16px;
+        background: linear-gradient(45deg, #005cd3 0%, #002fa7 100%);
+        border-radius: 2px;
+        font-size: 10px;
+        font-family: HarmonyOS_Sans_SC;
+        color: #ffffff;
+        line-height: 12px;
+        margin-left: 5px;
+        text-align: center;
+      }
     }
   }
 }
@@ -846,5 +867,8 @@ const anchorData = ['ecological', 'staffContributor'];
   font-family: HarmonyOS_Sans_SC;
   color: #ffffff;
   line-height: 12px;
+  height: 16px;
+  display: inline-block;
+  text-align: center;
 }
 </style>
