@@ -137,7 +137,6 @@ const props = defineProps({
   },
 });
 const getData = () => {
-  console.log('getData', props.value);
   const _data = props.group.map((item) => {
     const children = props.value
       .filter((it) => it.group === item.key)
