@@ -63,11 +63,12 @@ const getTableData = (data: IObject) => {
       community: item[t('communityAverage')],
     }));
   } else {
-    const value = data[`${selectedData.value}_value`];
-    tableData.value = Object.keys(value).map((item) => ({
+    const value = data[selectedData.value]?.metrics || {};
+    const keys = Object.keys(value).filter((item) => !item.includes('_mean'));
+    tableData.value = keys.map((item) => ({
       title: keyToI18n[item],
-      sig: Number(value[item]?.toFixed(3)),
-      community: 0.2,
+      sig: Number(value[item]?.toFixed(3)) || 0,
+      community: Number(value[`${item}_mean`]?.toFixed(3)) || 0,
     }));
   }
 };
@@ -82,8 +83,8 @@ const getPolarData = (data: IObject) => {
   polarData.value = keys.map((item) => {
     return {
       title: keyToI18n[item],
-      [props.sig]: Number(data[item]?.score.toFixed(3)),
-      [t('communityAverage')]: 0.1,
+      [props.sig]: Number(data[item]?.score.toFixed(3)) || 0,
+      [t('communityAverage')]: Number(data[item]?.mean.toFixed(3)) || 0,
     };
   });
 };
@@ -126,13 +127,25 @@ initData();
     <div class="table">
       <table cellspacing="0" cellpadding="10px">
         <thead>
-          <th align="left" class="border padcell" style="width: 130px">
+          <th
+            align="left"
+            class="border padcell overflow"
+            style="max-width: 130px; width: 130px"
+          >
             {{ tableTitle }}
           </th>
-          <th align="right" class="border padcell" style="width: 90px">
+          <th
+            align="right"
+            class="border padcell overflow"
+            style="max-width: 90px; width: 90px"
+          >
             {{ props.sig }}
           </th>
-          <th align="right" class="border padcell" style="width: 142px">
+          <th
+            align="right"
+            class="border padcell overflow"
+            style="max-width: 142px; width: 142px"
+          >
             {{ t('communityAverage') }}
           </th>
         </thead>
@@ -171,6 +184,11 @@ initData();
 }
 .padcell {
   padding: 12px 16px;
+}
+.overflow {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .num {
   color: #0a0b0d;
