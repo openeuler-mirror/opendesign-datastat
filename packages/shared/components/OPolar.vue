@@ -146,12 +146,20 @@ const createChart = () => {
       const { data } = ev;
       emits('tooltip-change', data);
     });
+    chart.on('tooltip:hide', (ev: IObject) => {
+      const { data } = ev;
+      emits('tooltip-hide', data);
+    });
+    chart.on('tooltip:show', (ev: IObject) => {
+      const { data } = ev;
+      emits('tooltip-show', data);
+    });
   } else {
     chart.changeData(dv.rows);
   }
   chart.render();
 };
-const emits = defineEmits(['tooltip-change']);
+const emits = defineEmits(['tooltip-change', 'tooltip-hide', 'tooltip-show']);
 </script>
 <template>
   <div :id="id" ref="opRef"></div>
