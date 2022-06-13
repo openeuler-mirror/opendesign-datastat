@@ -121,6 +121,7 @@ export function setStoreData(community: string) {
     queryCourse(params).then((res) => {
       const { data } = res;
       guardAuthClient.value = data;
+      saveUserAuth(data.id, data.token);
     });
   }
 }

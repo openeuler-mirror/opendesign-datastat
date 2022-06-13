@@ -101,6 +101,10 @@ const tooltipChange = (e: IObject) => {
     'all';
   getTableData(sorceData.value);
 };
+const tooltipHide = () => {
+  selectedData.value = 'all';
+  getTableData(sorceData.value);
+};
 const initData = () => {
   getPolarData(sorceData.value);
   getTableData(sorceData.value);
@@ -115,6 +119,8 @@ initData();
         :fields-key="fieldsKey"
         :data="polarData"
         @tooltip-change="tooltipChange($event)"
+        @tooltip-show="tooltipChange($event)"
+        @tooltip-hide="tooltipHide"
       ></o-polar>
     </div>
     <div class="table">
