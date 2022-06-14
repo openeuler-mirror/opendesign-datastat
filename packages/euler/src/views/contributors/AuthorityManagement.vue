@@ -124,8 +124,8 @@ const diagramData = ref({
       name: 'sig',
       children: [
         {
-          name: 'A c',
-          key: 'A',
+          name: '',
+          key: '',
           imports: [],
         },
       ],
@@ -134,10 +134,9 @@ const diagramData = ref({
       name: 'company',
       children: [
         {
-          name: 'a',
-          key: '中文',
-          imports: ['flare.sig.A c'],
-          length: '',
+          name: '',
+          key: '',
+          imports: [],
         },
       ],
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="main-menu">
     <el-row>
-      <div v-for="(value, index) in listarry" :key="index">
+      <div v-for="(value, index) in listArry" :key="index">
         <el-tooltip
           :key="ind"
           placement="bottom-end"
@@ -11,27 +11,35 @@
           :show-arrow="false"
         >
           <div class="start-menu">
-            <span class="start-menu-span">{{ value.name }}</span>
+            <span class="start-menu-span">{{ value.feature }}</span>
           </div>
           <template #content>
-            <div class="lable">{{ value.name }}</div>
+            <div class="lable">{{ value.feature }}</div>
             <div class="info">
               <p>
                 <span class="index">特别兴趣小组数量：</span>
-                {{ value.number }}
+                {{ value.arry.length }}
               </p>
             </div>
             <div class="info">
               <p>
-                <span class="index">平均活跃度：</span>
-                {{ value.average }}
+                <span v-if="value.arry.length" class="index"
+                  >平均活跃度：
+                  {{
+                    value.arry.reduce((sum = 0, obj) => (sum += obj.score), 0) /
+                    value.arry.length
+                  }}</span
+                >
+                <span v-else class="index">平均活跃度：0</span>
               </p>
             </div>
           </template>
         </el-tooltip>
         <el-col>
           <el-tooltip
-            v-for="(val, ind) in value.arry"
+            v-for="(val, ind) in value.arry.sort((a, b) =>
+              (a.sig_names + '').localeCompare(b.sig_names + '')
+            )"
             :key="ind"
             placement="bottom-end"
             effect="light"
@@ -42,14 +50,14 @@
             <div
               class="detail-menu"
               :style="{
-                '--diaphaneity': (20 + 80 * val.active) / 100,
-                '--color': val.active < 0.5 ? '#555555' : '#FFFFFF',
+                '--diaphaneity': (20 + 80 * val.score) / 100,
+                '--color': val.score < 0.5 ? '#555555' : '#FFFFFF',
               }"
             >
-              <span class="detail-menu-span"> {{ val.name }}</span>
+              <span class="detail-menu-span"> {{ val.sig_names }}</span>
             </div>
             <template #content>
-              <div class="lable">{{ val.name }}</div>
+              <div class="lable">{{ val.sig_names }}</div>
               <div class="info">
                 <p>
                   <span class="index">活跃度排名：</span>
@@ -59,13 +67,13 @@
               <div class="info">
                 <p>
                   <span class="index">活跃度：</span>
-                  {{ val.active }}
+                  {{ val.score }}
                 </p>
               </div>
               <div class="info">
                 <div>查看详情：</div>
                 <div>
-                  <el-icon :size="16" class="right-btn" @click="goTo(item)">
+                  <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
                   </el-icon>
                 </div>
@@ -83,80 +91,40 @@ import { useRouter } from 'vue-router';
 import { Right } from '@element-plus/icons-vue';
 import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
+// const sum = 0;
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
 const listData = ref([]);
 const listArry = ref([
   {
-    feature: '工具链/语言/运行',
-    arry: [
-      {
-        name: 'sig-Rust',
-        score: '0.5',
-        rank: '1',
-      },
-    ],
-  },
-  {
-    feature: '基础功能/特性/工具',
-    arry: [
-      {
-        name: 'aig-ust',
-        score: '0.85',
-        rank: '1',
-      },
-    ],
+    feature: '行业解决方案/应用',
+    arry: [],
   },
   {
     feature: '桌面/图形系统',
-    arry: [
-      {
-        name: 'sig-android-middleware',
-        score: '0.13',
-        rank: '2',
-      },
-    ],
+    arry: [],
+  },
+
+  {
+    feature: '架构/处理器/内核/驱动',
+    arry: [],
   },
   {
-    feature: '通用中间组件',
-    arry: [
-      {
-        name: 'sig-industrial-control',
-        score: '0.65',
-        rank: '1',
-      },
-    ],
+    feature: '工具链/语言/运行',
+    arry: [],
   },
   {
     feature: '云原生基础设施',
-    arry: [
-      {
-        name: 'caida-4',
-        score: '0.85',
-        rank: '1',
-      },
-    ],
+    arry: [],
   },
   {
-    feature: '架构/处理器/内核/驱动',
-    arry: [
-      {
-        name: 'cde',
-        score: '0.2',
-        rank: '2',
-      },
-    ],
+    feature: '通用中间组件',
+    arry: [],
   },
   {
-    feature: '行业解决方案/应用',
-    arry: [
-      {
-        name: 'caida4',
-        score: '0.4',
-        rank: '2',
-      },
-    ],
+    feature: '基础功能/特性/工具',
+    arry: [],
   },
 ]);
 const getList = () => {
@@ -168,176 +136,45 @@ const getList = () => {
     console.log('Data', listData);
     listData.value.map((item) => {
       switch (item.feature) {
-        case '工具链':
-          listArry.value[0].arry.push(item);
-          break;
-        case '基础系统':
-          listArry.value[1].arry.push(item);
-          break;
-        case '桌面':
-          listArry.value[2].arry.push(item);
-          break;
-        case '通用中间组件':
+        case '工具链/语言/运行':
           listArry.value[3].arry.push(item);
           break;
-        case '基础设施':
-          listArry.value[4].arry.push(item);
+        case '基础功能/特性/工具':
+          listArry.value[6].arry.push(item);
           break;
-        case '架构':
+        case '桌面/图形系统':
+          listArry.value[1].arry.push(item);
+          break;
+        case '通用中间组件':
           listArry.value[5].arry.push(item);
           break;
-        case '应用':
-          listArry.value[6].arry.push(item);
+        case '云原生基础设施':
+          listArry.value[4].arry.push(item);
+          break;
+        case '架构/处理器/内核/驱动':
+          listArry.value[2].arry.push(item);
+          break;
+        case '行业解决方案/应用':
+          listArry.value[0].arry.push(item);
           break;
       }
     });
   });
 };
 getList();
-const goTo = (data: IObject) => {
-  data;
-  // router.push(`/${useCommon.language}/sig/${data.sig_names}`);
-  router.push(`/${useCommon.language}/sig/Desktop`);
+// const { arry } = toRefs(listArry);
+// const sortBy = (i) => {
+//   return function (a, b) {
+//     return b[i] - a[i];
+//   };
+// };
+// const getsort = () => {
+//   listArry.value.sort(sortBy('arry.length'));
+// };
+// getsort();
+const goTo = (item) => {
+  router.push(`/${useCommon.language}/sig/${item.sig_names}`);
 };
-
-const listarry = ref([
-  {
-    id: '123',
-    name: '工具链/语言/运行',
-    number: '3',
-    average: '0.5',
-    arry: [
-      {
-        id: '1234',
-        name: 'sig-Rust',
-        active: '0.5',
-        rank: '1',
-      },
-      {
-        id: '1235',
-        name: 'sigu-pust',
-        active: '1',
-        rank: '2',
-      },
-      {
-        id: '1236',
-        name: 'java',
-        active: '0.2',
-        rank: '3',
-      },
-    ],
-  },
-  {
-    id: '123',
-    name: '基础功能/特性/工具',
-    number: 2,
-    average: 0.4,
-    arry: [
-      {
-        id: '1234',
-        name: 'aig-ust',
-        active: '0.85',
-        rank: '1',
-      },
-      {
-        id: '1235',
-        name: 'yig-Rust',
-        active: '0',
-        rank: '2',
-      },
-    ],
-  },
-  {
-    id: '123',
-    name: '桌面/图形系统',
-    arry: [
-      {
-        id: '1234',
-        name: 'sig-android-middleware',
-        active: '0.13',
-        rank: '2',
-      },
-      {
-        id: '1235',
-        name: 'android-middleware',
-        active: '0.93',
-        rank: '1',
-      },
-    ],
-  },
-  {
-    id: '123',
-    name: '通用中间组件',
-    arry: [
-      {
-        id: '12346',
-        name: 'sig-industrial-control',
-        active: '0.65',
-        rank: '1',
-      },
-      {
-        id: '12353',
-        name: 'ig-industrial-control',
-        active: '0.35',
-        rank: '2',
-      },
-    ],
-  },
-  {
-    id: '123',
-    name: '云原生基础设施',
-    arry: [
-      {
-        id: '1234',
-        name: 'caida-4',
-        active: '0.85',
-        rank: '1',
-      },
-      {
-        id: '1235',
-        name: 'da5',
-        active: '0.62',
-        rank: '2',
-      },
-    ],
-  },
-  {
-    id: '123',
-    name: '架构/处理器/内核/驱动',
-    arry: [
-      {
-        id: '1234',
-        name: 'cde',
-        active: '0.2',
-        rank: '2',
-      },
-      {
-        id: '1235',
-        name: 'caida5',
-        active: '0.4',
-        rank: '1',
-      },
-    ],
-  },
-  {
-    id: '123',
-    name: '行业解决方案/应用',
-    arry: [
-      {
-        id: '1234',
-        name: 'caida4',
-        active: '0.4',
-        rank: '2',
-      },
-      {
-        id: '1235',
-        name: 'caida5',
-        active: '0.75',
-        rank: '1',
-      },
-    ],
-  },
-]);
 </script>
 <style scoped lang="scss">
 .main-menu {
