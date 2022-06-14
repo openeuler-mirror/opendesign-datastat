@@ -7,7 +7,7 @@ import type { AxiosStatic } from 'axios';
 export default (axios: AxiosStatic, config = {}) => {
   const defaultConfig = {
     baseURL: '',
-    timeout: 20000,
+    timeout: 60000,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
     },
