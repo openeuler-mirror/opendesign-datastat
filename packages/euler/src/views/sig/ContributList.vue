@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 import { openCommunityInfo } from '@/api/index';
 import { querySigUserContribute } from 'shared/api/index';
 import { sortExp } from 'shared/utils/helper';
+import { IObject } from 'shared/@types/interface';
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -19,7 +20,7 @@ const param = ref({
   timeRange: 'lastonemonth',
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
-});
+} as IObject);
 const memberData = ref([]);
 const memberMax = ref(0);
 const getMemberData = () => {
@@ -59,7 +60,7 @@ const lastformOption = computed(() => {
 // theform组件调用
 const componentName = 'member';
 const loading = ref(true);
-const getContributeInfo = (e) => {
+const getContributeInfo = (e: IObject) => {
   param.value[e.id] = e.active;
   getMemberData();
 };
@@ -78,9 +79,6 @@ const switchType = () => {
   }
 };
 switchType();
-watch(() => {
-  switchType();
-});
 watch(
   () => props.sig,
   () => {
@@ -95,7 +93,7 @@ onMounted(() => {
 // 默认显示第1页
 const currentPage = ref(1);
 // 显示第几页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
 };
@@ -158,19 +156,19 @@ const indexMethod = (index: number) => {
                 <span
                   v-show="scope.row.usertype !== 'committers'"
                   class="usertypecolorbox"
-                  :style="{
+                  :style="({
                     '--color':
                       scope.row.usertype === 'maintainers'
                         ? '#002FA7'
                         : '#4AAEAD',
-                  }"
+                  } as any)"
                 ></span>
                 <span
                   v-show="scope.row.usertype === 'committers'"
                   class="usertypecolorbox"
-                  :style="{
+                  :style="({
                     '--color': '#FEB32A',
-                  }"
+                  } as any)"
                 ></span>
                 <span class="num">{{ scope.row.gitee_id }}</span>
               </div>

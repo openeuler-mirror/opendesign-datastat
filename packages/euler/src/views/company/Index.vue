@@ -39,7 +39,7 @@ const getSencondTitle = (value?: string) => {
   queryCompanyContribute(query).then((data) => {
     allcompany.value = data?.data || [];
     const name = value || route.params.name;
-    const findOne =
+    const findOne: IObject =
       allcompany.value.find(
         (item: IObject) => item.company_cn === name || item.company_en === name
       ) || allcompany.value[0];
@@ -50,8 +50,8 @@ const getSencondTitle = (value?: string) => {
     getallData();
   });
 };
-const sigsData = ref([]);
-const treeData = ref([]);
+const sigsData = ref({} as IObject);
+const treeData = ref({} as IObject);
 const mergeRequest = ref(0);
 const issueData = ref(0);
 const comment = ref(0);
@@ -61,8 +61,8 @@ const oechartData = ref({
   D1: 0,
   D2: 0,
 });
-const oechartTreeValue = ref([]);
-const oechartSecondTreeValue = ref([]);
+const oechartTreeValue = ref([] as IObject[]);
+const oechartSecondTreeValue = ref([] as IObject[]);
 const getoechartTreeValue = () => {
   const query = {
     company: sencondTitleValue.value,
@@ -85,7 +85,7 @@ const param = ref({
 const getTreeSearchValue = () => {
   queryCompanySigDetails(param.value).then((data) => {
     treeData.value = treeProcessing(data?.data || []);
-    treeData.value.sigs.map((item) => {
+    treeData.value.sigs.map((item: IObject) => {
       if (item.group !== '') {
         oechartTreeValue.value.push({
           key: '',
@@ -112,9 +112,9 @@ watch(
     getTreeSearchValue();
   }
 );
-const drownData = ref([]);
+const drownData = ref([] as IObject[]);
 const getDrownData = () => {
-  drownData.value = allcompany.value.map((item) => {
+  drownData.value = allcompany.value.map((item: IObject) => {
     const key = useCommon.language === 'zh' ? 'company_cn' : 'company_en';
     return {
       value: item.company_cn,
@@ -171,10 +171,10 @@ const getcommentlistData = () => {
   });
 };
 
-const getItemListData = (data, template) => {
+const getItemListData = (data: IObject[], template: string) => {
   return data.reduce((sum, e) => sum + Number(e[template]), 0);
 };
-const clickDrownItem = (item) => {
+const clickDrownItem = (item: IObject) => {
   sencondTitle.value = item.label;
   sencondTitleValue.value = item.label;
   getallData();
@@ -199,7 +199,7 @@ const getallData = () => {
 };
 onMounted(() => {
   getSencondTitle();
-  useStaff.getStaffData();
+  useStaff.getStaffData(sencondTitleValue.value);
   loading.value = false;
 });
 const lastformOption = computed(() => {
@@ -249,8 +249,8 @@ const getContributeInfo = () => {
   useStaff.getStaffData(sencondTitleValue.value);
 };
 // 树图变换
-const getTreeContributeInfo = (e) => {
-  param.value.timeRange = e.active;
+const getTreeContributeInfo = (e?: IObject) => {
+  param.value.timeRange = e?.active;
   getTreeSearchValue();
 };
 const typeLable = ref('');
@@ -279,7 +279,7 @@ const tableData = computed(() => useStaff.tableData);
 // 默认显示第1页
 const currentPage = ref(1);
 // 显示第几页
-const handleCurrentChange = (val) => {
+const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
 };
@@ -406,14 +406,14 @@ const anchorData = ['ecological', 'staffContributor'];
             <div class="firstTreemap">
               <o-echart-treemap
                 id="firstTreemap"
-                :value="oechartTreeValue"
+                :value="(oechartTreeValue as any)"
               ></o-echart-treemap>
             </div>
             <div class="smalltitle">{{ t('Commitcontribution') }}</div>
             <div class="secondTreemap">
               <o-echart-treemap
                 id="secondTreemap"
-                :value="oechartSecondTreeValue"
+                :value="(oechartSecondTreeValue as any)"
               ></o-echart-treemap>
             </div>
           </div>
@@ -476,16 +476,16 @@ const anchorData = ['ecological', 'staffContributor'];
                           ><span
                             v-show="scope.row.usertype === 'committer'"
                             class="usertypecolorbox"
-                            :style="{
+                            :style="({
                               '--color': '225deg,#4AAEAD 0%, #6BFBFA 100%',
-                            }"
+                            } as any)"
                             >Committer</span
                           ><span
                             v-show="scope.row.usertype === 'maintainers'"
                             class="usertypecolorbox"
-                            :style="{
+                            :style="({
                               '--color': '225deg,#FEB32A 0%, #F6D365 100%',
-                            }"
+                            } as any)"
                             >Maintainer
                           </span>
                         </span>

@@ -60,8 +60,8 @@ const props = defineProps({
 const getLegendData = () => {
   return props.data.map((item: any) => item.name);
 };
-const getLegendSelectData = () => {
-  return props.data.reduce((pre: any, next: any, index: number) => {
+const getLegendSelectData = (): IObject => {
+  return props.data.reduce((pre: IObject, next: any, index: number) => {
     pre[next.name] = !index ? true : false;
     return pre;
   }, {});
