@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { IObject } from '../@types/interface';
@@ -51,7 +51,7 @@ const props = defineProps({
             {
               name: 'b',
               imports: [
-                'flare.sig.A',
+                'flare.sig.A c',
                 'flare.sig.B',
                 'flare.sig.C',
                 'flare.sig.D',
@@ -69,8 +69,8 @@ const colorin = '#000';
 const colornone = '#ccc';
 const colorCompany = '#002FA7';
 const colorSig = '#FEB32A';
-const width = 800;
-const radius = width / 1.8;
+const width = 1200;
+const radius = width / 2.8;
 const line = d3
   .lineRadial()
   .curve(d3.curveBundle.beta(0.85))
@@ -150,13 +150,12 @@ const getTipsHtml = (d: IObject) => {
 const chart = () => {
   const root = tree(
     bilink(
-      d3
-        .hierarchy(props.data)
-        .sort(
-          (a, b) =>
-            d3.ascending(b.height, a.height) ||
-            d3.ascending(b.data.name, a.data.name)
-        )
+      d3.hierarchy(props.data)
+      // .sort(
+      //   (a, b) =>
+      //     d3.ascending(b.height, a.height) ||
+      //     d3.ascending(b.data.name, a.data.name)
+      // )
     )
   );
 
@@ -247,6 +246,13 @@ const chart = () => {
 
   return svg.node();
 };
+watch(
+  () => props.data,
+  () => {
+    chart();
+  },
+  { deep: true }
+);
 onMounted(() => {
   chart();
 });

@@ -63,13 +63,12 @@
                 </p>
               </div>
               <div class="info">
-                <p>
-                  <span>查看详情 </span>
-                  <span class="index"
-                    ><el-icon :size="16" @click="goTo()">
-                      <right class="app-text-btn" /> </el-icon
-                  ></span>
-                </p>
+                <div>查看详情：</div>
+                <div>
+                  <el-icon :size="16" class="right-btn" @click="goTo(item)">
+                    <right class="app-text-btn" />
+                  </el-icon>
+                </div>
               </div>
             </template>
           </el-tooltip>
@@ -82,19 +81,125 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Right } from '@element-plus/icons-vue';
+import { useCommonStore } from '@/stores/common';
+import { querySigScoreAll } from 'shared/api';
+const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
 const listData = ref([]);
+const listArry = ref([
+  {
+    feature: '工具链/语言/运行',
+    arry: [
+      {
+        name: 'sig-Rust',
+        score: '0.5',
+        rank: '1',
+      },
+    ],
+  },
+  {
+    feature: '基础功能/特性/工具',
+    arry: [
+      {
+        name: 'aig-ust',
+        score: '0.85',
+        rank: '1',
+      },
+    ],
+  },
+  {
+    feature: '桌面/图形系统',
+    arry: [
+      {
+        name: 'sig-android-middleware',
+        score: '0.13',
+        rank: '2',
+      },
+    ],
+  },
+  {
+    feature: '通用中间组件',
+    arry: [
+      {
+        name: 'sig-industrial-control',
+        score: '0.65',
+        rank: '1',
+      },
+    ],
+  },
+  {
+    feature: '云原生基础设施',
+    arry: [
+      {
+        name: 'caida-4',
+        score: '0.85',
+        rank: '1',
+      },
+    ],
+  },
+  {
+    feature: '架构/处理器/内核/驱动',
+    arry: [
+      {
+        name: 'cde',
+        score: '0.2',
+        rank: '2',
+      },
+    ],
+  },
+  {
+    feature: '行业解决方案/应用',
+    arry: [
+      {
+        name: 'caida4',
+        score: '0.4',
+        rank: '2',
+      },
+    ],
+  },
+]);
 const getList = () => {
-  // queryGroupActive().then((data) => {
-  //   listData.value = data?.data || [];
-  // });
-  //   console.log(listData.value);
+  const query = {
+    community: 'openeuler',
+  };
+  querySigScoreAll(query).then((data) => {
+    listData.value = data?.data || [];
+    console.log('Data', listData);
+    listData.value.map((item) => {
+      switch (item.feature) {
+        case '工具链':
+          listArry.value[0].arry.push(item);
+          break;
+        case '基础系统':
+          listArry.value[1].arry.push(item);
+          break;
+        case '桌面':
+          listArry.value[2].arry.push(item);
+          break;
+        case '通用中间组件':
+          listArry.value[3].arry.push(item);
+          break;
+        case '基础设施':
+          listArry.value[4].arry.push(item);
+          break;
+        case '架构':
+          listArry.value[5].arry.push(item);
+          break;
+        case '应用':
+          listArry.value[6].arry.push(item);
+          break;
+      }
+    });
+  });
 };
 getList();
-const goTo = () => {
-  router.push('/zh/overview');
+const goTo = (data: IObject) => {
+  data;
+  // router.push(`/${useCommon.language}/sig/${data.sig_names}`);
+  router.push(`/${useCommon.language}/sig/Desktop`);
 };
+
 const listarry = ref([
   {
     id: '123',
@@ -288,9 +393,11 @@ const listarry = ref([
   .info {
     color: #4e5865;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 6px;
     min-width: 180px;
+    align-items: center;
+    position: relative;
   }
 }
 .index {
@@ -306,5 +413,10 @@ const listarry = ref([
   &:active {
     color: rgba(0, 47, 167, 0.7);
   }
+}
+.right-btn {
+  position: absolute;
+  left: 70px;
+  bottom: 6px;
 }
 </style>

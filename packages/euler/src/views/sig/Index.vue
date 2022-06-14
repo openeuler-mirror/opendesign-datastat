@@ -112,7 +112,7 @@ const goToHome = () => {
             </div>
           </div>
           <div class="main-left-sp">
-            <span>调优领域相关技术探索；AI辅助性能分析</span>
+            <span>{{ t('slogan') }}</span>
             <div class="first">
               <div class="home"></div>
               <div class="toHome">

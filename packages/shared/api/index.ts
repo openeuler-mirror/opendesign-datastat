@@ -128,3 +128,18 @@ export function queryCompanyUsers(params: object) {
   const url = '/query/company/users';
   return request.get(url, { params }).then((res: AxiosResponse) => res.data);
 }
+/**
+ * 特别兴趣小组活跃度
+ */
+export function querySigScoreAll(params: object) {
+  const url = '/query/sig/scoreAll';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
+
+/**
+ * 企业和sig的贡献关系
+ */
+export function queryCompanySigs(params: object) {
+  const url = '/query/company/sigs';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
