@@ -32,7 +32,7 @@
       <div class="note-caption">{{ t('Note') }}</div>
       <div class="ranking-list">
         <div class="ranking-list-item">
-          <el-table v-loading="loading" :data="hightSig" style="width: 100%">
+          <el-table :data="hightSig" style="width: 100%">
             <el-table-column
               align="center"
               :label="t('Committee')"
@@ -66,7 +66,7 @@
           </el-table>
         </div>
         <div class="ranking-list-item">
-          <el-table v-loading="loading" :data="lowSig" style="width: 100%">
+          <el-table :data="lowSig" style="width: 100%">
             <el-table-column
               align="center"
               :label="t('Committee')"
@@ -109,6 +109,7 @@ import { grouprelationsList } from 'shared/utils/groupList';
 import { onMounted, ref, computed, watch } from 'vue';
 import { queryCompanySigs } from 'shared/api';
 import { useCommonStore } from '@/stores/common';
+import { IObject } from 'shared/@types/interface';
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const hightSig = computed(() => grouprelationsList.slice(0, number));
@@ -137,7 +138,6 @@ const diagramData = ref({
           name: 'a',
           key: '中文',
           imports: ['flare.sig.A c'],
-          length: '',
         },
       ],
     },
@@ -151,12 +151,12 @@ const getList = () => {
   queryCompanySigs(query).then((data) => {
     listData.value = data?.data || [];
 
-    const sigArry = listData.value.reduce((pre, next) => {
+    const sigArry = listData.value.reduce((pre: any, next: any) => {
       pre.push(...next.sigList);
       return pre;
     }, []);
     const sigsData = [...new Set(sigArry)];
-    diagramData.value.children[0].children = sigsData.map((item) => {
+    diagramData.value.children[0].children = sigsData.map((item: any) => {
       return {
         name: item,
         key: item,
@@ -164,8 +164,8 @@ const getList = () => {
       };
     });
 
-    diagramData.value.children[1].children = listData.value.map((item) => {
-      const imports = item.sigList.map((i) => `flare.sig.${i}`);
+    diagramData.value.children[1].children = listData.value.map((item: IObject) => {
+      const imports = item.sigList.map((i: string) => `flare.sig.${i}`);
       return {
         name:
           useCommon.language === 'zh'
