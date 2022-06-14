@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 import { openCommunityInfo } from '@/api/index';
 import { sortExp } from 'shared/utils/helper';
 import { queryCompanyContribute } from 'shared/api/index';
-import { IObject } from 'shared/@types/interface';
+import { IObject, companyTypes } from 'shared/@types/interface';
 import { ceil } from 'lodash-es';
 
 interface layoutStateTypes {
@@ -34,6 +35,7 @@ export const useCompanyStore = defineStore('company', {
       contributeType: 'PR',
       timeRange: 'all',
       displayRange: '10',
+      repo: 'opengauss/openGauss-server',
     },
   }),
   actions: {
@@ -42,13 +44,27 @@ export const useCompanyStore = defineStore('company', {
         community: openCommunityInfo.name,
         contributeType: this.companyForm.contributeType,
         timeRange: this.companyForm.timeRange,
+        repo: this.companyForm.repo,
       };
+      this.companyForm.repo === '' ? delete params.repo : params;
       try {
         const res = await queryCompanyContribute(params);
         if (res.code === 200) {
           const { data } = res;
           const userList = data.sort(sortExp('contribute', false));
           this.companyMaxNum = ceil(userList[0].contribute, -2);
+          const rankNum = ref(1);
+          // 替换个人贡献者为*
+          data.forEach((item: companyTypes) => {
+            if (
+              item.company_cn !== '个人贡献者' ||
+              item.company_en !== 'independent'
+            ) {
+              item.index = rankNum.value++;
+            } else {
+              item.index = '*';
+            }
+          });
           this.rawData = data;
 
           // 筛选

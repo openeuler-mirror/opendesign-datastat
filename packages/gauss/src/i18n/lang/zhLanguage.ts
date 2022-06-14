@@ -16,6 +16,7 @@ export default {
     repos: '代码仓库 Repository',
   },
   from: {
+    repo: '代码仓库',
     type: '度量指标',
     timeRange: '统计周期',
     lastonemonth: '最近一个月内',
@@ -30,7 +31,7 @@ export default {
   companyContributor: '单位会员贡献',
   ranking: '排名',
   backVitality: '回到数据总览',
-  searchTips: '您搜索的组织在当前条件下暂无贡献，请尝试其他搜索条件',
+  searchTips: '当前条件下暂无数据',
   de: '的',
   footer: {
     about: '关于数据',

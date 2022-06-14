@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 import { openCommunityInfo } from '@/api/index';
 import { sortExp } from 'shared/utils/helper';
-import { IObject } from 'shared/@types/interface';
+import { IObject, companyTypes } from 'shared/@types/interface';
 import { queryCompanyContribute } from 'shared/api/index';
 import { ceil } from 'lodash-es';
 
@@ -49,6 +50,18 @@ export const useCompanyStore = defineStore('company', {
           const { data } = res;
           const userList = data.sort(sortExp('contribute', false));
           this.companyMaxNum = ceil(userList[0].contribute, -2);
+          const rankNum = ref(1);
+          // 替换个人贡献者为*
+          data.forEach((item: companyTypes) => {
+            if (
+              item.company_cn !== '个人贡献者' ||
+              item.company_en !== 'independent'
+            ) {
+              item.index = rankNum.value++;
+            } else {
+              item.index = '*';
+            }
+          });
           this.rawData = data;
 
           // 筛选

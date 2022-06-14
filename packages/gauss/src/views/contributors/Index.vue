@@ -11,11 +11,13 @@ import TheForm from '@/components/TheForm.vue';
 import TheBar from '../../components/TheBar.vue';
 import useScroll from 'shared/hooks/useScroll';
 import { useCommonStore } from '@/stores/common';
+import { useCompanyStore } from '@/stores/company';
 
 import titleBg from '@/assets/title-bg.png';
 import chevronsUp from '~icons/app/chevrons-up';
 
 const useCommon = useCommonStore();
+const useCompany = useCompanyStore();
 const { t, locale } = useI18n();
 const usePersonal = usePersonalStore();
 const router = useRouter();
@@ -58,6 +60,7 @@ const getContributeInfo = () => {
 
 onMounted(() => {
   usePersonal.getPersonalData();
+  useCommon.getReposData();
   loading.value = false;
 });
 
@@ -99,7 +102,7 @@ const { isScrollUp } = useScroll('up');
 watch(
   () => isScrollUp.value,
   () => {
-    if (isScrollUp.value) {
+    if (isScrollUp.value && useCommon.selectScroll) {
       const lang =
         useCommon.language === 'zh' ? '/zh/overview' : '/en/overview';
       router.push(lang);
@@ -121,7 +124,10 @@ watch(
         <div class="contributors-panel">
           <h3 class="title">{{ t('companyContributor') }}</h3>
           <form-search @search-state="searchStsate" />
-          <div v-if="search404" class="search404">
+          <div
+            v-if="search404 || useCompany.companyData.length === 0"
+            class="search404"
+          >
             <img class="cover" src="@/assets/404.png" alt="404" />
             <p class="text">{{ t('searchTips') }}</p>
           </div>
@@ -136,7 +142,11 @@ watch(
             @get-contribute-info="getContributeInfo"
           ></the-form>
 
-          <div class="ranking-list">
+          <div
+            v-if="hightRanking.length > 0"
+            class="ranking-list"
+            :class="{ db: lowRanking.length !== 0 }"
+          >
             <div class="ranking-list-item">
               <p class="caption">Top 1-10</p>
               <el-table
@@ -171,7 +181,7 @@ watch(
                 </el-table-column>
               </el-table>
             </div>
-            <div class="ranking-list-item">
+            <div v-if="lowRanking.length > 0" class="ranking-list-item">
               <p class="caption">Top 11-20</p>
               <el-table
                 v-loading="loading"
@@ -207,6 +217,10 @@ watch(
               </el-table>
             </div>
           </div>
+          <div v-else class="search404">
+            <img class="cover" src="@/assets/404.png" alt="404" />
+            <p class="text">{{ t('searchTips') }}</p>
+          </div>
         </div>
       </div>
 
@@ -239,8 +253,10 @@ watch(
 }
 .ranking-list {
   display: grid;
-  grid-template-columns: 46% 46%;
-  grid-column-gap: 8%;
+  &.db {
+    grid-template-columns: 46% 46%;
+    grid-column-gap: 8%;
+  }
   .caption {
     font-size: 16px;
     color: #000;

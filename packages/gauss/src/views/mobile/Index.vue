@@ -227,7 +227,10 @@ const backtop1 = () => {
         <div class="slide-panel-content">
           <h3 class="title">{{ t('companyContributor') }}</h3>
           <form-search @search-state="searchStsate" />
-          <div v-if="search404" class="search404">
+          <div
+            v-if="search404 || useCompany.companyData.length === 0"
+            class="search404"
+          >
             <img class="cover" src="@/assets/404.png" alt="404" />
             <p class="text">{{ t('searchTips') }}</p>
           </div>
@@ -284,6 +287,7 @@ const backtop1 = () => {
             @get-contribute-info="getContributeInfo"
           ></the-form>
           <el-table
+            v-if="usePersonal.personalData.length > 0"
             v-loading="loading"
             :data="usePersonal.personalData"
             style="width: 100%"
@@ -317,6 +321,10 @@ const backtop1 = () => {
               </template>
             </el-table-column>
           </el-table>
+          <div v-else class="search404">
+            <img class="cover" src="@/assets/404.png" alt="404" />
+            <p class="text">{{ t('searchTips') }}</p>
+          </div>
         </div>
       </div>
     </swiper-slide>
