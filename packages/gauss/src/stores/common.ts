@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { queryAll } from 'shared/api/index';
+import { queryAll, queryRepos } from 'shared/api/index';
 import { IObject } from 'shared/@types/interface';
 import { getNowFormatDate } from 'shared/utils/helper';
 
@@ -11,6 +11,8 @@ interface stateTypes {
   lang: string;
   time: string;
   allData: IObject;
+  selectScroll: boolean;
+  reposData: IObject;
 }
 export const useCommonStore = defineStore('common', {
   state: (): stateTypes => ({
@@ -25,6 +27,9 @@ export const useCommonStore = defineStore('common', {
     // 时间
     time: '--',
     allData: [],
+    selectScroll: true,
+    // 仓库列表
+    reposData: [],
   }),
   actions: {
     setLanguage(language: string) {
@@ -42,6 +47,17 @@ export const useCommonStore = defineStore('common', {
           //   [this.time] = res.update_at.split('T');
           // }
           this.time = getNowFormatDate();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 获取仓库列表
+    async getReposData() {
+      try {
+        const res = await queryRepos('opengauss');
+        if (res.code === 200) {
+          this.reposData = res.data;
         }
       } catch (error) {
         console.log(error);

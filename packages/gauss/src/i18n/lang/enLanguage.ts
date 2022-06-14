@@ -16,6 +16,7 @@ export default {
     repos: 'Repository',
   },
   from: {
+    repo: 'Repository',
     type: 'Metric',
     timeRange: 'Time Range',
     lastonemonth: 'Last Month',
@@ -30,8 +31,7 @@ export default {
   companyContributor: 'Contribution by Organizations',
   ranking: 'Rank',
   backVitality: 'Back to Overview',
-  searchTips:
-    'The organization you are  searching for has no contributions under the current search criteria. Try  different search criteria.   ',
+  searchTips: 'No data found with current filters ',
   de: 'in',
   footer: {
     about: 'About Data',
