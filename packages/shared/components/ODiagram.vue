@@ -79,10 +79,10 @@ const line = d3
 const tree = d3.cluster().size([2 * Math.PI, radius - 100]);
 function bilink(root: HierarchyNode<unknown>) {
   const map = new Map(root.leaves().map((d: IObject) => [id(d), d]));
-  for (const d of root.leaves())
+  for (const d of root.leaves() as any)
     (d.incoming = []),
-      (d.outgoing = d.data.imports.map((i) => [d, map.get(i)]));
-  for (const d of root.leaves())
+      (d.outgoing = d.data.imports.map((i: string) => [d, map.get(i)]));
+  for (const d of root.leaves() as any)
     for (const o of d.outgoing) o[1].incoming.push(o);
   root.sort((a, b) => {
     if (a?.incoming?.length) {
@@ -126,13 +126,13 @@ const getTipsHtml = (d: IObject) => {
   if (d?.parent?.data?.name === 'company') {
     return `<div>${t('company')}</div>
             <div style="padding: 8px 0">
-              <span style="font-size: 16px" class="mark">${d.data.name}</span> 
-              ${t('Participated1')} 
+              <span style="font-size: 16px" class="mark">${d.data.name}</span>
+              ${t('Participated1')}
               <span style="font-size: 18px" class="mark">
               ${d.outgoing.length}
               </span> ${t('Participated2')}
             </div>
-            <div class="mark" 
+            <div class="mark"
                 onclick="window.location.href='${window?.location?.origin}/${
       localStorage?.lang
     }/company/${d.data.key}'"
@@ -142,8 +142,8 @@ const getTipsHtml = (d: IObject) => {
             <div style="padding: 8px 0">
               <span style="font-size: 16px" class="mark">
                 ${d.data.name}
-              </span> 
-                ${t('Participated3')}  
+              </span>
+                ${t('Participated3')}
               <span style="font-size: 18px" class="mark">${
                 d.incoming.length
               }</span> ${t('Participated4')}
@@ -178,8 +178,8 @@ const chart = () => {
     .attr('text-anchor', (d) => (d.x < Math.PI ? 'start' : 'end'))
     .attr('transform', (d) => (d.x >= Math.PI ? 'rotate(180)' : null))
     .attr('cursor', () => 'pointer')
-    .text((d) => d.data.name)
-    .each(function (d) {
+    .text((d: IObject) => d.data.name)
+    .each(function (d: IObject) {
       d.text = this;
     })
     .on('mouseover', overed)
@@ -190,7 +190,7 @@ const chart = () => {
     .attr('stroke', colornone)
     .attr('fill', 'none')
     .selectAll('path')
-    .data(root.leaves().flatMap((leaf) => leaf.outgoing))
+    .data(root.leaves().flatMap((leaf: IObject) => leaf.outgoing))
     .join('path')
     .style('mix-blend-mode', 'multiply')
     .attr('d', ([i, o]) => line(i.path(o)))
@@ -198,7 +198,7 @@ const chart = () => {
       d.path = this;
     });
 
-  function overed(event, d) {
+  function overed(this: any, event: IObject, d: IObject) {
     keepTip();
     tooltip
       .html(getTipsHtml(d))
@@ -213,30 +213,30 @@ const chart = () => {
       }
       return colornone;
     });
-    d3.selectAll(d.incoming.map((d) => d.path))
+    d3.selectAll(d.incoming.map((d: IObject) => d.path))
       .attr('stroke', colorin)
       .raise();
-    d3.selectAll(d.incoming.map(([d]) => d.text))
+    d3.selectAll(d.incoming.map((d: IObject) => d.text))
       .attr('fill', colorCompany)
       .attr('font-weight', 'bold');
-    d3.selectAll(d.outgoing.map((d) => d.path))
+    d3.selectAll(d.outgoing.map((d: IObject) => d.path))
       .attr('stroke', colorin)
       .raise();
-    d3.selectAll(d.outgoing.map(([, d]) => d.text))
+    d3.selectAll(d.outgoing.map((d: IObject) => d.text))
       .attr('fill', colorSig)
       .attr('font-weight', 'bold');
   }
 
-  function outed(event, d) {
+  function outed(this: any, event: IObject, d: IObject) {
     clearTip();
     link.style('mix-blend-mode', 'multiply');
     d3.select(this).attr('font-weight', null);
-    d3.selectAll(d.incoming.map((d) => d.path)).attr('stroke', null);
-    d3.selectAll(d.incoming.map(([d]) => d.text))
+    d3.selectAll(d.incoming.map((d: IObject) => d.path)).attr('stroke', null);
+    d3.selectAll(d.incoming.map((d: IObject) => d.text))
       // .attr('fill', null)
       .attr('font-weight', null);
-    d3.selectAll(d.outgoing.map((d) => d.path)).attr('stroke', null);
-    d3.selectAll(d.outgoing.map(([, d]) => d.text))
+    d3.selectAll(d.outgoing.map((d: IObject) => d.path)).attr('stroke', null);
+    d3.selectAll(d.outgoing.map((d: IObject) => d.text))
       // .attr('fill', null)
       .attr('font-weight', null);
     d3.selectAll('text').attr('fill', (d: any) => getTextColor(d));

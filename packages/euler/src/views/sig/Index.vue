@@ -13,6 +13,7 @@ import TheForm from '@/components/TheForm.vue';
 import ContributList from './ContributList.vue';
 import { querySigRepos, querySigName, getSigScore } from 'shared/api';
 import { openCommunityInfo } from '@/api';
+import { IObject } from 'shared/@types/interface';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -25,11 +26,11 @@ const anchorData = [
   'companyContributor',
   'userContributor',
 ];
-const clickDrownItem = (item) => {
+const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
   getllData();
 };
-const cubeData = ref([]);
+const cubeData = ref([] as any[]);
 const getCubeData = () => {
   const query = {
     timeRange: 'lastonemonth',
@@ -38,16 +39,16 @@ const getCubeData = () => {
   };
   querySigRepos(query).then((data) => {
     const value = data?.data || [];
-    const firstKeys = Object.keys(value);
+    const firstKeys = value[0];
     cubeData.value = value[firstKeys as string];
   });
 };
-const drownData = ref([]);
+const drownData = ref([] as any[]);
 const getDrownData = () => {
   let community = 'openeuler';
   querySigName(community).then((data) => {
     const value = data?.data || [];
-    const firstKeys = Object.keys(value);
+    const firstKeys = value[0];
     drownData.value = value[firstKeys as string];
   });
 };
@@ -56,12 +57,11 @@ const getllData = () => {
   getDrownData();
   querySorceData();
 };
-watch(() => sencondTitle.value);
 onMounted(() => {
   getllData();
 });
 // 获取活力指数
-const sorceData = ref([]);
+const sorceData = ref({} as IObject);
 const querySorceData = () => {
   const params = {
     community: openCommunityInfo.name,
@@ -156,7 +156,7 @@ const goToHome = () => {
                 <div class="atlas">
                   <a
                     v-for="item in cubeData"
-                    :key="item.value"
+                    :key="item"
                     class="item"
                     :href="item"
                     target="_blank"
@@ -199,7 +199,7 @@ const goToHome = () => {
             <h3 id="companyContributor" class="title">
               {{ sencondTitle + ' ' + t('companyContributor') }}
             </h3>
-            <table-list :sig="sencondTitle" @search-state="searchStsate" />
+            <table-list :sig="sencondTitle" />
             <!-- <div v-if="search404" class="search404">
               <img class="cover" src="@/assets/404.png" alt="404" />
               <p class="text">{{ t('searchTips') }}</p>

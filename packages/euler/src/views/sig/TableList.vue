@@ -29,10 +29,10 @@ const param = ref({
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
   displayRange: '10',
-});
-const memberData = ref([]);
+} as IObject);
+const memberData = ref([] as IObject[]);
 const memberMax = ref(0);
-const memberList = ref([]);
+const memberList = ref([] as IObject[]);
 const getMemberData = () => {
   queryCompanyContribute(param.value).then((data) => {
     memberList.value = data.data.sort(sortExp('contribute', false));
@@ -40,7 +40,7 @@ const getMemberData = () => {
     if (param.value.displayRange === 'all') {
       return (memberData.value = memberList.value);
     }
-    memberData.value = memberList.value.slice(0, param.value.displayRange);
+    memberData.value = memberList.value.slice(0, Number(param.value.displayRange));
   });
 };
 getMemberData();
@@ -85,7 +85,7 @@ const formOption = computed(() => {
     },
   ];
 });
-const getContributeInfo = (e) => {
+const getContributeInfo = (e: IObject) => {
   param.value[e.id] = e.active;
   getMemberData();
   switchTime();
@@ -132,7 +132,7 @@ const searchInput = ref('');
 const querySearch = (queryString: string, cb: any) => {
   let queryList = memberList.value;
   const results = queryString
-    ? queryList.filter(createFilter(queryString))
+    ? queryList.filter(createFilter(queryString) as any)
     : queryList;
 
   if (results.length > 0) {
@@ -237,7 +237,6 @@ onMounted(() => {
                 ? item.company_cn
                 : item.company_en
             "
-            @click="goToCompany(item)"
             >{{
               useCommon.language === 'zh'
                 ? item.company_cn
@@ -251,7 +250,6 @@ onMounted(() => {
         <el-tooltip
           placement="bottom-start"
           effect="light"
-          :show-after="showAfter"
           popper-class="bar-tooltip"
           :show-arrow="false"
         >

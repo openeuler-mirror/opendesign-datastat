@@ -75,11 +75,7 @@ const showAfter = 200;
         class="bar-content-item"
       >
         <p class="infos">
-          <span class="index">{{
-            useCompany.searchRanking !== 0
-              ? useCompany.searchRanking
-              : +index + 1
-          }}</span>
+          <span class="index">{{ item.index }}</span>
           <span
             class="name"
             :title="

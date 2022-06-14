@@ -241,7 +241,7 @@ const backtop1 = () => {
               class="company-content-item"
             >
               <p class="name">
-                <span class="index">{{ +index + 1 }}</span
+                <span class="index">{{ item.index }}</span
                 >{{
                   useCommon.language === 'zh'
                     ? item.company_cn

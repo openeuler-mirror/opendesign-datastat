@@ -3,7 +3,7 @@
     <el-row>
       <div v-for="(value, index) in listArry" :key="index">
         <el-tooltip
-          :key="ind"
+          :key="value.name"
           placement="bottom-end"
           effect="light"
           :show-after="showAfter"
@@ -49,10 +49,10 @@
           >
             <div
               class="detail-menu"
-              :style="{
-                '--diaphaneity': (20 + 80 * val.score) / 100,
-                '--color': val.score < 0.5 ? '#555555' : '#FFFFFF',
-              }"
+              :style="({
+                '--diaphaneity': (20 + Number(val.active) * 80) / 100,
+                '--color': Number(val.active) < 0.5 ? '#555555' : '#FFFFFF',
+              } as any)"
             >
               <span class="detail-menu-span"> {{ val.sig_names }}</span>
             </div>
@@ -91,7 +91,7 @@ import { useRouter } from 'vue-router';
 import { Right } from '@element-plus/icons-vue';
 import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
-// const sum = 0;
+import { IObject } from 'shared/@types/interface';
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
@@ -134,7 +134,7 @@ const getList = () => {
   querySigScoreAll(query).then((data) => {
     listData.value = data?.data || [];
     console.log('Data', listData);
-    listData.value.map((item) => {
+    listData.value.map((item: any) => {
       switch (item.feature) {
         case '工具链/语言/运行':
           listArry.value[3].arry.push(item);

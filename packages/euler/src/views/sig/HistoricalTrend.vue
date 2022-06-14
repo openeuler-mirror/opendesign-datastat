@@ -48,7 +48,7 @@ const querySorceData = () => {
     ];
     getSigRadarScore(params).then((res) => {
       const { data } = res;
-      const addData = data.reduce((pre, next) => {
+      const addData = data.reduce((pre: IObject[], next: IObject) => {
         if (!pre.length) {
           pre = Object.keys(keyToI18n).map((item) => {
             const _data = {

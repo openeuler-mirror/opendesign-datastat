@@ -136,11 +136,11 @@ export const getRGBColor = (value: string) => {
  * 格式化SIG返回数据
  */
 //
-export const sigsProcessing = (data) => {
+export const sigsProcessing = (data: IObject) => {
   const firstKeys = Object.keys(data);
   const company = firstKeys.find((itme) => itme !== 'metrics');
   const sigData = data[company as string];
-  const sigs = sigData.map((item) => {
+  const sigs = sigData.map((item: IObject) => {
     return item.sig;
   });
 
@@ -151,13 +151,13 @@ export const sigsProcessing = (data) => {
  * 格式化Treemap数据
  */
 //
-export const treeProcessing = (data) => {
+export const treeProcessing = (data: IObject) => {
   const firstKeys = Object.keys(data);
   const company = firstKeys.find((itme) => itme !== 'metrics');
   const sigData = data[company as string];
-  const sigs = sigData.map((item) => {
+  const sigs = sigData.map((item: IObject) => {
     const obj = { sig: item.sig, group: item.feature };
-    data['metrics'].reduce((pre, next, index) => {
+    data['metrics'].reduce((pre: IObject, next: string, index: number) => {
       pre[next] = item.value[index];
       return pre;
     }, obj);
@@ -169,7 +169,7 @@ export const treeProcessing = (data) => {
  * 格式化users数据
  */
 //
-export const processing = (data) => {
+export const processing = (data: IObject) => {
   const firstKeys = Object.keys(data);
   const company = firstKeys.find((itme) => itme !== 'metrics');
   const sigData = data[company as string];

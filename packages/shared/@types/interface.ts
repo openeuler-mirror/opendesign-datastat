@@ -16,3 +16,10 @@ export interface NavItem {
   zh?: string;
   en?: string;
 }
+
+export interface companyTypes {
+  company_cn: string;
+  company_en: string;
+  contribute: number;
+  index?: number | string;
+}
