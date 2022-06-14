@@ -283,7 +283,10 @@ const handleCurrentChange = (val) => {
   // 改变默认的页数
   currentPage.value = val;
 };
-
+//  index修改
+const indexMethod = (index: number) => {
+  return (currentPage.value - 1) * 10 + index + 1;
+};
 const anchorData = ['ecological', 'staffContributor'];
 </script>
 <template>
@@ -453,6 +456,7 @@ const anchorData = ['ecological', 'staffContributor'];
                 >
                   <el-table-column
                     type="index"
+                    :index="indexMethod"
                     align="center"
                     :label="t('ranking')"
                     width="120"

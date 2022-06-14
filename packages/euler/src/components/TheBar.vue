@@ -6,7 +6,7 @@ import { useCommonStore } from '@/stores/common';
 import { formatNumber } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
-
+import { hasPermission } from 'shared/utils/login';
 const router = useRouter();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
@@ -70,8 +70,11 @@ const showAfter = 200;
 
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  data;
-  router.push(`/${useCommon.language}/company/${data.company_cn}`);
+  if (hasPermission('sigRead')) {
+    data;
+    router.push(`/${useCommon.language}/company/${data.company_cn}`);
+  } else {
+  }
 };
 </script>
 

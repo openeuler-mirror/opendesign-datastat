@@ -99,6 +99,10 @@ const handleCurrentChange = (val) => {
   // 改变默认的页数
   currentPage.value = val;
 };
+//  index修改
+const indexMethod = (index: number) => {
+  return (currentPage.value - 1) * 10 + index + 1;
+};
 </script>
 <template>
   <div>
@@ -138,6 +142,7 @@ const handleCurrentChange = (val) => {
         >
           <el-table-column
             type="index"
+            :index="indexMethod"
             align="center"
             :label="t('ranking')"
             width="120"

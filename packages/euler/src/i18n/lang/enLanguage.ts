@@ -55,6 +55,7 @@ export default {
   review: 'review',
   Mergerequest: 'Merge request',
   NeedsProblems: 'Needs & Problems',
+  slogan:'Related technology exploration in tuning field; Ai-assisted performance analysis',
   ecological: 'ecological',
   staffContributor: 'staffContributor',
   active: 'active',
