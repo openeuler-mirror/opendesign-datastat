@@ -3,14 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev:euler": "pnpm dev --filter euler",
-    "dev:gauss": "pnpm dev --filter gauss",
-    "dev:lookeng": "pnpm dev --filter lookeng",
-    "dev:mindspore": "pnpm dev --filter mindspore",
-    "build:euler": "pnpm build --filter euler",
-    "build:gauss": "pnpm build --filter gauss",
-    "build:lookeng": "pnpm build --filter lookeng",
-    "build:mindspore": "pnpm build --filter mindspore",
+    "dev:euler": "pnpm --filter euler dev",
+    "dev:gauss": "pnpm --filter gauss dev",
+    "dev:lookeng": "pnpm --filter lookeng dev",
+    "dev:mindspore": "pnpm --filter mindspore dev",
+    "build:euler": "pnpm --filter euler build",
+    "build:gauss": "pnpm --filter gauss build",
+    "build:lookeng": "pnpm --filter lookeng build",
+    "build:mindspore": "pnpm --filter mindspore build",
     "build": "pnpm build:euler && pnpm build:gauss && pnpm build:lookeng && pnpm build:mindspore"
   },
   "dependencies": {
