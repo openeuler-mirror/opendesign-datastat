@@ -80,17 +80,16 @@ const firstformOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'lastonemonth',
+      active: 'lastoneyear',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
         { label: t('from.lastoneyear'), value: 'lastoneyear' },
-        { label: t('from.all'), value: 'all' },
       ],
     },
   ];
 });
-const selectTime = ref('lastonemonth');
+const selectTime = ref('lastoneyear');
 const echartData = ref([] as IObject[]);
 querySorceData();
 const getContributeInfo = (e: IObject) => {

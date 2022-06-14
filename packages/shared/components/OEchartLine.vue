@@ -60,6 +60,12 @@ const props = defineProps({
 const getLegendData = () => {
   return props.data.map((item: any) => item.name);
 };
+const getLegendSelectData = () => {
+  return props.data.reduce((pre: any, next: any, index: number) => {
+    pre[next.name] = !index ? true : false;
+    return pre;
+  }, {});
+};
 const getxAxisData = () => {
   return props.data
     .reduce((pre: any[], next: any) => {
@@ -120,6 +126,7 @@ const getOption = (): EChartsOption => {
       left: 0,
       itemGap: 30,
       data: getLegendData(),
+      selected: getLegendSelectData(),
     },
     color: props.color,
     grid: {
