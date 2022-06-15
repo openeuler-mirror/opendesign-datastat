@@ -1,7 +1,12 @@
 <template>
   <div class="main-menu">
     <el-row>
-      <div v-for="(value, index) in listArry" :key="index">
+      <div
+        v-for="(value, index) in listArry.sort(
+          (a, b) => b['arry'].length - a['arry'].length
+        )"
+        :key="index"
+      >
         <el-tooltip
           :key="value.name"
           placement="bottom-end"
@@ -50,8 +55,8 @@
             <div
               class="detail-menu"
               :style="({
-                '--diaphaneity': (20 + Number(val.active) * 80) / 100,
-                '--color': Number(val.active) < 0.5 ? '#555555' : '#FFFFFF',
+                '--diaphaneity': (20 + Number(val.score) * 80) / 100,
+                '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
               } as any)"
             >
               <span class="detail-menu-span"> {{ val.sig_names }}</span>
@@ -91,7 +96,6 @@ import { useRouter } from 'vue-router';
 import { Right } from '@element-plus/icons-vue';
 import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
-import { IObject } from 'shared/@types/interface';
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
@@ -99,6 +103,10 @@ const listData = ref([]);
 const listArry = ref([
   {
     feature: '行业解决方案/应用',
+    arry: [],
+  },
+  {
+    feature: '基础功能/特性/工具',
     arry: [],
   },
   {
@@ -122,10 +130,6 @@ const listArry = ref([
     feature: '通用中间组件',
     arry: [],
   },
-  {
-    feature: '基础功能/特性/工具',
-    arry: [],
-  },
 ]);
 const getList = () => {
   const query = {
@@ -133,26 +137,25 @@ const getList = () => {
   };
   querySigScoreAll(query).then((data) => {
     listData.value = data?.data || [];
-    console.log('Data', listData);
-    listData.value.map((item: any) => {
+    listData.value.map((item) => {
       switch (item.feature) {
         case '工具链/语言/运行':
-          listArry.value[3].arry.push(item);
-          break;
-        case '基础功能/特性/工具':
-          listArry.value[6].arry.push(item);
-          break;
-        case '桌面/图形系统':
-          listArry.value[1].arry.push(item);
-          break;
-        case '通用中间组件':
-          listArry.value[5].arry.push(item);
-          break;
-        case '云原生基础设施':
           listArry.value[4].arry.push(item);
           break;
-        case '架构/处理器/内核/驱动':
+        case '基础功能/特性':
+          listArry.value[1].arry.push(item);
+          break;
+        case '桌面/图形系统':
           listArry.value[2].arry.push(item);
+          break;
+        case '通用中间组件':
+          listArry.value[6].arry.push(item);
+          break;
+        case '云原生基础设施':
+          listArry.value[5].arry.push(item);
+          break;
+        case '架构/处理器/内核/驱动':
+          listArry.value[3].arry.push(item);
           break;
         case '行业解决方案/应用':
           listArry.value[0].arry.push(item);
@@ -162,16 +165,6 @@ const getList = () => {
   });
 };
 getList();
-// const { arry } = toRefs(listArry);
-// const sortBy = (i) => {
-//   return function (a, b) {
-//     return b[i] - a[i];
-//   };
-// };
-// const getsort = () => {
-//   listArry.value.sort(sortBy('arry.length'));
-// };
-// getsort();
 const goTo = (item) => {
   router.push(`/${useCommon.language}/sig/${item.sig_names}`);
 };
@@ -213,6 +206,16 @@ const goTo = (item) => {
   font-family: HarmonyOS_Sans_SC;
   line-height: 22px;
   color: var(--color);
+  &-span {
+    width: 150px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+  }
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .bar-tooltip {
   padding: 12px 16px;
