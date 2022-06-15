@@ -7,6 +7,7 @@ importers:
       '@antv/data-set': ^0.11.8
       '@antv/g2': ^4.2.1
       '@authing/native-js-ui-components': ^3.1.16
+      '@element-plus/icons-vue': ^2.0.4
       '@intlify/vite-plugin-vue-i18n': ^3.3.1
       '@types/d3': ^7.4.0
       '@types/lodash-es': ^4.17.6
@@ -40,6 +41,7 @@ importers:
       '@antv/data-set': 0.11.8
       '@antv/g2': 4.2.1
       '@authing/native-js-ui-components': 3.1.16
+      '@element-plus/icons-vue': 2.0.4_vue@3.2.31
       '@types/d3': 7.4.0
       axios: registry.npmmirror.com/axios/0.26.1
       d3: 7.4.4
@@ -384,6 +386,22 @@ packages:
   /@ctrl/tinycolor/3.4.0:
     resolution: {integrity: sha512-JZButFdZ1+/xAfpguQHoabIXkcqRRKpMrWKBkpEZZyxfY9C1DpADFB8PEqGSTeFr135SaTRfKqGKx5xSCLI7ZQ==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@element-plus/icons-vue/1.1.4_vue@3.2.31:
+    resolution: {integrity: sha512-Iz/nHqdp1sFPmdzRwHkEQQA3lKvoObk8azgABZ81QUOpW9s/lUyQVUSh0tNtEPZXQlKwlSh7SPgoVxzrE0uuVQ==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      vue: registry.npmmirror.com/vue/3.2.31
+    dev: false
+
+  /@element-plus/icons-vue/2.0.4_vue@3.2.31:
+    resolution: {integrity: sha512-UeBVBU3fuBsYa9mzM7DgkRztQ1Aftw3sMTI/1gZsqXq2NWiCOi16ZYXXGIc0jFDIu+k6SojzdlxOjv+rN/Y6FQ==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      vue: registry.npmmirror.com/vue/3.2.31
     dev: false
 
   /@intlify/bundle-utils/3.1.0_vue-i18n@9.1.9:
@@ -2426,17 +2444,6 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  registry.npmmirror.com/@element-plus/icons-vue/1.1.4_vue@3.2.31:
-    resolution: {integrity: sha512-Iz/nHqdp1sFPmdzRwHkEQQA3lKvoObk8azgABZ81QUOpW9s/lUyQVUSh0tNtEPZXQlKwlSh7SPgoVxzrE0uuVQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@element-plus/icons-vue/-/icons-vue-1.1.4.tgz}
-    id: registry.npmmirror.com/@element-plus/icons-vue/1.1.4
-    name: '@element-plus/icons-vue'
-    version: 1.1.4
-    peerDependencies:
-      vue: ^3.2.0
-    dependencies:
-      vue: registry.npmmirror.com/vue/3.2.31
-    dev: false
-
   registry.npmmirror.com/@emmetio/abbreviation/2.2.3:
     resolution: {integrity: sha512-87pltuCPt99aL+y9xS6GPZ+Wmmyhll2WXH73gG/xpGcQ84DRnptBsI2r0BeIQ0EB/SQTOe2ANPqFqj3Rj5FOGA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@emmetio/abbreviation/-/abbreviation-2.2.3.tgz}
     name: '@emmetio/abbreviation'
@@ -3403,7 +3410,7 @@ packages:
       vue: ^3.2.0
     dependencies:
       '@ctrl/tinycolor': registry.npmmirror.com/@ctrl/tinycolor/3.4.0
-      '@element-plus/icons-vue': registry.npmmirror.com/@element-plus/icons-vue/1.1.4_vue@3.2.31
+      '@element-plus/icons-vue': 1.1.4_vue@3.2.31
       '@popperjs/core': registry.npmmirror.com/@popperjs/core/2.11.4
       '@vueuse/core': registry.npmmirror.com/@vueuse/core/8.1.2_vue@3.2.31
       async-validator: registry.npmmirror.com/async-validator/4.0.7
