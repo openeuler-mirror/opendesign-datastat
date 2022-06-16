@@ -1,14 +1,9 @@
 <template>
   <div class="main-menu">
     <el-row>
-      <div
-        v-for="(value, index) in listArry.sort(
-          (a, b) => b['arry'].length - a['arry'].length
-        )"
-        :key="index"
-      >
+      <div v-for="value in listArry" :key="value.feature">
         <el-tooltip
-          :key="value.name"
+          :key="value.feature"
           placement="bottom-end"
           effect="light"
           :show-after="showAfter"
@@ -31,7 +26,7 @@
                 <span v-if="value.arry.length" class="index"
                   >平均活跃度：
                   {{
-                    value.arry.reduce((sum = 0, obj) => (sum += obj.score), 0) /
+                    value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0) /
                     value.arry.length
                   }}</span
                 >
@@ -42,7 +37,7 @@
         </el-tooltip>
         <el-col>
           <el-tooltip
-            v-for="(val, ind) in value.arry.sort((a, b) =>
+            v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
               (a.sig_names + '').localeCompare(b.sig_names + '')
             )"
             :key="ind"
@@ -65,13 +60,13 @@
               <div class="lable">{{ val.sig_names }}</div>
               <div class="info">
                 <p>
-                  <span class="index">活跃度排名：</span>
+                  <span class="index">{{ t('ranking') }}：</span>
                   #{{ val.rank }}
                 </p>
               </div>
               <div class="info">
                 <p>
-                  <span class="index">活跃度：</span>
+                  <span class="index">{{ t('active') }}：</span>
                   {{ val.score }}
                 </p>
               </div>
@@ -96,76 +91,39 @@ import { useRouter } from 'vue-router';
 import { Right } from '@element-plus/icons-vue';
 import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
+import { useI18n } from 'vue-i18n';
+import { IObject } from 'shared/@types/interface';
+const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
 const listData = ref([]);
-const listArry = ref([
-  {
-    feature: '行业解决方案/应用',
-    arry: [],
-  },
-  {
-    feature: '基础功能/特性/工具',
-    arry: [],
-  },
-  {
-    feature: '桌面/图形系统',
-    arry: [],
-  },
-
-  {
-    feature: '架构/处理器/内核/驱动',
-    arry: [],
-  },
-  {
-    feature: '工具链/语言/运行',
-    arry: [],
-  },
-  {
-    feature: '云原生基础设施',
-    arry: [],
-  },
-  {
-    feature: '通用中间组件',
-    arry: [],
-  },
-]);
+const listArry = ref([{ feature: '', arry: [] }] as IObject[]);
 const getList = () => {
   const query = {
     community: 'openeuler',
   };
   querySigScoreAll(query).then((data) => {
     listData.value = data?.data || [];
-    listData.value.map((item) => {
-      switch (item.feature) {
-        case '工具链/语言/运行':
-          listArry.value[4].arry.push(item);
-          break;
-        case '基础功能/特性':
-          listArry.value[1].arry.push(item);
-          break;
-        case '桌面/图形系统':
-          listArry.value[2].arry.push(item);
-          break;
-        case '通用中间组件':
-          listArry.value[6].arry.push(item);
-          break;
-        case '云原生基础设施':
-          listArry.value[5].arry.push(item);
-          break;
-        case '架构/处理器/内核/驱动':
-          listArry.value[3].arry.push(item);
-          break;
-        case '行业解决方案/应用':
-          listArry.value[0].arry.push(item);
-          break;
-      }
-    });
+    const arry = listData.value
+      .reduce((pre: any, next: any) => {
+        const findOne: any = pre.find((it: any) => it.feature === next.feature);
+        if (findOne) {
+          findOne.arry.push(next);
+        } else if (next.feature !== null) {
+          pre.push({
+            feature: next.feature,
+            arry: [],
+          });
+        }
+        return pre;
+      }, [])
+      .sort((a: any, b: any) => b['arry'].length - a['arry'].length);
+    listArry.value = arry;
   });
 };
 getList();
-const goTo = (item) => {
+const goTo = (item: any) => {
   router.push(`/${useCommon.language}/sig/${item.sig_names}`);
 };
 </script>

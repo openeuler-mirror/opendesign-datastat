@@ -84,7 +84,7 @@ function bilink(root: HierarchyNode<unknown>) {
       (d.outgoing = d.data.imports.map((i: string) => [d, map.get(i)]));
   for (const d of root.leaves() as any)
     for (const o of d.outgoing) o[1].incoming.push(o);
-  root.sort((a, b) => {
+  root.sort((a: any, b: any) => {
     if (a?.incoming?.length) {
       return d3.ascending(b?.incoming?.length, a?.incoming?.length);
     } else {

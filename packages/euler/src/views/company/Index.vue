@@ -14,8 +14,8 @@ import {
 import {
   queryCompanySigDetails,
   queryCompanyUserContribute,
-  queryCompanyContribute,
   queryCompanyUsers,
+  queryCompanyName,
 } from 'shared/api';
 import OEchartCircularPile from 'shared/components/OEchartCircularPile.vue';
 import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
@@ -31,13 +31,9 @@ const sencondTitleValue = ref('');
 const { t } = useI18n();
 const allcompany = ref([]);
 const getSencondTitle = (value?: string) => {
-  const query = {
-    timeRange: 'lastonemonth',
-    community: 'openeuler',
-    contributeType: 'PR',
-  };
-  queryCompanyContribute(query).then((data) => {
-    allcompany.value = data?.data || [];
+  const community = 'openeuler';
+  queryCompanyName(community).then((data) => {
+    allcompany.value = data?.data.openeuler || [];
     const name = value || route.params.name;
     const findOne: IObject =
       allcompany.value.find(
@@ -194,7 +190,6 @@ const getallData = () => {
   getSigsData();
   getoechartTreeValue();
   getContributeInfo();
-  getTreeContributeInfo();
   getTreeSearchValue();
 };
 onMounted(() => {
@@ -313,13 +308,15 @@ const anchorData = ['ecological', 'staffContributor'];
 
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item
-                      v-for="item in drownData"
-                      :key="item.value"
-                      @click="clickDrownItem(item)"
-                    >
-                      {{ item.label }}</el-dropdown-item
-                    >
+                    <el-scrollbar height="400px">
+                      <el-dropdown-item
+                        v-for="item in drownData"
+                        :key="item.value"
+                        @click="clickDrownItem(item)"
+                      >
+                        {{ item.label }}</el-dropdown-item
+                      >
+                    </el-scrollbar>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>

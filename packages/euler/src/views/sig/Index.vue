@@ -4,12 +4,10 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import HistoricalTrend from './HistoricalTrend.vue';
 import CurrentTrend from './CurrentTrend.vue';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import TableList from './TableList.vue';
-import TheBar from '../../components/TheBar.vue';
-import TheForm from '@/components/TheForm.vue';
 import ContributList from './ContributList.vue';
 import { querySigRepos, querySigName, getSigScore } from 'shared/api';
 import { openCommunityInfo } from '@/api';
@@ -38,18 +36,17 @@ const getCubeData = () => {
     sig: sencondTitle.value,
   };
   querySigRepos(query).then((data) => {
-    const value = data?.data || [];
-    const firstKeys = value[0];
-    cubeData.value = value[firstKeys as string];
+    const value = data?.data || {};
+    cubeData.value = value[sencondTitle.value];
   });
 };
 const drownData = ref([] as any[]);
 const getDrownData = () => {
   let community = 'openeuler';
   querySigName(community).then((data) => {
-    const value = data?.data || [];
-    const firstKeys = value[0];
-    drownData.value = value[firstKeys as string];
+    const value = data?.data || {};
+    const firstKeys = Object.keys(value);
+    drownData.value = value[firstKeys[0]];
   });
 };
 const getllData = () => {
@@ -200,11 +197,6 @@ const goToHome = () => {
               {{ sencondTitle + ' ' + t('companyContributor') }}
             </h3>
             <table-list :sig="sencondTitle" />
-            <!-- <div v-if="search404" class="search404">
-              <img class="cover" src="@/assets/404.png" alt="404" />
-              <p class="text">{{ t('searchTips') }}</p>
-            </div>
-            <the-bar v-else></the-bar> -->
           </div>
           <div class="contributors-panel">
             <h3 id="userContributor" class="title">
