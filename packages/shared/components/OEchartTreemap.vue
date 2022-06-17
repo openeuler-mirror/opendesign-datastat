@@ -106,22 +106,22 @@ const props = defineProps({
     default: () =>
       [
         {
-          key: '桌面系统',
+          key: '桌面/图形系统',
           label: '桌面/图形系统',
           color: '#002FA7',
         },
         {
-          key: '内核',
+          key: '架构/处理器/内核/驱动',
           label: '架构/处理器/内核/驱动',
           color: '#FEB32A',
         },
         {
-          key: '基础系统',
+          key: '基础功能/特性/工具',
           label: '基础功能/特性/工具',
           color: '#4AAEAD',
         },
         {
-          key: '应用',
+          key: '行业解决方案/应用',
           label: '行业解决方案/应用',
           color: '#FC756C',
         },

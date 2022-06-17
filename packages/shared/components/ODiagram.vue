@@ -84,6 +84,13 @@ function bilink(root: HierarchyNode<unknown>) {
       (d.outgoing = d.data.imports.map((i: string) => [d, map.get(i)]));
   for (const d of root.leaves() as any)
     for (const o of d.outgoing) o[1].incoming.push(o);
+  root.sort((a: any, b: any) => {
+    if (a?.incoming?.length) {
+      return d3.ascending(b?.incoming?.length, a?.incoming?.length);
+    } else {
+      return d3.ascending(a?.outgoing?.length, b?.outgoing?.length);
+    }
+  });
   return root;
 }
 function id(node: IObject): string {
@@ -148,16 +155,7 @@ const getTipsHtml = (d: IObject) => {
             >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
 };
 const chart = () => {
-  const root = tree(
-    bilink(
-      d3.hierarchy(props.data)
-      // .sort(
-      //   (a, b) =>
-      //     d3.ascending(b.height, a.height) ||
-      //     d3.ascending(b.data.name, a.data.name)
-      // )
-    )
-  );
+  const root = tree(bilink(d3.hierarchy(props.data)));
 
   const svg = d3
     .select('#svg')

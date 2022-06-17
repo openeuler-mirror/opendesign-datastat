@@ -125,8 +125,8 @@ const diagramData = ref({
       name: 'sig',
       children: [
         {
-          name: 'A c',
-          key: 'A',
+          name: '',
+          key: '',
           imports: [],
         },
       ],
@@ -135,9 +135,9 @@ const diagramData = ref({
       name: 'company',
       children: [
         {
-          name: 'a',
-          key: '中文',
-          imports: ['flare.sig.A c'],
+          name: '',
+          key: '',
+          imports: [],
         },
       ],
     },
@@ -150,7 +150,6 @@ const getList = () => {
   };
   queryCompanySigs(query).then((data) => {
     listData.value = data?.data || [];
-
     const sigArry = listData.value.reduce((pre: any, next: any) => {
       pre.push(...next.sigList);
       return pre;
@@ -163,21 +162,21 @@ const getList = () => {
         imports: [],
       };
     });
-
-    diagramData.value.children[1].children = listData.value.map((item: IObject) => {
-      const imports = item.sigList.map((i: string) => `flare.sig.${i}`);
-      return {
-        name:
-          useCommon.language === 'zh'
-            ? item.company_cn
-            : item.company_en === ''
-            ? item.company_cn
-            : item.company_en,
-        key: item.company_cn,
-        imports,
-        length: imports.length,
-      };
-    });
+    diagramData.value.children[1].children = listData.value
+      .filter((items: IObject) => items.sigList.length)
+      .map((item: IObject) => {
+        const imports = item.sigList.map((i: string) => `flare.sig.${i}`);
+        return {
+          name:
+            useCommon.language === 'zh'
+              ? item.company_cn
+              : item.company_en === ''
+              ? item.company_cn
+              : item.company_en,
+          key: item.company_cn,
+          imports,
+        };
+      });
   });
 };
 getList();
