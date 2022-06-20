@@ -142,9 +142,10 @@ const getOption = (): EChartsOption => {
     },
     yAxis: {
       type: 'value',
-      max: 1,
-      min: 0,
-      splitNumber: 2,
+      alignTicks: true,
+      min: function (value) {
+        return value.min - 0.04 < 0 ? 0 : Number((value.min - 0.04).toFixed(2));
+      },
     },
     series: getSeriesData(),
   };
