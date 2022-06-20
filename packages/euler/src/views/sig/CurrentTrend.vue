@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import OPolar from 'shared/components/OPolar.vue';
+import OEchartPolar from 'shared/components/OEchartPolar.vue';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
@@ -115,14 +115,11 @@ initData();
 <template>
   <div class="curmain">
     <div class="polar">
-      <o-polar
+      <o-echart-polar
         id="curEchartPolar"
         :fields-key="fieldsKey"
         :data="polarData"
-        @tooltip-change="tooltipChange($event)"
-        @tooltip-show="tooltipChange($event)"
-        @tooltip-hide="tooltipHide"
-      ></o-polar>
+      ></o-echart-polar>
     </div>
     <div class="table">
       <table cellspacing="0" cellpadding="10px">
