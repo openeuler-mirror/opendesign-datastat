@@ -3,7 +3,7 @@ import AppHeader from '@/components/AppHeader.vue';
 import { setStoreData } from 'shared/utils/login';
 import { openCommunityInfo } from './api';
 
-setStoreData(openCommunityInfo.name)
+setStoreData(openCommunityInfo.name);
 </script>
 
 <template>
@@ -21,10 +21,27 @@ setStoreData(openCommunityInfo.name)
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.container {
+  min-width: 1280px;
+}
 .wrap {
   max-width: 1416px;
-  margin: 0 auto;
   padding: 0 24px;
+}
+@media screen and (min-width: 1900px) {
+  .wrap {
+    margin: 0 auto;
+  }
+}
+@media screen and (min-width: 1700px) and (max-width: 1900px) {
+  .wrap {
+    margin: 0 240px 0 auto;
+  }
+}
+@media screen and (max-width: 1700px) {
+  .wrap {
+    margin: 0 auto;
+  }
 }
 body {
   background: #000;
