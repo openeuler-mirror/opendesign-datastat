@@ -10,7 +10,7 @@
           class:bar-tooltip
           :show-arrow="false"
         >
-          <div class="start-menu">
+          <div class="start-menu menu-item">
             <span class="start-menu-span">{{ value.feature }}</span>
           </div>
           <template #content>
@@ -48,7 +48,7 @@
             :show-arrow="false"
           >
             <div
-              class="detail-menu"
+              class="detail-menu menu-item"
               :style="({
                 '--diaphaneity': (20 + Number(val.score) * 80) / 100,
                 '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
@@ -129,13 +129,22 @@ const goTo = (item: any) => {
 </script>
 <style scoped lang="scss">
 .main-menu {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin-top: 18px;
 }
+
+@media screen and (min-width: 1430px) {
+  .menu-item {
+    width: 180px;
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 1430px) {
+  .menu-item {
+    width: 160px;
+    font-size: 14px;
+  }
+}
 .start-menu {
-  width: 180px;
   height: 80px;
   background: #ffffff;
   border: 2px solid rgba(0, 47, 167, 0.4);
@@ -145,7 +154,6 @@ const goTo = (item: any) => {
   align-items: center;
   color: #000000;
   margin-right: 8px;
-  font-size: 16px;
   font-family: HarmonyOS_Sans_SC;
   line-height: 24px;
   &:hover {
@@ -153,7 +161,6 @@ const goTo = (item: any) => {
   }
 }
 .detail-menu {
-  width: 180px;
   height: 48px;
   display: flex;
   justify-content: center;

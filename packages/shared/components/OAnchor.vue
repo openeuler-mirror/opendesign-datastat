@@ -103,6 +103,11 @@ const scrollToTop = () => {
   </div>
 </template>
 <style lang="scss" scoped>
+@media screen and (max-width: 1700px) {
+  .anchor {
+    display: none;
+  }
+}
 .anchor {
   position: fixed;
   width: 200px;

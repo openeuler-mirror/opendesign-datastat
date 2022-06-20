@@ -21,7 +21,7 @@ body {
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: scroll;
 }
 
@@ -81,7 +81,7 @@ a {
       padding-left:43px;
     }
   }
-} 
+}
 .backtop {
   position: sticky;
   top:0px;
@@ -139,9 +139,9 @@ a {
 }
 
 @media screen and (max-width: 700px) {
-   
+
   #app .about-data{
-    width:100% !important; 
+    width:100% !important;
     h1{
       font-size: 30px;
       color:#000;
@@ -154,13 +154,13 @@ a {
         font-size: 16px;
       }
       .about-list{
-          margin-bottom: 20px; 
+          margin-bottom: 20px;
           li{
             grid-template-columns: 120px auto;
             padding: 10px;
             &.head{
                 line-height: 30px;
-              
+
             }
           }
       }
@@ -225,7 +225,7 @@ a {
 .slide-up-leave-active {
   position: absolute; // 需要注意的地方
   width: 100%; // 需要注意的地方，否则会出现页面渲染卡顿现象
-  will-change: transform; 
+  will-change: transform;
   transition: all 0.3s ease-out;
 }
 
@@ -240,14 +240,14 @@ a {
   transition: all 0.3s ease-out;
   position: absolute;
 }
- 
+
 .slide-up-leave-active {
   transition: all .3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .slide-down-leave-active{
   transition: all .3s ease-out;
   opacity: 0;
-} 
+}
 
 .slide-down-enter-from {
   transform: translate3d(0, -150px, 0);
@@ -259,7 +259,7 @@ a {
   opacity: 0;
 }
 .slide-up-enter-active {
-  transition: all .6s ease;  
+  transition: all .6s ease;
   .o-banner{
     background: none !important;
   }
@@ -270,7 +270,7 @@ a {
   opacity: 0;
 }
 
- 
+
 .slide-down-leave-active {
   .o-banner{
     background: none !important;
