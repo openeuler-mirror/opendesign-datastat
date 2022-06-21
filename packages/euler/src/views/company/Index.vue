@@ -23,6 +23,10 @@ import TheForm from '@/components/TheForm.vue';
 import TheProgress from '@/components/TheProgress.vue';
 import { useStaffStore } from '@/stores/staff';
 import OFormRadio from '@/components/OFormRadio.vue';
+import { formType } from 'shared/@types/interface';
+import IconUser from '~icons/app/search';
+import OIcon from 'shared/components/OIcon.vue';
+const language = computed(() => useCommon.language);
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -101,13 +105,6 @@ const getTreeSearchValue = () => {
   oechartSecondTreeValue.value = [];
   oechartTreeValue.value = [];
 };
-// 监听变化
-watch(
-  () => sencondTitleValue.value,
-  () => {
-    getTreeSearchValue();
-  }
-);
 const drownData = ref([] as IObject[]);
 const getDrownData = () => {
   drownData.value = allcompany.value.map((item: IObject) => {
@@ -283,6 +280,46 @@ const indexMethod = (index: number) => {
   return (currentPage.value - 1) * 10 + index + 1;
 };
 const anchorData = ['ecological', 'staffContributor'];
+
+// 搜索过滤
+const isSearch = ref(false);
+const searchInput = ref('');
+const querySearch = (queryString: string, cb: any) => {
+  let queryList = allcompany.value;
+  const results = queryString
+    ? queryList.filter(createFilter(queryString) as any)
+    : queryList;
+
+  if (results.length > 0) {
+    isSearch.value = false;
+  } else {
+    isSearch.value = true;
+  }
+  cb(results);
+};
+const createFilter = (queryString: string) => {
+  return (list: formType) => {
+    const items = language.value === 'zh' ? list.company_cn : list.company_en;
+    return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
+  };
+};
+// 搜索结果
+const handleSelect = (item: IObject) => {
+  allcompany.value.forEach((element: IObject) => {
+    if (element.company_cn === item.company_cn) {
+      drownData.value = [item];
+    }
+  });
+};
+// 清除搜索
+const clearSearchInput = () => {
+  isSearch.value = false;
+  emits('searchState', isSearch.value);
+  getDrownData();
+  searchInput.value = '';
+};
+
+const emits = defineEmits(['searchState']);
 </script>
 <template>
   <div class="container">
@@ -308,6 +345,28 @@ const anchorData = ['ecological', 'staffContributor'];
 
                 <template #dropdown>
                   <el-dropdown-menu>
+                    <div class="searchInput">
+                      <el-autocomplete
+                        v-model="searchInput"
+                        :fetch-suggestions="querySearch"
+                        :trigger-on-focus="false"
+                        clearable
+                        :debounce="300"
+                        :value-key="
+                          language === 'zh' ? 'company_cn' : 'company_en'
+                        "
+                        size="large"
+                        :placeholder="t('from.pleasePartner')"
+                        @select="handleSelect"
+                        @clear="clearSearchInput"
+                      >
+                        <template #prefix>
+                          <o-icon class="search-icon"
+                            ><icon-user></icon-user
+                          ></o-icon> </template
+                      ></el-autocomplete>
+                    </div>
+
                     <el-scrollbar height="400px">
                       <el-dropdown-item
                         v-for="item in drownData"
@@ -651,11 +710,11 @@ const anchorData = ['ecological', 'staffContributor'];
 .firstTreemap {
   margin-bottom: 20px;
 
-  padding: 5px;
+  padding: 20px;
 }
 .secondTreemap {
   margin-bottom: 60px;
-  padding: 5px;
+  padding: 20px;
 }
 .contributors-panel {
   padding: 5px;
@@ -876,5 +935,36 @@ const anchorData = ['ecological', 'staffContributor'];
   height: 16px;
   display: inline-block;
   text-align: center;
+}
+.searchInput {
+  width: 90%;
+  position: relative;
+  left: 20px;
+  .search-icon {
+    font-size: 20px;
+  }
+  :deep(.el-autocomplete) {
+    width: 100%;
+    &.active .el-input__inner {
+      box-shadow: 0 0 0 1px #002fa7 inset;
+    }
+  }
+  :deep(.el-input__prefix) {
+    left: 12px;
+    align-items: center;
+  }
+  @media screen and (min-width: 900px) {
+    :deep(.el-input__inner) {
+      padding-left: 40px;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    :deep(.el-input__prefix) {
+      left: 10px;
+    }
+  }
+  :deep(.el-input__inner:focus) {
+    box-shadow: 0 0 0 1px #002fa7 inset;
+  }
 }
 </style>

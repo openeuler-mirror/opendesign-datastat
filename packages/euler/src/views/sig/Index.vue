@@ -4,14 +4,21 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import HistoricalTrend from './HistoricalTrend.vue';
 import CurrentTrend from './CurrentTrend.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import TableList from './TableList.vue';
 import ContributList from './ContributList.vue';
-import { querySigRepos, querySigName, getSigScore } from 'shared/api';
+import {
+  querySigRepos,
+  querySigName,
+  getSigScore,
+  querySigInfo,
+} from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
+import { formType } from 'shared/@types/interface';
+import { Search } from '@element-plus/icons-vue'
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -24,6 +31,7 @@ const anchorData = [
   'companyContributor',
   'userContributor',
 ];
+const language = computed(() => useCommon.language);
 const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
   getllData();
@@ -53,6 +61,7 @@ const getllData = () => {
   getCubeData();
   getDrownData();
   querySorceData();
+  querySigInfoData();
 };
 onMounted(() => {
   getllData();
@@ -73,6 +82,65 @@ const querySorceData = () => {
 const goToHome = () => {
   router.push(`/${useCommon.language}/overview`);
 };
+const isSearch = ref(false);
+// 搜索过滤
+const searchInput = ref('');
+const querySearch = (queryString: string, cb: any) => {
+  let queryList = drownData.value;
+  const results = queryString
+    ? queryList.filter(createFilter(queryString) as any)
+    : queryList;
+
+  if (results.length > 0) {
+    isSearch.value = false;
+  } else {
+    isSearch.value = true;
+  }
+  cb(results);
+};
+const createFilter = (queryString: string) => {
+  return (list: formType) => {
+    const items = language.value === 'zh' ? list.company_cn : list.company_en;
+    return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
+  };
+};
+// 搜索结果
+const handleSelect = (item: IObject) => {
+  drownData.value.forEach((element: IObject) => {
+    if (element === item) {
+      drownData.value = [item];
+    }
+  });
+};
+
+// 回车判断结果
+const myKeydown = () => {
+  if (isSearch.value) {
+    emits('searchState', isSearch.value);
+  }
+};
+
+// 清除搜索
+const clearSearchInput = () => {
+  isSearch.value = false;
+  emits('searchState', isSearch.value);
+  getDrownData();
+  searchInput.value = '';
+};
+
+const emits = defineEmits(['searchState']);
+
+// 获取侧边栏明细
+const sigInfo = ref({} as IObject);
+const querySigInfoData = () => {
+  const params = {
+    community: openCommunityInfo.name,
+    sig: sencondTitle.value,
+  };
+  querySigInfo(params).then((data) => {
+    sigInfo.value = data?.data[0] || {};
+  });
+};
 </script>
 <template>
   <div class="container">
@@ -91,9 +159,16 @@ const goToHome = () => {
             <div class="edropdown">
               <el-dropdown>
                 <div class="btnc"></div>
-
                 <template #dropdown>
                   <el-dropdown-menu>
+                    <div class="searchInput">
+                      <el-input
+                        v-model="searchInput"
+                        class="w-50 m-2"
+                        placeholder="Sig Name"
+                        :prefix-icon="Search"
+                      />
+                    </div>
                     <el-scrollbar height="400px">
                       <el-dropdown-item
                         v-for="item in drownData"
@@ -120,30 +195,35 @@ const goToHome = () => {
               <div class="email"></div>
               <div class="List">
                 <span>{{ t('MailingList') }}：</span>
-                <span class="item"> a-tune@openeuler.org </span>
-              </div>
-            </div>
-            <div class="first">
-              <div class="IRC"></div>
-              <div class="List">
-                <span>{{ t('channel') }}</span>
-                <span class="item">#openeuler-dev</span>
+                <span class="item">
+                  {{ sigInfo.mailing_list }}
+                </span>
               </div>
             </div>
             <div class="first">
               <div class="Maintainer"></div>
               <div class="List">
-                <span>Maintainer：</span>
-                <span class="item"> @xiezhipeng1 </span>
-                <span class="item"> @hanxinke1 </span>
+                <span>Maintainer： </span>
+                <span
+                  v-for="item in sigInfo.maintainers"
+                  :key="item.value"
+                  class="item"
+                >
+                  @{{ item }}
+                </span>
               </div>
             </div>
             <div class="first">
               <div class="Mentor"></div>
               <div class="List">
                 <span>Mentor：</span>
-                <span class="item"> @xiezhipeng1 </span>
-                <span class="item"> @hanxinke1 </span>
+                <span
+                  v-for="item in sigInfo.mentor"
+                  :key="item.value"
+                  class="item"
+                >
+                  {{ item }}
+                </span>
               </div>
             </div>
             <div class="first">
@@ -427,5 +507,36 @@ const goToHome = () => {
   width: 350px;
   display: flex;
   flex-direction: column;
+}
+.searchInput {
+  width: 90%;
+  position: relative;
+  left: 12px;
+  .search-icon {
+    font-size: 20px;
+  }
+  :deep(.el-autocomplete) {
+    width: 100%;
+    &.active .el-input__inner {
+      box-shadow: 0 0 0 1px #002fa7 inset;
+    }
+  }
+  :deep(.el-input__prefix) {
+    left: 12px;
+    align-items: center;
+  }
+  @media screen and (min-width: 900px) {
+    :deep(.el-input__inner) {
+      padding-left: 40px;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    :deep(.el-input__prefix) {
+      left: 10px;
+    }
+  }
+  :deep(.el-input__inner:focus) {
+    box-shadow: 0 0 0 1px #002fa7 inset;
+  }
 }
 </style>

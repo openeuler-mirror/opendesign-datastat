@@ -152,3 +152,11 @@ export function queryRepos(name: string) {
   const url = `/query/community/repos?community=${name}`;
   return request.get(url).then((res: AxiosResponse) => res.data);
 }
+
+/**
+ * sig侧边栏详情
+ */
+export function querySigInfo(params: object) {
+  const url = '/query/sig/info';
+  return request.get(url, { params }).then((res: AxiosResponse) => res.data);
+}
