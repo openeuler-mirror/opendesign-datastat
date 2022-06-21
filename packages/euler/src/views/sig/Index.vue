@@ -4,7 +4,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import HistoricalTrend from './HistoricalTrend.vue';
 import CurrentTrend from './CurrentTrend.vue';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import TableList from './TableList.vue';
@@ -17,7 +17,6 @@ import {
 } from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
-import { formType } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
 const useCommon = useCommonStore();
 const router = useRouter();
@@ -31,7 +30,6 @@ const anchorData = [
   'companyContributor',
   'userContributor',
 ];
-const language = computed(() => useCommon.language);
 const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
   getllData();
@@ -55,6 +53,7 @@ const getDrownData = () => {
     const value = data?.data || {};
     const firstKeys = Object.keys(value);
     drownData.value = value[firstKeys[0]];
+    reallData.value = drownData.value;
   });
 };
 const getllData = () => {
@@ -85,12 +84,13 @@ const goToHome = () => {
 };
 // 搜索过滤
 const searchInput = ref('');
+const reallData = ref([] as IObject[]);
 const querySearch = () => {
   if (searchInput.value !== '') {
     const newList = drownData.value.filter((item: any) =>
       item.includes(searchInput.value)
     );
-    drownData.value = newList;
+    reallData.value = newList;
   }
 };
 // 清除搜索
@@ -147,9 +147,9 @@ const querySigInfoData = () => {
                   </div>
                   <el-scrollbar height="400px">
                     <el-dropdown-item
-                      v-for="item in drownData"
+                      v-for="item in reallData"
                       :key="item.value"
-                      @click="clickDrownItem(item)"
+                      @click="clickDrownItem(item as any)"
                     >
                       {{ item }}
                     </el-dropdown-item>

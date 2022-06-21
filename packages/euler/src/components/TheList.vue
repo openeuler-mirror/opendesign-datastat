@@ -182,6 +182,7 @@ const goTo = (item: any) => {
   font-family: HarmonyOS_Sans_SC;
   line-height: 22px;
   color: var(--color);
+  cursor: pointer;
   &-span {
     width: 150px;
     text-overflow: ellipsis;
@@ -233,14 +234,14 @@ const goTo = (item: any) => {
 }
 .right-btn {
   position: absolute;
-  right: 5px;
+  right: 20px;
   bottom: 6px;
 }
-// .numberIndex {
-//   position: absolute;
-//   right: 0px;
-// }
-.lable{
+.numberIndex {
+  position: absolute;
+  right: 20px;
+}
+.lable {
   width: 160px;
 }
 </style>
