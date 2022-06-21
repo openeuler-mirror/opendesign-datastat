@@ -18,7 +18,7 @@ import {
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { formType } from 'shared/@types/interface';
-import { Search } from '@element-plus/icons-vue'
+import { Search } from '@element-plus/icons-vue';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -131,7 +131,9 @@ const clearSearchInput = () => {
 const emits = defineEmits(['searchState']);
 
 // 获取侧边栏明细
-const sigInfo = ref({} as IObject);
+const sigInfo = ref({
+  mailing_list: '',
+} as IObject);
 const querySigInfoData = () => {
   const params = {
     community: openCommunityInfo.name,
@@ -167,6 +169,10 @@ const querySigInfoData = () => {
                         class="w-50 m-2"
                         placeholder="Sig Name"
                         :prefix-icon="Search"
+                        :fetch-suggestions="querySearch"
+                        @select="handleSelect"
+                        @keydown.enter="myKeydown"
+                        @clear="clearSearchInput"
                       />
                     </div>
                     <el-scrollbar height="400px">
@@ -195,22 +201,30 @@ const querySigInfoData = () => {
               <div class="email"></div>
               <div class="List">
                 <span>{{ t('MailingList') }}：</span>
-                <span class="item">
+                <a
+                  :href="`https://mailweb.openeuler.org/postorius/lists/${
+                    sigInfo.mailing_list.split('@')[0]
+                  }.${sigInfo.mailing_list.split('@')[1]}`"
+                  class="item"
+                  target="_blank"
+                >
                   {{ sigInfo.mailing_list }}
-                </span>
+                </a>
               </div>
             </div>
             <div class="first">
               <div class="Maintainer"></div>
               <div class="List">
                 <span>Maintainer： </span>
-                <span
+                <a
                   v-for="item in sigInfo.maintainers"
                   :key="item.value"
                   class="item"
+                  target="_blank"
+                  :href="`https://gitee.com/${item}`"
                 >
                   @{{ item }}
-                </span>
+                </a>
               </div>
             </div>
             <div class="first">
