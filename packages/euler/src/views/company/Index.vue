@@ -26,6 +26,7 @@ import OFormRadio from '@/components/OFormRadio.vue';
 import { formType } from 'shared/@types/interface';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
+import { Search } from '@element-plus/icons-vue';
 const language = computed(() => useCommon.language);
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
@@ -114,7 +115,9 @@ const getDrownData = () => {
       label: item[key],
     };
   });
+  reallData.value = drownData.value;
 };
+console.log(drownData);
 const getSigsData = () => {
   const query = {
     company: sencondTitleValue.value,
@@ -188,6 +191,7 @@ const getallData = () => {
   getoechartTreeValue();
   getContributeInfo();
   getTreeSearchValue();
+  clean();
 };
 onMounted(() => {
   getSencondTitle();
@@ -282,44 +286,26 @@ const indexMethod = (index: number) => {
 const anchorData = ['ecological', 'staffContributor'];
 
 // 搜索过滤
-const isSearch = ref(false);
+// const isSearch = ref(false);
 const searchInput = ref('');
-const querySearch = (queryString: string, cb: any) => {
-  let queryList = allcompany.value;
-  const results = queryString
-    ? queryList.filter(createFilter(queryString) as any)
-    : queryList;
+const reallData = ref([] as IObject[]);
 
-  if (results.length > 0) {
-    isSearch.value = false;
-  } else {
-    isSearch.value = true;
+const querySearch = () => {
+  if (searchInput.value !== '') {
+    const newList = drownData.value.filter((item: any) =>
+      item.label.includes(searchInput.value)
+    );
+    reallData.value = newList;
   }
-  cb(results);
-};
-const createFilter = (queryString: string) => {
-  return (list: formType) => {
-    const items = language.value === 'zh' ? list.company_cn : list.company_en;
-    return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
-  };
-};
-// 搜索结果
-const handleSelect = (item: IObject) => {
-  allcompany.value.forEach((element: IObject) => {
-    if (element.company_cn === item.company_cn) {
-      drownData.value = [item];
-    }
-  });
 };
 // 清除搜索
 const clearSearchInput = () => {
-  isSearch.value = false;
-  emits('searchState', isSearch.value);
   getDrownData();
   searchInput.value = '';
 };
-
-const emits = defineEmits(['searchState']);
+const clean = () => {
+  searchInput.value = '';
+};
 </script>
 <template>
   <div class="container">
@@ -336,7 +322,7 @@ const emits = defineEmits(['searchState']);
               {{ sencondTitle }}
             </div>
             <div class="edropdown">
-              <el-dropdown>
+              <el-dropdown :handleClose="clean">
                 <div class="btnc">
                   <el-icon :size="20">
                     <arrowDown />
@@ -344,39 +330,28 @@ const emits = defineEmits(['searchState']);
                 </div>
 
                 <template #dropdown>
-                  <el-dropdown-menu>
-                    <div class="searchInput">
-                      <el-autocomplete
-                        v-model="searchInput"
-                        :fetch-suggestions="querySearch"
-                        :trigger-on-focus="false"
-                        clearable
-                        :debounce="300"
-                        :value-key="
-                          language === 'zh' ? 'company_cn' : 'company_en'
-                        "
-                        size="large"
-                        :placeholder="t('from.pleasePartner')"
-                        @select="handleSelect"
-                        @clear="clearSearchInput"
-                      >
-                        <template #prefix>
-                          <o-icon class="search-icon"
-                            ><icon-user></icon-user
-                          ></o-icon> </template
-                      ></el-autocomplete>
-                    </div>
+                  <div class="searchInput">
+                    <el-input
+                      v-model="searchInput"
+                      clearable
+                      :debounce="300"
+                      class="w-50 m-2"
+                      placeholder="Company Name"
+                      :prefix-icon="Search"
+                      @input="querySearch"
+                      @clear="clearSearchInput"
+                    />
+                  </div>
 
-                    <el-scrollbar height="400px">
-                      <el-dropdown-item
-                        v-for="item in drownData"
-                        :key="item.value"
-                        @click="clickDrownItem(item)"
-                      >
-                        {{ item.label }}</el-dropdown-item
-                      >
-                    </el-scrollbar>
-                  </el-dropdown-menu>
+                  <el-scrollbar height="400px">
+                    <el-dropdown-item
+                      v-for="item in reallData"
+                      :key="item.value"
+                      @click="clickDrownItem(item)"
+                    >
+                      {{ item.label }}</el-dropdown-item
+                    >
+                  </el-scrollbar>
                 </template>
               </el-dropdown>
             </div>
@@ -937,9 +912,7 @@ const emits = defineEmits(['searchState']);
   text-align: center;
 }
 .searchInput {
-  width: 90%;
-  position: relative;
-  left: 20px;
+  width: 100%;
   .search-icon {
     font-size: 20px;
   }

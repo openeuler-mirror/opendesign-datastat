@@ -10,27 +10,35 @@
           class:bar-tooltip
           :show-arrow="false"
         >
-          <div class="start-menu menu-item">
+          <div
+            class="start-menu menu-item"
+            :style="({
+                '--diaphaneity': (20 + Number((Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
+                    value.arry.length) * 100) / 100).toFixed(2)) * 80) / 100,
+
+              } as any)"
+          >
             <span class="start-menu-span">{{ value.feature }}</span>
           </div>
           <template #content>
             <div class="lable">{{ value.feature }}</div>
             <div class="info">
               <p>
-                <span class="index">特别兴趣小组数量：</span>
-                {{ value.arry.length }}
+                <span class="index">特别兴趣小组数量</span>
+                <span class="numberIndex"> {{ value.arry.length }}</span>
               </p>
             </div>
             <div class="info">
               <p>
-                <span v-if="value.arry.length" class="index"
-                  >平均活跃度：
+                <span v-if="value.arry.length" class="index">平均活跃度</span>
+                <span v-else class="index">平均活跃度 0</span>
+                <span class="numberIndex">
                   {{
-                    value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0) /
-                    value.arry.length
+                  (Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
+                    value.arry.length) * 100) / 100).toFixed(2)
+
                   }}</span
                 >
-                <span v-else class="index">平均活跃度：0</span>
               </p>
             </div>
           </template>
@@ -53,25 +61,30 @@
                 '--diaphaneity': (20 + Number(val.score) * 80) / 100,
                 '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
               } as any)"
+              @click="goTo(val)"
             >
-              <span class="detail-menu-span"> {{ val.sig_names }}</span>
+              <span class="detail-menu-span" @click="goTo(val)">
+                {{ val.sig_names }}</span
+              >
             </div>
             <template #content>
               <div class="lable">{{ val.sig_names }}</div>
               <div class="info">
                 <p>
-                  <span class="index">{{ t('ranking') }}：</span>
-                  #{{ val.rank }}
+                  <span class="index">{{ t('ranking') }}</span>
+                  <span class="numberIndex"> #{{ val.rank }}</span>
                 </p>
               </div>
               <div class="info">
                 <p>
-                  <span class="index">{{ t('active') }}：</span>
-                  {{ val.score }}
+                  <span class="index">{{ t('active') }}</span>
+                  <span class="numberIndex">
+                    {{ (Math.round(val.score * 100) / 100).toFixed(2) }}</span
+                  >
                 </p>
               </div>
               <div class="info">
-                <div>查看详情：</div>
+                <div>查看详情</div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
@@ -147,7 +160,7 @@ const goTo = (item: any) => {
 .start-menu {
   height: 80px;
   background: #ffffff;
-  border: 2px solid rgba(0, 47, 167, 0.4);
+  border: 2px solid rgba(0, 47, 167, var(--diaphaneity));
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
@@ -156,9 +169,6 @@ const goTo = (item: any) => {
   margin-right: 8px;
   font-family: HarmonyOS_Sans_SC;
   line-height: 24px;
-  &:hover {
-    border: 2px solid rgba(0, 47, 167, 0.8);
-  }
 }
 .detail-menu {
   height: 48px;
@@ -171,6 +181,7 @@ const goTo = (item: any) => {
   font-family: HarmonyOS_Sans_SC;
   line-height: 22px;
   color: var(--color);
+  cursor: pointer;
   &-span {
     width: 150px;
     text-overflow: ellipsis;
@@ -191,6 +202,7 @@ const goTo = (item: any) => {
     font-family: HarmonyOS_Sans_SC;
     color: #4e5865;
     line-height: 16px;
+
     .text {
       font-weight: 100;
     }
@@ -221,7 +233,14 @@ const goTo = (item: any) => {
 }
 .right-btn {
   position: absolute;
-  left: 70px;
+  right: 20px;
   bottom: 6px;
+}
+.numberIndex {
+  position: absolute;
+  right: 20px;
+}
+.lable {
+  width: 160px;
 }
 </style>
