@@ -62,6 +62,7 @@ const getllData = () => {
   getDrownData();
   querySorceData();
   querySigInfoData();
+  clean();
 };
 onMounted(() => {
   getllData();
@@ -82,54 +83,24 @@ const querySorceData = () => {
 const goToHome = () => {
   router.push(`/${useCommon.language}/overview`);
 };
-const isSearch = ref(false);
 // 搜索过滤
 const searchInput = ref('');
-const querySearch = (queryString: string, cb: any) => {
-  let queryList = drownData.value;
-  const results = queryString
-    ? queryList.filter(createFilter(queryString) as any)
-    : queryList;
-
-  if (results.length > 0) {
-    isSearch.value = false;
-  } else {
-    isSearch.value = true;
-  }
-  cb(results);
-};
-const createFilter = (queryString: string) => {
-  return (list: formType) => {
-    const items = language.value === 'zh' ? list.company_cn : list.company_en;
-    return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
-  };
-};
-// 搜索结果
-const handleSelect = (item: IObject) => {
-  drownData.value.forEach((element: IObject) => {
-    if (element === item) {
-      drownData.value = [item];
-    }
-  });
-};
-
-// 回车判断结果
-const myKeydown = () => {
-  if (isSearch.value) {
-    emits('searchState', isSearch.value);
+const querySearch = () => {
+  if (searchInput.value !== '') {
+    const newList = drownData.value.filter((item: any) =>
+      item.includes(searchInput.value)
+    );
+    drownData.value = newList;
   }
 };
-
 // 清除搜索
 const clearSearchInput = () => {
-  isSearch.value = false;
-  emits('searchState', isSearch.value);
   getDrownData();
   searchInput.value = '';
 };
-
-const emits = defineEmits(['searchState']);
-
+const clean = () => {
+  searchInput.value = '';
+};
 // 获取侧边栏明细
 const sigInfo = ref({
   mailing_list: '',
@@ -162,35 +133,33 @@ const querySigInfoData = () => {
               <el-dropdown>
                 <div class="btnc"></div>
                 <template #dropdown>
-                  <el-dropdown-menu>
-                    <div class="searchInput">
-                      <el-input
-                        v-model="searchInput"
-                        class="w-50 m-2"
-                        placeholder="Sig Name"
-                        :prefix-icon="Search"
-                        :fetch-suggestions="querySearch"
-                        @select="handleSelect"
-                        @keydown.enter="myKeydown"
-                        @clear="clearSearchInput"
-                      />
-                    </div>
-                    <el-scrollbar height="400px">
-                      <el-dropdown-item
-                        v-for="item in drownData"
-                        :key="item.value"
-                        @click="clickDrownItem(item)"
-                      >
-                        {{ item }}
-                      </el-dropdown-item>
-                    </el-scrollbar>
-                  </el-dropdown-menu>
+                  <div class="searchInput">
+                    <el-input
+                      v-model="searchInput"
+                      clearable
+                      :debounce="300"
+                      class="w-50 m-2"
+                      placeholder="Company Name"
+                      :prefix-icon="Search"
+                      @input="querySearch"
+                      @clear="clearSearchInput"
+                    />
+                  </div>
+                  <el-scrollbar height="400px">
+                    <el-dropdown-item
+                      v-for="item in drownData"
+                      :key="item.value"
+                      @click="clickDrownItem(item)"
+                    >
+                      {{ item }}
+                    </el-dropdown-item>
+                  </el-scrollbar>
                 </template>
               </el-dropdown>
             </div>
           </div>
           <div class="main-left-sp">
-            <span>{{ t('slogan') }}</span>
+            <div class="slogan">{{ sigInfo.description }}</div>
             <div class="first">
               <div class="home"></div>
               <div class="toHome">

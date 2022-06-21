@@ -43,7 +43,9 @@ const querySorceData = () => {
     echartData.value = [
       {
         name: computed(() => t('combinedActivity')),
-        data,
+        data: data.sort((a: { created_at: string }, b: { created_at: any }) =>
+          a.created_at.localeCompare(b.created_at)
+        ),
       },
     ];
     getSigRadarScore(params).then((res) => {
