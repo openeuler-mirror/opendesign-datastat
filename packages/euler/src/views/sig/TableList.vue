@@ -33,23 +33,36 @@ const param = ref({
 const memberData = ref([] as IObject[]);
 const memberMax = ref(0);
 const memberList = ref([] as IObject[]);
+const rankNum = ref(1);
 const getMemberData = () => {
   queryCompanyContribute(param.value).then((data) => {
     memberList.value = data.data.sort(sortExp('contribute', false));
     memberMax.value = ceil(memberList.value[0].contribute, -2);
+    memberList.value.forEach((item) => {
+      if (
+        item.company_cn !== '个人贡献者' ||
+        item.company_en !== 'independent'
+      ) {
+        item.index = rankNum.value++;
+      } else {
+        item.index = '*';
+      }
+    });
+    rankNum.value = 1;
     if (param.value.displayRange === 'all') {
       return (memberData.value = memberList.value);
     }
-    memberData.value = memberList.value.slice(0, Number(param.value.displayRange));
+    memberData.value = memberList.value.slice(
+      0,
+      Number(param.value.displayRange)
+    );
   });
 };
-getMemberData();
 // 个人信息
 const progressFormat = (item: number) => {
   return (100 / memberMax.value) * item;
 };
 // 组织贡献from
-// const componentName = 'company';
 const formOption = computed(() => {
   return [
     {
@@ -228,6 +241,7 @@ onMounted(() => {
         class="bar-content-item"
       >
         <p class="infos">
+          <span class="index">{{ item.index }}</span>
           <span
             class="name"
             :title="
@@ -344,7 +358,7 @@ onMounted(() => {
     position: absolute;
     bottom: 0;
     top: 0;
-    left: 300px;
+    left: 324px;
     display: flex;
     justify-content: space-between;
     right: 0;

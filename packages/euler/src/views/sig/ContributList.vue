@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TheProgress from '@/components/TheProgress.vue';
-import TheForm from '@/components/TheForm.vue';
+import OFormRadio from '@/components/OFormRadio.vue';
 import { ref, computed, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { openCommunityInfo } from '@/api/index';
@@ -25,9 +25,14 @@ const memberData = ref([]);
 const memberMax = ref(0);
 const getMemberData = () => {
   querySigUserContribute(param.value).then((data) => {
-    const memberList = data.data.sort(sortExp('contribute', false));
-    memberMax.value = memberList[0].contribute;
-    memberData.value = memberList;
+    const memberList = data?.data?.sort(sortExp('contribute', false)) || [];
+    if (memberList.length === 0) {
+      memberMax.value = 0;
+      memberData.value = [];
+    } else {
+      memberMax.value = memberList[0].contribute;
+      memberData.value = memberList;
+    }
   });
 };
 getMemberData();
@@ -37,7 +42,7 @@ const lastformOption = computed(() => {
     {
       label: t('from.type'),
       id: 'contributeType',
-      active: 'pr',
+      active: 'PR',
       list: [
         { label: t('home.prs'), value: 'PR' },
         { label: t('home.issues'), value: 'Issue' },
@@ -47,7 +52,7 @@ const lastformOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'mother',
+      active: 'lastonemonth',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
@@ -63,6 +68,7 @@ const loading = ref(true);
 const getContributeInfo = (e: IObject) => {
   param.value[e.id] = e.active;
   getMemberData();
+  switchType();
 };
 const typeLable = ref('');
 const switchType = () => {
@@ -88,8 +94,6 @@ watch(
 onMounted(() => {
   loading.value = false;
 });
-// // 总数据
-// const tableData = computed(() => useStaff.memberData);
 // 默认显示第1页
 const currentPage = ref(1);
 // 显示第几页
@@ -105,11 +109,10 @@ const indexMethod = (index: number) => {
 <template>
   <div>
     <div class="theSecondForm">
-      <the-form
+      <o-form-radio
         :option="lastformOption"
-        :component-name="componentName"
         @get-contribute-info="getContributeInfo($event)"
-      ></the-form>
+      ></o-form-radio>
     </div>
     <div class="edcolor-box">
       <div class="blue-box">
