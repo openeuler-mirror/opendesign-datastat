@@ -190,7 +190,7 @@ const querySigInfoData = () => {
             </div>
           </div>
           <div class="main-left-sp">
-            <span>{{ t('slogan') }}</span>
+            <div class="slogan">{{ sigInfo.description }}</div>
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
