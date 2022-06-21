@@ -54,6 +54,7 @@
             :show-after="showAfter"
             class:bar-tooltip
             :show-arrow="false"
+
           >
             <div
               class="detail-menu menu-item"
