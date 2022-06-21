@@ -155,27 +155,14 @@ watch(
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="dialogVisible = true"
-                >Log Out</el-dropdown-item
+                >退出登录</el-dropdown-item
               >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <el-dropdown v-else>
-          <div class="el-dropdown-link">
-            <img
-              src="../assets/default-user-avatar.png"
-              alt="Login"
-              class="img"
-            />
-          </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="showGuard(openCommunityInfo.name)"
-                >Log In</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <div v-else class="login" @click="showGuard(openCommunityInfo.name)">
+          登录
+        </div>
       </div>
       <el-dialog v-model="dialogVisible" title="Confirm" width="30%">
         <span
@@ -292,5 +279,15 @@ $color: #ffffff;
     border-radius: 50%;
     cursor: pointer;
   }
+}
+.login {
+  width: 96px;
+  height: 32px;
+  line-height: 30px;
+  border: 1px solid #fff;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
 }
 </style>

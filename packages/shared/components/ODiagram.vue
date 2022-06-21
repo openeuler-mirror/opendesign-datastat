@@ -216,13 +216,13 @@ const chart = () => {
     d3.selectAll(d.incoming.map((d: IObject) => d.path))
       .attr('stroke', colorin)
       .raise();
-    d3.selectAll(d.incoming.map((d: IObject) => d.text))
+    d3.selectAll(d.incoming.map((d: IObject) => d[0].text))
       .attr('fill', colorCompany)
       .attr('font-weight', 'bold');
     d3.selectAll(d.outgoing.map((d: IObject) => d.path))
       .attr('stroke', colorin)
       .raise();
-    d3.selectAll(d.outgoing.map((d: IObject) => d.text))
+    d3.selectAll(d.outgoing.map((d: IObject) => d[1].text))
       .attr('fill', colorSig)
       .attr('font-weight', 'bold');
   }
@@ -232,11 +232,11 @@ const chart = () => {
     link.style('mix-blend-mode', 'multiply');
     d3.select(this).attr('font-weight', null);
     d3.selectAll(d.incoming.map((d: IObject) => d.path)).attr('stroke', null);
-    d3.selectAll(d.incoming.map((d: IObject) => d.text))
+    d3.selectAll(d.incoming.map((d: IObject) => d[0].text))
       // .attr('fill', null)
       .attr('font-weight', null);
     d3.selectAll(d.outgoing.map((d: IObject) => d.path)).attr('stroke', null);
-    d3.selectAll(d.outgoing.map((d: IObject) => d.text))
+    d3.selectAll(d.outgoing.map((d: IObject) => d[1].text))
       // .attr('fill', null)
       .attr('font-weight', null);
     d3.selectAll('text').attr('fill', (d: any) => getTextColor(d));
