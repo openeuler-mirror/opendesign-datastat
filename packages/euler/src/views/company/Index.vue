@@ -26,6 +26,8 @@ import OFormRadio from '@/components/OFormRadio.vue';
 import { Search } from '@element-plus/icons-vue';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -65,7 +67,7 @@ const oechartSecondTreeValue = ref([] as IObject[]);
 const getoechartTreeValue = () => {
   const query = {
     company: sencondTitleValue.value,
-    timeRange: 'lastonemonth',
+    timeRange: 'all',
     community: 'openeuler',
   };
   queryCompanyUsers(query).then((data) => {
@@ -78,7 +80,7 @@ const getoechartTreeValue = () => {
 };
 const param = ref({
   company: computed(() => sencondTitleValue.value),
-  timeRange: 'lastonemonth',
+  timeRange: 'all',
   community: 'openeuler',
 });
 const getTreeSearchValue = () => {
@@ -118,7 +120,7 @@ const getDrownData = () => {
 const getSigsData = () => {
   const query = {
     company: sencondTitleValue.value,
-    timeRange: 'lastonemonth',
+    timeRange: 'all',
     community: 'openeuler',
   };
   queryCompanySigDetails(query).then((data) => {
@@ -128,7 +130,7 @@ const getSigsData = () => {
 const getprlistData = () => {
   const query = {
     company: sencondTitleValue.value,
-    timeRange: 'lastonemonth',
+    timeRange: 'all',
     community: 'openeuler',
     contributeType: 'pr',
   };
@@ -141,7 +143,7 @@ const getprlistData = () => {
 const getissuelistData = () => {
   const query = {
     company: sencondTitleValue.value,
-    timeRange: 'lastonemonth',
+    timeRange: 'all',
     community: 'openeuler',
     contributeType: 'issue',
   };
@@ -154,7 +156,7 @@ const getissuelistData = () => {
 const getcommentlistData = () => {
   const query = {
     company: sencondTitleValue.value,
-    timeRange: 'lastonemonth',
+    timeRange: 'all',
     community: 'openeuler',
     contributeType: 'comment',
   };
@@ -211,7 +213,7 @@ const lastformOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'mother',
+      active: 'all',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
@@ -226,7 +228,7 @@ const firstformOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'lastonemonth',
+      active: 'all',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
@@ -327,13 +329,22 @@ watch(
     reallListData.value = tableData.value;
   }
 );
+const goTo = (item: any) => {
+  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
+  window.open(routeData.href, '_blank');
+};
+const goToHome = () => {
+  router.push(`/${useCommon.language}/detail`);
+};
 </script>
 <template>
   <div class="container">
     <o-anchor top="11rem" :data="anchorData" :offset-value="400"></o-anchor>
     <div class="wrap">
       <div class="step">
-        <span class="step-one">{{ t('nav.contributors') }}</span>
+        <span class="step-one" @click="goToHome()">{{
+          t('nav.contributors')
+        }}</span>
         <span> > {{ sencondTitle }}</span>
       </div>
       <div class="main">
@@ -419,6 +430,7 @@ watch(
                 v-for="item in sigsData.sigs"
                 :key="item.value"
                 class="atlas-sp"
+                @click="goTo(item)"
               >
                 {{ item }}
               </span>
@@ -588,7 +600,6 @@ watch(
             <div class="demo-pagination-block">
               <el-pagination
                 v-show="reallListData.length > 10"
-                background
                 :current-page="currentPage"
                 :page-size="10"
                 layout="total, prev, pager, next, jumper"
@@ -618,6 +629,7 @@ watch(
   font-size: 12px;
   &-one {
     color: #002fa7;
+    cursor: pointer
   }
   &-two {
     color: #555555;
@@ -704,6 +716,7 @@ watch(
       color: #002fa7;
       line-height: 22px;
       margin-bottom: 8px;
+      cursor: pointer;
     }
   }
 }
@@ -837,6 +850,7 @@ watch(
       height: 12px;
       background: #002fa7;
       margin-right: 8px;
+
     }
   }
   .yellow-box {
@@ -878,7 +892,7 @@ watch(
 }
 .edcolor-box {
   display: flex;
-  margin-left: 20px;
+  margin-left: 24px;
   padding-bottom: 20px;
 
   .blue-box {
