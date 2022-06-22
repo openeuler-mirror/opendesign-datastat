@@ -35,7 +35,7 @@ const getMemberData = () => {
     } else {
       memberMax.value = memberList[0].contribute;
       memberData.value = memberList;
-      reallData.value = memberData.value
+      reallData.value = memberData.value;
     }
   });
 };
@@ -240,7 +240,6 @@ const clearSearchInput = () => {
     <div class="demo-pagination-block">
       <el-pagination
         v-show="reallData.length > 10"
-        background
         :current-page="currentPage"
         :page-size="10"
         layout="total, prev, pager, next, jumper"
@@ -253,13 +252,11 @@ const clearSearchInput = () => {
 <style scoped lang="scss">
 @import '@/shared/styles/style.scss';
 .theSecondForm {
-  padding-left: 24px;
   padding-right: 24px;
 }
 .ranking-list {
   display: grid;
   grid-template-columns: 100%;
-  padding-left: 24px;
   padding-right: 24px;
   .caption {
     font-size: 16px;
@@ -285,7 +282,6 @@ const clearSearchInput = () => {
 }
 .edcolor-box {
   display: flex;
-  margin-left: 20px;
   padding-bottom: 10px;
 
   .blue-box {
@@ -296,7 +292,7 @@ const clearSearchInput = () => {
     .box {
       width: 12px;
       height: 12px;
-      background: linear-gradient(45deg, #005cd3 0%, #002fa7 100%);
+      background: #002fa7;
       border-radius: 50%;
       margin-right: 8px;
     }
@@ -309,7 +305,8 @@ const clearSearchInput = () => {
     .box {
       width: 12px;
       height: 12px;
-      background: linear-gradient(225deg, #feb32a 0%, #f6d365 100%);
+
+      background: #feb32a;
       border-radius: 2px;
       font-size: 10px;
       font-family: HarmonyOS_Sans_SC;
@@ -328,7 +325,7 @@ const clearSearchInput = () => {
     .box {
       width: 12px;
       height: 12px;
-      background: linear-gradient(225deg, #4aaead 0%, #6bfbfa 100%);
+      background: #4aaead;
       border-radius: 2px;
       font-size: 10px;
       font-family: HarmonyOS_Sans_SC;
@@ -356,16 +353,17 @@ const clearSearchInput = () => {
 }
 .leader {
   margin-bottom: 10px;
-  margin-left: 20px;
   display: flex;
   &-box {
-    width: 58px;
-    height: 16px;
-    background: linear-gradient(45deg, #005cd3 0%, #002fa7 100%);
+    width: 54px;
+    height: 22px;
+    background: #0062dc;
     border-radius: 2px;
     color: #ffffff;
     margin-right: 10px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 .searchInput {

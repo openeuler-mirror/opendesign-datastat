@@ -82,6 +82,9 @@ const querySorceData = () => {
 const goToHome = () => {
   router.push(`/${useCommon.language}/overview`);
 };
+const goToTetail = () => {
+  router.push(`/${useCommon.language}/detail`);
+};
 // 搜索过滤
 const searchInput = ref('');
 const reallData = ref([] as IObject[]);
@@ -120,7 +123,9 @@ const querySigInfoData = () => {
     <o-anchor :data="anchorData" top="11rem"></o-anchor>
     <div class="wrap">
       <div class="step">
-        <span class="step-one">{{ t('nav.contributors') }}</span>
+        <span class="step-one" @click="goToTetail()">{{
+          t('nav.contributors')
+        }}</span>
         <span> > {{ sencondTitle }}</span>
       </div>
       <div class="main">
@@ -259,6 +264,7 @@ const querySigInfoData = () => {
             <h3 id="companyContributor" class="title">
               {{ sencondTitle + ' ' + t('companyContributor') }}
             </h3>
+
             <table-list :sig="sencondTitle" />
           </div>
           <div class="contributors-panel">
@@ -300,6 +306,7 @@ const querySigInfoData = () => {
   font-size: 12px;
   &-one {
     color: #002fa7;
+    cursor: pointer;
   }
   &-two {
     color: #555555;

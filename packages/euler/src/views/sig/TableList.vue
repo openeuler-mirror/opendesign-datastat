@@ -356,7 +356,6 @@ onMounted(() => {
   position: relative;
   height: 100%;
   padding-bottom: 12px;
-
   .bar-columns {
     position: absolute;
     bottom: 0;
