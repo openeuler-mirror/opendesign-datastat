@@ -275,7 +275,10 @@ onMounted(() => {
             </div>
             <div class="info">
               <p>
-                <span class="index">{{ +index + 1 }}</span>
+                <span v-if="item.index !== '*'" class="index">{{
+                  item.index
+                }}</span>
+                <span v-else class="index"></span>
                 {{
                   useCommon.language === 'zh'
                     ? item.company_cn

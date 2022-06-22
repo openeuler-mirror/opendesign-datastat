@@ -47,7 +47,7 @@ export default {
   userContributor: 'Contribution by Individuals',
   companyContributor: 'Contribution by Organizations',
   groupActive: 'SIG Active Degree Landscape',
-  Currentcontributionranking: "Current/last month's contribution ranking",
+  Currentcontributionranking: "Current/last month's contribution",
   Numbercontributors: 'Number of contributors',
   Contributordistribution: 'Contributor distribution',
   Commitcontribution: 'Commit contribution',

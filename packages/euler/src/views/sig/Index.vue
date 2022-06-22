@@ -88,7 +88,7 @@ const reallData = ref([] as IObject[]);
 const querySearch = () => {
   if (searchInput.value !== '') {
     const newList = drownData.value.filter((item: any) =>
-      item.includes(searchInput.value)
+      item.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
   }

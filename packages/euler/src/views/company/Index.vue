@@ -24,6 +24,8 @@ import TheProgress from '@/components/TheProgress.vue';
 import { useStaffStore } from '@/stores/staff';
 import OFormRadio from '@/components/OFormRadio.vue';
 import { Search } from '@element-plus/icons-vue';
+import IconUser from '~icons/app/search';
+import OIcon from 'shared/components/OIcon.vue';
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -113,7 +115,6 @@ const getDrownData = () => {
   });
   reallData.value = drownData.value;
 };
-console.log(drownData);
 const getSigsData = () => {
   const query = {
     company: sencondTitleValue.value,
@@ -194,6 +195,7 @@ onMounted(() => {
   useStaff.getStaffData(sencondTitleValue.value);
   loading.value = false;
 });
+
 const lastformOption = computed(() => {
   return [
     {
@@ -282,7 +284,6 @@ const indexMethod = (index: number) => {
 const anchorData = ['ecological', 'staffContributor'];
 
 // 搜索过滤
-// const isSearch = ref(false);
 const searchInput = ref('');
 const reallData = ref([] as IObject[]);
 
@@ -302,6 +303,30 @@ const clearSearchInput = () => {
 const clean = () => {
   searchInput.value = '';
 };
+// 贡献表搜索
+const reallListData = ref([] as IObject[]);
+
+const searchListInput = ref('');
+const queryListSearch = () => {
+  if (searchListInput.value !== '') {
+    const newList = tableData.value.filter((item: any) =>
+      item.gitee_id.toLowerCase().includes(searchListInput.value)
+    );
+    reallListData.value = newList;
+  } else {
+    reallListData.value = tableData.value;
+  }
+};
+const clearListSearchInput = () => {
+  reallListData.value = tableData.value;
+  searchListInput.value = '';
+};
+watch(
+  () => tableData.value,
+  () => {
+    reallListData.value = tableData.value;
+  }
+);
 </script>
 <template>
   <div class="container">
@@ -318,7 +343,7 @@ const clean = () => {
               {{ sencondTitle }}
             </div>
             <div class="edropdown">
-              <el-dropdown :handleClose="clean">
+              <el-dropdown>
                 <div class="btnc">
                   <el-icon :size="20">
                     <arrowDown />
@@ -409,7 +434,8 @@ const clean = () => {
               <o-form-radio
                 :option="firstformOption"
                 @get-contribute-info="getTreeContributeInfo($event)"
-              ></o-form-radio>
+              >
+              </o-form-radio>
             </div>
             <div class="color-box">
               <div class="blue-box">
@@ -454,6 +480,24 @@ const clean = () => {
                 :option="lastformOption"
                 :component-name="componentName"
                 @get-contribute-info="getContributeInfo"
+                ><template #searchInput>
+                  <div class="searchListInput">
+                    <el-input
+                      v-model="searchListInput"
+                      :trigger-on-focus="false"
+                      clearable
+                      :debounce="300"
+                      size="large"
+                      placeholder="请输入Gitee ID搜索"
+                      @change="queryListSearch"
+                      @clear="clearListSearchInput"
+                    >
+                      <template #prefix>
+                        <o-icon class="search-icon"
+                          ><icon-user></icon-user
+                        ></o-icon> </template
+                    ></el-input>
+                  </div> </template
               ></the-form>
             </div>
             <div class="edcolor-box">
@@ -477,7 +521,10 @@ const clean = () => {
                 <el-table
                   v-loading="loading"
                   :data="
-                    tableData.slice((currentPage - 1) * 10, currentPage * 10)
+                    reallListData.slice(
+                      (currentPage - 1) * 10,
+                      currentPage * 10
+                    )
                   "
                   style="width: 100%"
                 >
@@ -540,12 +587,12 @@ const clean = () => {
             </div>
             <div class="demo-pagination-block">
               <el-pagination
-                v-show="tableData.length > 0"
+                v-show="reallListData.length > 10"
                 background
                 :current-page="currentPage"
                 :page-size="10"
                 layout="total, prev, pager, next, jumper"
-                :total="tableData.length"
+                :total="reallListData.length"
                 @current-change="handleCurrentChange"
               >
               </el-pagination>
@@ -908,7 +955,39 @@ const clean = () => {
   text-align: center;
 }
 .searchInput {
-  width: 100%;
+  width: 90%;
+  margin: 20px;
+  .search-icon {
+    font-size: 20px;
+  }
+  :deep(.el-autocomplete) {
+    width: 100%;
+    &.active .el-input__inner {
+      box-shadow: 0 0 0 1px #002fa7 inset;
+    }
+  }
+  :deep(.el-input__prefix) {
+    left: 12px;
+    align-items: center;
+  }
+  @media screen and (min-width: 900px) {
+    :deep(.el-input__inner) {
+      padding-left: 40px;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    :deep(.el-input__prefix) {
+      left: 10px;
+    }
+  }
+  :deep(.el-input__inner:focus) {
+    box-shadow: 0 0 0 1px #002fa7 inset;
+  }
+}
+.searchListInput {
+  width: 90%;
+  margin-left: 110px;
+  margin-bottom: 20px;
   .search-icon {
     font-size: 20px;
   }

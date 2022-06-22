@@ -52,7 +52,7 @@ export default {
   NeedsProblems: '需求&问题',
   staffContributor: '员工贡献',
   review: '评审',
-  Currentcontributionranking: '当前/最近一个月的贡献排名',
+  Currentcontributionranking: '当前/最近一个月的贡献',
   Numbercontributors: '贡献者数量',
   toHome: '前往主页',
   MailingList: '邮件列表',
