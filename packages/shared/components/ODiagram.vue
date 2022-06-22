@@ -133,9 +133,12 @@ const getTipsHtml = (d: IObject) => {
               </span> ${t('Participated2')}
             </div>
             <div class="mark"
-                onclick="window.location.href='${window?.location?.origin}/${
-      localStorage?.lang
-    }/company/${d.data.key}'"
+                onclick="window.open(
+        '${window?.location?.origin}/${localStorage?.lang}/company/${
+      d.data.key
+    }',
+        '_blank'
+      )"
             >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
   }
   return `<div>${t('interestGroup')}</div>
@@ -149,9 +152,10 @@ const getTipsHtml = (d: IObject) => {
               }</span> ${t('Participated4')}
             </div>
             <div class="mark"
-                onclick="window.location.href='${window?.location?.origin}/${
-    localStorage?.lang
-  }/sig/${d.data.key}'"
+                onclick="window.open(
+        '${window?.location?.origin}/${localStorage?.lang}/sig/${d.data.key}',
+        '_blank'
+      )"
             >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
 };
 const chart = () => {
@@ -201,9 +205,15 @@ const chart = () => {
 
   function jumped(this: any, event: IObject, d: IObject) {
     if (d?.parent?.data?.name === 'company') {
-      window.location.href = `${window?.location?.origin}/${localStorage?.lang}/company/${d.data.key}`;
+      window.open(
+        `${window?.location?.origin}/${localStorage?.lang}/company/${d.data.key}`,
+        '_blank'
+      );
     } else {
-      window.location.href = `${window?.location?.origin}/${localStorage?.lang}/sig/${d.data.key}`;
+      window.open(
+        `${window?.location?.origin}/${localStorage?.lang}/sig/${d.data.key}`,
+        '_blank'
+      );
     }
   }
   function overed(this: any, event: IObject, d: IObject) {

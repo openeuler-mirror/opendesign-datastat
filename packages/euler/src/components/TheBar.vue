@@ -70,9 +70,16 @@ const showAfter = 200;
 
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  if (hasPermission('sigRead')) {
+  if (
+    hasPermission('sigRead') &&
+    data.company_cn !== '个人贡献者' &&
+    data.company_en !== 'independent'
+  ) {
     data;
-    router.push(`/${useCommon.language}/company/${data.company_cn}`);
+    const routeData: any = router.resolve(
+      `/${useCommon.language}/company/${data.company_cn}`
+    );
+    window.open(routeData.href, '_blank');
   } else {
   }
 };
@@ -89,6 +96,21 @@ const goToCompany = (data: IObject) => {
         <p class="infos">
           <span class="index">{{ item.index }}</span>
           <span
+            v-if="
+              item.company_cn === '个人贡献者' ||
+              item.company_en === 'independent'
+            "
+            class="name"
+            >{{
+              useCommon.language === 'zh'
+                ? item.company_cn
+                : item.company_en === ''
+                ? item.company_cn
+                : item.company_en
+            }}</span
+          >
+          <span
+            v-else
             class="name"
             :title="
               useCommon.language === 'zh'
@@ -97,6 +119,9 @@ const goToCompany = (data: IObject) => {
                 ? item.company_cn
                 : item.company_en
             "
+            :style="{
+              cursor: 'pointer',
+            }"
             @click="goToCompany(item)"
             >{{
               useCommon.language === 'zh'
@@ -122,7 +147,8 @@ const goToCompany = (data: IObject) => {
             </div>
             <div class="info">
               <p>
-                <span class="index">{{ +index + 1 }}</span>
+                <span class="index">{{ item.index }}</span>
+
                 {{
                   useCommon.language === 'zh'
                     ? item.company_cn
@@ -139,7 +165,17 @@ const goToCompany = (data: IObject) => {
               </span>
             </div>
           </template>
-          <div class="progress">
+          <div
+            class="progress"
+            :style="{
+              cursor:
+                item.company_cn !== '个人贡献者' ||
+                item.company_en !== 'independent'
+                  ? 'pointer'
+                  : 'default',
+            }"
+            @click="goToCompany(item)"
+          >
             <div
               class="progress-inner"
               :style="{
@@ -234,6 +270,7 @@ const goToCompany = (data: IObject) => {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        // cursor: pointer;
       }
     }
   }

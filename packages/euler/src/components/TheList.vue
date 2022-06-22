@@ -54,7 +54,6 @@
             :show-after="showAfter"
             class:bar-tooltip
             :show-arrow="false"
-
           >
             <div
               class="detail-menu menu-item"
@@ -69,7 +68,9 @@
               >
             </div>
             <template #content>
-              <div class="lable">{{ val.sig_names }}</div>
+              <div class="lable">
+                {{ val.sig_names }}
+              </div>
               <div class="info">
                 <p>
                   <span class="index">{{ t('ranking') }}</span>
@@ -138,7 +139,10 @@ const getList = () => {
 };
 getList();
 const goTo = (item: any) => {
-  router.push(`/${useCommon.language}/sig/${item.sig_names}`);
+  const routeData: any = router.resolve(
+    `/${useCommon.language}/sig/${item.sig_names}`
+  );
+  window.open(routeData.href, '_blank');
 };
 </script>
 <style scoped lang="scss">
@@ -234,14 +238,14 @@ const goTo = (item: any) => {
 }
 .right-btn {
   position: absolute;
-  right: 20px;
+  right: 100px;
   bottom: 6px;
 }
 .numberIndex {
   position: absolute;
-  right: 20px;
+  right: 80px;
 }
 .lable {
-  width: 160px;
+  min-width: 160px;
 }
 </style>

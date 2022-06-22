@@ -7,6 +7,8 @@ import { openCommunityInfo } from '@/api/index';
 import { querySigUserContribute } from 'shared/api/index';
 import { sortExp } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
+import IconUser from '~icons/app/search';
+import OIcon from 'shared/components/OIcon.vue';
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -23,6 +25,7 @@ const param = ref({
 } as IObject);
 const memberData = ref([]);
 const memberMax = ref(0);
+const searchInput = ref('');
 const getMemberData = () => {
   querySigUserContribute(param.value).then((data) => {
     const memberList = data?.data?.sort(sortExp('contribute', false)) || [];
@@ -32,6 +35,7 @@ const getMemberData = () => {
     } else {
       memberMax.value = memberList[0].contribute;
       memberData.value = memberList;
+      reallData.value = memberData.value
     }
   });
 };
@@ -105,6 +109,23 @@ const handleCurrentChange = (val: number) => {
 const indexMethod = (index: number) => {
   return (currentPage.value - 1) * 10 + index + 1;
 };
+// 搜索过滤
+
+const reallData = ref([] as IObject[]);
+const querySearch = () => {
+  if (searchInput.value !== '') {
+    const newList = memberData.value.filter((item: any) =>
+      item.gitee_id.toLowerCase().includes(searchInput.value)
+    );
+    reallData.value = newList;
+  } else {
+    getMemberData();
+  }
+};
+const clearSearchInput = () => {
+  getMemberData();
+  searchInput.value = '';
+};
 </script>
 <template>
   <div>
@@ -112,6 +133,25 @@ const indexMethod = (index: number) => {
       <o-form-radio
         :option="lastformOption"
         @get-contribute-info="getContributeInfo($event)"
+      >
+        <template #searchInput>
+          <div class="searchInput">
+            <el-input
+              v-model="searchInput"
+              :trigger-on-focus="false"
+              clearable
+              :debounce="300"
+              size="large"
+              placeholder="请输入Gitee ID搜索"
+              @change="querySearch"
+              @clear="clearSearchInput"
+            >
+              <template #prefix>
+                <o-icon class="search-icon"
+                  ><icon-user></icon-user
+                ></o-icon> </template
+            ></el-input>
+          </div> </template
       ></o-form-radio>
     </div>
     <div class="edcolor-box">
@@ -132,13 +172,12 @@ const indexMethod = (index: number) => {
       <div class="leader-box">Leader</div>
       <span>SIG Leader</span>
     </div>
-
     <div class="ranking-list">
       <div class="ranking-list-item">
         <p class="caption"></p>
         <el-table
           v-loading="loading"
-          :data="memberData.slice((currentPage - 1) * 10, currentPage * 10)"
+          :data="reallData.slice((currentPage - 1) * 10, currentPage * 10)"
           style="width: 100%"
         >
           <el-table-column
@@ -200,12 +239,12 @@ const indexMethod = (index: number) => {
     </div>
     <div class="demo-pagination-block">
       <el-pagination
-        v-show="memberData.length > 0"
+        v-show="reallData.length > 10"
         background
         :current-page="currentPage"
         :page-size="10"
         layout="total, prev, pager, next, jumper"
-        :total="memberData.length"
+        :total="reallData.length"
         @current-change="handleCurrentChange"
       />
     </div>
@@ -327,6 +366,36 @@ const indexMethod = (index: number) => {
     color: #ffffff;
     margin-right: 10px;
     text-align: center;
+  }
+}
+.searchInput {
+  width: 100%;
+  margin: 10px 0 20px;
+  .search-icon {
+    font-size: 20px;
+  }
+  :deep(.el-autocomplete) {
+    width: 100%;
+    &.active .el-input__inner {
+      box-shadow: 0 0 0 1px #002fa7 inset;
+    }
+  }
+  :deep(.el-input__prefix) {
+    left: 12px;
+    align-items: center;
+  }
+  @media screen and (min-width: 900px) {
+    :deep(.el-input__inner) {
+      padding-left: 40px;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    :deep(.el-input__prefix) {
+      left: 10px;
+    }
+  }
+  :deep(.el-input__inner:focus) {
+    box-shadow: 0 0 0 1px #002fa7 inset;
   }
 }
 </style>
