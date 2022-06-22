@@ -183,7 +183,8 @@ const chart = () => {
       d.text = this;
     })
     .on('mouseover', overed)
-    .on('mouseout', outed);
+    .on('mouseout', outed)
+    .on('click', jumped);
 
   const link = svg
     .append('g')
@@ -198,6 +199,13 @@ const chart = () => {
       d.path = this;
     });
 
+  function jumped(this: any, event: IObject, d: IObject) {
+    if (d?.parent?.data?.name === 'company') {
+      window.location.href = `${window?.location?.origin}/${localStorage?.lang}/company/${d.data.key}`;
+    } else {
+      window.location.href = `${window?.location?.origin}/${localStorage?.lang}/sig/${d.data.key}`;
+    }
+  }
   function overed(this: any, event: IObject, d: IObject) {
     keepTip();
     tooltip
