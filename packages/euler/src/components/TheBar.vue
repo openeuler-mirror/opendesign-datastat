@@ -101,6 +101,9 @@ const goToCompany = (data: IObject) => {
               item.company_en === 'independent'
             "
             class="name"
+            :style="{
+              color: '#555555',
+            }"
             >{{
               useCommon.language === 'zh'
                 ? item.company_cn
@@ -120,7 +123,8 @@ const goToCompany = (data: IObject) => {
                 : item.company_en
             "
             :style="{
-              cursor: 'pointer',
+              cursor: hasPermission('sigRead') ? 'pointer' : 'auto',
+              color: hasPermission('sigRead') ? '#002FA7' : '#555555',
             }"
             @click="goToCompany(item)"
             >{{

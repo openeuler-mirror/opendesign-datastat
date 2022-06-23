@@ -63,6 +63,29 @@ const oechartData = ref({
   D2: 0,
 });
 const oechartTreeValue = ref([] as IObject[]);
+const oechartTreeGroup = ref([] as IObject[]);
+oechartTreeGroup.value = [
+  {
+    key: '桌面/图形系统',
+    label: '桌面/图形系统',
+    color: '#002FA7',
+  },
+  {
+    key: '架构/处理器/内核/驱动',
+    label: '架构/处理器/内核/驱动',
+    color: '#FEB32A',
+  },
+  {
+    key: '基础功能/特性/工具',
+    label: '基础功能/特性/工具',
+    color: '#4AAEAD',
+  },
+  {
+    key: '行业解决方案/应用',
+    label: '行业解决方案/应用',
+    color: '#FC756C',
+  },
+];
 const oechartSecondTreeValue = ref([] as IObject[]);
 const getoechartTreeValue = () => {
   const query = {
@@ -87,13 +110,14 @@ const getTreeSearchValue = () => {
   queryCompanySigDetails(param.value).then((data) => {
     treeData.value = treeProcessing(data?.data || []);
     treeData.value.sigs.map((item: IObject) => {
-      if (item.group !== '') {
+      if (item.group !== 'null') {
         oechartTreeValue.value.push({
           key: '',
           label: item.sig,
           value: item.D0,
           group: item.group,
         });
+
         oechartSecondTreeValue.value.push({
           key: '',
           label: item.sig,
@@ -103,8 +127,28 @@ const getTreeSearchValue = () => {
       }
     });
   });
+  const a = oechartTreeValue.value.filter(
+    (item) => item.group === '基础功能/特性/工具'
+  );
+  const b = oechartTreeValue.value.filter(
+    (item) => item.group === '桌面/图形系统'
+  );
+  const c = oechartTreeValue.value.filter(
+    (item) => item.group === '架构/处理器/内核/驱动'
+  );
+  const d = oechartTreeValue.value.filter(
+    (item) => item.group === '行业解决方案/应用'
+  );
+  const all = [
+    { name: '基础功能/特性/工具', length: a.length },
+    { name: '桌面/图形系统', length: b.length },
+    { name: '架构/处理器/内核/驱动', length: c.length },
+    { name: '行业解决方案/应用', length: d.length },
+  ];
+  console.log('all', all);
   oechartSecondTreeValue.value = [];
   oechartTreeValue.value = [];
+  // oechartTreeGroup.value = [];
 };
 const drownData = ref([] as IObject[]);
 const getDrownData = () => {
@@ -205,9 +249,9 @@ const lastformOption = computed(() => {
       id: 'contributeType',
       active: 'pr',
       list: [
-        { label: t('home.prs'), value: 'PR' },
-        { label: t('home.issues'), value: 'Issue' },
-        { label: t('home.comments'), value: 'Comment' },
+        { label: t('home.prs'), value: 'pr' },
+        { label: t('home.issues'), value: 'issue' },
+        { label: t('home.comments'), value: 'comment' },
       ],
     },
     {
@@ -252,13 +296,13 @@ const getTreeContributeInfo = (e?: IObject) => {
 const typeLable = ref('');
 const switchType = () => {
   switch (useStaff.staffForm.contributeType) {
-    case 'PR':
+    case 'pr':
       typeLable.value = t('home.prs');
       break;
-    case 'Issue':
+    case 'issue':
       typeLable.value = t('home.issues');
       break;
-    case 'Comment':
+    case 'comment':
       typeLable.value = t('home.comments');
       break;
   }
@@ -468,6 +512,7 @@ const goToHome = () => {
               <o-echart-treemap
                 id="firstTreemap"
                 :value="(oechartTreeValue as any)"
+                :group="(oechartTreeGroup as any)"
               ></o-echart-treemap>
             </div>
             <div class="smalltitle">{{ t('Commitcontribution') }}</div>
@@ -479,7 +524,7 @@ const goToHome = () => {
             </div>
           </div>
 
-          <div class="contributors-panel">
+          <div class="lastcontributors-panel">
             <h3 id="staffContributor" class="stafftitle">
               {{ `${sencondTitle} ${t('staffContributor')}` }}
             </h3>
@@ -1045,5 +1090,17 @@ const goToHome = () => {
   background-image: url('@/assets/down.png');
   width: 24px;
   height: 24px;
+}
+.lastcontributors-panel {
+  padding: 5px;
+  background: #fff;
+  margin-top: 60px;
+  margin-bottom: 60px;
+  .title {
+    font-size: 24px;
+    color: #000;
+    font-weight: normal;
+    margin-bottom: 20px;
+  }
 }
 </style>

@@ -160,3 +160,13 @@ export function querySigInfo(params: object) {
   const url = '/query/sig/info';
   return request.get(url, { params }).then((res: AxiosResponse) => res.data);
 }
+
+/**
+ * sig下公司贡献
+ */
+export function querySigCompanyContribute(params: object) {
+  const url = '/query/sig/company/contribute';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}

@@ -9,7 +9,7 @@ import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import OFormRadio from '@/components/OFormRadio.vue';
-import { queryCompanyContribute } from 'shared/api/index';
+import { querySigCompanyContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 const { t } = useI18n();
@@ -24,7 +24,7 @@ const props = defineProps({
   },
 });
 const param = ref({
-  contributeType: 'PR',
+  contributeType: 'pr',
   timeRange: 'lastonemonth',
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
@@ -35,7 +35,7 @@ const memberMax = ref(0);
 const memberList = ref([] as IObject[]);
 const rankNum = ref(1);
 const getMemberData = () => {
-  queryCompanyContribute(param.value).then((data) => {
+  querySigCompanyContribute(param.value).then((data) => {
     memberList.value = data.data.sort(sortExp('contribute', false));
     memberMax.value = ceil(memberList.value[0].contribute, -2);
     memberList.value.forEach((item) => {
@@ -68,11 +68,11 @@ const formOption = computed(() => {
     {
       label: t('from.type'),
       id: 'contributeType',
-      active: 'PR',
+      active: 'pr',
       list: [
-        { label: t('home.prs'), value: 'PR' },
-        { label: t('home.issues'), value: 'Issue' },
-        { label: t('home.comments'), value: 'Comment' },
+        { label: t('home.prs'), value: 'pr' },
+        { label: t('home.issues'), value: 'issue' },
+        { label: t('home.comments'), value: 'comment' },
       ],
     },
     {

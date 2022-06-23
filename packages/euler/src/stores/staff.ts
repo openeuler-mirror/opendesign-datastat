@@ -17,11 +17,11 @@ export const useStaffStore = defineStore('staff', {
     memberMaxNum: 0,
     // 筛选参数
     staffForm: {
-      contributeType: 'PR',
-      timeRange: 'lastonemonth',
+      contributeType: 'pr',
+      timeRange: 'all',
     } as Form,
     memberForm: {
-      contributeType: 'PR',
+      contributeType: 'pr',
       timeRange: 'lastonemonth',
     } as Form,
   }),

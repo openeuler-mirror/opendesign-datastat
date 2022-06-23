@@ -18,7 +18,7 @@ const props = defineProps({
   },
 });
 const param = ref({
-  contributeType: 'PR',
+  contributeType: 'pr',
   timeRange: 'lastonemonth',
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
@@ -46,11 +46,11 @@ const lastformOption = computed(() => {
     {
       label: t('from.type'),
       id: 'contributeType',
-      active: 'PR',
+      active: 'pr',
       list: [
-        { label: t('home.prs'), value: 'PR' },
-        { label: t('home.issues'), value: 'Issue' },
-        { label: t('home.comments'), value: 'Comment' },
+        { label: t('home.prs'), value: 'pr' },
+        { label: t('home.issues'), value: 'issue' },
+        { label: t('home.comments'), value: 'comment' },
       ],
     },
     {
@@ -77,13 +77,13 @@ const getContributeInfo = (e: IObject) => {
 const typeLable = ref('');
 const switchType = () => {
   switch (param.value.contributeType) {
-    case 'PR':
+    case 'pr':
       typeLable.value = t('home.prs');
       break;
-    case 'Issue':
+    case 'issue':
       typeLable.value = t('home.issues');
       break;
-    case 'Comment':
+    case 'comment':
       typeLable.value = t('home.comments');
       break;
   }
