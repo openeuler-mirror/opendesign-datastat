@@ -48,6 +48,7 @@ export default {
   companyContributor: 'Contribution by Organizations',
   groupActive: 'SIG Active Degree Landscape',
   Currentcontributionranking: 'All contribution',
+  Pleaseenterunitnameforsearch:'Please enter unit name for search',
   Numbercontributors: 'Number of contributors',
   Contributordistribution: 'Contributor distribution',
   Commitcontribution: 'Commit contribution',

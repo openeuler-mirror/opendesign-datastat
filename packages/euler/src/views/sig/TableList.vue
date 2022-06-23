@@ -12,6 +12,8 @@ import OFormRadio from '@/components/OFormRadio.vue';
 import { querySigCompanyContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
@@ -200,6 +202,13 @@ watch(
 onMounted(() => {
   getMemberData();
 });
+// 跳转社区详情
+const goToCompany = (data: IObject) => {
+  const routeData: any = router.resolve(
+    `/${useCommon.language}/company/${data.company_cn}`
+  );
+  window.open(routeData.href, '_blank');
+};
 </script>
 
 <template>
@@ -242,7 +251,25 @@ onMounted(() => {
       >
         <p class="infos">
           <span class="index">{{ item.index }}</span>
+         <span
+            v-if="
+              item.company_cn === '个人贡献者' ||
+              item.company_en === 'independent'
+            "
+            class="name"
+            :style="{
+              color: '#555555',
+            }"
+            >{{
+              useCommon.language === 'zh'
+                ? item.company_cn
+                : item.company_en === ''
+                ? item.company_cn
+                : item.company_en
+            }}</span
+          >
           <span
+            v-else
             class="name"
             :title="
               useCommon.language === 'zh'
@@ -251,6 +278,11 @@ onMounted(() => {
                 ? item.company_cn
                 : item.company_en
             "
+            :style="{
+              cursor: 'pointer',
+              color:  '#002FA7',
+            }"
+            @click="goToCompany(item)"
             >{{
               useCommon.language === 'zh'
                 ? item.company_cn
