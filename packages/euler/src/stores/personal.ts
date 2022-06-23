@@ -12,7 +12,7 @@ export const usePersonalStore = defineStore('personal', {
     personalMaxNum: 0, // 个人数据最大参数
     // 筛选参数
     personalForm: {
-      contributeType: 'PR',
+      contributeType: 'pr',
       timeRange: 'lastonemonth',
     } as Form,
   }),
