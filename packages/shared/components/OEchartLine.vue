@@ -146,6 +146,7 @@ const getOption = (): EChartsOption => {
       min: function (value) {
         return value.min - 0.04 < 0 ? 0 : Number((value.min - 0.04).toFixed(2));
       },
+      splitNumber: 2,
     },
     series: getSeriesData(),
   };

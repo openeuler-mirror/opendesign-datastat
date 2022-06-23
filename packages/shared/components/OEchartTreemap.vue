@@ -189,8 +189,19 @@ const getOption = (): EChartsOption => {
         width: '100%',
         height: '100%',
         nodeClick: undefined,
+        levels: [
+          {},
+          {},
+          {
+            itemStyle: {
+              borderWidth: 1,
+            },
+          },
+        ],
         label: {
           show: true,
+          position: 'insideTopLeft',
+          distance: 5,
         },
         breadcrumb: {
           show: false,

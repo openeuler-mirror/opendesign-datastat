@@ -221,8 +221,8 @@ const chart = () => {
     tooltip
       .html(getTipsHtml(d))
       .style('display', 'block')
-      .style('left', `${event.pageX}px`)
-      .style('top', `${event.pageY + 20}px`);
+      .style('left', `${event.pageX + 5}px`)
+      .style('top', `${event.pageY}px`);
     link.style('mix-blend-mode', null);
     d3.select(this).attr('font-weight', 'bold');
     d3.selectAll('text').attr('fill', (dd: any) => {
