@@ -355,11 +355,7 @@ const goToHome = () => {
             </div>
             <div class="edropdown">
               <el-dropdown>
-                <div class="btnc">
-                  <el-icon :size="20">
-                    <arrowDown />
-                  </el-icon>
-                </div>
+                <div class="btnc"></div>
 
                 <template #dropdown>
                   <div class="searchInput">
@@ -552,7 +548,7 @@ const goToHome = () => {
                     align="left"
                     label="Gitee ID"
                     show-overflow-tooltip
-                    width="300"
+                    width="400"
                     ><template #default="scope">
                       <div class="usertype-box">
                         <span class="num"
@@ -560,17 +556,17 @@ const goToHome = () => {
                           }}<span v-show="scope.row.is_TC_owner" class="TCbox"
                             >TC</span
                           ><span
-                            v-show="scope.row.usertype === 'committer'"
+                            v-show="scope.row.usertype === 'committers'"
                             class="usertypecolorbox"
                             :style="({
-                              '--color': '225deg,#4AAEAD 0%, #6BFBFA 100%',
+                              '--color': '225deg, #FEB32A 0%, #F6D365 100%',
                             } as any)"
                             >Committer</span
                           ><span
                             v-show="scope.row.usertype === 'maintainers'"
                             class="usertypecolorbox"
                             :style="({
-                              '--color': '225deg,#FEB32A 0%, #F6D365 100%',
+                              '--color': '45deg, #005CD3 0%, #002FA7 100%',
                             } as any)"
                             >Maintainer
                           </span>
@@ -629,7 +625,7 @@ const goToHome = () => {
   font-size: 12px;
   &-one {
     color: #002fa7;
-    cursor: pointer
+    cursor: pointer;
   }
   &-two {
     color: #555555;
@@ -709,7 +705,7 @@ const goToHome = () => {
     flex-direction: column;
 
     &-sp {
-      width: 300px;
+      min-width: 80px;
       height: 22px;
       font-size: 16px;
       font-family: HarmonyOS_Sans_SC_Medium;
@@ -789,23 +785,26 @@ const goToHome = () => {
   }
   .usertype-box {
     display: flex;
-    align-items: center;
+    align-items: left;
     .num {
-      width: 100px;
+      width: 200px;
       text-align: left;
-
+      display: flex;
+      align-items: center;
       .TCbox {
         display: inline-block;
-        width: 29px;
-        height: 16px;
-        background: linear-gradient(45deg, #005cd3 0%, #002fa7 100%);
+        width: 32px;
+        height: 22px;
+        background: linear-gradient(45deg, #b461f6 0%, #7d32ea 100%);
         border-radius: 2px;
         font-size: 10px;
         font-family: HarmonyOS_Sans_SC;
         color: #ffffff;
         line-height: 12px;
         margin-left: 5px;
-        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
@@ -850,7 +849,6 @@ const goToHome = () => {
       height: 12px;
       background: #002fa7;
       margin-right: 8px;
-
     }
   }
   .yellow-box {
@@ -901,9 +899,9 @@ const goToHome = () => {
     justify-content: center;
     align-items: center;
     .box {
-      width: 29px;
-      height: 16px;
-      background: linear-gradient(45deg, #005cd3 0%, #002fa7 100%);
+      width: 32px;
+      height: 22px;
+      background: linear-gradient(45deg, #b461f6 0%, #7d32ea 100%);
       border-radius: 2px;
       font-size: 10px;
       font-family: HarmonyOS_Sans_SC;
@@ -911,6 +909,9 @@ const goToHome = () => {
       line-height: 12px;
       text-align: center;
       margin-right: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   .yellow-box {
@@ -919,9 +920,9 @@ const goToHome = () => {
     justify-content: center;
     align-items: center;
     .box {
-      width: 65px;
-      height: 16px;
-      background: linear-gradient(225deg, #feb32a 0%, #f6d365 100%);
+      width: 73px;
+      height: 22px;
+      background: linear-gradient(45deg, #005cd3 0%, #002fa7 100%);
       border-radius: 2px;
       font-size: 10px;
       font-family: HarmonyOS_Sans_SC;
@@ -929,6 +930,9 @@ const goToHome = () => {
       line-height: 12px;
       text-align: center;
       margin-right: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
   .red-box {
@@ -937,9 +941,9 @@ const goToHome = () => {
     justify-content: center;
     align-items: center;
     .box {
-      width: 65px;
-      height: 16px;
-      background: linear-gradient(225deg, #4aaead 0%, #6bfbfa 100%);
+      width: 72px;
+      height: 22px;
+      background: linear-gradient(225deg, #feb32a 0%, #f6d365 100%);
       border-radius: 2px;
       font-size: 10px;
       font-family: HarmonyOS_Sans_SC;
@@ -947,6 +951,9 @@ const goToHome = () => {
       line-height: 12px;
       text-align: center;
       margin-right: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
@@ -965,8 +972,13 @@ const goToHome = () => {
   color: #ffffff;
   line-height: 12px;
   height: 16px;
-  display: inline-block;
-  text-align: center;
+  // display: inline-block;
+  // text-align: center;
+  width: 73px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .searchInput {
   width: 90%;
@@ -1028,5 +1040,10 @@ const goToHome = () => {
   :deep(.el-input__inner:focus) {
     box-shadow: 0 0 0 1px #002fa7 inset;
   }
+}
+.btnc {
+  background-image: url('@/assets/down.png');
+  width: 24px;
+  height: 24px;
 }
 </style>
