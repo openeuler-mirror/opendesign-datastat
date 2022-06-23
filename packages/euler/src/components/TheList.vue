@@ -25,14 +25,14 @@
             <div class="info">
               <p>
                 <span class="index">特别兴趣小组数量</span>
-                <span class="numberIndex"> {{ value.arry.length }}</span>
+                <span class="titlenumberIndex"> {{ value.arry.length }}</span>
               </p>
             </div>
             <div class="info">
               <p>
                 <span v-if="value.arry.length" class="index">平均活跃度</span>
                 <span v-else class="index">平均活跃度 0</span>
-                <span class="numberIndex">
+                <span class="titlenumberIndex">
                   {{
                   (Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
                     value.arry.length) * 100) / 100).toFixed(2)
@@ -247,5 +247,9 @@ const goTo = (item: any) => {
 }
 .lable {
   min-width: 160px;
+}
+.titlenumberIndex{
+  position: absolute;
+  right: 10px;
 }
 </style>
