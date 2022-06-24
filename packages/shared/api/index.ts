@@ -170,3 +170,12 @@ export function querySigCompanyContribute(params: object) {
     .get(url, { params, global: true })
     .then((res: AxiosResponse) => res.data);
 }
+/**
+ *TC组成员所管理的sig组列表
+ */
+export function queryTCSigs(params: object) {
+  const url = '/query/TC/sigs';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}

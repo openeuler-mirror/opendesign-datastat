@@ -10,7 +10,6 @@
         <span class="liveness"></span>
         <p class="spp">1</p>
       </div>
-
       <the-list></the-list>
     </div>
     <div class="contributors-panel">
@@ -36,13 +35,14 @@
             <el-table-column
               align="center"
               :label="t('Committee')"
-              width="200"
+              width="150"
+
               show-overflow-tooltip
             >
               <template #default="scope">
                 <div class="group-father">
-                  <span class="group-name">{{ scope.row.name }}</span>
-                  <span class="group-email">{{ scope.row.email }}</span>
+                  <span class="group-name">{{ scope.row.user }}</span>
+                  <!-- <span class="group-email">{{ scope.row.email }}</span> -->
                 </div>
               </template></el-table-column
             >
@@ -55,9 +55,10 @@
               <template #default="scope">
                 <div class="Sgroup">
                   <span
-                    v-for="(value, index) in scope.row.group"
+                    v-for="(value, index) in scope.row.sigs"
                     :key="index"
                     class="group-email"
+                    @click="goToSig(value)"
                     >{{ value }},
                   </span>
                 </div>
@@ -70,12 +71,12 @@
             <el-table-column
               align="center"
               :label="t('Committee')"
-              width="200"
+              width="150"
               show-overflow-tooltip
               ><template #default="scope">
                 <div class="group-father">
-                  <span class="group-name">{{ scope.row.name }}</span>
-                  <span class="group-email">{{ scope.row.email }}</span>
+                  <span class="group-name">{{ scope.row.user }}</span>
+                  <!-- <span class="group-email">{{ scope.row.email }}</span> -->
                 </div>
               </template></el-table-column
             >
@@ -87,9 +88,10 @@
               ><template #default="scope">
                 <div class="Sgroup">
                   <span
-                    v-for="(value, index) in scope.row.group"
+                    v-for="(value, index) in scope.row.sigs"
                     :key="index"
                     class="group-email"
+                    @click="goToSig(value)"
                     >{{ value }},
                   </span>
                 </div>
@@ -105,18 +107,14 @@
 import TheList from '@/components/TheList.vue';
 import ODiagram from 'shared/components/ODiagram.vue';
 import { useI18n } from 'vue-i18n';
-import { grouprelationsList } from 'shared/utils/groupList';
 import { onMounted, ref, computed, watch } from 'vue';
-import { queryCompanySigs } from 'shared/api';
+import { queryCompanySigs, queryTCSigs } from 'shared/api';
 import { useCommonStore } from '@/stores/common';
 import { IObject } from 'shared/@types/interface';
+import { useRouter } from 'vue-router';
 const { t } = useI18n();
+const router = useRouter();
 const useCommon = useCommonStore();
-const hightSig = computed(() => grouprelationsList.slice(0, number));
-const lowSig = computed(() =>
-  grouprelationsList.slice(number, grouprelationsList.length)
-);
-const number = Math.ceil(grouprelationsList.length / 2);
 const listData = ref([]);
 const diagramData = ref({
   name: 'flare',
@@ -180,6 +178,28 @@ const getList = () => {
   });
 };
 getList();
+// 小组关系列表
+const groupData = ref([]);
+const number = ref(0)
+const getGroup = () => {
+  const query = {
+    community: 'openeuler',
+  };
+  queryTCSigs(query).then((data) => {
+    groupData.value = data?.data || [];
+    number.value = Math.ceil(groupData.value.length / 2);
+  });
+};
+getGroup();
+
+const lowSig = computed(() =>
+  groupData.value.slice(number.value, groupData.value.length)
+);
+const hightSig = computed(() => groupData.value.slice(0, number.value));
+const goToSig = (item: any)=>{
+  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
+  window.open(routeData.href, '_blank');
+}
 </script>
 <style scoped lang="scss">
 @import '@/shared/styles/style.scss';
@@ -292,13 +312,14 @@ getList();
   text-align-last: justify;
   text-align: justify;
   width: 60px;
-  margin-left: 35px;
+  margin-left: 10px;
 }
 .group-email {
   font-size: 14px;
   font-family: HarmonyOS_Sans_SC_Medium;
   color: #002fa7;
   line-height: 22px;
+  display: inline-block;
   &:hover {
     cursor: pointer;
   }
