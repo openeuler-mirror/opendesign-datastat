@@ -36,10 +36,10 @@ const colorMap = {
   D0: '#A3B4E0',
 };
 const getD1Sqrt = () => {
-  return (Math.sqrt(props?.data?.D1) / Math.sqrt(props?.data?.D0)) * 100 || 30;
+  return (Math.sqrt(props?.data?.D1) / Math.sqrt(props?.data?.D0)) * 100 || 0;
 };
 const getD2Sqrt = () => {
-  return (Math.sqrt(props?.data?.D2) / Math.sqrt(props?.data?.D0)) * 100 || 20;
+  return (Math.sqrt(props?.data?.D2) / Math.sqrt(props?.data?.D0)) * 100 || 0;
 };
 
 const getOption = (): EChartsOption => {

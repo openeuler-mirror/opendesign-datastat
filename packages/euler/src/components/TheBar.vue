@@ -169,17 +169,7 @@ const goToCompany = (data: IObject) => {
               </span>
             </div>
           </template>
-          <div
-            class="progress"
-            :style="{
-              cursor:
-                item.company_cn !== '个人贡献者' ||
-                item.company_en !== 'independent'
-                  ? 'pointer'
-                  : 'default',
-            }"
-            @click="goToCompany(item)"
-          >
+          <div class="progress">
             <div
               class="progress-inner"
               :style="{

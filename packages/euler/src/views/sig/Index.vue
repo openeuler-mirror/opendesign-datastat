@@ -53,7 +53,7 @@ const getDrownData = () => {
     const value = data?.data || {};
     const firstKeys = Object.keys(value);
     drownData.value = value[firstKeys[0]];
-    reallData.value = drownData.value;
+    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
   });
 };
 const getllData = () => {
@@ -168,7 +168,13 @@ const querySigInfoData = () => {
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
-                <span @click="goToHome()"> {{ t('toHome') }}</span>
+                <a
+                  style="color: #002fa7"
+                  target="_blank"
+                  :href="`https://gitee.com/${sencondTitle}`"
+                >
+                  {{ t('toHome') }}</a
+                >
               </div>
             </div>
             <div class="first">
@@ -212,6 +218,7 @@ const querySigInfoData = () => {
                 >
                   {{ item }}
                 </span>
+                <span v-if="!sigInfo.mentor" class="noitem"> 暂无Mentor </span>
               </div>
             </div>
             <div class="first">
@@ -528,5 +535,11 @@ const querySigInfoData = () => {
   :deep(.el-input__inner:focus) {
     box-shadow: 0 0 0 1px #002fa7 inset;
   }
+}
+.noitem {
+  margin-top: 8px;
+  font-size: 14px;
+  font-family: HarmonyOS_Sans_SC_Medium;
+  line-height: 22px;
 }
 </style>

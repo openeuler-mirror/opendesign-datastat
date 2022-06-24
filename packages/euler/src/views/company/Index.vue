@@ -64,28 +64,7 @@ const oechartData = ref({
 });
 const oechartTreeValue = ref([] as IObject[]);
 const oechartTreeGroup = ref([] as IObject[]);
-oechartTreeGroup.value = [
-  {
-    key: '桌面/图形系统',
-    label: '桌面/图形系统',
-    color: '#002FA7',
-  },
-  {
-    key: '架构/处理器/内核/驱动',
-    label: '架构/处理器/内核/驱动',
-    color: '#FEB32A',
-  },
-  {
-    key: '基础功能/特性/工具',
-    label: '基础功能/特性/工具',
-    color: '#4AAEAD',
-  },
-  {
-    key: '行业解决方案/应用',
-    label: '行业解决方案/应用',
-    color: '#FC756C',
-  },
-];
+oechartTreeGroup.value = [];
 const oechartSecondTreeValue = ref([] as IObject[]);
 const getoechartTreeValue = () => {
   const query = {
@@ -109,16 +88,18 @@ const param = ref({
 const getTreeSearchValue = () => {
   queryCompanySigDetails(param.value).then((data) => {
     treeData.value = treeProcessing(data?.data || []);
+    const firstTree: any = [];
+    const secondTree: any = [];
     treeData.value.sigs.map((item: IObject) => {
       if (item.group !== 'null') {
-        oechartTreeValue.value.push({
+        firstTree.push({
           key: '',
           label: item.sig,
           value: item.D0,
           group: item.group,
         });
 
-        oechartSecondTreeValue.value.push({
+        secondTree.push({
           key: '',
           label: item.sig,
           value: item.PR_Merged,
@@ -126,29 +107,29 @@ const getTreeSearchValue = () => {
         });
       }
     });
+    oechartTreeValue.value = firstTree;
+    oechartSecondTreeValue.value = secondTree;
+    const colorArr = ['#002FA7', '#FEB32A', '#4AAEAD', '#FC756C'];
+    oechartTreeGroup.value = oechartTreeValue.value
+      .reduce((pre, next) => {
+        const findone = pre.find((item: any) => item.group === next.group);
+        if (findone) {
+          findone.num += next.value;
+        } else if (next.group !== null) {
+          pre.push({
+            group: next.group,
+            num: next.value,
+          });
+        }
+        return pre;
+      }, [])
+      .sort((a: any, b: any) => b.num - a.num)
+      .map((item: any, index: any) => ({
+        key: item.group,
+        label: item.group,
+        color: colorArr[index],
+      }));
   });
-  const a = oechartTreeValue.value.filter(
-    (item) => item.group === '基础功能/特性/工具'
-  );
-  const b = oechartTreeValue.value.filter(
-    (item) => item.group === '桌面/图形系统'
-  );
-  const c = oechartTreeValue.value.filter(
-    (item) => item.group === '架构/处理器/内核/驱动'
-  );
-  const d = oechartTreeValue.value.filter(
-    (item) => item.group === '行业解决方案/应用'
-  );
-  const all = [
-    { name: '基础功能/特性/工具', length: a.length },
-    { name: '桌面/图形系统', length: b.length },
-    { name: '架构/处理器/内核/驱动', length: c.length },
-    { name: '行业解决方案/应用', length: d.length },
-  ];
-  console.log('all', all);
-  oechartSecondTreeValue.value = [];
-  oechartTreeValue.value = [];
-  // oechartTreeGroup.value = [];
 };
 const drownData = ref([] as IObject[]);
 const getDrownData = () => {
@@ -159,7 +140,9 @@ const getDrownData = () => {
       label: item[key],
     };
   });
-  reallData.value = drownData.value;
+  reallData.value = drownData.value.sort((a, b) =>
+    a.value.localeCompare(b.value)
+  );
 };
 const getSigsData = () => {
   const query = {
@@ -395,7 +378,7 @@ const goToHome = () => {
         <div class="main-left">
           <div class="main-left-top">
             <div class="main-left-title">
-              {{ sencondTitle }}
+              <span :title="sencondTitle">{{ sencondTitle }}</span>
             </div>
             <div class="edropdown">
               <el-dropdown>
@@ -408,7 +391,7 @@ const goToHome = () => {
                       clearable
                       :debounce="300"
                       class="w-50 m-2"
-                      placeholder="Company Name"
+                      placeholder="请输入单位名称搜索"
                       :prefix-icon="Search"
                       @input="querySearch"
                       @clear="clearSearchInput"
@@ -464,7 +447,12 @@ const goToHome = () => {
           </div>
 
           <div class="left-second">
-            <span class="left-second-sp">{{ t('participation') }}SIG:</span>
+            <span v-if="sigsData.sigs?.length === 0" class="left-second-sp"
+              >暂未参与SIG</span
+            >
+            <span v-else class="left-second-sp"
+              >{{ t('participation') }}SIG:</span
+            >
             <div class="atlas">
               <span
                 v-for="item in sigsData.sigs"
@@ -490,24 +478,19 @@ const goToHome = () => {
               </o-form-radio>
             </div>
             <div class="color-box">
-              <div class="blue-box">
-                <div class="box"></div>
-                桌面/图形系统
-              </div>
-              <div class="yellow-box">
-                <div class="box"></div>
-                架构/处理器/内核/驱动
-              </div>
-              <div class="red-box">
-                <div class="box"></div>
-                基础功能/特性/工具
-              </div>
-              <div class="green-box">
-                <div class="box"></div>
-                行业解决方案/应用
+              <div
+                v-for="item in oechartTreeGroup"
+                :key="item.key"
+                class="blue-box"
+              >
+                <div
+                  class="box"
+                  :style="{ 'background-color': item.color }"
+                ></div>
+                {{ item.label }}
               </div>
             </div>
-            <div class="smalltitle">{{ t('Numbercontributors') }}</div>
+            <div class="firstsmalltitle">{{ t('Numbercontributors') }}</div>
             <div class="firstTreemap">
               <o-echart-treemap
                 id="firstTreemap"
@@ -520,6 +503,7 @@ const goToHome = () => {
               <o-echart-treemap
                 id="secondTreemap"
                 :value="(oechartSecondTreeValue as any)"
+                :group="(oechartTreeGroup as any)"
               ></o-echart-treemap>
             </div>
           </div>
@@ -780,13 +764,10 @@ const goToHome = () => {
   right: 10px;
 }
 .firstTreemap {
-  margin-bottom: 20px;
-
-  padding: 20px;
+  padding: 24px;
 }
 .secondTreemap {
-  margin-bottom: 60px;
-  padding: 20px;
+  padding: 24px;
 }
 .contributors-panel {
   padding: 5px;
@@ -803,7 +784,7 @@ const goToHome = () => {
   background-color: #ffffff;
 }
 .theFirstForm {
-  padding-top: 10px;
+  // padding-top: 10px;
   padding-left: 24px;
 }
 .theSecondForm {
@@ -871,10 +852,10 @@ const goToHome = () => {
   line-height: 24px;
 }
 .smalltitle {
-  margin-bottom: 20px;
-  margin-left: 20px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  margin-left: 24px;
   width: 280px;
-  height: 24px;
   font-size: 16px;
   font-family: HarmonyOS_Sans_SC;
   color: #000000;
@@ -882,7 +863,7 @@ const goToHome = () => {
 }
 .color-box {
   display: flex;
-  margin-left: 20px;
+  margin-left: 24px;
   padding-bottom: 20px;
   .blue-box {
     margin-right: 24px;
@@ -893,42 +874,6 @@ const goToHome = () => {
       width: 12px;
       height: 12px;
       background: #002fa7;
-      margin-right: 8px;
-    }
-  }
-  .yellow-box {
-    margin-right: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .box {
-      width: 12px;
-      height: 12px;
-      background: #feb32a;
-      margin-right: 8px;
-    }
-  }
-  .red-box {
-    margin-right: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .box {
-      width: 12px;
-      height: 12px;
-      background: #4aaead;
-      margin-right: 8px;
-    }
-  }
-  .green-box {
-    margin-right: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .box {
-      width: 12px;
-      height: 12px;
-      background: #fc756c;
       margin-right: 8px;
     }
   }
@@ -1017,8 +962,6 @@ const goToHome = () => {
   color: #ffffff;
   line-height: 12px;
   height: 16px;
-  // display: inline-block;
-  // text-align: center;
   width: 73px;
   height: 22px;
   display: flex;
@@ -1102,5 +1045,16 @@ const goToHome = () => {
     font-weight: normal;
     margin-bottom: 20px;
   }
+}
+.firstsmalltitle {
+  margin-left: 24px;
+  width: 280px;
+  font-size: 16px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #000000;
+  line-height: 24px;
+}
+.noSig {
+  margin-top: 10px;
 }
 </style>
