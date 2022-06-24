@@ -18,18 +18,27 @@ const props = defineProps({
   },
 });
 const contributionSelectBox = ref([
-  { color: '#002fa7', isSelected: true, label: 'Maintainer', key:'maintainers' },
-  { color: '#feb32a', isSelected: true, label: 'Committer',key:'committers' },
-  { color: '#4aaead', isSelected: true, label: 'Contributor',key:'contributor' },
-
+  {
+    color: '#002fa7',
+    isSelected: true,
+    label: 'Maintainer',
+    key: 'maintainers',
+  },
+  { color: '#feb32a', isSelected: true, label: 'Committer', key: 'committers' },
+  {
+    color: '#4aaead',
+    isSelected: true,
+    label: 'Contributor',
+    key: 'contributor',
+  },
 ]);
-const filterReallData = ()=>{
+const filterReallData = () => {
   reallData.value = reallData.value.filter((item) => {
-   return contributionSelectBox.value.some((it) => {
+    return contributionSelectBox.value.some((it) => {
       return it.isSelected && item.usertype === it.key;
     });
   });
-}
+};
 const reallData = ref([] as IObject[]);
 const param = ref({
   contributeType: 'pr',
@@ -53,7 +62,6 @@ const getMemberData = () => {
     }
     filterReallData();
   });
-
 };
 getMemberData();
 
@@ -133,7 +141,7 @@ const querySearch = () => {
       item.gitee_id.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
-    filterReallData()
+    filterReallData();
   } else {
     getMemberData();
   }
@@ -177,17 +185,21 @@ const getcontributeValue = (item: any) => {
       ></o-form-radio>
     </div>
     <div class="edcolor-box">
-
-      <div :key="value.label" v-for="value in contributionSelectBox" class="yellow-box" @click="getcontributeValue(value)">
+      <div
+        v-for="value in contributionSelectBox"
+        :key="value.label"
+        class="yellow-box"
+        style="cursor: pointer"
+        @click="getcontributeValue(value)"
+      >
         <div
           class="box"
           :style="{
             'background-color': value.isSelected ? value.color : '#cccccc',
           }"
         ></div>
-        <span >{{value.label}}</span>
+        <span>{{ value.label }}</span>
       </div>
-
     </div>
     <div class="leader">
       <div class="leader-box">Leader</div>
@@ -382,6 +394,7 @@ const getcontributeValue = (item: any) => {
 .leader {
   margin-bottom: 10px;
   display: flex;
+  align-items: center;
   &-box {
     width: 54px;
     height: 22px;
@@ -392,6 +405,9 @@ const getcontributeValue = (item: any) => {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 12px;
+    font-family: Helvetica-Light, Helvetica;
+    font-weight: 300;
   }
 }
 .searchInput {

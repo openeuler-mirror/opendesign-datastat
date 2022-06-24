@@ -582,23 +582,24 @@ const goToHome = () => {
                       <div class="usertype-box">
                         <span class="num"
                           >{{ scope.row.gitee_id
-                          }}<span v-show="scope.row.is_TC_owner" class="TCbox"
+                          }}<span v-if="scope.row.is_TC_owner" class="TCbox"
                             >TC</span
                           ><span
-                            v-show="scope.row.usertype === 'committers'"
+                            v-if="scope.row.usertype === 'committers'"
                             class="usertypecolorbox"
                             :style="({
                               '--color': '225deg, #FEB32A 0%, #F6D365 100%',
                             } as any)"
                             >Committer</span
                           ><span
-                            v-show="scope.row.usertype === 'maintainers'"
+                            v-if="scope.row.usertype === 'maintainers'"
                             class="usertypecolorbox"
                             :style="({
                               '--color': '45deg, #005CD3 0%, #002FA7 100%',
                             } as any)"
                             >Maintainer
                           </span>
+
                         </span>
                       </div>
                     </template>

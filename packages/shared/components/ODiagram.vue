@@ -133,6 +133,7 @@ const getTipsHtml = (d: IObject) => {
               </span> ${t('Participated2')}
             </div>
             <div class="mark"
+            style="cursor: pointer"
                 onclick="window.open(
         '${window?.location?.origin}/${localStorage?.lang}/company/${
       d.data.key
@@ -151,7 +152,7 @@ const getTipsHtml = (d: IObject) => {
                 d.incoming.length
               }</span> ${t('Participated4')}
             </div>
-            <div class="mark"
+            <div class="mark"  style="cursor: pointer"
                 onclick="window.open(
         '${window?.location?.origin}/${localStorage?.lang}/sig/${d.data.key}',
         '_blank'
