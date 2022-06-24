@@ -128,13 +128,13 @@ switchTime();
 const typeLable = ref('');
 const switchType = () => {
   switch (param.value.contributeType) {
-    case 'PR':
+    case 'pr':
       typeLable.value = t('home.prs');
       break;
-    case 'Issue':
+    case 'issue':
       typeLable.value = t('home.issues');
       break;
-    case 'Comment':
+    case 'comment':
       typeLable.value = t('home.comments');
       break;
   }

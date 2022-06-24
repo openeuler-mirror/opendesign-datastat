@@ -87,7 +87,7 @@
                 </p>
               </div>
               <div class="info">
-                <div>查看详情</div>
+                <div @click="goTo(val)" style="cursor: pointer">查看详情</div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
@@ -186,7 +186,7 @@
                 </p>
               </div>
               <div class="info">
-                <div>查看详情</div>
+                <div @click="goTo(val)" style="cursor: pointer">查看详情</div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
