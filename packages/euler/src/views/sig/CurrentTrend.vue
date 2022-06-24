@@ -136,7 +136,7 @@ initData();
             class="border padcell overflow"
             style="max-width: 90px; width: 90px"
           >
-            {{ props.sig }}
+            当前SIG
           </th>
           <th
             align="right"

@@ -17,6 +17,20 @@ const props = defineProps({
     default: '',
   },
 });
+const contributionSelectBox = ref([
+  { color: '#002fa7', isSelected: true, label: 'Maintainer', key:'maintainers' },
+  { color: '#feb32a', isSelected: true, label: 'Committer',key:'committers' },
+  { color: '#4aaead', isSelected: true, label: 'Contributor',key:'contributor' },
+
+]);
+const filterReallData = ()=>{
+  reallData.value = reallData.value.filter((item) => {
+   return contributionSelectBox.value.some((it) => {
+      return it.isSelected && item.usertype === it.key;
+    });
+  });
+}
+const reallData = ref([] as IObject[]);
 const param = ref({
   contributeType: 'pr',
   timeRange: 'lastonemonth',
@@ -37,7 +51,9 @@ const getMemberData = () => {
       memberData.value = memberList;
       reallData.value = memberData.value;
     }
+    filterReallData();
   });
+
 };
 getMemberData();
 
@@ -111,13 +127,13 @@ const indexMethod = (index: number) => {
 };
 // 搜索过滤
 
-const reallData = ref([] as IObject[]);
 const querySearch = () => {
   if (searchInput.value !== '') {
     const newList = memberData.value.filter((item: any) =>
       item.gitee_id.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
+    filterReallData()
   } else {
     getMemberData();
   }
@@ -125,6 +141,12 @@ const querySearch = () => {
 const clearSearchInput = () => {
   getMemberData();
   searchInput.value = '';
+};
+
+// 按颜色过滤
+const getcontributeValue = (item: any) => {
+  item.isSelected = !item.isSelected;
+  querySearch();
 };
 </script>
 <template>
@@ -155,18 +177,17 @@ const clearSearchInput = () => {
       ></o-form-radio>
     </div>
     <div class="edcolor-box">
-      <div class="blue-box">
-        <div class="box"></div>
-        Maintainer
+
+      <div :key="value.label" v-for="value in contributionSelectBox" class="yellow-box" @click="getcontributeValue(value)">
+        <div
+          class="box"
+          :style="{
+            'background-color': value.isSelected ? value.color : '#cccccc',
+          }"
+        ></div>
+        <span >{{value.label}}</span>
       </div>
-      <div class="yellow-box">
-        <div class="box"></div>
-        Committer
-      </div>
-      <div class="red-box">
-        <div class="box"></div>
-        Contributor
-      </div>
+
     </div>
     <div class="leader">
       <div class="leader-box">Leader</div>
@@ -293,6 +314,13 @@ const clearSearchInput = () => {
       width: 12px;
       height: 12px;
       background: #002fa7;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .nobox {
+      width: 12px;
+      height: 12px;
+      background: #000;
       border-radius: 50%;
       margin-right: 8px;
     }
