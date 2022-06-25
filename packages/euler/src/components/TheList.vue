@@ -258,6 +258,7 @@ const goTo = (item: any) => {
 <style scoped lang="scss">
 .main-menu {
   margin-top: 18px;
+
   .Community {
     padding-top: 24px;
     padding-bottom: 24px;
@@ -291,7 +292,7 @@ const goTo = (item: any) => {
   justify-content: center;
   align-items: center;
   color: #000000;
-  margin-right: 8px;
+  margin-right: 10px;
   font-family: HarmonyOS_Sans_SC;
   line-height: 24px;
 }
@@ -307,6 +308,7 @@ const goTo = (item: any) => {
   line-height: 22px;
   color: var(--color);
   cursor: pointer;
+  transition: all 0.3s;
   &-span {
     width: 150px;
     text-overflow: ellipsis;
@@ -318,6 +320,10 @@ const goTo = (item: any) => {
   white-space: nowrap;
   overflow: hidden;
 }
+.detail-menu:hover {
+  transform: scaleY(1.1) scaleX(1.1) translateZ(0);
+}
+
 .bar-tooltip {
   padding: 12px 16px;
   box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05),
@@ -368,8 +374,5 @@ const goTo = (item: any) => {
 .lable {
   min-width: 160px;
 }
-.titlenumberIndex {
-  position: absolute;
-  right: 10px;
-}
+
 </style>

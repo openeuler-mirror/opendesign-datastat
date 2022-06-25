@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="contributors-panel">
+    <div class="contributors-panel list">
       <h3 id="groupActive" class="title">
         {{ t('groupActive') }}
       </h3>
@@ -36,12 +36,16 @@
               align="center"
               :label="t('Committee')"
               width="150"
-
               show-overflow-tooltip
             >
               <template #default="scope">
                 <div class="group-father">
-                  <span class="group-name">{{ scope.row.user }}</span>
+                  <a
+                    :href="`http://gitee.com/${scope.row.user}`"
+                    target="_blank"
+                    class="group-email"
+                    >@{{ scope.row.user }}</a
+                  >
                   <!-- <span class="group-email">{{ scope.row.email }}</span> -->
                 </div>
               </template></el-table-column
@@ -75,8 +79,13 @@
               show-overflow-tooltip
               ><template #default="scope">
                 <div class="group-father">
-                  <span class="group-name">{{ scope.row.user }}</span>
-                  <!-- <span class="group-email">{{ scope.row.email }}</span> -->
+                  <a
+                    :href="`http://gitee.com/${scope.row.user}`"
+                    target="_blank"
+                    class="group-email"
+                    >@{{ scope.row.user }}</a
+                  >
+                  <!-- <span class="group-name">{{ scope.row.email }}</span> -->
                 </div>
               </template></el-table-column
             >
@@ -180,14 +189,17 @@ const getList = () => {
 getList();
 // 小组关系列表
 const groupData = ref([]);
-const number = ref(0)
+const number = ref(0);
 const getGroup = () => {
   const query = {
     community: 'openeuler',
   };
   queryTCSigs(query).then((data) => {
     groupData.value = data?.data || [];
-    number.value = Math.ceil(groupData.value.length / 2);
+    number.value = Math.ceil(
+      groupData.value.sort((a: any, b: any) => a.user.localeCompare(b.user))
+        .length / 2
+    );
   });
 };
 getGroup();
@@ -196,10 +208,10 @@ const lowSig = computed(() =>
   groupData.value.slice(number.value, groupData.value.length)
 );
 const hightSig = computed(() => groupData.value.slice(0, number.value));
-const goToSig = (item: any)=>{
+const goToSig = (item: any) => {
   const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
   window.open(routeData.href, '_blank');
-}
+};
 </script>
 <style scoped lang="scss">
 @import '@/shared/styles/style.scss';
@@ -344,5 +356,8 @@ const goToSig = (item: any)=>{
 .diagram {
   display: flex;
   justify-content: center;
+}
+.list {
+  padding-right: 0px;
 }
 </style>

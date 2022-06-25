@@ -109,13 +109,27 @@ const getTreeSearchValue = () => {
     });
     oechartTreeValue.value = firstTree;
     oechartSecondTreeValue.value = secondTree;
-    const colorArr = ['#002FA7', '#FEB32A', '#4AAEAD', '#FC756C'];
+    const colorArr = [
+      '#002FA7',
+      '#FEB32A',
+      '#4AAEAD',
+      '#FC756C',
+      '#A4DAFF',
+      '#6236FF',
+      '#3165F3',
+      '#00BB85',
+      '#F9762D',
+      '#7400A5',
+      '#1B7FCA',
+      '#00685A',
+      '#AC481C',
+    ];
     oechartTreeGroup.value = oechartTreeValue.value
       .reduce((pre, next) => {
         const findone = pre.find((item: any) => item.group === next.group);
         if (findone) {
           findone.num += next.value;
-        } else if (next.group !== null) {
+        } else if (next.group !== '') {
           pre.push({
             group: next.group,
             num: next.value,
@@ -319,7 +333,7 @@ const reallData = ref([] as IObject[]);
 const querySearch = () => {
   if (searchInput.value !== '') {
     const newList = drownData.value.filter((item: any) =>
-      item.label.includes(searchInput.value)
+      item.label.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
   }
@@ -491,21 +505,23 @@ const goToHome = () => {
               </div>
             </div>
             <div class="firstsmalltitle">{{ t('Numbercontributors') }}</div>
-            <div class="firstTreemap">
+            <div v-if="treeData.sigs?.length" class="firstTreemap">
               <o-echart-treemap
                 id="firstTreemap"
                 :value="(oechartTreeValue as any)"
                 :group="(oechartTreeGroup as any)"
               ></o-echart-treemap>
             </div>
+            <div v-else class="noDataTreemap"></div>
             <div class="smalltitle">{{ t('Commitcontribution') }}</div>
-            <div class="secondTreemap">
+            <div v-if="treeData.sigs?.length" class="secondTreemap">
               <o-echart-treemap
                 id="secondTreemap"
                 :value="(oechartSecondTreeValue as any)"
                 :group="(oechartTreeGroup as any)"
               ></o-echart-treemap>
             </div>
+            <div v-else class="noDataTreemap"></div>
           </div>
 
           <div class="lastcontributors-panel">
@@ -599,7 +615,6 @@ const goToHome = () => {
                             } as any)"
                             >Maintainer
                           </span>
-
                         </span>
                       </div>
                     </template>
@@ -627,6 +642,7 @@ const goToHome = () => {
               <el-pagination
                 v-show="reallListData.length > 10"
                 :current-page="currentPage"
+                background
                 :page-size="10"
                 layout="total, prev, pager, next, jumper"
                 :total="reallListData.length"
@@ -838,6 +854,7 @@ const goToHome = () => {
 }
 .stafftitle {
   padding-left: 24px;
+  padding-top: 24px;
   margin-bottom: 22px;
   margin-top: 22px;
   font-size: 16px;
@@ -863,19 +880,25 @@ const goToHome = () => {
   line-height: 24px;
 }
 .color-box {
-  display: flex;
+  display: inline-block;
   margin-left: 24px;
-  padding-bottom: 20px;
+  padding-bottom: 16px;
+  padding-top: 19px;
   .blue-box {
     margin-right: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 18px;
+    font-size: 12px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #555555;
+    line-height: 18px;
+    display: inline-block;
     .box {
       width: 12px;
       height: 12px;
       background: #002fa7;
       margin-right: 8px;
+      display: inline-block;
     }
   }
 }
@@ -1000,7 +1023,7 @@ const goToHome = () => {
   }
 }
 .searchListInput {
-  width: 90%;
+  width: 88%;
   margin-left: 110px;
   margin-bottom: 20px;
   .search-icon {
@@ -1036,7 +1059,7 @@ const goToHome = () => {
   height: 24px;
 }
 .lastcontributors-panel {
-  padding: 5px;
+  // padding-top: 24px;
   background: #fff;
   margin-top: 60px;
   margin-bottom: 60px;
@@ -1057,5 +1080,11 @@ const goToHome = () => {
 }
 .noSig {
   margin-top: 10px;
+}
+.noDataTreemap {
+  background-image: url(@/assets/nodata.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 576px;
 }
 </style>
