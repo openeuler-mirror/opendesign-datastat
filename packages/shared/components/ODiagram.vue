@@ -123,7 +123,7 @@ const getTipsHtml = (d: IObject) => {
   const jump = () => {
     router.push('/${localStorage.lang}/company/${d.data.name}');
   };
-  if (d?.parent?.data?.name === 'company') {
+  if (d?.parent?.data?.name === 'company' && d.data.key !== '学生') {
     return `<div>${t('company')}</div>
             <div style="padding: 8px 0">
               <span style="font-size: 16px" class="mark">${d.data.name}</span>
@@ -141,6 +141,15 @@ const getTipsHtml = (d: IObject) => {
         '_blank'
       )"
             >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
+  } else if (d?.parent?.data?.name === 'company' && d.data.key === '学生') {
+    return `<div>${t('company')}</div>
+            <div style="padding: 8px 0">
+              <span style="font-size: 16px" class="mark">${d.data.name}</span>
+              ${t('Participated1')}
+              <span style="font-size: 18px" class="mark">
+              ${d.outgoing.length}
+              </span> ${t('Participated2')}
+            </div>`;
   }
   return `<div>${t('interestGroup')}</div>
             <div style="padding: 8px 0">
@@ -182,7 +191,9 @@ const chart = () => {
     .attr('fill', (d: IObject) => getTextColor(d))
     .attr('text-anchor', (d) => (d.x < Math.PI ? 'start' : 'end'))
     .attr('transform', (d) => (d.x >= Math.PI ? 'rotate(180)' : null))
-    .attr('cursor', () => 'pointer')
+    .attr('cursor', (d: IObject) =>
+      d.data.key !== '学生' ? 'pointer' : 'auto'
+    )
     .text((d: IObject) => d.data.name)
     .each(function (d: IObject) {
       d.text = this;
@@ -205,12 +216,12 @@ const chart = () => {
     });
 
   function jumped(this: any, event: IObject, d: IObject) {
-    if (d?.parent?.data?.name === 'company') {
+    if (d?.parent?.data?.name === 'company' && d.data.key !== '学生') {
       window.open(
         `${window?.location?.origin}/${localStorage?.lang}/company/${d.data.key}`,
         '_blank'
       );
-    } else {
+    } else if (d?.parent?.data?.name === 'sig') {
       window.open(
         `${window?.location?.origin}/${localStorage?.lang}/sig/${d.data.key}`,
         '_blank'

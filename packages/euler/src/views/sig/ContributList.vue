@@ -275,6 +275,7 @@ const getcontributeValue = (item: any) => {
         v-show="reallData.length > 10"
         :current-page="currentPage"
         :page-size="10"
+        background
         layout="total, prev, pager, next, jumper"
         :total="reallData.length"
         @current-change="handleCurrentChange"

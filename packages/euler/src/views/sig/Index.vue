@@ -144,7 +144,7 @@ const querySigInfoData = () => {
                       clearable
                       :debounce="300"
                       class="w-50 m-2"
-                      placeholder="Company Name"
+                      placeholder="请输入SIG名称搜索"
                       :prefix-icon="Search"
                       @input="querySearch"
                       @clear="clearSearchInput"
