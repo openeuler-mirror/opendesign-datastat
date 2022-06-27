@@ -47,7 +47,6 @@ const getSencondTitle = (value?: string) => {
     const key = useCommon.language === 'zh' ? 'company_cn' : 'company_en';
     sencondTitle.value = (findOne && findOne[key]) || name;
     sencondTitleValue.value = findOne.company_cn || name;
-
     getallData();
   });
 };
@@ -391,12 +390,12 @@ const goToHome = () => {
       <div class="main">
         <div class="main-left">
           <div class="main-left-top">
-            <div class="main-left-title">
-              <span :title="sencondTitle">{{ sencondTitle }}</span>
-            </div>
             <div class="edropdown">
-              <el-dropdown>
-                <div class="btnc"></div>
+              <el-dropdown placement="bottom-start">
+                <div class="main-left-title">
+                  <span :title="sencondTitle">{{ sencondTitle }}</span>
+                  <span class="btnc"></span>
+                </div>
 
                 <template #dropdown>
                   <div class="searchInput">
@@ -686,7 +685,7 @@ const goToHome = () => {
     color: #002fa7;
     line-height: 32px;
     text-overflow: ellipsis;
-    width: 300px;
+    width: 380px;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -721,6 +720,7 @@ const goToHome = () => {
 }
 .left-title {
   margin-bottom: 16px;
+  margin-top: 24px;
   font-size: 16px;
   font-family: HarmonyOS_Sans_SC;
   color: #000000;
@@ -993,8 +993,8 @@ const goToHome = () => {
   align-items: center;
 }
 .searchInput {
-  width: 90%;
-  margin: 20px;
+  width: 350px;
+  margin: 10px;
   .search-icon {
     font-size: 20px;
   }
@@ -1057,6 +1057,8 @@ const goToHome = () => {
   background-image: url('@/assets/down.png');
   width: 24px;
   height: 24px;
+  position: absolute;
+        right: 5px;
 }
 .lastcontributors-panel {
   // padding-top: 24px;

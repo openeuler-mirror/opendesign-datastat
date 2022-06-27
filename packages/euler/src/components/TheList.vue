@@ -374,5 +374,8 @@ const goTo = (item: any) => {
 .lable {
   min-width: 160px;
 }
-
+.titlenumberIndex{
+  position: absolute;
+  right: 16px;
+}
 </style>
