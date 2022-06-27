@@ -251,7 +251,7 @@ const goToCompany = (data: IObject) => {
       >
         <p class="infos">
           <span class="index">{{ item.index }}</span>
-         <span
+          <span
             v-if="
               item.company_cn === '个人贡献者' ||
               item.company_en === 'independent'
@@ -280,7 +280,7 @@ const goToCompany = (data: IObject) => {
             "
             :style="{
               cursor: 'pointer',
-              color:  '#002FA7',
+              color: '#002FA7',
             }"
             @click="goToCompany(item)"
             >{{
@@ -307,10 +307,7 @@ const goToCompany = (data: IObject) => {
             </div>
             <div class="info">
               <p>
-                <span v-if="item.index !== '*'" class="index">{{
-                  item.index
-                }}</span>
-                <span v-else class="index"></span>
+                <span class="index">{{ item.index }}</span>
                 {{
                   useCommon.language === 'zh'
                     ? item.company_cn

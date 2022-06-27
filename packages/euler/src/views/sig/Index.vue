@@ -79,9 +79,6 @@ const querySorceData = () => {
   });
 };
 // 跳转首页
-const goToHome = () => {
-  router.push(`/${useCommon.language}/overview`);
-};
 const goToTetail = () => {
   router.push(`/${useCommon.language}/detail`);
 };
@@ -131,12 +128,13 @@ const querySigInfoData = () => {
       <div class="main">
         <div class="main-left">
           <div class="main-left-top">
-            <div class="main-left-title">
-              {{ sencondTitle }}
-            </div>
             <div class="edropdown">
-              <el-dropdown>
-                <div class="btnc"></div>
+              <el-dropdown placement="bottom-start">
+                <div class="main-left-title">
+                  {{ sencondTitle }}
+                  <span class="btnc"></span>
+                </div>
+
                 <template #dropdown>
                   <div class="searchInput">
                     <el-input
@@ -324,12 +322,12 @@ const querySigInfoData = () => {
   grid-template-columns: 28% 72%;
   &-left {
     .edropdown {
-      position: absolute;
-      right: 10px;
       .btnc {
         background-image: url('@/assets/down.png');
         width: 24px;
         height: 24px;
+        position: absolute;
+        right: 5px;
       }
     }
     &-title {
@@ -338,7 +336,7 @@ const querySigInfoData = () => {
       color: #002fa7;
       line-height: 32px;
       text-overflow: ellipsis;
-      width: 300px;
+      width: 380px;
       white-space: nowrap;
       overflow: hidden;
     }
@@ -506,9 +504,8 @@ const querySigInfoData = () => {
   flex-direction: column;
 }
 .searchInput {
-  width: 90%;
-  position: relative;
-  left: 12px;
+  width: 350px;
+  margin: 10px;
   .search-icon {
     font-size: 20px;
   }
