@@ -54,11 +54,11 @@ const progressColor = () => {
 // 动态计算参数赋值
 const progressFormat = (item: number) => {
   if (componentName.value === 'staff') {
-    return (100 / useStaff.staffMaxNum) * item;
+    return useStaff.staffMaxNum?(100 / useStaff.staffMaxNum) * item:0;
   } else if (componentName.value === 'member') {
-    return (100 / memberList.value) * item;
+    return memberList.value ? (100 / memberList.value) * item : 0;
   } else {
-    return (100 / usePersonal.personalMaxNum) * item;
+    return usePersonal.personalMaxNum?(100 / usePersonal.personalMaxNum) * item:0;
   }
 };
 </script>

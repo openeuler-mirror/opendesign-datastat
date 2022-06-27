@@ -5,11 +5,11 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import { onMounted, ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { ArrowDown } from '@element-plus/icons-vue';
 import {
   sigsProcessing,
   treeProcessing,
   processing,
+  toThousands
 } from 'shared/utils/helper';
 import {
   queryCompanySigDetails,
@@ -27,6 +27,9 @@ import { Search } from '@element-plus/icons-vue';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import { useRouter } from 'vue-router';
+import ONoDataImage from 'shared/components/ONoDataImage.vue';
+import { ElScrollbar } from 'element-plus';
+import { number } from 'echarts';
 const router = useRouter();
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
@@ -39,6 +42,7 @@ const getSencondTitle = (value?: string) => {
   const community = 'openeuler';
   queryCompanyName(community).then((data) => {
     allcompany.value = data?.data.openeuler || [];
+    allcompany.value.sort((a:any, b:any) => a.company_cn.localeCompare(b.company_cn));
     const name = value || route.params.name;
     const findOne: IObject =
       allcompany.value.find(
@@ -65,6 +69,7 @@ const oechartTreeValue = ref([] as IObject[]);
 const oechartTreeGroup = ref([] as IObject[]);
 oechartTreeGroup.value = [];
 const oechartSecondTreeValue = ref([] as IObject[]);
+const sumPrMerged = ref(0);
 const getoechartTreeValue = () => {
   const query = {
     company: sencondTitleValue.value,
@@ -108,6 +113,9 @@ const getTreeSearchValue = () => {
     });
     oechartTreeValue.value = firstTree;
     oechartSecondTreeValue.value = secondTree;
+    sumPrMerged.value = eval(
+      secondTree.map((item: any) => (item.value += item.value)).join('+')
+    );
     const colorArr = [
       '#002FA7',
       '#FEB32A',
@@ -335,6 +343,8 @@ const querySearch = () => {
       item.label.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
+  } else {
+    reallData.value = drownData.value;
   }
 };
 // 清除搜索
@@ -376,6 +386,21 @@ const goTo = (item: any) => {
 const goToHome = () => {
   router.push(`/${useCommon.language}/detail`);
 };
+const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
+const inputSlider = (value: number) => {
+  scrollbarRef.value?.setScrollTop(value);
+};
+const showDropdown = (e:any) => {
+  if (e) {
+    let number = 0;
+    reallData.value.forEach((item: any, index) => {
+      if (item.label === sencondTitle.value) {
+        number = index;
+      }
+    });
+    inputSlider(number * 32);
+  }
+};
 </script>
 <template>
   <div class="container">
@@ -391,7 +416,11 @@ const goToHome = () => {
         <div class="main-left">
           <div class="main-left-top">
             <div class="edropdown">
-              <el-dropdown placement="bottom-start">
+              <el-dropdown
+                placement="bottom-start"
+                trigger="click"
+                @visible-change="showDropdown"
+              >
                 <div class="main-left-title">
                   <span :title="sencondTitle">{{ sencondTitle }}</span>
                   <span class="btnc"></span>
@@ -411,10 +440,11 @@ const goToHome = () => {
                     />
                   </div>
 
-                  <el-scrollbar height="400px">
+                  <el-scrollbar ref="scrollbarRef" height="400px">
                     <el-dropdown-item
                       v-for="item in reallData"
                       :key="item.value"
+                      class="dropdownItem"
                       @click="clickDrownItem(item)"
                     >
                       {{ item.label }}</el-dropdown-item
@@ -429,23 +459,23 @@ const goToHome = () => {
           <div class="left-first">
             <div class="left-first-child">
               <span>{{ t('Mergerequest') }} PR</span>
-              <div class="left-first-child-data">{{ mergeRequest }}</div>
+              <div class="left-first-child-data">{{ toThousands(mergeRequest) }}</div>
             </div>
             <div class="left-first-child">
               <span title="Needs & Problems Issue"
                 >{{ t('NeedsProblems') }} Issue</span
               >
-              <div class="left-first-child-data">{{ issueData }}</div>
+              <div class="left-first-child-data">{{ toThousands(issueData)}}</div>
             </div>
             <div class="left-first-child">
               <span title="123">{{ t('review') }} Comment</span>
-              <div class="left-first-child-data">{{ comment }}</div>
+              <div class="left-first-child-data">{{ toThousands(comment) }}</div>
             </div>
             <div class="left-first-child">
               <span title="Number of contributors">{{
                 t('Numbercontributors')
               }}</span>
-              <div class="left-first-child-data">{{ contributors }}</div>
+              <div class="left-first-child-data">{{toThousands (contributors) }}</div>
             </div>
           </div>
 
@@ -453,19 +483,29 @@ const goToHome = () => {
             <div class="circularPile-sp">
               {{ t('Contributordistribution') }}
             </div>
-            <o-echart-circular-pile
-              id="circularPile"
-              :data="oechartData"
-            ></o-echart-circular-pile>
+            <div
+              v-if="
+                oechartData.D0 === 0 &&
+                oechartData.D1 === 0 &&
+                oechartData.D2 === 0
+              "
+              class="nosp"
+            >
+              暂无贡献者
+            </div>
+            <div v-else class="sp">
+              <o-echart-circular-pile
+                id="circularPile"
+                :data="oechartData"
+              ></o-echart-circular-pile>
+            </div>
           </div>
 
           <div class="left-second">
-            <span v-if="sigsData.sigs?.length === 0" class="left-second-sp"
-              >暂未参与SIG</span
-            >
-            <span v-else class="left-second-sp"
-              >{{ t('participation') }}SIG:</span
-            >
+            <span class="left-second-sp">{{ t('participation') }}SIG:</span>
+            <div v-if="sigsData.sigs?.length === 0" class="left-second-nosp">
+              暂未参与SIG
+            </div>
             <div class="atlas">
               <span
                 v-for="item in sigsData.sigs"
@@ -509,18 +549,23 @@ const goToHome = () => {
                 id="firstTreemap"
                 :value="(oechartTreeValue as any)"
                 :group="(oechartTreeGroup as any)"
+                :type="firstformOption[0].active"
               ></o-echart-treemap>
             </div>
-            <div v-else class="noDataTreemap"></div>
+            <div v-else><o-no-data-image></o-no-data-image></div>
             <div class="smalltitle">{{ t('Commitcontribution') }}</div>
-            <div v-if="treeData.sigs?.length" class="secondTreemap">
+            <div
+              v-if="sumPrMerged !== 0 && treeData.sigs?.length"
+              class="secondTreemap"
+            >
               <o-echart-treemap
                 id="secondTreemap"
                 :value="(oechartSecondTreeValue as any)"
                 :group="(oechartTreeGroup as any)"
+                :type="firstformOption[0].active"
               ></o-echart-treemap>
             </div>
-            <div v-else class="noDataTreemap"></div>
+            <div v-else><o-no-data-image></o-no-data-image></div>
           </div>
 
           <div class="lastcontributors-panel">
@@ -744,9 +789,18 @@ const goToHome = () => {
     color: #000000;
     line-height: 24px;
   }
+  &-nosp {
+    width: 100px;
+    height: 24px;
+    font-size: 14px;
+    margin-top: 8px;
+    font-family: HarmonyOS_Sans_SC;
+    color: #555555;
+    line-height: 22px;
+  }
   .atlas {
     width: 248px;
-    margin-top: 16px;
+    margin-top: 8px;
     display: flex;
     flex-direction: column;
 
@@ -767,13 +821,21 @@ const goToHome = () => {
   margin-top: 60px;
   margin-bottom: 60px;
   &-sp {
-    margin-bottom: 30px;
     width: 280px;
     height: 24px;
     font-size: 16px;
     font-family: HarmonyOS_Sans_SC;
     color: #000000;
     line-height: 24px;
+  }
+  .nosp {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #555555;
+    line-height: 22px;
+  }
+  .sp {
+    margin-top: 16px;
   }
 }
 .edropdown {
@@ -1058,7 +1120,7 @@ const goToHome = () => {
   width: 24px;
   height: 24px;
   position: absolute;
-        right: 5px;
+  right: 5px;
 }
 .lastcontributors-panel {
   // padding-top: 24px;
@@ -1083,10 +1145,7 @@ const goToHome = () => {
 .noSig {
   margin-top: 10px;
 }
-.noDataTreemap {
-  background-image: url(@/assets/nodata.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 576px;
+.dropdownItem {
+  color: #b461f6;
 }
 </style>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import OEchart from './OEchart.vue';
 import { watch, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { IObject } from '../@types/interface';
+const { t } = useI18n();
 type EChartsOption = echarts.EChartsOption;
 interface groupItem {
   key: string;
@@ -135,7 +138,17 @@ const props = defineProps({
     type: String,
     default: '580px',
   },
+  type: {
+    type: String,
+    default: 'all',
+  },
 });
+const typeObj: IObject = {
+  lastonemonth: t('from.lastonemonth'),
+  lasthalfyear: t('from.lasthalfyear'),
+  lastoneyear: t('from.lastoneyear'),
+  all: t('from.all'),
+};
 const getData = () => {
   const _data = props.group.map((item) => {
     const children = props.value
@@ -167,7 +180,9 @@ const getOption = (): EChartsOption => {
         }
         const percent = ((value / treePathInfo[0].value) * 100).toFixed(1);
         return [
-          `<div style="font-size:12px;color: #9097A3; margin-bottom: 8px">当前/全部 的 ${props.name}</div>`,
+          `<div style="font-size:12px;color: #9097A3; margin-bottom: 8px">${
+            typeObj[props.type]
+          } 的 ${props.name}</div>`,
           `<div style="font-size:12px;color: #4E5865; display: flex; align-items: center">
           <div style="display: inline-block;
                   width: 12px;
@@ -215,6 +230,13 @@ let option = ref({});
 option.value = getOption();
 watch(
   () => props.value,
+  () => {
+    option.value = getOption();
+  },
+  { deep: true }
+);
+watch(
+  () => props.type,
   () => {
     option.value = getOption();
   },

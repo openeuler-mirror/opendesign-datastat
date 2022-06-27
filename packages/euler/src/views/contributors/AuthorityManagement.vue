@@ -11,6 +11,10 @@
         <p class="spp">1</p>
       </div>
       <the-list></the-list>
+      <div  class="goToAllSig">
+            <span class="title" @click="goToAllSig">查看特别兴趣小组贡献详情</span
+            ><img src="@/assets/right.png" alt="" @click="goToAllSig" style="cursor:pointer"/>
+          </div>
     </div>
     <div class="contributors-panel">
       <h3 id="companyRelations" class="title">
@@ -212,6 +216,10 @@ const goToSig = (item: any) => {
   const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
   window.open(routeData.href, '_blank');
 };
+const goToAllSig = () => {
+  const routeData: any = router.resolve(`/${useCommon.language}/sig/A-Tune`);
+  window.open(routeData.href, '_blank');
+};
 </script>
 <style scoped lang="scss">
 @import '@/shared/styles/style.scss';
@@ -359,5 +367,23 @@ const goToSig = (item: any) => {
 }
 .list {
   padding-right: 0px;
+}
+
+.goToAllSig {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 38px;
+  text-align: center;
+
+  .title {
+    cursor: pointer;
+    margin-right: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #555555;
+    line-height: 22px;
+    margin-top: 20px;
+  }
 }
 </style>

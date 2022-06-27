@@ -4,7 +4,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import HistoricalTrend from './HistoricalTrend.vue';
 import CurrentTrend from './CurrentTrend.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import TableList from './TableList.vue';
@@ -22,8 +22,19 @@ const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
 const sencondTitle = ref('');
-sencondTitle.value = route.params.name as string;
 const { t } = useI18n();
+const drownData = ref([] as any[]);
+
+sencondTitle.value = route.params.name as string;
+const getDrownData = () => {
+  let community = 'openeuler';
+  querySigName(community).then((data) => {
+    const allSigs = data?.data || {};
+    const firstKeys = Object.keys(allSigs);
+    drownData.value = allSigs[firstKeys[0]];
+    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
+  });
+};
 const anchorData = [
   'currentVitalityIndex',
   'historicalVitalityIndicators',
@@ -46,16 +57,7 @@ const getCubeData = () => {
     cubeData.value = value[sencondTitle.value];
   });
 };
-const drownData = ref([] as any[]);
-const getDrownData = () => {
-  let community = 'openeuler';
-  querySigName(community).then((data) => {
-    const value = data?.data || {};
-    const firstKeys = Object.keys(value);
-    drownData.value = value[firstKeys[0]];
-    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
-  });
-};
+
 const getllData = () => {
   getCubeData();
   getDrownData();
@@ -65,6 +67,8 @@ const getllData = () => {
 };
 onMounted(() => {
   getllData();
+
+
 });
 // 获取活力指数
 const sorceData = ref({} as IObject);
@@ -180,6 +184,7 @@ const querySigInfoData = () => {
               <div class="List">
                 <span>{{ t('MailingList') }}：</span>
                 <a
+                  v-if="sigInfo.mailing_list"
                   :href="`https://mailweb.openeuler.org/postorius/lists/${
                     sigInfo.mailing_list.split('@')[0]
                   }.${sigInfo.mailing_list.split('@')[1]}`"
