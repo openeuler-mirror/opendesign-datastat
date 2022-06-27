@@ -109,6 +109,10 @@ const anchorData = computed(() => {
       ]
     : ['companyContributor', 'userContributor'];
 });
+const goToCompany = () => {
+  const routeData: any = router.resolve(`/${useCommon.language}/company`);
+  window.open(routeData.href, '_blank');
+};
 </script>
 
 <template>
@@ -132,6 +136,10 @@ const anchorData = computed(() => {
             <p class="text">{{ t('searchTips') }}</p>
           </div>
           <the-bar v-else></the-bar>
+          <div  class="goToCompany">
+            <span class="title" @click="goToCompany">查看单位会员贡献详情</span
+            ><img src="@/assets/right.png" alt="" @click="goToCompany" style="cursor:pointer"/>
+          </div>
         </div>
         <div class="contributors-panel">
           <h3 id="userContributor" class="title">{{ t('userContributor') }}</h3>
@@ -311,6 +319,23 @@ const anchorData = computed(() => {
       width: 50px;
       text-align: right;
     }
+  }
+}
+.goToCompany {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 38px;
+  text-align: center;
+
+  .title {
+    cursor: pointer;
+    margin-right: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #555555;
+    line-height: 22px;
+    margin-top: 20px;
   }
 }
 </style>

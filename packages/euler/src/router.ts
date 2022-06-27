@@ -37,8 +37,28 @@ export const routes = [
     },
   },
   {
+    path: '/zh/company',
+    name: 'zh_all_company',
+    component: () => {
+      return import('@/views/company/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
     path: '/zh/sig/:name',
     name: 'zh_sig',
+    component: () => {
+      return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/sig',
+    name: 'zh_all_sig',
     component: () => {
       return import('@/views/sig/Index.vue');
     },
@@ -104,8 +124,28 @@ export const routes = [
     },
   },
   {
+    path: '/en/company',
+    name: 'en_all_company',
+    component: () => {
+      return import('@/views/company/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
     path: '/en/sig/:name',
     name: 'en_sig',
+    component: () => {
+      return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/sig',
+    name: 'en_all_sig',
     component: () => {
       return import('@/views/sig/Index.vue');
     },
