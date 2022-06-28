@@ -5,13 +5,15 @@
   "scripts": {
     "dev:euler": "pnpm --filter euler dev",
     "dev:gauss": "pnpm --filter gauss dev",
+    "dev:harmony": "pnpm --filter harmony dev",
     "dev:lookeng": "pnpm --filter lookeng dev",
     "dev:mindspore": "pnpm --filter mindspore dev",
     "build:euler": "pnpm --filter euler build",
     "build:gauss": "pnpm --filter gauss build",
+    "build:harmony": "pnpm --filter harmony build",
     "build:lookeng": "pnpm --filter lookeng build",
     "build:mindspore": "pnpm --filter mindspore build",
-    "build": "pnpm build:euler && pnpm build:gauss && pnpm build:lookeng && pnpm build:mindspore"
+    "build": "pnpm build:euler && pnpm build:gauss && pnpm build:lookeng && pnpm build:mindspore && pnpm build:harmony"
   },
   "dependencies": {
     "@authing/native-js-ui-components": "^3.1.16",
