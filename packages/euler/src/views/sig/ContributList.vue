@@ -57,7 +57,10 @@ const getMemberData = () => {
       memberData.value = [];
     } else {
       memberMax.value = memberList[0].contribute;
-      memberData.value = memberList;
+      memberData.value = memberList.map((item: any, index: any) => ({
+        ...item,
+        rank: index + 1,
+      }));
       reallData.value = memberData.value;
     }
     filterReallData();
@@ -128,10 +131,6 @@ const currentPage = ref(1);
 const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
-};
-//  index修改
-const indexMethod = (index: number) => {
-  return (currentPage.value - 1) * 10 + index + 1;
 };
 // 搜索过滤
 
@@ -214,8 +213,7 @@ const getcontributeValue = (item: any) => {
           style="width: 100%"
         >
           <el-table-column
-            type="index"
-            :index="indexMethod"
+            prop="rank"
             align="center"
             :label="t('ranking')"
             width="120"

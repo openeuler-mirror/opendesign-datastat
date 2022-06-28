@@ -11,10 +11,15 @@
         <p class="spp">1</p>
       </div>
       <the-list></the-list>
-      <div  class="goToAllSig">
-            <span class="title" @click="goToAllSig">查看特别兴趣小组贡献详情</span
-            ><img src="@/assets/right.png" alt="" @click="goToAllSig" style="cursor:pointer"/>
-          </div>
+      <div class="goToAllSig">
+        <span class="title" @click="goToAllSig">查看特别兴趣小组贡献详情</span
+        ><img
+          src="@/assets/right.png"
+          alt=""
+          @click="goToAllSig"
+          style="cursor: pointer"
+        />
+      </div>
     </div>
     <div class="contributors-panel">
       <h3 id="companyRelations" class="title">
@@ -36,21 +41,19 @@
       <div class="ranking-list">
         <div class="ranking-list-item">
           <el-table :data="hightSig" style="width: 100%">
-            <el-table-column
-              align="center"
-              :label="t('Committee')"
-              width="150"
-              show-overflow-tooltip
-            >
+            <el-table-column align="left" width="200" show-overflow-tooltip>
+              <template #header>
+                <span class="list-title"> {{ t('Committee') }} </span>
+              </template>
               <template #default="scope">
                 <div class="group-father">
+                  <span class="group-name">{{ scope.row.name }}</span>
                   <a
                     :href="`http://gitee.com/${scope.row.user}`"
                     target="_blank"
                     class="group-email"
                     >@{{ scope.row.user }}</a
                   >
-                  <!-- <span class="group-email">{{ scope.row.email }}</span> -->
                 </div>
               </template></el-table-column
             >
@@ -75,21 +78,27 @@
           </el-table>
         </div>
         <div class="ranking-list-item">
-          <el-table :data="lowSig" style="width: 100%">
-            <el-table-column
-              align="center"
-              :label="t('Committee')"
-              width="150"
-              show-overflow-tooltip
-              ><template #default="scope">
+          <el-table
+            :data="lowSig"
+            style="
+               {
+                width: 100%;
+              }
+            "
+          >
+            <el-table-column align="left" width="200" show-overflow-tooltip>
+              <template #header>
+                <span class="list-title"> {{ t('Committee') }} </span>
+              </template>
+              <template #default="scope">
                 <div class="group-father">
+                  <span class="group-name">{{ scope.row.name }}</span>
                   <a
                     :href="`http://gitee.com/${scope.row.user}`"
                     target="_blank"
                     class="group-email"
                     >@{{ scope.row.user }}</a
                   >
-                  <!-- <span class="group-name">{{ scope.row.email }}</span> -->
                 </div>
               </template></el-table-column
             >
@@ -201,7 +210,7 @@ const getGroup = () => {
   queryTCSigs(query).then((data) => {
     groupData.value = data?.data || [];
     number.value = Math.ceil(
-      groupData.value.sort((a: any, b: any) => a.user.localeCompare(b.user))
+      groupData.value.sort((a: any, b: any) => a.name?.localeCompare(b.name))
         .length / 2
     );
   });
@@ -217,7 +226,7 @@ const goToSig = (item: any) => {
   window.open(routeData.href, '_blank');
 };
 const goToAllSig = () => {
-  const routeData: any = router.resolve(`/${useCommon.language}/sig/A-Tune`);
+  const routeData: any = router.resolve(`/${useCommon.language}/sig`);
   window.open(routeData.href, '_blank');
 };
 </script>
@@ -332,7 +341,7 @@ const goToAllSig = () => {
   text-align-last: justify;
   text-align: justify;
   width: 60px;
-  margin-left: 10px;
+  margin-left: 24px;
 }
 .group-email {
   font-size: 14px;
@@ -345,7 +354,7 @@ const goToAllSig = () => {
   }
 }
 .group-name {
-  width: 42px;
+  // width: 42px;
   height: 22px;
   font-size: 14px;
   font-family: HarmonyOS_Sans_SC;
@@ -385,5 +394,8 @@ const goToAllSig = () => {
     line-height: 22px;
     margin-top: 20px;
   }
+}
+.list-title {
+  padding-left: 24px;
 }
 </style>

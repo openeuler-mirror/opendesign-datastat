@@ -319,17 +319,18 @@ watch(
   }
 );
 // 总数据
-const tableData = computed(() => useStaff.tableData);
+const tableData = computed(() =>
+  useStaff.tableData.map((item: any, index: any) => ({
+    ...item,
+    rank: index + 1,
+  }))
+);
 // 默认显示第1页
 const currentPage = ref(1);
 // 显示第几页
 const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
-};
-//  index修改
-const indexMethod = (index: number) => {
-  return (currentPage.value - 1) * 10 + index + 1;
 };
 const anchorData = ['ecological', 'staffContributor'];
 
@@ -364,9 +365,9 @@ const queryListSearch = () => {
     const newList = tableData.value.filter((item: any) =>
       item.gitee_id.toLowerCase().includes(searchListInput.value)
     );
-    reallListData.value = newList;
+    reallListData.value = newList
   } else {
-    reallListData.value = tableData.value;
+    reallListData.value = tableData.value
   }
 };
 const clearListSearchInput = () => {
@@ -376,7 +377,7 @@ const clearListSearchInput = () => {
 watch(
   () => tableData.value,
   () => {
-    reallListData.value = tableData.value;
+    reallListData.value = tableData.value
   }
 );
 const goTo = (item: any) => {
@@ -418,7 +419,6 @@ const showDropdown = (e:any) => {
             <div class="edropdown">
               <el-dropdown
                 placement="bottom-start"
-                trigger="click"
                 @visible-change="showDropdown"
               >
                 <div class="main-left-title">
@@ -626,8 +626,7 @@ const showDropdown = (e:any) => {
                   style="width: 100%"
                 >
                   <el-table-column
-                    type="index"
-                    :index="indexMethod"
+                    prop="rank"
                     align="center"
                     :label="t('ranking')"
                     width="120"
