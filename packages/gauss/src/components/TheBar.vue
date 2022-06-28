@@ -34,7 +34,7 @@ const switchTime = () => {
 };
 switchTime();
 watch(
-  () => useCompany.companyForm.timeRange,
+  () => [useCompany.companyForm.timeRange, useCommon.language],
   () => {
     switchTime();
   }
@@ -56,7 +56,7 @@ const switchType = () => {
 };
 switchType();
 watch(
-  () => useCompany.companyForm.contributeType,
+  () => [useCompany.companyForm.contributeType, useCommon.language],
   () => {
     switchType();
   }
