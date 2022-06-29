@@ -19,6 +19,21 @@ const { t } = useI18n();
 const useCommon = useCommonStore();
 const sorceData = ref({});
 const tableData = ref([] as IObject[]);
+const keyToI18n: IObject = {
+  all: computed(() => t('vitalIndex')),
+  products: computed(() => t('products')),
+  product_quality: computed(() => t('productQuality')),
+  process_quality: computed(() => t('processQuality')),
+  org_robustness: computed(() => t('tissueRobustness')),
+  influence: computed(() => t('influence')),
+  PR_Merged: computed(() => t('PRMerged')),
+  Issue_resolve: computed(() => t('IssueResolve')),
+  PR_Efficiency: computed(() => t('PREfficiency')),
+  D1: computed(() => t('D1Number')),
+  Maintainer: computed(() => t('Maintainer')),
+  Fork: 'Fork',
+};
+const polarData = ref([] as IObject[]);
 const querySorceData = () => {
   const params = {
     community: openCommunityInfo.name,
@@ -36,24 +51,10 @@ watch(
     querySorceData();
   }
 );
-querySorceData();
 const fieldsKey = computed(() => {
   return [props.sig, t('communityAverage')];
 });
-const keyToI18n: IObject = {
-  all: computed(() => t('vitalIndex')),
-  products: computed(() => t('products')),
-  product_quality: computed(() => t('productQuality')),
-  process_quality: computed(() => t('processQuality')),
-  org_robustness: computed(() => t('tissueRobustness')),
-  influence: computed(() => t('influence')),
-  PR_Merged: computed(() => t('PRMerged')),
-  Issue_resolve: computed(() => t('IssueResolve')),
-  PR_Efficiency: computed(() => t('PREfficiency')),
-  D1: computed(() => t('D1Number')),
-  Maintainer: computed(() => t('Maintainer')),
-  Fork: 'Fork',
-};
+
 const selectedData = ref('all');
 const tableTitle = computed(() => keyToI18n[selectedData.value].value);
 const getTableData = (data: IObject) => {
@@ -89,7 +90,7 @@ const getPolarData = (data: IObject) => {
     };
   });
 };
-const polarData = ref([] as IObject[]);
+
 
 watch(
   () => useCommon.language,

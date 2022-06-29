@@ -66,7 +66,6 @@ const getMemberData = () => {
     filterReallData();
   });
 };
-getMemberData();
 
 const lastformOption = computed(() => {
   return [

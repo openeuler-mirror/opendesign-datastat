@@ -38,7 +38,8 @@ const memberList = ref([] as IObject[]);
 const rankNum = ref(1);
 const getMemberData = () => {
   querySigCompanyContribute(param.value).then((data) => {
-    memberList.value = data.data?.sort(sortExp('contribute', false)) || [];
+    memberList.value =
+      (data.data && data.data.sort(sortExp('contribute', false))) || [];
     memberMax.value = ceil(memberList.value[0].contribute, -2) || 0;
     memberList.value.forEach((item) => {
       if (
@@ -199,9 +200,7 @@ watch(
     getMemberData();
   }
 );
-onMounted(() => {
-  getMemberData();
-});
+
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
   const routeData: any = router.resolve(
