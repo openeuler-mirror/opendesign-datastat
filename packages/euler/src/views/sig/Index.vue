@@ -274,8 +274,8 @@ const showDropdown = (e:any) => {
             <div class="rank">
               <span>{{ t('communityRankings') }}</span>
               <span> # </span>
-              <span class="rank-num">{{ sorceData.rank }}</span>
-              <span>/{{ drownData.length }}</span>
+              <span class="rank-num">{{ sorceData.rank }} </span>
+              <span>/ {{ drownData.length }}</span>
             </div>
             <div class="img">
               <o-echart-gauge
