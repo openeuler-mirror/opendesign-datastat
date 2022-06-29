@@ -6,7 +6,8 @@ import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
 import { getSigRadarScore } from 'shared/api';
 import { openCommunityInfo } from '@/api';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const props = defineProps({
   sig: {
     type: String,
@@ -111,6 +112,10 @@ const initData = () => {
   getTableData(sorceData.value);
 };
 initData();
+const goData = () => {
+  const routeData: any = router.resolve(`/${useCommon.language}/about`);
+  window.open(routeData.href, '_blank');
+};
 </script>
 <template>
   <div class="curmain">
@@ -123,13 +128,16 @@ initData();
     </div>
     <div class="table">
       <table cellspacing="0" cellpadding="10px">
-        <thead>
+        <thead class="bgcolor">
           <th
             align="left"
-            class="border padcell overflow"
+            class="border padcell overflow imgtitle"
             style="max-width: 130px; width: 130px"
           >
             {{ tableTitle }}
+            <span style="margin-left: 8px; cursor: pointer" @click="goData()"
+              ><img src="@/assets/help.png" alt=""
+            /></span>
           </th>
           <th
             align="right"
@@ -149,9 +157,9 @@ initData();
         <tbody>
           <tr v-for="item in tableData" :key="item.title">
             <td class="border padcell">{{ item.title }}</td>
-            <td class="border padcell num" align="right">{{ item.sig }}</td>
+            <td class="border padcell num" align="right">{{ (Math.round(item.sig * 100) / 100).toFixed(2) }}</td>
             <td class="border padcell num" align="right">
-              {{ item.community }}
+              {{ (Math.round(item.community * 100) / 100).toFixed(2) }}
             </td>
           </tr>
         </tbody>
@@ -189,5 +197,13 @@ initData();
 }
 .num {
   color: #0a0b0d;
+}
+.bgcolor{
+  background: #e5e8f0;
+}
+.imgtitle{
+  display: flex;
+  align-items: center;
+  justify-items: center;
 }
 </style>

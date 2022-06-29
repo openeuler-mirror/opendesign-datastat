@@ -22,7 +22,7 @@
             <span class="start-menu-span">{{ value.feature }}</span>
           </div>
           <template #content>
-            <div class="lable">{{ value.feature }}</div>
+            <div class="titlelable">{{ value.feature }}</div>
             <div class="info">
               <p>
                 <span class="index">特别兴趣小组数量</span>
@@ -121,7 +121,7 @@
             <span class="start-menu-span">{{ value.feature }}</span>
           </div>
           <template #content>
-            <div class="lable">{{ value.feature }}</div>
+            <div class="titlelable">{{ value.feature }}</div>
             <div class="info">
               <p>
                 <span class="index">特别兴趣小组数量</span>
@@ -322,6 +322,7 @@ const goTo = (item: any) => {
 }
 .detail-menu:hover {
   transform: scaleY(1.1) scaleX(1.1) translateZ(0);
+  border: 2px solid #000000;
 }
 
 .bar-tooltip {
@@ -364,14 +365,17 @@ const goTo = (item: any) => {
 }
 .right-btn {
   position: absolute;
-  right: 100px;
+  left: 68px;
   bottom: 6px;
 }
 .numberIndex {
   position: absolute;
-  right: 80px;
+  right: 12px;
 }
 .lable {
+  min-width: 100px;
+}
+.titlelable {
   min-width: 160px;
 }
 .titlenumberIndex{

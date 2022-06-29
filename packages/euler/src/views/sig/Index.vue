@@ -24,17 +24,26 @@ const route = useRoute();
 const sencondTitle = ref('');
 const { t } = useI18n();
 const drownData = ref([] as any[]);
-
-sencondTitle.value = route.params.name as string;
+// sencondTitle.value = route.params.name as string;
 const getDrownData = () => {
   let community = 'openeuler';
   querySigName(community).then((data) => {
     const allSigs = data?.data || {};
+
+    allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
+
+    const findOne =
+      allSigs.openeuler.find((item) => item === route.params.name) ||
+      allSigs.openeuler[0];
+    sencondTitle.value = findOne;
+
     const firstKeys = Object.keys(allSigs);
     drownData.value = allSigs[firstKeys[0]];
     reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
+    getllData();
   });
 };
+
 const anchorData = [
   'currentVitalityIndex',
   'historicalVitalityIndicators',
@@ -59,16 +68,13 @@ const getCubeData = () => {
 };
 
 const getllData = () => {
-  getCubeData();
-  getDrownData();
-  querySorceData();
   querySigInfoData();
+  querySorceData();
+  getCubeData();
   clean();
 };
 onMounted(() => {
-  getllData();
-
-
+  getDrownData();
 });
 // 获取活力指数
 const sorceData = ref({} as IObject);
@@ -118,6 +124,21 @@ const querySigInfoData = () => {
     sigInfo.value = data?.data[0] || {};
   });
 };
+const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
+const inputSlider = (value: number) => {
+  scrollbarRef.value?.setScrollTop(value);
+};
+const showDropdown = (e:any) => {
+  if (e) {
+    let number = 0;
+    reallData.value.forEach((item: any, index) => {
+      if (item === sencondTitle.value) {
+        number = index;
+      }
+    });
+    inputSlider(number * 32);
+  }
+};
 </script>
 <template>
   <div class="container">
@@ -133,7 +154,10 @@ const querySigInfoData = () => {
         <div class="main-left">
           <div class="main-left-top">
             <div class="edropdown">
-              <el-dropdown placement="bottom-start">
+              <el-dropdown
+                placement="bottom-start"
+                @visible-change="showDropdown"
+              >
                 <div class="main-left-title">
                   {{ sencondTitle }}
                   <span class="btnc"></span>
