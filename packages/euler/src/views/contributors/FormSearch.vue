@@ -139,6 +139,7 @@ onMounted(() => {
     >
       <template #searchInput>
         <div class="searchInput">
+
           <el-autocomplete
             v-model="searchInput"
             :fetch-suggestions="querySearch"
@@ -153,11 +154,13 @@ onMounted(() => {
             @keydown.enter="myKeydown"
             @clear="clearSearchInput"
           >
+
             <template #prefix>
               <o-icon class="search-icon"
                 ><icon-user></icon-user
               ></o-icon> </template
           ></el-autocomplete>
+
         </div>
       </template>
     </the-form>
@@ -169,7 +172,7 @@ onMounted(() => {
 .searchInput {
   padding-left: 110px;
   width: 100%;
-  margin: -10px 0 20px;
+  margin: -16px 0 20px;
   .search-icon {
     font-size: 20px;
   }
@@ -196,5 +199,10 @@ onMounted(() => {
   :deep(.el-input__inner:focus) {
     box-shadow: 0 0 0 1px #002fa7 inset;
   }
+  :deep(.el-input__inner) {
+    height: 56px
+  }
+
 }
+
 </style>

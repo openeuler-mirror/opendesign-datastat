@@ -1086,7 +1086,9 @@ const showDropdown = (e:any) => {
 .searchListInput {
   width: 88%;
   margin-left: 110px;
+   margin-top: -16px;
   margin-bottom: 20px;
+
   .search-icon {
     font-size: 20px;
   }
@@ -1112,6 +1114,9 @@ const showDropdown = (e:any) => {
   }
   :deep(.el-input__inner:focus) {
     box-shadow: 0 0 0 1px #002fa7 inset;
+  }
+   :deep(.el-input__inner) {
+    height: 56px;
   }
 }
 .btnc {

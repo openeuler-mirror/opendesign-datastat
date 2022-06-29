@@ -39,7 +39,7 @@ export const useStaffStore = defineStore('staff', {
           const { data } = res;
           const userList = data.sort(sortExp('contribute', false));
           this.personalData = userList;
-          this.staffMaxNum = userList[0].contribute;
+          this.staffMaxNum = userList[0]?.contribute;
         }
       } catch (error) {
         console.log(error);
