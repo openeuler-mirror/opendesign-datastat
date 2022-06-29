@@ -438,5 +438,8 @@ const getcontributeValue = (item: any) => {
   :deep(.el-input__inner:focus) {
     box-shadow: 0 0 0 1px #002fa7 inset;
   }
+  :deep(.el-input__inner) {
+    height: 56px;
+  }
 }
 </style>

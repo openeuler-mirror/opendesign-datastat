@@ -26,7 +26,7 @@ const querySorceData = () => {
     timeRange: 'lastonemonth',
   };
   getSigRadarScore(params).then((data) => {
-    sorceData.value = data.data.pop();
+    sorceData.value = data?.data?.pop();
     initData();
   });
 };

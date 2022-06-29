@@ -18,6 +18,7 @@ import {
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
+import { ElScrollbar } from 'element-plus'
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -29,14 +30,11 @@ const getDrownData = () => {
   let community = 'openeuler';
   querySigName(community).then((data) => {
     const allSigs = data?.data || {};
-
     allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
-
     const findOne =
-      allSigs.openeuler.find((item) => item === route.params.name) ||
+      allSigs.openeuler.find((item:any) => item === route.params.name) ||
       allSigs.openeuler[0];
     sencondTitle.value = findOne;
-
     const firstKeys = Object.keys(allSigs);
     drownData.value = allSigs[firstKeys[0]];
     reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
@@ -176,7 +174,7 @@ const showDropdown = (e:any) => {
                       @clear="clearSearchInput"
                     />
                   </div>
-                  <el-scrollbar height="400px">
+                  <el-scrollbar ref="scrollbarRef" height="400px">
                     <el-dropdown-item
                       v-for="item in reallData"
                       :key="item.value"
