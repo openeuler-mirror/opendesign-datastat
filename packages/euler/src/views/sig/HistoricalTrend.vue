@@ -93,7 +93,6 @@ const firstformOption = computed(() => {
 });
 const selectTime = ref('lastoneyear');
 const echartData = ref([] as IObject[]);
-querySorceData();
 const getContributeInfo = (e: IObject) => {
   selectTime.value = e.active;
   querySorceData();

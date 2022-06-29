@@ -242,7 +242,6 @@ const getallData = () => {
 };
 onMounted(() => {
   getSencondTitle();
-  useStaff.getStaffData(sencondTitleValue.value);
   loading.value = false;
 });
 
