@@ -15,7 +15,7 @@ import {
   queryCompanySigDetails,
   queryCompanyUserContribute,
   queryCompanyUsers,
-  queryCompanyName,
+  queryCompanySigs
 } from 'shared/api';
 import OEchartCircularPile from 'shared/components/OEchartCircularPile.vue';
 import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
@@ -39,9 +39,12 @@ const sencondTitleValue = ref('');
 const { t } = useI18n();
 const allcompany = ref([]);
 const getSencondTitle = (value?: string) => {
-  const community = 'openeuler';
-  queryCompanyName(community).then((data) => {
-    allcompany.value = data?.data.openeuler || [];
+  const query = {
+    timeRange: 'lastoneyear',
+    community: 'openeuler',
+  };
+  queryCompanySigs(query).then((data) => {
+    allcompany.value = data?.data || [];
     allcompany.value.sort((a:any, b:any) => a.company_cn.localeCompare(b.company_cn));
     const name = value || route.params.name;
     const findOne: IObject =
