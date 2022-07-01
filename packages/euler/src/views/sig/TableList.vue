@@ -63,7 +63,7 @@ const getMemberData = () => {
 };
 // 个人信息
 const progressFormat = (item: number) => {
-  return (100 / memberMax.value) * item;
+  return (memberMax.value !== 0 ? 100 / memberMax.value : 0) * item;
 };
 // 组织贡献from
 const formOption = computed(() => {
