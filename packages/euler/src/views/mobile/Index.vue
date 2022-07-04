@@ -11,6 +11,8 @@ import { useCompanyStore } from '@/stores/company';
 import { usePersonalStore } from '@/stores/personal';
 import { useCommonStore } from '@/stores/common';
 import TheForm from '@/components/TheForm.vue';
+import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
+import MenberAndGroupRelationship from './current/MenberAndGroupRelationship.vue';
 import { formatNumber, toThousands } from 'shared/utils/helper';
 
 import logo from '@/assets/datastat-black.png';
@@ -318,6 +320,23 @@ const backtop1 = () => {
           </el-table>
         </div>
       </div>
+    </swiper-slide>
+    <swiper-slide>
+      <o-mobile-template header="groupActive">
+        <template #content> content</template>
+      </o-mobile-template>
+    </swiper-slide>
+    <swiper-slide>
+      <o-mobile-template header="companyRelations">
+        <template #content>
+          <menber-and-group-relationship></menber-and-group-relationship>
+        </template>
+      </o-mobile-template>
+    </swiper-slide>
+    <swiper-slide>
+      <o-mobile-template header="groupRelations">
+        <template #content> content</template>
+      </o-mobile-template>
     </swiper-slide>
     <swiper-slide class="slide-page3">
       <div class="slide-panel foot-panel">

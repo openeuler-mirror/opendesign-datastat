@@ -63,6 +63,9 @@ const props = defineProps({
     }),
   },
 });
+const isPhone = /Android|webOS|iPhone|iPod|BlackBerry/i.test(
+  navigator.userAgent
+);
 const { t } = useI18n();
 const router = useRouter();
 const colorin = '#000';
@@ -216,6 +219,10 @@ const chart = () => {
     });
 
   function jumped(this: any, event: IObject, d: IObject) {
+    // 手机端不执行
+    if (isPhone) {
+      return;
+    }
     if (d?.parent?.data?.name === 'company' && d.data.key !== '学生') {
       window.open(
         `${window?.location?.origin}/${localStorage?.lang}/company/${d.data.key}`,
@@ -229,6 +236,10 @@ const chart = () => {
     }
   }
   function overed(this: any, event: IObject, d: IObject) {
+    // 手机端不执行
+    if (isPhone) {
+      return;
+    }
     keepTip();
     tooltip
       .html(getTipsHtml(d))
@@ -258,6 +269,10 @@ const chart = () => {
   }
 
   function outed(this: any, event: IObject, d: IObject) {
+    // 手机端不执行
+    if (isPhone) {
+      return;
+    }
     clearTip();
     link.style('mix-blend-mode', 'multiply');
     d3.select(this).attr('font-weight', null);
@@ -287,7 +302,8 @@ onMounted(() => {
 </script>
 <template>
   <div>
-    <svg id="svg" :width="width" :height="width"></svg>
+    <svg v-if="isPhone" id="svg" :width="'100%'" :height="'100%'"></svg>
+    <svg v-else id="svg" :width="width" :height="width"></svg>
   </div>
 </template>
 <style lang="scss" scoped>
