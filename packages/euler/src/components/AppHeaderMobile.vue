@@ -38,15 +38,15 @@ const navList = computed(() => {
 
 const drawer = ref(false);
 const menuIcon = ref('menu');
-const isblack = computed(() => (useCommon.swiperIndex < 2 ? true : false));
+const isblack = computed(() => useCommon.isBlackHeader);
 const drawerBlack = computed(() => (isblack.value ? 'black' : ''));
 const navActive = ref('overview');
 watch(
   () => {
-    return useCommon.swiperIndex;
+    return useCommon.isBlackHeader;
   },
   (val) => {
-    navActive.value = val < 2 ? 'overview' : 'detail';
+    navActive.value = val ? 'overview' : 'detail';
   }
 );
 
@@ -96,8 +96,8 @@ const webSiteTitle = () => {
 };
 webSiteTitle();
 
-// 判断是否是关于我们
-const isAbout = ref(false);
+// 判断是否是主页面
+const isHome = ref(false);
 watch(
   () => {
     return route.path;
@@ -105,24 +105,23 @@ watch(
   },
   (path) => {
     const p = path.split('/').slice(-1).toString();
-    isAbout.value = p === 'about' ? true : false;
+    isHome.value = p === 'mobile' ? true : false;
   }
 );
 // 点击logo回首页
 const goMobileHome = () => {
-  if (isAbout.value) {
+  if (!isHome.value) {
     const lang = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
     router.push(lang);
-    window.location.reload();
   }
   useCommon.moNav = 0;
-  useCommon.swiperIndex = 0;
+  useCommon.isBlackHeader = true;
 };
 </script>
 
 <template>
   <div
-    v-if="!isAbout"
+    v-if="isHome"
     class="menu-bar"
     :class="{ white: isblack }"
     @click="changeMenu"

@@ -10,7 +10,7 @@ import { router } from './router';
 import OIcon from 'shared/components/OIcon.vue';
 
 // import ElementPlus from 'element-plus';
-// import 'element-plus/dist/index.css';
+import 'element-plus/dist/index.css';
 
 // 国际化
 import i18n from './i18n';
