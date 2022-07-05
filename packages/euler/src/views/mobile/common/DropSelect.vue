@@ -113,7 +113,7 @@ const clickDrownItem = (item: IObject) => {
           />
         </div>
 
-        <el-scrollbar ref="scrollbarRef" height="400px">
+        <el-scrollbar ref="scrollbarRef" always height="400px">
           <el-dropdown-item
             v-for="item in reallData"
             :key="item.value"
