@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
-import { queryCompanySigs, querySigName } from 'shared/api';
+import { querySigName } from 'shared/api';
 import { useRoute } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import DropSelect from '../common/DropSelect.vue';
@@ -59,17 +59,14 @@ onMounted(() => {
       @slide-change="onSlideChange"
     >
       <swiper-slide>
-        <o-mobile-template
-          header="Currentcontributionranking"
-          padding-top="0.75rem"
-        >
+        <o-mobile-template header="简介" padding-top="0.75rem">
           <template #content> contentcontentcontentcontentcontent</template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
           <template #header>
-            {{ t('company') + ' ' + t('ecological') }}
+            {{ 'SIG ' + t('currentVitalityIndex') }}
           </template>
           <template #content> co </template>
         </o-mobile-template>
@@ -77,7 +74,23 @@ onMounted(() => {
       <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
           <template #header>
-            {{ t('company') + ' ' + t('staffContributor') }}
+            {{ 'SIG ' + t('historicalVitalityIndicators') }}
+          </template>
+          <template #content> content</template>
+        </o-mobile-template>
+      </swiper-slide>
+      <swiper-slide>
+        <o-mobile-template padding-top="0.75rem">
+          <template #header>
+            {{ 'SIG ' + t('companyContributor') }}
+          </template>
+          <template #content> content</template>
+        </o-mobile-template>
+      </swiper-slide>
+      <swiper-slide>
+        <o-mobile-template padding-top="0.75rem">
+          <template #header>
+            {{ 'SIG ' + t('userContributor') }}
           </template>
           <template #content> content</template>
         </o-mobile-template>
