@@ -6,7 +6,7 @@ import { getNowFormatDate } from 'shared/utils/helper';
 interface stateTypes {
   language: string;
   ISPC: boolean;
-  swiperIndex: number;
+  isBlackHeader: boolean;
   moNav: number;
   lang: string;
   time: string;
@@ -17,8 +17,8 @@ export const useCommonStore = defineStore('common', {
     language: localStorage.getItem('lang') || 'zh',
     // 判断是否是PC
     ISPC: false,
-    // 移动端滑动页数
-    swiperIndex: 0,
+    // 判断移动端header主题颜色
+    isBlackHeader: true,
     moNav: 0,
     // 语言
     lang: '',

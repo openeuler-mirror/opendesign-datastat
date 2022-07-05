@@ -47,7 +47,9 @@ const isMobile = () => {
   if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
     device.value = false;
     const lang = language.value === 'zh' ? '/zh/mobile' : '/en/mobile';
-    router.push(lang);
+    if (!window.location.pathname.includes(lang)) {
+      router.push(lang);
+    }
   }
   useCommon.setDevice(device.value);
 };

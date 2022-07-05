@@ -31,7 +31,7 @@ const onSwiper = (swiper: any) => {
   swiperRef.value = swiper;
 };
 const onSlideChange = (swiper: any) => {
-  useCommon.swiperIndex = swiper.activeIndex;
+  useCommon.isBlackHeader = swiper.activeIndex < 2;
   useCommon.moNav = swiper.activeIndex;
 };
 // 监听导航跳转
@@ -89,7 +89,7 @@ onMounted(() => {
 });
 
 const modules = [Pagination];
-const isblack = computed(() => (useCommon.swiperIndex < 2 ? true : false));
+const isblack = computed(() => useCommon.isBlackHeader);
 
 const search404 = ref(false);
 const searchStsate = (item: boolean) => {

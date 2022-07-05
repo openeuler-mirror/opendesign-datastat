@@ -77,6 +77,46 @@ export const routes = [
     },
   },
   {
+    path: '/zh/mobile/company/:name',
+    name: 'zh_mobile_company',
+    component: () => {
+      return import('@/views/mobile/company/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/mobile/company',
+    name: 'zh_mobile_all_company',
+    component: () => {
+      return import('@/views/mobile/company/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/mobile/sig/:name',
+    name: 'zh_mobile_sig',
+    component: () => {
+      return import('@/views/mobile/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/mobile/sig',
+    name: 'zh_mobile_all_sig',
+    component: () => {
+      return import('@/views/mobile/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
     path: '/zh/about',
     name: 'zh_about',
     component: () => {
@@ -158,6 +198,46 @@ export const routes = [
     name: 'en_mobile',
     component: () => {
       return import('@/views/mobile/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/company/:name',
+    name: 'en_mobile_company',
+    component: () => {
+      return import('@/views/mobile/company/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/company',
+    name: 'en_mobile_all_company',
+    component: () => {
+      return import('@/views/mobile/company/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/sig/:name',
+    name: 'en_mobile_sig',
+    component: () => {
+      return import('@/views/mobile/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/sig',
+    name: 'en_mobile_all_sig',
+    component: () => {
+      return import('@/views/mobile/sig/Index.vue');
     },
     beforeEnter: () => {
       localStorage.setItem('lang', 'en');

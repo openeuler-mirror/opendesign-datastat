@@ -23,7 +23,10 @@ const props = defineProps({
     :style="{ 'padding-top': paddingTop, 'padding-bottom': paddingBottom }"
   >
     <div class="mobile-main">
-      <h3 class="mobile-main-title">{{ t(props.header) }}</h3>
+      <h3 class="mobile-main-title">
+        <span v-if="props.header"> {{ t(props.header) }} </span>
+        <slot name="header"></slot>
+      </h3>
       <slot name="content"></slot>
     </div>
   </div>
