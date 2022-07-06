@@ -2,7 +2,7 @@ import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
 import '@/shared/ele-reset.ts';
 import '@authing/native-js-ui-components/lib/index.min.css';
-
+import '@/views/mobile/sig/styles/style.scss';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
