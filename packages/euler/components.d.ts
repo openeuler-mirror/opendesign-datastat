@@ -7,6 +7,7 @@ declare module '@vue/runtime-core' {
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     AppHeaderMobile: typeof import('./src/components/AppHeaderMobile.vue')['default']
+    AppMobileMenu: typeof import('./src/components/AppMobileMenu.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']

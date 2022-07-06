@@ -220,14 +220,6 @@ $color: #ffffff;
   z-index: 999;
   display: flex;
   justify-content: center;
-  .menu-bar {
-    position: absolute;
-    left: 16px;
-    top: 12px;
-    &.white svg {
-      color: #fff;
-    }
-  }
   :deep(.svg-icon) {
     color: #fff;
   }

@@ -8,6 +8,8 @@ interface stateTypes {
   ISPC: boolean;
   isBlackHeader: boolean;
   moNav: number;
+  companyNav: number;
+  sigNav: number;
   lang: string;
   time: string;
   allData: IObject;
@@ -20,6 +22,8 @@ export const useCommonStore = defineStore('common', {
     // 判断移动端header主题颜色
     isBlackHeader: true,
     moNav: 0,
+    companyNav: 0,
+    sigNav: 0,
     // 语言
     lang: '',
     // 时间

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Pagination } from 'swiper';
 import 'swiper/css';
@@ -22,8 +22,15 @@ const onSwiper = (swiper: any) => {
   swiperRef.value = swiper;
 };
 const onSlideChange = (swiper: any) => {
-  swiper;
+  useCommon.companyNav = swiper.activeIndex;
 };
+// 监听导航跳转
+watch(
+  () => useCommon.companyNav,
+  (index) => {
+    swiperRef.value.slideTo(index);
+  }
+);
 
 // 顶部选择
 const sencondTitle = ref('');
