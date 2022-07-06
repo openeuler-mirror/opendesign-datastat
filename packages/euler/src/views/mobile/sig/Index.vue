@@ -11,6 +11,11 @@ import { querySigName } from 'shared/api';
 import { useRoute } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import DropSelect from '../common/DropSelect.vue';
+import Introduction from './Introduction.vue';
+import VitalIndex from './VitalIndex.vue';
+import MobileHistoricalTrend from './MobileHistoricalTrend.vue';
+import MobileTableList from './MobileTableList.vue';
+import MobileContributList from './MobileContributList.vue';
 
 const { t } = useI18n();
 const route = useRoute();
@@ -67,7 +72,7 @@ onMounted(() => {
     >
       <swiper-slide>
         <o-mobile-template header="简介" padding-top="0.75rem">
-          <template #content> contentcontentcontentcontentcontent</template>
+          <template #content> <introduction></introduction></template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
@@ -75,7 +80,7 @@ onMounted(() => {
           <template #header>
             {{ 'SIG ' + t('currentVitalityIndex') }}
           </template>
-          <template #content> co </template>
+          <template #content> <vital-index></vital-index> </template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
@@ -83,7 +88,11 @@ onMounted(() => {
           <template #header>
             {{ 'SIG ' + t('historicalVitalityIndicators') }}
           </template>
-          <template #content> content</template>
+          <template #content>
+            <mobile-historical-trend
+              :sig="sencondTitle"
+            ></mobile-historical-trend
+          ></template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
@@ -91,7 +100,9 @@ onMounted(() => {
           <template #header>
             {{ 'SIG ' + t('companyContributor') }}
           </template>
-          <template #content> content</template>
+          <template #content>
+            <mobile-table-list :sig="sencondTitle"></mobile-table-list
+          ></template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
@@ -99,7 +110,9 @@ onMounted(() => {
           <template #header>
             {{ 'SIG ' + t('userContributor') }}
           </template>
-          <template #content> content</template>
+          <template #content
+            ><mobile-contribut-list :sig="sencondTitle"></mobile-contribut-list
+          ></template>
         </o-mobile-template>
       </swiper-slide>
     </swiper>

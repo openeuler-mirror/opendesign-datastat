@@ -14,13 +14,13 @@ import TheForm from '@/components/TheForm.vue';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import MenberAndGroupRelationship from './current/MenberAndGroupRelationship.vue';
 import { formatNumber, toThousands } from 'shared/utils/helper';
-
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/openeuler.png';
 import bg_mo from '@/assets/bg_mo.png';
 import atomLogo from '@/assets/atom.png';
-
+import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.vue';
+import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialGroupRelationship.vue';
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -323,7 +323,9 @@ const backtop1 = () => {
     </swiper-slide>
     <swiper-slide>
       <o-mobile-template header="groupActive">
-        <template #content> content</template>
+        <template #content>
+          <special-interest-group-diagram></special-interest-group-diagram>
+        </template>
       </o-mobile-template>
     </swiper-slide>
     <swiper-slide>
@@ -335,7 +337,9 @@ const backtop1 = () => {
     </swiper-slide>
     <swiper-slide>
       <o-mobile-template header="groupRelations">
-        <template #content> content</template>
+        <template #content>
+          <committee-and-special-group-relationship></committee-and-special-group-relationship>
+        </template>
       </o-mobile-template>
     </swiper-slide>
     <swiper-slide class="slide-page3">
