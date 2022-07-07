@@ -8,6 +8,7 @@ import { sortExp } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
+import OMobilePagination from 'shared/components/OMobilePagination.vue';
 import MobileOFormRadio from './MobileOFormRadio.vue';
 const { t } = useI18n();
 const props = defineProps({
@@ -268,12 +269,10 @@ const getcontributeValue = (item: any) => {
       </div>
     </div>
     <div class="demo-pagination-block">
-      <el-pagination
+      <o-mobile-pagination
         v-show="reallData.length > 10"
         :current-page="currentPage"
         :page-size="10"
-        background
-        layout=" prev,total,slot,next"
         :total="reallData.length"
         @current-change="handleCurrentChange"
       />
