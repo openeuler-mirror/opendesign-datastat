@@ -48,7 +48,7 @@ export default {
   companyContributor: 'Contribution by Organizations',
   groupActive: 'SIG Active Degree Landscape',
   Currentcontributionranking: 'All contribution',
-  Pleaseenterunitnameforsearch:'Please enter unit name for search',
+  Pleaseenterunitnameforsearch: 'Please enter unit name for search',
   Numbercontributors: 'Number of contributors',
   Contributordistribution: 'Contributor distribution',
   Commitcontribution: 'Commit contribution',
@@ -56,14 +56,13 @@ export default {
   review: 'review',
   Mergerequest: 'Merge request',
   NeedsProblems: 'Needs & Problems',
-  slogan:'Related technology exploration in tuning field; Ai-assisted performance analysis',
+  slogan:
+    'Related technology exploration in tuning field; Ai-assisted performance analysis',
   ecological: 'ecological',
   staffContributor: 'staffContributor',
   active: 'active',
-  groupRelations:
-    'Relationship between technical committee members and special interest groups',
-  companyRelations:
-    'Relationship between organization members and special interest groups',
+  groupRelations: 'Relationship between TC members and SIGs',
+  companyRelations: 'Relationship between Organizations and SIGs',
   currentVitalityIndex: 'Current vitality index',
   historicalVitalityIndicators: 'Historical trends in vitality indicators',
   Note: 'Note: The following are sorted by surname pinyin',
