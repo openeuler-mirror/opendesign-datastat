@@ -13,6 +13,7 @@ import {
   NavConfig,
 } from '@/shared/mobile-menu.config';
 import { IObject } from 'shared/@types/interface';
+import { hasPermission } from 'shared/utils/login';
 
 const useCommon: any = useCommonStore();
 const router = useRouter();
@@ -106,6 +107,12 @@ const chaneLanguage = () => {
   router.push(`/${lang}/${newHref}`);
   drawer.value = false;
 };
+const showItem = (test: boolean): boolean => {
+  if (test) {
+    return hasPermission('sigRead');
+  }
+  return true;
+};
 </script>
 
 <template>
@@ -137,17 +144,18 @@ const chaneLanguage = () => {
             @click="moNavClick(item.index)"
             >{{ t(item.i18n) }}</a
           >
-          <div
-            v-for="it in item.children"
-            :key="it.id"
-            class="child-link"
-            :class="{
-              'child-active': it.index === allSwiperConfig[swiperKey].index,
-            }"
-            @click="moNavClick(it.index)"
-          >
-            {{ t(it.i18n) }}
-          </div>
+          <template v-for="it in item.children" :key="it.id">
+            <div
+              v-if="showItem(it.test)"
+              class="child-link"
+              :class="{
+                'child-active': it.index === allSwiperConfig[swiperKey].index,
+              }"
+              @click="moNavClick(it.index)"
+            >
+              {{ t(it.i18n) }}
+            </div>
+          </template>
         </div>
       </div>
       <div class="action">

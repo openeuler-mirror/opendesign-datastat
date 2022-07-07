@@ -10,6 +10,7 @@ import { openCommunityInfo } from '@/api/index';
 import { useCompanyStore } from '@/stores/company';
 import { usePersonalStore } from '@/stores/personal';
 import { useCommonStore } from '@/stores/common';
+import { hasPermission } from 'shared/utils/login';
 import TheForm from '@/components/TheForm.vue';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import MenberAndGroupRelationship from './current/MenberAndGroupRelationship.vue';
@@ -321,21 +322,21 @@ const backtop1 = () => {
         </div>
       </div>
     </swiper-slide>
-    <swiper-slide>
+    <swiper-slide v-if="hasPermission('sigRead')">
       <o-mobile-template header="groupActive">
         <template #content>
           <special-interest-group-diagram></special-interest-group-diagram>
         </template>
       </o-mobile-template>
     </swiper-slide>
-    <swiper-slide>
+    <swiper-slide v-if="hasPermission('sigRead')">
       <o-mobile-template header="companyRelations">
         <template #content>
           <menber-and-group-relationship></menber-and-group-relationship>
         </template>
       </o-mobile-template>
     </swiper-slide>
-    <swiper-slide>
+    <swiper-slide v-if="hasPermission('sigRead')">
       <o-mobile-template header="groupRelations">
         <template #content>
           <committee-and-special-group-relationship></committee-and-special-group-relationship>

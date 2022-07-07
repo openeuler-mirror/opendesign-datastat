@@ -13,27 +13,14 @@ import communityLogoSmall from '@/assets/openeuler-small.png';
 import communityLogoSmallWhite from '@/assets/openeuler-small-white.png';
 
 import AppMobileMenu from './AppMobileMenu.vue';
+import { useStoreData, showGuard, logout } from 'shared/utils/login';
 
 const useCommon = useCommonStore();
 const route = useRoute();
 const router = useRouter();
+const { guardAuthClient } = useStoreData();
+let dialogVisible = ref(false);
 const { t } = useI18n();
-const navList = computed(() => {
-  return [
-    {
-      id: 'overview',
-      label: t('nav.overview'),
-      zh: 'zh_overview',
-      en: 'en_overview',
-    },
-    {
-      id: 'detail',
-      label: t('nav.contributors'),
-      zh: 'zh_detail',
-      en: 'en_detail',
-    },
-  ];
-});
 const isblack = computed(() => useCommon.isBlackHeader);
 const navActive = ref('overview');
 watch(
@@ -102,8 +89,77 @@ const goMobileHome = () => {
         ><img class="community-logo" :src="communityLogoSmall"
       /></a>
     </template>
+    <div class="opt-user">
+      <el-dropdown v-if="guardAuthClient.photo">
+        <div class="el-dropdown-link">
+          <img
+            :src="guardAuthClient.photo"
+            :alt="guardAuthClient.nickname || 'LogOut'"
+            class="img"
+          />
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="dialogVisible = true"
+              >退出登录</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+      <div
+        v-else
+        class="phone-login"
+        :class="{ black: isblack }"
+        @click="showGuard(openCommunityInfo.name)"
+      >
+        登录
+      </div>
+    </div>
+    <el-dialog v-model="dialogVisible" title="Confirm" width="80%">
+      <p style="word-break: break-word">
+        Are you sure you want to exit? The page is refreshed after you exit.
+      </p>
+      <template #footer>
+        <div style="display: flex; justify-content: center">
+          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button
+            type="primary"
+            @click="
+              dialogVisible = false;
+              logout();
+            "
+            >Confirm</el-button
+          >
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.opt-user {
+  position: absolute;
+  right: 1rem;
+  top: 12px;
+  font-size: 12px;
+  .img {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .phone-login {
+    line-height: 1.5rem;
+    padding: 0 0.5rem;
+    text-align: center;
+    color: #000;
+    border: 1px solid #000;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .black {
+    color: #fff;
+    border: 1px solid #fff;
+  }
+}
 </style>

@@ -175,3 +175,10 @@ export const processing = (data: IObject) => {
   const sigData = data[company as string];
   return { company, sigData };
 };
+
+/**
+ * 判断是否是移动端
+ */
+export const testIsPhone = () => {
+  return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
+};
