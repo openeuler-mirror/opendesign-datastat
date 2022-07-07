@@ -94,4 +94,6 @@ export default {
     definition: 'Data definition ',
     name: 'Name',
   },
+  prevPage: 'Prev',
+  nextPage: 'Next',
 };

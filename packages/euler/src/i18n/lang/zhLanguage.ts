@@ -91,4 +91,6 @@ export default {
     definition: '数据定义  ',
     name: '指标名称',
   },
+  prevPage: '上一页',
+  nextPage: '下一页',
 };
