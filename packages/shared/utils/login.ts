@@ -3,6 +3,7 @@ import { IObject } from '../@types/interface';
 import { queryCourse } from '../api/index';
 import { useCounter } from '../stores/counter';
 import { storeToRefs } from 'pinia';
+import { testIsPhone } from './helper';
 const LOGIN_KEYS = {
   USER_TOKEN: '_U_T_',
   USER_ID: '_U_I_',
@@ -42,7 +43,9 @@ export function logout() {
 
 // 跳转首页
 export function goToHome() {
-  window.location.href = window.location.origin;
+  if (!testIsPhone()) {
+    window.location.href = window.location.origin;
+  }
 }
 
 // 登录弹窗

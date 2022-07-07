@@ -13,6 +13,7 @@ import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
 import communityLogoWhite from '@/assets/openeuler-logo.png';
 import chevronDown from '~icons/app/chevron-down';
+import { testIsPhone } from 'shared/utils/helper';
 
 const { guardAuthClient } = useStoreData();
 let dialogVisible = ref(false);
@@ -44,7 +45,7 @@ const ISPC = computed(() => useCommon.ISPC);
 // 判断移动端
 const isMobile = () => {
   const device = ref(true);
-  if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  if (testIsPhone()) {
     device.value = false;
     const lang = language.value === 'zh' ? '/zh/mobile' : '/en/mobile';
     if (!window.location.pathname.includes(lang)) {

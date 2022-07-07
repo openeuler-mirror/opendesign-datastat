@@ -2,6 +2,7 @@ export interface NavConfig {
   id: string;
   i18n: string;
   index: number;
+  test?: boolean;
   children?: NavConfig[];
 }
 
@@ -30,16 +31,19 @@ export const moNavList: NavConfig[] = [
         id: 'groupActive',
         i18n: 'groupActive',
         index: 4,
+        test: true,
       },
       {
         id: 'companyRelations',
         i18n: 'companyRelations',
         index: 5,
+        test: true,
       },
       {
         id: 'groupRelations',
         i18n: 'groupRelations',
         index: 6,
+        test: true,
       },
     ],
   },
