@@ -1,71 +1,29 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
-import {
-  querySigRepos,
-  querySigName,
-  getSigScore,
-  querySigInfo,
-} from 'shared/api';
+import { querySigRepos, querySigInfo } from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
-const route = useRoute();
-const sencondTitle = ref('');
 const { t } = useI18n();
-const drownData = ref([] as any[]);
-// sencondTitle.value = route.params.name as string;
-const getDrownData = () => {
-  let community = 'openeuler';
-  querySigName(community).then((data) => {
-    const allSigs = data?.data || {};
-    allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
-    const findOne =
-      allSigs.openeuler.find((item: any) => item === route.params.name) ||
-      allSigs.openeuler[0];
-    sencondTitle.value = findOne;
-    const firstKeys = Object.keys(allSigs);
-    drownData.value = allSigs[firstKeys[0]];
-    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
-    getllData();
-  });
-};
+const props = defineProps({
+  sig: {
+    type: String,
+    default: '',
+  },
+});
+const { sig } = toRefs(props);
 const cubeData = ref([] as any[]);
 const getCubeData = () => {
   const query = {
     timeRange: 'lastonemonth',
     community: 'openeuler',
-    sig: sencondTitle.value,
+    sig: sig.value,
   };
   querySigRepos(query).then((data) => {
     const value = data?.data || {};
-    cubeData.value = value[sencondTitle.value];
+    cubeData.value = value[sig.value];
   });
 };
-
-const getllData = () => {
-  querySigInfoData();
-  querySorceData();
-  getCubeData();
-};
-onMounted(() => {
-  getDrownData();
-});
-// 获取活力指数
-const sorceData = ref({} as IObject);
-const querySorceData = () => {
-  const params = {
-    community: openCommunityInfo.name,
-    sig: sencondTitle.value,
-    timeRange: 'lastonemonth',
-  };
-  getSigScore(params).then((data) => {
-    sorceData.value = data.data.pop();
-  });
-};
-// 搜索过滤
-const reallData = ref([] as IObject[]);
-
 // 获取侧边栏明细
 const sigInfo = ref({
   mailing_list: '',
@@ -73,12 +31,23 @@ const sigInfo = ref({
 const querySigInfoData = () => {
   const params = {
     community: openCommunityInfo.name,
-    sig: sencondTitle.value,
+    sig: sig.value,
   };
   querySigInfo(params).then((data) => {
     sigInfo.value = data?.data[0] || {};
   });
 };
+const getllData = () => {
+  querySigInfoData();
+  getCubeData();
+};
+watch(
+  () => props.sig,
+  () => {
+    getllData();
+  },
+  { deep: true }
+);
 </script>
 <template>
   <div class="container">
@@ -93,7 +62,7 @@ const querySigInfoData = () => {
                 <a
                   style="color: #002fa7"
                   target="_blank"
-                  :href="`https://gitee.com/${sencondTitle}`"
+                  :href="`https://gitee.com/${sig}`"
                 >
                   {{ t('toHome') }}</a
                 >
@@ -118,7 +87,7 @@ const querySigInfoData = () => {
             <div class="first">
               <div class="Maintainer"></div>
               <div class="List">
-                <span>Maintainer： </span>
+                <span>Maintainers： </span>
                 <a
                   v-for="item in sigInfo.maintainers"
                   :key="item.value"
@@ -133,7 +102,7 @@ const querySigInfoData = () => {
             <div class="first">
               <div class="Mentor"></div>
               <div class="List">
-                <span>Mentor：</span>
+                <span>Mentors：</span>
                 <span
                   v-for="item in sigInfo.mentor"
                   :key="item.value"

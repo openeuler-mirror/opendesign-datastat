@@ -303,13 +303,13 @@ const typeLable = ref('');
 const switchType = () => {
   switch (useStaff.staffForm.contributeType) {
     case 'pr':
-      typeLable.value = t('home.prs');
+      typeLable.value = 'home.prs';
       break;
     case 'issue':
-      typeLable.value = t('home.issues');
+      typeLable.value = 'home.issues';
       break;
     case 'comment':
-      typeLable.value = t('home.comments');
+      typeLable.value = 'home.comments';
       break;
   }
 };
@@ -667,7 +667,7 @@ const showDropdown = (e:any) => {
                   <el-table-column
                     align="left"
                     class-name="type-label"
-                    :label="typeLable"
+                    :label="t(typeLable)"
                   >
                     <template #default="scope">
                       <div class="box">

@@ -72,7 +72,9 @@ onMounted(() => {
     >
       <swiper-slide>
         <o-mobile-template header="introduction" padding-top="0.75rem">
-          <template #content> <introduction></introduction></template>
+          <template #content>
+            <introduction :sig="sencondTitle"></introduction
+          ></template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
@@ -80,7 +82,9 @@ onMounted(() => {
           <template #header>
             {{ 'SIG ' + t('currentVitalityIndex') }}
           </template>
-          <template #content> <vital-index></vital-index> </template>
+          <template #content>
+            <vital-index :sig="sencondTitle"></vital-index>
+          </template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>

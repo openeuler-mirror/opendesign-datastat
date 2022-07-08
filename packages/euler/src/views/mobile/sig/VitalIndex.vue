@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import MobileCurrentTrend from './MobileCurrentTrend.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, toRefs, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { querySigRepos, querySigName, getSigScore } from 'shared/api';
@@ -10,6 +10,13 @@ import { IObject } from 'shared/@types/interface';
 const route = useRoute();
 const sencondTitle = ref('');
 const { t } = useI18n();
+const props = defineProps({
+  sig: {
+    type: String,
+    default: '',
+  },
+});
+const { sig } = toRefs(props);
 const drownData = ref([] as any[]);
 const getDrownData = () => {
   let community = 'openeuler';
@@ -26,67 +33,50 @@ const getDrownData = () => {
     getllData();
   });
 };
-const cubeData = ref([] as any[]);
-const getCubeData = () => {
-  const query = {
-    timeRange: 'lastonemonth',
-    community: 'openeuler',
-    sig: sencondTitle.value,
-  };
-  querySigRepos(query).then((data) => {
-    const value = data?.data || {};
-    cubeData.value = value[sencondTitle.value];
-  });
-};
 
-const getllData = () => {
-  querySorceData();
-  getCubeData();
-};
-onMounted(() => {
-  getDrownData();
-});
 // 获取活力指数
 const sorceData = ref({} as IObject);
 const querySorceData = () => {
   const params = {
     community: openCommunityInfo.name,
-    sig: sencondTitle.value,
+    sig: sig.value,
     timeRange: 'lastonemonth',
   };
   getSigScore(params).then((data) => {
     sorceData.value = data.data.pop();
   });
 };
-
+const getllData = () => {
+  querySorceData();
+};
+watch(
+  () => props.sig,
+  () => {
+    getllData();
+  },
+  { deep: true }
+);
+onMounted(() => {
+  getDrownData();
+});
 const reallData = ref([] as IObject[]);
 </script>
 <template>
-  <div class="container">
-    <div class="wrap">
-      <div class="main">
-        <div class="main-right">
-          <div class="contributors-panel">
-            <div class="rank">
-              <span>{{ t('communityRankings') }}</span>
-              <span> # </span>
-              <span class="rank-num">{{ sorceData.rank }} </span>
-              <span>/ {{ drownData.length }}</span>
-            </div>
+  <div class="rank">
+    <span>{{ t('communityRankings') }}</span>
+    <span> # </span>
+    <span class="rank-num">{{ sorceData.rank }} </span>
+    <span>/ {{ drownData.length }}</span>
+  </div>
 
-            <div class="img">
-              <o-echart-gauge
-                id="combinedActivity"
-                :name="t('combinedActivity')"
-                :value="sorceData.score"
-              ></o-echart-gauge>
+  <div class="img">
+    <o-echart-gauge
+      id="combinedActivity"
+      :name="t('combinedActivity')"
+      :value="sorceData.score"
+    ></o-echart-gauge>
 
-              <mobile-current-trend :sig="sencondTitle"></mobile-current-trend>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <mobile-current-trend :sig="sig"></mobile-current-trend>
   </div>
 </template>
 <style lang="scss" scoped>

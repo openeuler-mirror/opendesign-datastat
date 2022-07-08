@@ -6,8 +6,6 @@ import { openCommunityInfo } from '@/api/index';
 import { querySigUserContribute } from 'shared/api/index';
 import { sortExp } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
-import IconUser from '~icons/app/search';
-import OIcon from 'shared/components/OIcon.vue';
 import OMobilePagination from 'shared/components/OMobilePagination.vue';
 import MobileOFormRadio from './MobileOFormRadio.vue';
 const { t } = useI18n();
@@ -105,13 +103,13 @@ const typeLable = ref('');
 const switchType = () => {
   switch (param.value.contributeType) {
     case 'pr':
-      typeLable.value = t('home.prs');
+      typeLable.value = 'home.prs';
       break;
     case 'issue':
-      typeLable.value = t('home.issues');
+      typeLable.value = 'home.issues';
       break;
     case 'comment':
-      typeLable.value = t('home.comments');
+      typeLable.value = 'home.comments';
       break;
   }
 };
@@ -145,10 +143,6 @@ const querySearch = () => {
     getMemberData();
   }
 };
-const clearSearchInput = () => {
-  getMemberData();
-  searchInput.value = '';
-};
 
 // 按颜色过滤
 const getcontributeValue = (item: any) => {
@@ -162,25 +156,6 @@ const getcontributeValue = (item: any) => {
       <mobile-o-form-radio
         :option="lastformOption"
         @get-contribute-info="getContributeInfo($event)"
-      >
-        <template #searchInput>
-          <div class="searchInput">
-            <el-input
-              v-model="searchInput"
-              :trigger-on-focus="false"
-              clearable
-              :debounce="300"
-              size="large"
-              :placeholder="t('enterGitee')"
-              @change="querySearch"
-              @clear="clearSearchInput"
-            >
-              <template #prefix>
-                <o-icon class="search-icon"
-                  ><icon-user></icon-user
-                ></o-icon> </template
-            ></el-input>
-          </div> </template
       ></mobile-o-form-radio>
     </div>
     <div class="edcolor-box">
@@ -216,14 +191,13 @@ const getcontributeValue = (item: any) => {
             prop="rank"
             align="center"
             :label="t('ranking')"
-            width="60"
+            width="40"
           />
           <el-table-column
             prop="gitee_id"
             align="left"
             label="Gitee ID"
             show-overflow-tooltip
-            width="200"
             ><template #default="scope">
               <div class="usertype-box">
                 <span
@@ -250,11 +224,11 @@ const getcontributeValue = (item: any) => {
           <el-table-column
             align="left"
             class-name="type-label"
-            :label="typeLable"
+            :label="t(typeLable)"
           >
             <template #default="scope">
               <div class="box">
-                <span class="num">{{ scope.row.contribute }}</span>
+                <div class="num">{{ scope.row.contribute }}</div>
                 <div>
                   <the-progress
                     :item="scope.row.contribute"
@@ -282,9 +256,6 @@ const getcontributeValue = (item: any) => {
 </template>
 <style scoped lang="scss">
 @import './styles/style.scss';
-.theSecondForm {
-  padding-right: 24px;
-}
 .ranking-list {
   display: grid;
   grid-template-columns: 100%;
@@ -300,7 +271,7 @@ const getcontributeValue = (item: any) => {
     justify-content: center;
     align-items: center;
     .num {
-      width: 50px;
+      // width: 50px;
       // width: auto;
       text-align: center;
     }
@@ -371,37 +342,5 @@ const getcontributeValue = (item: any) => {
     font-weight: 300;
   }
 }
-.searchInput {
-  width: 100%;
-  margin: 10px 0 20px;
-  .search-icon {
-    font-size: 20px;
-  }
-  :deep(.el-autocomplete) {
-    width: 100%;
-    &.active .el-input__inner {
-      box-shadow: 0 0 0 1px #002fa7 inset;
-    }
-  }
-  :deep(.el-input__prefix) {
-    left: 12px;
-    align-items: center;
-  }
-  @media screen and (min-width: 900px) {
-    :deep(.el-input__inner) {
-      padding-left: 40px;
-    }
-  }
-  @media screen and (max-width: 900px) {
-    :deep(.el-input__prefix) {
-      left: 10px;
-    }
-  }
-  :deep(.el-input__inner:focus) {
-    box-shadow: 0 0 0 1px #002fa7 inset;
-  }
-  :deep(.el-input__inner) {
-    height: 56px;
-  }
-}
+
 </style>

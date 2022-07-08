@@ -220,7 +220,7 @@ const showDropdown = (e: any) => {
             <div class="first">
               <div class="Maintainer"></div>
               <div class="List">
-                <span>Maintainer： </span>
+                <span>Maintainers： </span>
                 <a
                   v-for="item in sigInfo.maintainers"
                   :key="item.value"
@@ -235,7 +235,7 @@ const showDropdown = (e: any) => {
             <div class="first">
               <div class="Mentor"></div>
               <div class="List">
-                <span>Mentor：</span>
+                <span>Mentors：</span>
                 <span
                   v-for="item in sigInfo.mentor"
                   :key="item.value"
