@@ -71,7 +71,7 @@ onMounted(() => {
       @slide-change="onSlideChange"
     >
       <swiper-slide>
-        <o-mobile-template header="简介" padding-top="0.75rem">
+        <o-mobile-template header="introduction" padding-top="0.75rem">
           <template #content> <introduction></introduction></template>
         </o-mobile-template>
       </swiper-slide>

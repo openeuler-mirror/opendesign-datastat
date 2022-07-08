@@ -12,7 +12,7 @@
       </div>
       <the-list></the-list>
       <div class="goToAllSig">
-        <span class="title" @click="goToAllSig">查看特别兴趣小组贡献详情</span
+        <span class="title" @click="goToAllSig">{{ t('viewSIGDetail') }}</span
         ><img
           src="@/assets/right.png"
           alt=""
