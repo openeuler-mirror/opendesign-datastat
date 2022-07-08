@@ -248,10 +248,11 @@ const getCommunityValue = () => {
 };
 getList();
 const goTo = (item: any) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/mobile/sig/${item.sig_names}`
-  );
-  window.open(routeData.href, '_blank');
+  //   const routeData: any = router.resolve(
+  //     `/${useCommon.language}/mobile/sig/${item.sig_names}`
+  //   );
+  //   window.open(routeData.href, '_blank');
+  router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
 };
 </script>
 <style scoped lang="scss">

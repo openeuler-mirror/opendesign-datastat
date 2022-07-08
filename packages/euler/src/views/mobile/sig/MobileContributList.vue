@@ -251,20 +251,18 @@ const getcontributeValue = (item: any) => {
             align="left"
             class-name="type-label"
             :label="typeLable"
-
           >
             <template #default="scope">
               <div class="box">
                 <span class="num">{{ scope.row.contribute }}</span>
                 <div>
                   <the-progress
-                  :item="scope.row.contribute"
-                  :component-name="componentName"
-                  :member-list="memberMax"
-                  :usertype="scope.row.usertype"
-                ></the-progress>
+                    :item="scope.row.contribute"
+                    :component-name="componentName"
+                    :member-list="memberMax"
+                    :usertype="scope.row.usertype"
+                  ></the-progress>
                 </div>
-
               </div>
             </template>
           </el-table-column>
