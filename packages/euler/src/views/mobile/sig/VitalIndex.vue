@@ -74,6 +74,8 @@ const reallData = ref([] as IObject[]);
       id="combinedActivity"
       :name="t('combinedActivity')"
       :value="sorceData.score"
+      width="100%"
+      height="300px"
     ></o-echart-gauge>
 
     <mobile-current-trend :sig="sig"></mobile-current-trend>

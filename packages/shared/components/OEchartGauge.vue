@@ -38,7 +38,7 @@ const getOption = (): EChartsOption => {
       {
         name: 'Outer',
         type: 'pie',
-        radius: ['50%', '62%'],
+        radius: ['53%', '62%'],
         emphasis: {
           disabled: true,
           label: {
@@ -67,7 +67,7 @@ const getOption = (): EChartsOption => {
       {
         name: 'Inner',
         type: 'pie',
-        radius: ['0%', '50%'],
+        radius: ['0%', '53%'],
         zlevel: 0,
         label: {
           show: false,
@@ -133,7 +133,7 @@ const getOption = (): EChartsOption => {
           icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
           length: 8,
           width: 7,
-          offsetCenter: [0, '-58%'],
+          offsetCenter: [0, '-64%'],
           itemStyle: {
             color: '#2A2F37',
           },

@@ -7,6 +7,7 @@ import { useRoute } from 'vue-router';
 import { treeProcessing } from 'shared/utils/helper';
 import { queryCompanySigDetails, queryCompanySigs } from 'shared/api';
 import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
+import OViewonpc from 'shared/components/OViewonpc.vue';
 import { useStaffStore } from '@/stores/staff';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
 import MobileOFormRadio from '../sig/MobileOFormRadio.vue';
@@ -226,6 +227,7 @@ watch(
   <div v-else>
     <o-no-data-image></o-no-data-image>
   </div>
+  <o-viewonpc></o-viewonpc>
 </template>
 <style lang="scss" scoped>
 @import '../sig/styles/style.scss';

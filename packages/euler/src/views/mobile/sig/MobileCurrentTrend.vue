@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
 import { getSigRadarScore } from 'shared/api';
+import OViewonpc from 'shared/components/OViewonpc.vue';
 import { openCommunityInfo } from '@/api';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -76,9 +77,9 @@ const getTableData = (data: IObject) => {
 };
 const getPolarData = (data: IObject) => {
   const keys = [
+    'org_robustness',
     'products',
     'product_quality',
-    'org_robustness',
     'process_quality',
     'influence',
   ];
@@ -90,7 +91,6 @@ const getPolarData = (data: IObject) => {
     };
   });
 };
-
 
 watch(
   () => useCommon.language,
@@ -119,46 +119,39 @@ const goData = () => {
 };
 </script>
 <template>
-  <div class="curmain">
+  <div>
     <div class="polar">
       <o-echart-polar
         id="curEchartPolar"
         :fields-key="fieldsKey"
         :data="polarData"
+        width="100%"
+        height="300px"
       ></o-echart-polar>
     </div>
     <div class="table">
-      <table cellspacing="0" cellpadding="10px">
+      <table cellspacing="0" cellpadding="10px" style="width: 100%">
         <thead class="bgcolor">
-          <th
-            align="left"
-            class="border padcell overflow imgtitle"
-            style="max-width: 130px;"
-          >
-            {{ tableTitle }}
+          <th align="left" class="border padcell imgtitle">
+            <span>{{ tableTitle }}</span>
+
             <span style="margin-left: 8px; cursor: pointer" @click="goData()"
               ><img src="@/assets/help.png" alt=""
             /></span>
           </th>
-          <th
-            align="right"
-            class="border padcell overflow"
-            style="max-width: 90px; width: 90px"
-          >
+          <th align="right" class="border padcell">
             {{ t('CurrentSIG') }}
           </th>
-          <th
-            align="right"
-            class="border padcell overflow"
-            style="max-width: 142px; width: 142px"
-          >
+          <th align="right" class="border padcell">
             {{ t('communityAverage') }}
           </th>
         </thead>
         <tbody>
           <tr v-for="item in tableData" :key="item.title">
             <td class="border padcell">{{ item.title }}</td>
-            <td class="border padcell num" align="right">{{ (Math.round(item.sig * 100) / 100).toFixed(2) }}</td>
+            <td class="border padcell num" align="right">
+              {{ (Math.round(item.sig * 100) / 100).toFixed(2) }}
+            </td>
             <td class="border padcell num" align="right">
               {{ (Math.round(item.community * 100) / 100).toFixed(2) }}
             </td>
@@ -167,25 +160,15 @@ const goData = () => {
       </table>
     </div>
   </div>
+  <o-viewonpc></o-viewonpc>
 </template>
 <style lang="scss" scoped>
-.curmain {
-  display: flex;
-  flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
-  width: 100%;
-}
 .table {
   font-size: 12px;
   color: #4e5865;
   th {
     font-weight: 500;
   }
-}
-.polar {
-  display: inline-block;
-  width: auto;
 }
 .border {
   border-bottom: 1px solid #dee2e8;
@@ -201,10 +184,10 @@ const goData = () => {
 .num {
   color: #0a0b0d;
 }
-.bgcolor{
+.bgcolor {
   background: #e5e8f0;
 }
-.imgtitle{
+.imgtitle {
   display: flex;
   align-items: center;
   justify-items: center;
