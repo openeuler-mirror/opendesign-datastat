@@ -156,104 +156,80 @@ const goTo = (item: any) => {
 };
 </script>
 <template>
-  <div class="main">
-    <div class="main-left">
-      <div class="left-first">
-        <div class="left-first-child">
-          <span>{{ t('Mergerequest') }} PR</span>
-          <div class="left-first-child-data">
-            {{ toThousands(mergeRequest) }}
-          </div>
-        </div>
-        <div class="left-first-child">
-          <span title="Needs & Problems Issue"
-            >{{ t('NeedsProblems') }} Issue</span
-          >
-          <div class="left-first-child-data">
-            {{ toThousands(issueData) }}
-          </div>
-        </div>
-        <div class="left-first-child">
-          <span title="123">{{ t('review') }} Comment</span>
-          <div class="left-first-child-data">
-            {{ toThousands(comment) }}
-          </div>
-        </div>
-        <div class="left-first-child">
-          <span title="Number of contributors">{{
-            t('Numbercontributors')
-          }}</span>
-          <div class="left-first-child-data">
-            {{ toThousands(contributors) }}
-          </div>
-        </div>
+  <div class="left-first">
+    <div class="left-first-child">
+      <span>{{ t('Mergerequest') }} PR</span>
+      <div class="left-first-child-data">
+        {{ toThousands(mergeRequest) }}
       </div>
+    </div>
+    <div class="left-first-child">
+      <span title="Needs & Problems Issue">{{ t('NeedsProblems') }} Issue</span>
+      <div class="left-first-child-data">
+        {{ toThousands(issueData) }}
+      </div>
+    </div>
+    <div class="left-first-child">
+      <span title="123">{{ t('review') }} Comment</span>
+      <div class="left-first-child-data">
+        {{ toThousands(comment) }}
+      </div>
+    </div>
+    <div class="left-first-child">
+      <span title="Number of contributors">{{ t('Numbercontributors') }}</span>
+      <div class="left-first-child-data">
+        {{ toThousands(contributors) }}
+      </div>
+    </div>
+  </div>
 
-      <div class="circularPile">
-        <div class="circularPile-sp">
-          {{ t('Contributordistribution') }}
-        </div>
-        <div
-          v-if="
-            oechartData.D0 === 0 && oechartData.D1 === 0 && oechartData.D2 === 0
-          "
-          class="nosp"
-        >
-          暂无贡献者
-        </div>
-        <div v-else class="sp">
-          <o-echart-circular-pile
-            id="circularPile"
-            :data="oechartData"
-          ></o-echart-circular-pile>
-        </div>
-      </div>
+  <div class="circularPile">
+    <div class="circularPile-sp">
+      {{ t('Contributordistribution') }}
+    </div>
+    <div
+      v-if="
+        oechartData.D0 === 0 && oechartData.D1 === 0 && oechartData.D2 === 0
+      "
+      class="nosp"
+    >
+      暂无贡献者
+    </div>
+    <div v-else class="sp">
+      <o-echart-circular-pile
+        id="circularPile"
+        :data="oechartData"
+      ></o-echart-circular-pile>
+    </div>
+  </div>
 
-      <div class="left-second">
-        <span class="left-second-sp">{{ t('participation') }}SIG:</span>
-        <div v-if="sigsData.sigs?.length === 0" class="left-second-nosp">
-          暂未参与SIG
-        </div>
-        <div class="atlas">
-          <span
-            v-for="item in sigsData.sigs"
-            :key="item.value"
-            class="atlas-sp"
-            @click="goTo(item)"
-          >
-            {{ item }}
-          </span>
-        </div>
-      </div>
+  <div class="left-second">
+    <span class="left-second-sp">{{ t('participation') }}SIG:</span>
+    <div v-if="sigsData.sigs?.length === 0" class="left-second-nosp">
+      暂未参与SIG
+    </div>
+    <div class="atlas">
+      <span
+        v-for="item in sigsData.sigs"
+        :key="item.value"
+        class="atlas-sp"
+        @click="goTo(item)"
+      >
+        {{ item }}
+      </span>
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
 // @import '@/shared/styles/style.scss';
-.main {
-  &-left-title {
-    font-size: 24px;
-    font-family: HarmonyOS_Sans_SC_Medium;
-    color: #002fa7;
-    line-height: 32px;
-    text-overflow: ellipsis;
-    width: 380px;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  &-left-top {
-    display: flex;
-    position: relative;
-  }
-}
 .left-first {
-  width: 370px;
+  width: 100%;
   height: 176px;
   display: flex;
   flex-wrap: wrap;
   &-child {
     text-align: center;
-    width: 180px;
+    width: 50%;
     height: 80px;
     font-size: 16px;
     font-family: HarmonyOS_Sans_SC;
