@@ -193,7 +193,7 @@ const goTo = (item: any) => {
       "
       class="nosp"
     >
-      暂无贡献者
+      {{ t('noContributor') }}
     </div>
     <div v-else class="sp">
       <o-echart-circular-pile
@@ -204,9 +204,9 @@ const goTo = (item: any) => {
   </div>
 
   <div class="left-second">
-    <span class="left-second-sp">{{ t('participation') }}SIG:</span>
+    <span class="left-second-sp">{{ t('SIGParticipation') }}:</span>
     <div v-if="sigsData.sigs?.length === 0" class="left-second-nosp">
-      暂未参与SIG
+      {{ t('noSIGPart') }}
     </div>
     <div class="atlas">
       <span

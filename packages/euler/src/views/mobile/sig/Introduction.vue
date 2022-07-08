@@ -5,6 +5,7 @@ import { querySigRepos, querySigInfo } from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 const { t } = useI18n();
+<<<<<<< HEAD
 const props = defineProps({
   sig: {
     type: String,
@@ -12,6 +13,25 @@ const props = defineProps({
   },
 });
 const { sig } = toRefs(props);
+=======
+const drownData = ref([] as any[]);
+// sencondTitle.value = route.params.name as string;
+const getDrownData = () => {
+  let community = 'openeuler';
+  querySigName(community).then((data) => {
+    const allSigs = data?.data || {};
+    allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
+    const findOne =
+      allSigs.openeuler.find((item: any) => item === route.params.name) ||
+      allSigs.openeuler[0];
+    sencondTitle.value = findOne;
+    const firstKeys = Object.keys(allSigs);
+    drownData.value = allSigs[firstKeys[0]];
+    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
+    getllData();
+  });
+};
+>>>>>>> 98b59b01ee76de523e4a837241366029454b9bb9
 const cubeData = ref([] as any[]);
 const getCubeData = () => {
   const query = {
@@ -110,7 +130,9 @@ watch(
                 >
                   {{ item }}
                 </span>
-                <span v-if="!sigInfo.mentor" class="noitem"> 暂无Mentor </span>
+                <span v-if="!sigInfo.mentor" class="noitem">
+                  {{ t('noMentor') }}
+                </span>
               </div>
             </div>
             <div class="first">

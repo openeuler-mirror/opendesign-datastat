@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import OEchart from './OEchart.vue';
 import { watch, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 type EChartsOption = echarts.EChartsOption;
+const { t } = useI18n();
 const props = defineProps({
   id: {
     type: String,
@@ -154,7 +156,7 @@ watch(
       <div v-for="(value, key) in colorMap" :key="key" class="desc">
         <div class="title">
           <div class="point" :style="{ 'background-color': value }"></div>
-          {{ key }}贡献者
+          {{ key + ' ' + t('contributors') }}
         </div>
         <div class="value">
           {{ data[key] }}

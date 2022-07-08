@@ -106,7 +106,7 @@ const clickDrownItem = (item: IObject) => {
             clearable
             :debounce="300"
             class="w-50 m-2"
-            placeholder="请输入名称搜索"
+            :placeholder="t('enterName')"
             :prefix-icon="Search"
             @input="querySearch"
             @clear="clearSearchInput"

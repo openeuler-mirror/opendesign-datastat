@@ -493,7 +493,7 @@ const showDropdown = (e:any) => {
               "
               class="nosp"
             >
-              暂无贡献者
+              {{ t('noContributor') }}
             </div>
             <div v-else class="sp">
               <o-echart-circular-pile
@@ -504,9 +504,9 @@ const showDropdown = (e:any) => {
           </div>
 
           <div class="left-second">
-            <span class="left-second-sp">{{ t('participation') }}SIG:</span>
+            <span class="left-second-sp">{{ t('SIGParticipation') }}:</span>
             <div v-if="sigsData.sigs?.length === 0" class="left-second-nosp">
-              暂未参与SIG
+              {{ t('noSIGPart') }}
             </div>
             <div class="atlas">
               <span
@@ -587,7 +587,7 @@ const showDropdown = (e:any) => {
                       clearable
                       :debounce="300"
                       size="large"
-                      placeholder="请输入Gitee ID搜索"
+                      :placeholder="t('enterGitee')"
                       @change="queryListSearch"
                       @clear="clearListSearchInput"
                     >

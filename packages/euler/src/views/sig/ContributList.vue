@@ -170,7 +170,7 @@ const getcontributeValue = (item: any) => {
               clearable
               :debounce="300"
               size="large"
-              placeholder="请输入Gitee ID搜索"
+              :placeholder="t('enterGitee')"
               @change="querySearch"
               @clear="clearSearchInput"
             >
