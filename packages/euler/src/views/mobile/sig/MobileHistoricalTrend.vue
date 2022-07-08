@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import OEchartLine from 'shared/components/OEchartLine.vue';
-import OFormRadio from '@/components/OFormRadio.vue';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getSigRadarScore, getSigScore } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
 import { openCommunityInfo } from '@/api';
+import MobileOFormRadio from './MobileOFormRadio.vue';
 
 const { t } = useI18n();
 const props = defineProps({
@@ -101,11 +101,11 @@ const getContributeInfo = (e: IObject) => {
 </script>
 <template>
   <div>
-    <o-form-radio
+    <mobile-o-form-radio
       :option="firstformOption"
       @get-contribute-info="getContributeInfo($event)"
     >
-    </o-form-radio>
+    </mobile-o-form-radio>
     <o-echart-line
       id="historicalVitalityIndicatorsEchart"
       :data="echartData"

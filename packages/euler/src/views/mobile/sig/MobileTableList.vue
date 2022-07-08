@@ -104,43 +104,7 @@ const formOption = computed(() => {
 const getContributeInfo = (e: IObject) => {
   param.value[e.id] = e.active;
   getMemberData();
-  switchTime();
-  switchType();
 };
-// 格式化统计周期文字
-const timeRangeText = ref('');
-const switchTime = () => {
-  switch (param.value.timeRange) {
-    case 'lastonemonth':
-      timeRangeText.value = t('from.lastonemonth');
-      break;
-    case 'lasthalfyear':
-      timeRangeText.value = t('from.lasthalfyear');
-      break;
-    case 'lastoneyear':
-      timeRangeText.value = t('from.lastoneyear');
-      break;
-    default:
-      timeRangeText.value = t('from.all');
-      break;
-  }
-};
-switchTime();
-const typeLable = ref('');
-const switchType = () => {
-  switch (param.value.contributeType) {
-    case 'pr':
-      typeLable.value = t('home.prs');
-      break;
-    case 'issue':
-      typeLable.value = t('home.issues');
-      break;
-    case 'comment':
-      typeLable.value = t('home.comments');
-      break;
-  }
-};
-switchType();
 
 const isSearch = ref(false);
 // 搜索过滤

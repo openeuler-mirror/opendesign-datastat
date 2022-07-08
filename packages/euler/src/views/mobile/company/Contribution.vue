@@ -110,13 +110,13 @@ const typeLable = ref('');
 const switchType = () => {
   switch (useStaff.staffForm.contributeType) {
     case 'pr':
-      typeLable.value = t('home.prs');
+      typeLable.value = 'home.prs';
       break;
     case 'issue':
-      typeLable.value = t('home.issues');
+      typeLable.value = 'home.issues';
       break;
     case 'comment':
-      typeLable.value = t('home.comments');
+      typeLable.value = 'home.comments';
       break;
   }
 };
@@ -175,18 +175,19 @@ watch(
   <div class="edcolor-box">
     <div class="blue-box">
       <div class="box">TC</div>
-      {{ t('Committee') }}
+      <div class="tc">
+        {{ t('Committee') }}
+      </div>
     </div>
     <div class="yellow-box">
       <div class="box">Maintainer</div>
-      SIG Maintainer
+      <div class="tc">SIG Maintainer</div>
     </div>
     <div class="red-box">
       <div class="box">Committer</div>
-      SIG Committer
+      <div class="tc">SIG Committer</div>
     </div>
   </div>
-
   <div class="ranking-list">
     <div class="ranking-list-item">
       <p class="caption"></p>
@@ -201,12 +202,13 @@ watch(
           :label="t('ranking')"
           width="40"
         />
+
         <el-table-column
           prop="gitee_id"
           align="left"
           label="Gitee ID"
           show-overflow-tooltip
-          width="100"
+
           ><template #default="scope">
             <div class="usertype-box">
               <span class="num"
@@ -231,10 +233,11 @@ watch(
             </div>
           </template>
         </el-table-column>
+
         <el-table-column
           align="left"
           class-name="type-label"
-          :label="typeLable"
+          :label="t(typeLable)"
         >
           <template #default="scope">
             <div class="box">
@@ -275,21 +278,23 @@ watch(
   .box {
     display: flex;
     .num {
-      width: 50px;
+      width: 100px;
       text-align: right;
     }
   }
   .usertype-box {
     display: flex;
     align-items: left;
+    flex-wrap: wrap;
     .num {
-      width: 200px;
+      // width: 200px;
       text-align: left;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       .TCbox {
         display: inline-block;
-        width: 32px;
+        width: 20px;
         height: 22px;
         background: linear-gradient(45deg, #b461f6 0%, #7d32ea 100%);
         border-radius: 2px;
@@ -307,12 +312,16 @@ watch(
 }
 .edcolor-box {
   display: flex;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
+  width: 100%;
+  flex-wrap: wrap;
+  align-content: flex-start;
   .blue-box {
-    margin-right: 8px;
+    margin-right: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 10px;
     .box {
       width: 32px;
       height: 22px;
@@ -330,10 +339,11 @@ watch(
     }
   }
   .yellow-box {
-    margin-right: 8px;
+    margin-right: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 10px;
     .box {
       width: 73px;
       height: 22px;
@@ -387,10 +397,19 @@ watch(
   color: #ffffff;
   line-height: 12px;
   height: 16px;
-  width: 73px;
+  width: 50px;
   height: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.tc {
+  width: 84px;
+  height: 18px;
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #555555;
+  line-height: 18px;
 }
 </style>
