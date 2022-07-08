@@ -82,7 +82,7 @@ getList();
   <div class="diagram">
     <o-diagram :data="diagramData"></o-diagram>
   </div>
-  <div class="desc">该图表更适合在PC浏览<br />建议在PC查看更多信息</div>
+  <div class="desc">{{ t('ViewOnPC1') }}<br />{{ t('ViewOnPC2') }}</div>
 </template>
 <style lang="scss" scoped>
 .diagram-legend {

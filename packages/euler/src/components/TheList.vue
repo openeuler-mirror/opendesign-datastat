@@ -1,6 +1,6 @@
 <template>
   <div class="main-menu">
-    <div class="Innovation">代码仓管理/技术创新</div>
+    <div class="Innovation">{{ t('repositoryTechnology') }}</div>
     <el-row>
       <div v-for="value in getInnovationValue()" :key="value.feature">
         <el-tooltip
@@ -25,14 +25,18 @@
             <div class="titlelable">{{ value.feature }}</div>
             <div class="info">
               <p>
-                <span class="index">特别兴趣小组数量</span>
+                <span class="index">{{ t('numberofsigs') }}</span>
                 <span class="titlenumberIndex"> {{ value.arry.length }}</span>
               </p>
             </div>
             <div class="info">
               <p>
-                <span v-if="value.arry.length" class="index">平均活跃度</span>
-                <span v-else class="index">平均活跃度 0</span>
+                <span v-if="value.arry.length" class="index">{{
+                  t('averageActiveness')
+                }}</span>
+                <span v-else class="index">{{
+                  t('averageActiveness') + ' 0'
+                }}</span>
                 <span class="titlenumberIndex">
                   {{
                   (Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
@@ -87,7 +91,7 @@
                 </p>
               </div>
               <div class="info">
-                <div @click="goTo(val)" style="cursor: pointer">查看详情</div>
+                <div style="cursor: pointer" @click="goTo(val)">查看详情</div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
@@ -99,7 +103,7 @@
         </el-col>
       </div>
     </el-row>
-    <div class="Community">社区治理运营</div>
+    <div class="Community">{{ t('governanceAndOperation') }}</div>
     <el-row>
       <div v-for="value in getCommunityValue()" :key="value.feature">
         <el-tooltip
@@ -124,14 +128,18 @@
             <div class="titlelable">{{ value.feature }}</div>
             <div class="info">
               <p>
-                <span class="index">特别兴趣小组数量</span>
+                <span class="index">{{ t('numberofsigs') }}</span>
                 <span class="titlenumberIndex"> {{ value.arry.length }}</span>
               </p>
             </div>
             <div class="info">
               <p>
-                <span v-if="value.arry.length" class="index">平均活跃度</span>
-                <span v-else class="index">平均活跃度 0</span>
+                <span v-if="value.arry.length" class="index">{{
+                  t('averageActiveness')
+                }}</span>
+                <span v-else class="index">{{
+                  t('averageActiveness') + ' 0'
+                }}</span>
                 <span class="titlenumberIndex">
                   {{
                   (Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
@@ -186,7 +194,7 @@
                 </p>
               </div>
               <div class="info">
-                <div @click="goTo(val)" style="cursor: pointer">查看详情</div>
+                <div style="cursor: pointer" @click="goTo(val)">查看详情</div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
@@ -378,7 +386,7 @@ const goTo = (item: any) => {
 .titlelable {
   min-width: 160px;
 }
-.titlenumberIndex{
+.titlenumberIndex {
   position: absolute;
   right: 16px;
 }

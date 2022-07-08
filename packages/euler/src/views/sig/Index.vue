@@ -18,7 +18,7 @@ import {
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
-import { ElScrollbar } from 'element-plus'
+import { ElScrollbar } from 'element-plus';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -32,7 +32,7 @@ const getDrownData = () => {
     const allSigs = data?.data || {};
     allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
     const findOne =
-      allSigs.openeuler.find((item:any) => item === route.params.name) ||
+      allSigs.openeuler.find((item: any) => item === route.params.name) ||
       allSigs.openeuler[0];
     sencondTitle.value = findOne;
     const firstKeys = Object.keys(allSigs);
@@ -126,7 +126,7 @@ const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
 };
-const showDropdown = (e:any) => {
+const showDropdown = (e: any) => {
   if (e) {
     let number = 0;
     reallData.value.forEach((item: any, index) => {
@@ -243,7 +243,9 @@ const showDropdown = (e:any) => {
                 >
                   {{ item }}
                 </span>
-                <span v-if="!sigInfo.mentor" class="noitem"> 暂无Mentor </span>
+                <span v-if="!sigInfo.mentor" class="noitem">
+                  {{ t('noMentor') }}
+                </span>
               </div>
             </div>
             <div class="first">

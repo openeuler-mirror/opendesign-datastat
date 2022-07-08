@@ -2,17 +2,19 @@
   <div class="no-data" :style="{ height }">
     <img :src="img || defaultImge" alt="" :style="{ width }"/>
     <div class="title">
-      {{ title }}
+      {{ t(title) }}
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { toRefs } from 'vue';
+import { useI18n } from 'vue-i18n';
 import defaultImge from '../assets/image/nodata.png';
+const { t } = useI18n();
 const props = defineProps({
   title: {
     type: String,
-    default: '暂无数据',
+    default: 'noData',
   },
   height: {
     type: String,

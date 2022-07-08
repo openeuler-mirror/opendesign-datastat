@@ -21,7 +21,7 @@ const getDrownData = () => {
     const allSigs = data?.data || {};
     allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
     const findOne =
-      allSigs.openeuler.find((item:any) => item === route.params.name) ||
+      allSigs.openeuler.find((item: any) => item === route.params.name) ||
       allSigs.openeuler[0];
     sencondTitle.value = findOne;
     const firstKeys = Object.keys(allSigs);
@@ -141,7 +141,9 @@ const querySigInfoData = () => {
                 >
                   {{ item }}
                 </span>
-                <span v-if="!sigInfo.mentor" class="noitem"> 暂无Mentor </span>
+                <span v-if="!sigInfo.mentor" class="noitem">
+                  {{ t('noMentor') }}
+                </span>
               </div>
             </div>
             <div class="first">
@@ -174,8 +176,8 @@ const querySigInfoData = () => {
   min-height: 900px;
 }
 .main {
-//   display: grid;
-//   grid-template-columns: 28% 72%;
+  //   display: grid;
+  //   grid-template-columns: 28% 72%;
   &-left {
     .edropdown {
       .btnc {
@@ -235,31 +237,31 @@ const querySigInfoData = () => {
           background-image: url('@/assets/email.png');
           width: 24px;
           height: 24px;
-        margin-right: 4px;
+          margin-right: 4px;
         }
         .IRC {
           background-image: url('@/assets/chat.png');
           width: 24px;
           height: 24px;
-        margin-right: 4px;
+          margin-right: 4px;
         }
         .Maintainer {
           background-image: url('@/assets/use-square.png');
           width: 24px;
           height: 24px;
-        margin-right: 4px;
+          margin-right: 4px;
         }
         .Mentor {
           background-image: url('@/assets/user.png');
           width: 24px;
           height: 24px;
-        margin-right: 4px;
+          margin-right: 4px;
         }
         .store {
           background-image: url('@/assets/cube.png');
           width: 24px;
           height: 24px;
-        //   margin-right: 8px;
+          //   margin-right: 8px;
         }
       }
       .slogan {

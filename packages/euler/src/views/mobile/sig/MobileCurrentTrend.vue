@@ -145,7 +145,7 @@ const goData = () => {
             class="border padcell overflow"
             style="max-width: 90px; width: 90px"
           >
-            当前SIG
+            {{ t('CurrentSIG') }}
           </th>
           <th
             align="right"
