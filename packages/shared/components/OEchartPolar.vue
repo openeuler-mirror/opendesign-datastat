@@ -50,7 +50,7 @@ const getOption = (): EChartsOption => {
           text: item.title,
         })),
         center: ['50%', '50%'],
-        radius: 70,
+        radius: 80,
         startAngle: 90,
         splitNumber: 4,
         shape: 'circle',

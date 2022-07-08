@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import ODiagram from 'shared/components/ODiagram.vue';
+import OViewonpc from 'shared/components/OViewonpc.vue';
 import { queryCompanySigs } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
@@ -82,7 +83,7 @@ getList();
   <div class="diagram">
     <o-diagram :data="diagramData"></o-diagram>
   </div>
-  <div class="desc">{{ t('ViewOnPC1') }}<br />{{ t('ViewOnPC2') }}</div>
+  <o-viewonpc></o-viewonpc>
 </template>
 <style lang="scss" scoped>
 .diagram-legend {
@@ -106,11 +107,5 @@ getList();
 }
 .diagram {
   margin-top: 4rem;
-}
-.desc {
-  text-align: center;
-  font-size: 12px;
-  line-height: 1.2rem;
-  margin-top: 1rem;
 }
 </style>

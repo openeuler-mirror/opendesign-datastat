@@ -56,6 +56,10 @@ const props = defineProps({
     type: String,
     default: '300px',
   },
+  gridTop: {
+    type: String || Number,
+    default: '20%',
+  },
 });
 const getLegendData = () => {
   return props.data.map((item: any) => item.name);
@@ -124,7 +128,7 @@ const getOption = (): EChartsOption => {
     legend: {
       icon: 'path://M0,0 L20, 0L20, 4L0, 4L0, 0z',
       left: 0,
-      itemGap: 30,
+      itemGap: 15,
       data: getLegendData(),
       selected: getLegendSelectData(),
     },
@@ -133,6 +137,7 @@ const getOption = (): EChartsOption => {
       left: '1%',
       right: '4%',
       bottom: '3%',
+      top: props.gridTop,
       containLabel: true,
     },
     xAxis: {

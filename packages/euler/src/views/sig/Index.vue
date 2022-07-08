@@ -284,6 +284,7 @@ const showDropdown = (e: any) => {
                 id="combinedActivity"
                 :name="t('combinedActivity')"
                 :value="sorceData.score"
+                width="330px"
               ></o-echart-gauge>
               <current-trend :sig="sencondTitle"></current-trend>
             </div>

@@ -42,7 +42,7 @@ export default {
   D1Number: 'D1',
   Maintainer: 'Maintainer',
   communityRankings: 'Ranking',
-  combinedActivity: 'Comprehensive Activeness',
+  combinedActivity: 'Overall Activeness',
   contributionsTitle: 'Community Contribution data',
   userContributor: 'Contribution by Individuals',
   companyContributor: 'Contribution by Organizations',

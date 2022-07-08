@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { getSigRadarScore, getSigScore } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
 import { openCommunityInfo } from '@/api';
+import OViewonpc from 'shared/components/OViewonpc.vue';
 import MobileOFormRadio from './MobileOFormRadio.vue';
 
 const { t } = useI18n();
@@ -109,7 +110,9 @@ const getContributeInfo = (e: IObject) => {
     <o-echart-line
       id="historicalVitalityIndicatorsEchart"
       :data="echartData"
+      :grid-top="120"
     ></o-echart-line>
+    <o-viewonpc margin-top="3rem"></o-viewonpc>
   </div>
 </template>
 <style lang="scss" scoped></style>
