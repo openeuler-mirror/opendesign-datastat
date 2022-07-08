@@ -101,10 +101,11 @@ const chaneLanguage = () => {
   let lang = languageRadio.value ? 'en' : 'zh';
   localStorage.setItem('lang', lang);
   locale.value = lang;
-  const { href } = window.location;
-  const newHref = href.split('/').slice(-1).toString();
+  const { pathname } = window.location;
+  const newHref = pathname.split('/');
+  newHref[1] = lang;
   useCommon.setLanguage(lang);
-  router.push(`/${lang}/${newHref}`);
+  router.push(newHref.join('/'));
   drawer.value = false;
 };
 const showItem = (test: boolean): boolean => {
