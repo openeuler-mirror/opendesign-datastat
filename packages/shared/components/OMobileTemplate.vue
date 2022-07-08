@@ -47,5 +47,6 @@ const props = defineProps({
   &-title {
     margin-bottom: 1rem;
   }
+
 }
 </style>

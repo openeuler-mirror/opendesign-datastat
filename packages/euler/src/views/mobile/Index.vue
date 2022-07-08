@@ -22,6 +22,8 @@ import bg_mo from '@/assets/bg_mo.png';
 import atomLogo from '@/assets/atom.png';
 import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.vue';
 import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialGroupRelationship.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -39,7 +41,7 @@ const onSlideChange = (swiper: any) => {
 watch(
   () => useCommon.moNav,
   () => {
-    swiperRef.value.slideTo(useCommon.moNav);
+    !swiperRef.value.destroyed && swiperRef.value.slideTo(useCommon.moNav);
   }
 );
 
@@ -161,6 +163,17 @@ const backtop = () => {
 const backtop1 = () => {
   slideRef1.value.scrollTop = 0;
 };
+const goToCompany = (data: IObject) => {
+  if (
+    hasPermission('sigRead') &&
+    data.company_cn !== '个人贡献者' &&
+    data.company_en !== 'independent'
+  ) {
+    data;
+    router.push(`/${useCommon.language}/mobile/company/${data.company_cn}`);
+  } else {
+  }
+};
 </script>
 <template>
   <swiper
@@ -243,7 +256,7 @@ const backtop1 = () => {
               :key="'com' + index"
               class="company-content-item"
             >
-              <p class="name">
+              <p class="name" @click="goToCompany(item)">
                 <span class="index">{{ item.index }}</span
                 >{{
                   useCommon.language === 'zh'

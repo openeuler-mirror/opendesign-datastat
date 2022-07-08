@@ -216,7 +216,7 @@ const getcontributeValue = (item: any) => {
             prop="rank"
             align="center"
             :label="t('ranking')"
-            width="120"
+            width="60"
           />
           <el-table-column
             prop="gitee_id"
@@ -255,13 +255,14 @@ const getcontributeValue = (item: any) => {
             <template #default="scope">
               <div class="box">
                 <span class="num">{{ scope.row.contribute }}</span>
-
-                <the-progress
-                  :item="scope.row.contribute"
-                  :component-name="componentName"
-                  :member-list="memberMax"
-                  :usertype="scope.row.usertype"
-                ></the-progress>
+                <div>
+                  <the-progress
+                    :item="scope.row.contribute"
+                    :component-name="componentName"
+                    :member-list="memberMax"
+                    :usertype="scope.row.usertype"
+                  ></the-progress>
+                </div>
               </div>
             </template>
           </el-table-column>
@@ -280,7 +281,7 @@ const getcontributeValue = (item: any) => {
   </div>
 </template>
 <style scoped lang="scss">
-@import '@/shared/styles/style.scss';
+@import './styles/style.scss';
 .theSecondForm {
   padding-right: 24px;
 }
@@ -296,16 +297,19 @@ const getcontributeValue = (item: any) => {
   }
   .box {
     display: flex;
+    justify-content: center;
+    align-items: center;
     .num {
       width: 50px;
-      text-align: right;
+      // width: auto;
+      text-align: center;
     }
   }
   .usertype-box {
     display: flex;
     align-items: center;
     .num {
-      width: 100px;
+      // width: 100px;
       text-align: left;
     }
   }
@@ -313,29 +317,8 @@ const getcontributeValue = (item: any) => {
 .edcolor-box {
   display: flex;
   padding-bottom: 10px;
-
-  .blue-box {
-    margin-right: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .box {
-      width: 12px;
-      height: 12px;
-      background: #002fa7;
-      border-radius: 50%;
-      margin-right: 8px;
-    }
-    .nobox {
-      width: 12px;
-      height: 12px;
-      background: #000;
-      border-radius: 50%;
-      margin-right: 8px;
-    }
-  }
   .yellow-box {
-    margin-right: 24px;
+    margin-right: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -344,25 +327,6 @@ const getcontributeValue = (item: any) => {
       height: 12px;
 
       background: #feb32a;
-      border-radius: 2px;
-      font-size: 10px;
-      font-family: HarmonyOS_Sans_SC;
-      color: #ffffff;
-      line-height: 12px;
-      text-align: center;
-      margin-right: 8px;
-      border-radius: 50%;
-    }
-  }
-  .red-box {
-    margin-right: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .box {
-      width: 12px;
-      height: 12px;
-      background: #4aaead;
       border-radius: 2px;
       font-size: 10px;
       font-family: HarmonyOS_Sans_SC;

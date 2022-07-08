@@ -11,7 +11,9 @@ import { queryCompanySigs } from 'shared/api';
 import { useRoute } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import DropSelect from '../common/DropSelect.vue';
-
+import Introduction from './Introduction.vue';
+import Technology from './Technology.vue';
+import Contribution from './Contribution.vue';
 const { t } = useI18n();
 const route = useRoute();
 const useCommon = useCommonStore();
@@ -81,7 +83,9 @@ onMounted(() => {
           header="Currentcontributionranking"
           padding-top="0.75rem"
         >
-          <template #content> contentcontentcontentcontentcontent</template>
+          <template #content>
+            <introduction :title="sencondTitle"></introduction
+          ></template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
@@ -89,7 +93,9 @@ onMounted(() => {
           <template #header>
             {{ t('company') + ' ' + t('ecological') }}
           </template>
-          <template #content> co </template>
+          <template #content>
+            <technology :title="sencondTitle"></technology>
+          </template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
@@ -97,7 +103,9 @@ onMounted(() => {
           <template #header>
             {{ t('company') + ' ' + t('staffContributor') }}
           </template>
-          <template #content> content</template>
+          <template #content
+            ><contribution :title="sencondTitle"></contribution
+          ></template>
         </o-mobile-template>
       </swiper-slide>
     </swiper>
