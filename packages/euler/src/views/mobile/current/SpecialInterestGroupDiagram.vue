@@ -321,13 +321,9 @@ const goTo = (item: any) => {
   width: auto;
   &-span {
     width: auto;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    word-break: break-word;
     text-align: center;
   }
-  text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
 }
 .detail-menu:hover {

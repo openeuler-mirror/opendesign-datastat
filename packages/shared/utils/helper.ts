@@ -180,5 +180,5 @@ export const processing = (data: IObject) => {
  * 判断是否是移动端
  */
 export const testIsPhone = () => {
-  return /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
+  return /Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent);
 };
