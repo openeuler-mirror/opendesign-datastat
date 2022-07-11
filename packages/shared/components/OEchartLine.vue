@@ -149,7 +149,16 @@ const getOption = (): EChartsOption => {
       type: 'value',
       alignTicks: true,
       min: function (value) {
-        return value.min - 0.04 < 0 ? 0 : Number((value.min - 0.04).toFixed(2));
+        return value.min - 0.05 < 0
+          ? 0
+          : Number(
+              ((Math.ceil(((value.min - 0.05) * 100) / 5) * 5) / 100).toFixed(2)
+            );
+      },
+      max: function (value) {
+        return Number(
+          ((Math.floor(((value.max + 0.05) * 100) / 5) * 5) / 100).toFixed(2)
+        );
       },
       splitNumber: 2,
     },

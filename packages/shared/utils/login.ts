@@ -45,6 +45,9 @@ export function logout() {
 export function goToHome() {
   if (!testIsPhone()) {
     window.location.href = window.location.origin;
+  } else {
+    const lang = window.localStorage.getItem('lang');
+    window.location.href = `/${lang}/mobile`;
   }
 }
 
@@ -99,7 +102,9 @@ export function tokenFailIndicateLogin() {
   saveUserAuth();
   const { guardAuthClient } = useStoreData();
   guardAuthClient.value.photo = undefined;
-  goToHome();
+  if (!testIsPhone()) {
+    goToHome();
+  }
 }
 
 /**

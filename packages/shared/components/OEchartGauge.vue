@@ -158,6 +158,9 @@ const getOption = (): EChartsOption => {
           distance: -15,
           color: '#8D98AA',
           fontSize: 12,
+          formatter: function (value) {
+            return value.toFixed(2);
+          },
         },
         title: {
           show: true,
