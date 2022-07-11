@@ -110,7 +110,7 @@ const getContributeInfo = (e: IObject) => {
     <o-echart-line
       id="historicalVitalityIndicatorsEchart"
       :data="echartData"
-      :grid-top="120"
+      grid-top="120"
     ></o-echart-line>
     <o-viewonpc margin-top="3rem"></o-viewonpc>
   </div>
