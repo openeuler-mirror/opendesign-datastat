@@ -23,6 +23,7 @@ import atomLogo from '@/assets/atom.png';
 import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.vue';
 import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialGroupRelationship.vue';
 import { useRouter } from 'vue-router';
+import { IObject } from 'shared/@types/interface';
 const router = useRouter();
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();

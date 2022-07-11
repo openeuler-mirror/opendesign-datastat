@@ -179,69 +179,61 @@ const getcontributeValue = (item: any) => {
       <div class="leader-box">Leader</div>
       <span>SIG Leader</span>
     </div>
-    <div class="ranking-list">
-      <div class="ranking-list-item">
-        <p class="caption"></p>
-        <el-table
-          v-loading="loading"
-          :data="reallData.slice((currentPage - 1) * 10, currentPage * 10)"
-          style="width: 100%"
-        >
-          <el-table-column
-            prop="rank"
-            align="center"
-            :label="t('ranking')"
-            width="40"
-          />
-          <el-table-column
-            prop="gitee_id"
-            align="left"
-            label="Gitee ID"
-            show-overflow-tooltip
-            ><template #default="scope">
-              <div class="usertype-box">
-                <span
-                  v-show="scope.row.usertype !== 'committers'"
-                  class="usertypecolorbox"
-                  :style="({
+    <div class="ranking-table">
+      <el-table
+        v-loading="loading"
+        :data="reallData.slice((currentPage - 1) * 10, currentPage * 10)"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="rank"
+          align="center"
+          :label="t('ranking')"
+          width="40"
+        />
+        <el-table-column
+          prop="gitee_id"
+          align="left"
+          label="Gitee ID"
+          show-overflow-tooltip
+          ><template #default="scope">
+            <div class="usertype-box">
+              <span
+                v-show="scope.row.usertype !== 'committers'"
+                class="usertypecolorbox"
+                :style="({
                     '--color':
                       scope.row.usertype === 'maintainers'
                         ? '#002FA7'
                         : '#4AAEAD',
                   } as any)"
-                ></span>
-                <span
-                  v-show="scope.row.usertype === 'committers'"
-                  class="usertypecolorbox"
-                  :style="({
+              ></span>
+              <span
+                v-show="scope.row.usertype === 'committers'"
+                class="usertypecolorbox"
+                :style="({
                     '--color': '#FEB32A',
                   } as any)"
-                ></span>
-                <span class="num">{{ scope.row.gitee_id }}</span>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            align="left"
-            class-name="type-label"
-            :label="t(typeLable)"
-          >
-            <template #default="scope">
-              <div class="box">
-                <div class="num">{{ scope.row.contribute }}</div>
-                <div>
-                  <the-progress
-                    :item="scope.row.contribute"
-                    :component-name="componentName"
-                    :member-list="memberMax"
-                    :usertype="scope.row.usertype"
-                  ></the-progress>
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+              ></span>
+              <span class="num">{{ scope.row.gitee_id }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column align="left" :label="t(typeLable)">
+          <template #default="scope">
+            <div class="box">
+              <div class="num">{{ scope.row.contribute }}</div>
+              <the-progress
+                width="90%"
+                :item="scope.row.contribute"
+                :component-name="componentName"
+                :member-list="memberMax"
+                :usertype="scope.row.usertype"
+              ></the-progress>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
     <div class="demo-pagination-block">
       <o-mobile-pagination
@@ -256,24 +248,18 @@ const getcontributeValue = (item: any) => {
 </template>
 <style scoped lang="scss">
 @import './styles/style.scss';
-.ranking-list {
-  display: grid;
-  grid-template-columns: 100%;
-  padding-right: 24px;
-  .caption {
-    font-size: 16px;
-    color: #000;
-    line-height: 24px;
-    margin-bottom: 8px;
+.ranking-table {
+  :deep(.el-table th.el-table__cell) {
+    font-size: 12px;
+  }
+  :deep(.el-table .el-table__cell) {
+    font-size: 12px;
   }
   .box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .num {
-      // width: 50px;
-      // width: auto;
-      text-align: center;
+    display: grid;
+    grid-template-columns: 25% auto;
+    .el-progress {
+      margin-left: 0;
     }
   }
   .usertype-box {
@@ -342,5 +328,4 @@ const getcontributeValue = (item: any) => {
     font-weight: 300;
   }
 }
-
 </style>

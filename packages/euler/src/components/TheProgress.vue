@@ -28,6 +28,10 @@ const props = defineProps({
       return '';
     },
   },
+  width: {
+    type: String,
+    default: '240px',
+  },
 });
 const { componentName, memberList, usertype } = toRefs(props);
 const usePersonal = usePersonalStore();
@@ -54,17 +58,20 @@ const progressColor = () => {
 // 动态计算参数赋值
 const progressFormat = (item: number) => {
   if (componentName.value === 'staff') {
-    return useStaff.staffMaxNum?(100 / useStaff.staffMaxNum) * item:0;
+    return useStaff.staffMaxNum ? (100 / useStaff.staffMaxNum) * item : 0;
   } else if (componentName.value === 'member') {
     return memberList.value ? (100 / memberList.value) * item : 0;
   } else {
-    return usePersonal.personalMaxNum?(100 / usePersonal.personalMaxNum) * item:0;
+    return usePersonal.personalMaxNum
+      ? (100 / usePersonal.personalMaxNum) * item
+      : 0;
   }
 };
 </script>
 
 <template>
   <el-progress
+    :style="{ width }"
     :show-text="false"
     :stroke-width="8"
     :color="progressColor()"
@@ -74,7 +81,6 @@ const progressFormat = (item: number) => {
 
 <style lang="scss" scoped>
 .el-progress {
-  width: 240px;
   margin-left: 10px;
   :deep(.el-progress-bar__outer) {
     background: none;

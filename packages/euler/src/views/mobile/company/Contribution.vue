@@ -188,70 +188,65 @@ watch(
       <div class="tc">SIG Committer</div>
     </div>
   </div>
-  <div class="ranking-list">
-    <div class="ranking-list-item">
-      <p class="caption"></p>
-      <el-table
-        v-loading="loading"
-        :data="reallListData.slice((currentPage - 1) * 10, currentPage * 10)"
-        style="width: 100%"
-      >
-        <el-table-column
-          prop="rank"
-          align="center"
-          :label="t('ranking')"
-          width="40"
-        />
+  <div class="ranking-table">
+    <p class="caption"></p>
+    <el-table
+      v-loading="loading"
+      size="small"
+      :data="reallListData.slice((currentPage - 1) * 10, currentPage * 10)"
+      style="width: 100%"
+    >
+      <el-table-column
+        prop="rank"
+        align="center"
+        :label="t('ranking')"
+        width="40"
+      />
 
-        <el-table-column
-          prop="gitee_id"
-          align="left"
-          label="Gitee ID"
-          show-overflow-tooltip
-
-          ><template #default="scope">
-            <div class="usertype-box">
-              <span class="num"
-                >{{ scope.row.gitee_id
-                }}<span v-if="scope.row.is_TC_owner" class="TCbox">TC</span
-                ><span
-                  v-if="scope.row.usertype === 'committers'"
-                  class="usertypecolorbox"
-                  :style="({
-                              '--color': '225deg, #FEB32A 0%, #F6D365 100%',
-                            } as any)"
-                  >Committer</span
-                ><span
-                  v-if="scope.row.usertype === 'maintainers'"
-                  class="usertypecolorbox"
-                  :style="({
-                              '--color': '45deg, #005CD3 0%, #002FA7 100%',
-                            } as any)"
-                  >Maintainer
-                </span>
+      <el-table-column
+        prop="gitee_id"
+        align="left"
+        label="Gitee ID"
+        show-overflow-tooltip
+        ><template #default="scope">
+          <div class="usertype-box">
+            <span class="num"
+              >{{ scope.row.gitee_id
+              }}<span v-if="scope.row.is_TC_owner" class="TCbox">TC</span
+              ><span
+                v-if="scope.row.usertype === 'committers'"
+                class="usertypecolorbox"
+                :style="({
+                            '--color': '225deg, #FEB32A 0%, #F6D365 100%',
+                          } as any)"
+                >Committer</span
+              ><span
+                v-if="scope.row.usertype === 'maintainers'"
+                class="usertypecolorbox"
+                :style="({
+                            '--color': '45deg, #005CD3 0%, #002FA7 100%',
+                          } as any)"
+                >Maintainer
               </span>
-            </div>
-          </template>
-        </el-table-column>
+            </span>
+          </div>
+        </template>
+      </el-table-column>
 
-        <el-table-column
-          align="left"
-          class-name="type-label"
-          :label="t(typeLable)"
-        >
-          <template #default="scope">
-            <div class="box">
-              <span class="num">{{ scope.row.contribute }}</span>
+      <el-table-column align="left" :label="t(typeLable)">
+        <template #default="scope">
+          <div class="box">
+            <span class="num">{{ scope.row.contribute }}</span>
 
-              <the-progress
-                :item="scope.row.contribute"
-                :component-name="componentName"
-              ></the-progress>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+            <the-progress
+              width="90%"
+              :item="scope.row.contribute"
+              :component-name="componentName"
+            ></the-progress>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
   <div class="demo-pagination-block">
     <o-mobile-pagination
@@ -265,21 +260,19 @@ watch(
 </template>
 <style lang="scss" scoped>
 @import '@/shared/styles/style.scss';
-.ranking-list {
-  display: grid;
-  grid-template-columns: 100%;
-
-  .caption {
-    font-size: 16px;
-    color: #000;
-    line-height: 24px;
-    margin-bottom: 8px;
+.ranking-table {
+  font-size: 12px;
+  :deep(.el-table th.el-table__cell) {
+    font-size: 12px;
+  }
+  :deep(.el-table .el-table__cell) {
+    font-size: 12px;
   }
   .box {
-    display: flex;
-    .num {
-      width: 100px;
-      text-align: right;
+    display: grid;
+    grid-template-columns: 27% auto;
+    .el-progress {
+      margin-left: 0;
     }
   }
   .usertype-box {
@@ -397,14 +390,13 @@ watch(
   color: #ffffff;
   line-height: 12px;
   height: 16px;
-  width: 50px;
+  width: 4rem;
   height: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .tc {
-  width: 84px;
   height: 18px;
   font-size: 12px;
   font-family: PingFangSC-Regular, PingFang SC;
