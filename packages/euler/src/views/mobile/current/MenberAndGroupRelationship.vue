@@ -89,7 +89,7 @@ getList();
 .diagram-legend {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
   color: #555;
   .point {
     width: 12px;

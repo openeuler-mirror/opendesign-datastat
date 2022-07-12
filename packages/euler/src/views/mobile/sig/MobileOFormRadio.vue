@@ -55,9 +55,17 @@ let form = ref(
 }
 .group {
   margin-bottom: 14px;
+  font-size: 12px;
   .label {
     display: flex;
     margin-bottom: 14px;
+  }
+  :deep(.el-radio) {
+    padding: 0 6px;
+    margin-right: 5px;
+    .el-radio__label {
+      font-size: 12px;
+    }
   }
 }
 </style>

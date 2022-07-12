@@ -46,6 +46,8 @@ const props = defineProps({
   scroll-behavior: smooth;
   &-title {
     margin-bottom: 1rem;
+    font-size: 18px;
+    font-weight: 600;
   }
 
 }

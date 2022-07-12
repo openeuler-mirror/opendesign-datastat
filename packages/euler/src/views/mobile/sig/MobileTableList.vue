@@ -359,7 +359,7 @@ const goToCompany = (data: IObject) => {
     // display: flex;
     // justify-content: space-between;
     .infos {
-      font-size: 16px;
+      font-size: 12px;
       color: #000000;
       line-height: 22px;
 
@@ -367,7 +367,7 @@ const goToCompany = (data: IObject) => {
       .index {
         // width: 16px;
         margin-right: 8px;
-        font-size: 16px;
+        font-size: 12px;
         color: #9097a3;
         text-align: center;
       }

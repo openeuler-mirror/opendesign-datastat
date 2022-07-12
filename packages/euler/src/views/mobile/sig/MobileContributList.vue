@@ -274,6 +274,7 @@ const getcontributeValue = (item: any) => {
 .edcolor-box {
   display: flex;
   padding-bottom: 10px;
+  font-size: 12px;
   .yellow-box {
     margin-right: 12px;
     display: flex;
@@ -312,18 +313,18 @@ const getcontributeValue = (item: any) => {
 .leader {
   margin-bottom: 10px;
   display: flex;
+  font-size: 12px;
   align-items: center;
   &-box {
     width: 54px;
-    height: 22px;
+    height: 16px;
     background: #0062dc;
     border-radius: 2px;
     color: #ffffff;
     margin-right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
+    text-align: center;
+    line-height: 16px;
+    font-size: 8px;
     font-family: Helvetica-Light, Helvetica;
     font-weight: 300;
   }

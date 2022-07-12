@@ -253,7 +253,8 @@ watch(
   margin-top: 8px;
 
   width: 280px;
-  font-size: 16px;
+  font-size: 12px;
+  font-weight: 500;
   font-family: HarmonyOS_Sans_SC;
   color: #000000;
   line-height: 24px;
@@ -281,8 +282,9 @@ watch(
 }
 .firstsmalltitle {
   width: 280px;
-  font-size: 16px;
+  font-size: 12px;
   font-family: HarmonyOS_Sans_SC;
+  font-weight: 500;
   color: #000000;
   line-height: 24px;
 }
