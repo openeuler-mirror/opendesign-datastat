@@ -148,52 +148,30 @@ watch(
   //   display: grid;
   //   grid-template-columns: 28% 72%;
   &-left {
-    .edropdown {
-      .btnc {
-        background-image: url('@/assets/down.png');
-        width: 24px;
-        height: 24px;
-        position: absolute;
-        // right: 5px;
-      }
-    }
-    &-title {
-      font-size: 24px;
-      font-family: HarmonyOS_Sans_SC_Medium;
-      color: #002fa7;
-      line-height: 32px;
-      text-overflow: ellipsis;
-      width: 380px;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-    &-top {
-      display: flex;
-      position: relative;
-    }
     &-sp {
       display: flex;
       flex-direction: column;
       margin-top: 50px;
+      font-size: 12px;
       .first {
         margin-bottom: 16px;
         display: flex;
         position: relative;
         .toHome {
-          padding-top: 3px;
+          padding-top: 5px;
           color: #002fa7;
           cursor: pointer;
         }
         .List {
-          padding-top: 3px;
+          padding-top: 5px;
           display: flex;
           flex-direction: column;
           .item {
             margin-top: 5px;
-            font-size: 14px;
+            font-size: 12px;
             font-family: HarmonyOS_Sans_SC_Medium;
             color: #002fa7;
-            line-height: 22px;
+            line-height: 18px;
           }
         }
         .home {
@@ -247,7 +225,7 @@ watch(
 }
 .noitem {
   margin-top: 8px;
-  font-size: 14px;
+  font-size: 12px;
   font-family: HarmonyOS_Sans_SC_Medium;
   line-height: 22px;
 }

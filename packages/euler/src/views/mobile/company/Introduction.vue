@@ -199,6 +199,8 @@ const goTo = (item: any) => {
       <o-echart-circular-pile
         id="circularPile"
         :data="oechartData"
+        width="200px"
+        height="200px"
       ></o-echart-circular-pile>
     </div>
   </div>
@@ -231,18 +233,18 @@ const goTo = (item: any) => {
     text-align: center;
     width: 50%;
     height: 80px;
-    font-size: 16px;
+    font-size: 12px;
     font-family: HarmonyOS_Sans_SC;
     color: #4e5865;
-    line-height: 24px;
+    line-height: 18px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     &-data {
-      font-size: 40px;
+      font-size: 24px;
       font-family: HarmonyOS_Sans_SC;
       color: #000000;
-      line-height: 48px;
+      line-height: 32px;
     }
   }
 }
@@ -259,6 +261,7 @@ const goTo = (item: any) => {
     width: 100px;
     height: 24px;
     font-size: 16px;
+    font-weight: 600;
     font-family: HarmonyOS_Sans_SC;
     color: #000000;
     line-height: 24px;
@@ -280,24 +283,24 @@ const goTo = (item: any) => {
 
     &-sp {
       min-width: 80px;
-      height: 22px;
-      font-size: 16px;
+      font-size: 12px;
       font-family: HarmonyOS_Sans_SC_Medium;
       color: #002fa7;
-      line-height: 22px;
-      margin-bottom: 8px;
+      line-height: 18px;
+      margin-bottom: 4px;
       cursor: pointer;
     }
   }
 }
 
 .circularPile {
-  margin-top: 60px;
-  margin-bottom: 60px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   &-sp {
     width: 280px;
     height: 24px;
     font-size: 16px;
+    font-weight: 600;
     font-family: HarmonyOS_Sans_SC;
     color: #000000;
     line-height: 24px;

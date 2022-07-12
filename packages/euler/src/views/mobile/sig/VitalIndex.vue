@@ -112,7 +112,7 @@ const reallData = ref([] as IObject[]);
   color: #4e5865;
   line-height: 16px;
   &-num {
-    font-size: 40px;
+    font-size: 24px;
     color: #000000;
   }
 }

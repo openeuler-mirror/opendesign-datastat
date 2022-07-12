@@ -260,6 +260,30 @@ watch(
 </template>
 <style lang="scss" scoped>
 @import '@/shared/styles/style.scss';
+.theSecondForm {
+  :deep(.el-form) {
+    .el-form-item {
+      display: block;
+      padding: 0;
+      margin-bottom: 16px;
+      &__label {
+        font-size: 12px;
+        margin-bottom: 5px;
+        line-height: 20px;
+        display: block;
+      }
+      .el-radio {
+        height: 24px;
+        padding: 0 6px;
+        margin: 0 5px 12px 0;
+        &__label {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
 .ranking-table {
   font-size: 12px;
   :deep(.el-table th.el-table__cell) {

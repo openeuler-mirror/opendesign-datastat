@@ -271,26 +271,22 @@ const goTo = (item: any) => {
     padding-top: 24px;
     padding-bottom: 24px;
     color: #000000;
+    font-size: 14px;
   }
   .Innovation {
     padding-bottom: 24px;
     padding-top: 10px;
     color: #000000;
+    font-size: 14px;
   }
 }
 
-@media screen and (min-width: 1430px) {
-  .menu-item {
-    // width: 180px;
-    font-size: 16px;
-  }
-}
 @media screen and (max-width: 1430px) {
   .menu-item {
     width: 68px;
     height: 68px;
     display: flex;
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 .start-menu {
@@ -305,6 +301,10 @@ const goTo = (item: any) => {
   color: #000000;
   font-family: HarmonyOS_Sans_SC;
   line-height: 24px;
+  &-span {
+    font-size: 12px;
+    font-weight: 500;
+  }
 }
 .detail-menu {
   height: 68px;
@@ -312,7 +312,7 @@ const goTo = (item: any) => {
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 47, 167, var(--diaphaneity));
-  font-size: 6px;
+  font-size: 8px;
   font-family: HarmonyOS_Sans_SC;
   line-height: 16px;
   color: var(--color);

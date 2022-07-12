@@ -23,7 +23,7 @@
             >
             <el-table-column align="left">
               <template #header
-                ><div class="getheader">
+                ><div class="list-title">
                   {{ t('interestGroup') }}
                 </div>
               </template>
@@ -68,7 +68,7 @@
             >
             <el-table-column align="left">
               <template #header
-                ><div class="getheader">
+                ><div class="list-title">
                   {{ t('interestGroup') }}
                 </div> </template
               ><template #default="scope">
@@ -205,7 +205,7 @@ const goToSig = (item: any) => {
   }
 }
 .note-caption {
-  font-size: 14px;
+  font-size: 12px;
   font-family: HarmonyOS_Sans_SC;
   color: #555555;
   line-height: 22px;
@@ -236,7 +236,7 @@ const goToSig = (item: any) => {
   // margin-left: 24px;
 }
 .group-email {
-  font-size: 14px;
+  font-size: 12px;
   font-family: HarmonyOS_Sans_SC_Medium;
   color: #002fa7;
   line-height: 22px;
@@ -248,19 +248,13 @@ const goToSig = (item: any) => {
 .group-name {
   // width: 42px;
   height: 22px;
-  font-size: 14px;
+  font-size: 12px;
   font-family: HarmonyOS_Sans_SC;
   color: #000000;
   line-height: 22px;
   text-align-last: justify;
   text-align: justify;
   // padding: 5px;
-}
-.Sgroup {
-  // margin-left: 65px;
-}
-.getheader {
-  // margin-left: 65px;
 }
 .diagram {
   display: flex;
@@ -288,6 +282,6 @@ const goToSig = (item: any) => {
   }
 }
 .list-title {
-  // padding-left: 24px;
+  font-size: 12px;
 }
 </style>
