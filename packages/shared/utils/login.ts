@@ -9,24 +9,43 @@ const LOGIN_KEYS = {
   USER_ID: '_U_I_',
 };
 
+function setCookie(cname: string, cvalue: string, exdays: number) {
+  const d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  const expires = `expires=${d.toUTCString()}`;
+  document.cookie = `${cname}=${cvalue}; ${expires}`;
+}
+function getCookie(cname: string) {
+  const name = `${cname}=`;
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    const c = ca[i].trim();
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return '';
+}
+function deleteCookie(cname: string) {
+  setCookie(cname, 'null', -1);
+}
+
 // 存储用户id及token，用于下次登录
 export function saveUserAuth(id = '', code = '') {
   if (!id && !code) {
-    localStorage.removeItem(LOGIN_KEYS.USER_ID);
-    localStorage.removeItem(LOGIN_KEYS.USER_TOKEN);
+    deleteCookie(LOGIN_KEYS.USER_TOKEN);
+    deleteCookie(LOGIN_KEYS.USER_ID);
   } else {
-    localStorage.setItem(LOGIN_KEYS.USER_ID, id);
-    localStorage.setItem(LOGIN_KEYS.USER_TOKEN, code);
+    setCookie(LOGIN_KEYS.USER_TOKEN, code, 1);
+    setCookie(LOGIN_KEYS.USER_ID, id, 1);
   }
 }
 
 // 获取用户id及token
 export function getUserAuth() {
-  let token = localStorage.getItem(LOGIN_KEYS.USER_TOKEN) || '';
-  let userId = localStorage.getItem(LOGIN_KEYS.USER_ID) || '';
-  if (token === 'undefined' || userId === 'undefined') {
-    token = '';
-    userId = '';
+  const token = getCookie(LOGIN_KEYS.USER_TOKEN) || '';
+  const userId = getCookie(LOGIN_KEYS.USER_ID) || '';
+  if (!token || !userId) {
     saveUserAuth();
   }
   return {
@@ -101,10 +120,8 @@ export function removeGuard() {
 export function tokenFailIndicateLogin() {
   saveUserAuth();
   const { guardAuthClient } = useStoreData();
-  guardAuthClient.value.photo = undefined;
-  if (!testIsPhone()) {
-    goToHome();
-  }
+  guardAuthClient.value = {};
+  goToHome();
 }
 
 /**
