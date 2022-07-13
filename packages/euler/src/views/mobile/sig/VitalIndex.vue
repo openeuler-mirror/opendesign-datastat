@@ -43,7 +43,7 @@ const querySorceData = () => {
     timeRange: 'lastonemonth',
   };
   getSigScore(params).then((data) => {
-    sorceData.value = data.data.pop();
+    sorceData.value = data?.data?.pop();
   });
 };
 const getllData = () => {

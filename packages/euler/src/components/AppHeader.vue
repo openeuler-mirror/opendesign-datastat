@@ -14,8 +14,9 @@ import logoWhiteZh from '@/assets/datastat-zh.png';
 import communityLogoWhite from '@/assets/openeuler-logo.png';
 import chevronDown from '~icons/app/chevron-down';
 import { testIsPhone } from 'shared/utils/helper';
+import LoadingArc from './LoadingArc.vue';
 
-const { guardAuthClient } = useStoreData();
+const { guardAuthClient, isLoggingIn } = useStoreData();
 let dialogVisible = ref(false);
 const useCommon = useCommonStore();
 const router = useRouter();
@@ -146,8 +147,10 @@ watch(
           </template>
         </el-dropdown>
       </div>
+
       <div class="opt-user">
-        <el-dropdown v-if="guardAuthClient.photo">
+        <loading-arc v-if="isLoggingIn"></loading-arc>
+        <el-dropdown v-else-if="guardAuthClient.photo">
           <div class="el-dropdown-link">
             <img
               :src="guardAuthClient.photo"
@@ -192,7 +195,6 @@ watch(
     <app-header-mobile></app-header-mobile>
   </div>
 </template>
-
 <style lang="scss">
 $color: #ffffff;
 .app-header {

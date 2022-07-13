@@ -72,33 +72,7 @@
               {{ val.sig_names }}</span
             >
           </div>
-          <template #content>
-            <div class="lable">
-              {{ val.sig_names }}
-            </div>
-            <div class="info">
-              <p>
-                <span class="index">{{ t('ranking') }}</span>
-                <span class="numberIndex"> #{{ val.rank }}</span>
-              </p>
-            </div>
-            <div class="info">
-              <p>
-                <span class="index">{{ t('active') }}</span>
-                <span class="numberIndex">
-                  {{ (Math.round(val.score * 100) / 100).toFixed(2) }}</span
-                >
-              </p>
-            </div>
-            <div class="info">
-              <div style="cursor: pointer" @click="goTo(val)">查看详情</div>
-              <div>
-                <el-icon :size="16" class="right-btn" @click="goTo(val)">
-                  <right class="app-text-btn" />
-                </el-icon>
-              </div>
-            </div>
-          </template>
+
         </el-tooltip>
       </div>
     </div>
@@ -174,33 +148,7 @@
               {{ val.sig_names }}</span
             >
           </div>
-          <template #content>
-            <div class="lable">
-              {{ val.sig_names }}
-            </div>
-            <div class="info">
-              <p>
-                <span class="index">{{ t('ranking') }}</span>
-                <span class="numberIndex"> #{{ val.rank }}</span>
-              </p>
-            </div>
-            <div class="info">
-              <p>
-                <span class="index">{{ t('active') }}</span>
-                <span class="numberIndex">
-                  {{ (Math.round(val.score * 100) / 100).toFixed(2) }}</span
-                >
-              </p>
-            </div>
-            <div class="info">
-              <div style="cursor: pointer" @click="goTo(val)">查看详情</div>
-              <div>
-                <el-icon :size="16" class="right-btn" @click="goTo(val)">
-                  <right class="app-text-btn" />
-                </el-icon>
-              </div>
-            </div>
-          </template>
+
         </el-tooltip>
       </div>
     </div>
@@ -256,10 +204,6 @@ const getCommunityValue = () => {
 };
 getList();
 const goTo = (item: any) => {
-  //   const routeData: any = router.resolve(
-  //     `/${useCommon.language}/mobile/sig/${item.sig_names}`
-  //   );
-  //   window.open(routeData.href, '_blank');
   router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
 };
 </script>

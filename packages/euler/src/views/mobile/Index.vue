@@ -57,9 +57,9 @@ const formOption = computed(() => {
       id: 'contributeType',
       active: 'pr',
       list: [
-        { label: t('home.prs'), value: 'PR' },
-        { label: t('home.issues'), value: 'Issue' },
-        { label: t('home.comments'), value: 'Comment' },
+        { label: t('home.prs'), value: 'pr' },
+        { label: t('home.issues'), value: 'issue' },
+        { label: t('home.comments'), value: 'comment' },
       ],
     },
     {
@@ -105,14 +105,14 @@ locale.value = localStorage.getItem('lang') || 'zh';
 const contributeType = ref('');
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
-    case 'PR':
-      contributeType.value = t('home.prs');
+    case 'pr':
+      contributeType.value = 'home.prs';
       break;
-    case 'Issue':
-      contributeType.value = t('home.issues');
+    case 'issue':
+      contributeType.value = 'home.issues';
       break;
-    case 'Comment':
-      contributeType.value = t('home.comments');
+    case 'comment':
+      contributeType.value = 'home.comments';
       break;
   }
 };
@@ -317,7 +317,7 @@ const goToCompany = (data: IObject) => {
               show-overflow-tooltip
               width="110"
             />
-            <el-table-column :label="contributeType">
+            <el-table-column :label="t(contributeType)">
               <template #default="scope">
                 <div class="box">
                   <span class="num">{{
@@ -392,6 +392,7 @@ const goToCompany = (data: IObject) => {
   </swiper>
 </template>
 <style lang="scss" scoped>
+@import '@/shared/styles/style.scss';
 .swiper {
   height: 100vh;
   background: #f5f6f8;
