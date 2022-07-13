@@ -73,6 +73,8 @@ export function goToHome() {
 // 登录弹窗
 let guard: any;
 export function showGuard(community: string) {
+  const { isLoggingIn } = useStoreData();
+  isLoggingIn.value = !isLoggingIn.value;
   if (!guard) {
     initGuard(community);
   } else {
@@ -108,6 +110,10 @@ export function initGuard(community: string) {
         }, 300);
       });
     });
+    guard.on('close', () => {
+      const { isLoggingIn } = useStoreData();
+      isLoggingIn.value = false;
+      });
   }
   return guard;
 }

@@ -14,11 +14,11 @@ import communityLogoSmallWhite from '@/assets/openeuler-small-white.png';
 
 import AppMobileMenu from './AppMobileMenu.vue';
 import { useStoreData, showGuard, logout } from 'shared/utils/login';
-
+import LoadingArc from './LoadingArc.vue';
 const useCommon = useCommonStore();
 const route = useRoute();
 const router = useRouter();
-const { guardAuthClient } = useStoreData();
+const { guardAuthClient, isLoggingIn } = useStoreData();
 let dialogVisible = ref(false);
 const { t } = useI18n();
 const isblack = computed(() => useCommon.isBlackHeader);
@@ -90,7 +90,8 @@ const goMobileHome = () => {
       /></a>
     </template>
     <div class="opt-user">
-      <el-dropdown v-if="guardAuthClient.photo">
+      <loading-arc v-if="isLoggingIn"></loading-arc>
+      <el-dropdown v-else-if="guardAuthClient.photo">
         <div class="el-dropdown-link">
           <img
             :src="guardAuthClient.photo"

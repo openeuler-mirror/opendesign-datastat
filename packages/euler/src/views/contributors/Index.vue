@@ -62,13 +62,13 @@ const typeLable = ref('');
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
     case 'pr':
-      typeLable.value = t('home.prs');
+      typeLable.value = 'home.prs';
       break;
     case 'issue':
-      typeLable.value = t('home.issues');
+      typeLable.value = 'home.issues';
       break;
     case 'comment':
-      typeLable.value = t('home.comments');
+      typeLable.value = 'home.comments';
       break;
   }
 };
@@ -180,7 +180,7 @@ const goToCompany = () => {
                 <el-table-column
                   align="left"
                   class-name="type-label"
-                  :label="typeLable"
+                  :label="t(typeLable)"
                 >
                   <template #default="scope">
                     <div class="box">
@@ -216,7 +216,7 @@ const goToCompany = () => {
                 <el-table-column
                   align="left"
                   class-name="type-label"
-                  :label="typeLable"
+                  :label="t(typeLable)"
                 >
                   <template #default="scope">
                     <div class="box">
