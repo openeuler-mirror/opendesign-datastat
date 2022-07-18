@@ -12,6 +12,7 @@ import { showGuard, logout, useStoreData } from 'shared/utils/login';
 import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
 import communityLogoWhite from '@/assets/openeuler-logo.png';
+import Bitmap from '@/assets/Bitmap.png';
 import chevronDown from '~icons/app/chevron-down';
 import { testIsPhone } from 'shared/utils/helper';
 import LoadingArc from './LoadingArc.vue';
@@ -153,7 +154,11 @@ watch(
         <el-dropdown v-else-if="guardAuthClient.photo">
           <div class="el-dropdown-link">
             <img
-              :src="guardAuthClient.photo"
+              :src="
+                guardAuthClient.photo.includes('no_portrait.png')
+                  ? Bitmap
+                  : guardAuthClient.photo
+              "
               :alt="guardAuthClient.nickname || 'LogOut'"
               class="img"
             />

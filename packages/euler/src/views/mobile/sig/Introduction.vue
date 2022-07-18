@@ -61,7 +61,6 @@ watch(
               <div class="toHome">
                 <a
                   style="color: #002fa7"
-                  target="_blank"
                   :href="`https://gitee.com/${sig}`"
                 >
                   {{ t('toHome') }}</a
@@ -78,7 +77,6 @@ watch(
                     sigInfo.mailing_list.split('@')[0]
                   }.${sigInfo.mailing_list.split('@')[1]}`"
                   class="item"
-                  target="_blank"
                 >
                   {{ sigInfo.mailing_list }}
                 </a>
@@ -92,7 +90,6 @@ watch(
                   v-for="item in sigInfo.maintainers"
                   :key="item.value"
                   class="item"
-                  target="_blank"
                   :href="`https://gitee.com/${item}`"
                 >
                   @{{ item }}
@@ -125,7 +122,6 @@ watch(
                     :key="item"
                     class="item"
                     :href="item"
-                    target="_blank"
                   >
                     ./openeuler/
                     {{ item.split('/')[item.split('/').length - 1] }}

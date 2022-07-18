@@ -168,9 +168,9 @@ watch(
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
   const routeData: any = router.resolve(
-    `/${useCommon.language}/company/${data.company_cn}`
+    `/${useCommon.language}/mobile/company/${data.company_cn}`
   );
-  window.open(routeData.href, '_blank');
+  window.open(routeData.href, '_self');
 };
 </script>
 
@@ -282,9 +282,9 @@ const goToCompany = (data: IObject) => {
 .searchInput {
   // padding-left: 110px;
   width: 100%;
-  margin: 16px 0 20px;
+  margin: 16px 0 16px;
   .search-icon {
-    font-size: 20px;
+    font-size: 16px;
   }
   :deep(.el-autocomplete) {
     width: 100%;
@@ -310,12 +310,11 @@ const goToCompany = (data: IObject) => {
     box-shadow: 0 0 0 1px #002fa7 inset;
   }
   :deep(.el-input__inner) {
-    height: 56px;
+    height: 2rem;
   }
 }
 .bar-panel {
   position: relative;
-  height: 100%;
   padding-bottom: 12px;
   .bar-columns {
     position: absolute;

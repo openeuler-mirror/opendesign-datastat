@@ -22,9 +22,10 @@ import bg_mo from '@/assets/bg_mo.png';
 import atomLogo from '@/assets/atom.png';
 import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.vue';
 import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialGroupRelationship.vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { IObject } from 'shared/@types/interface';
 const router = useRouter();
+const route = useRoute();
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -37,6 +38,11 @@ const onSwiper = (swiper: any) => {
 const onSlideChange = (swiper: any) => {
   useCommon.isBlackHeader = swiper.activeIndex < 2;
   useCommon.moNav = swiper.activeIndex;
+  router.replace({
+    query: {
+      num: swiper.activeIndex,
+    },
+  });
 };
 // 监听导航跳转
 watch(
@@ -90,6 +96,7 @@ onMounted(() => {
   usePersonal.getPersonalData();
   useCommon.getAllData();
   loading.value = false;
+  !swiperRef.value.destroyed && swiperRef.value.slideTo(route.query.num || 0);
 });
 
 const modules = [Pagination];
@@ -376,12 +383,8 @@ const goToCompany = (data: IObject) => {
             :to="useCommon.language === 'zh' ? '/zh/about' : '/en/about'"
             >{{ t('footer.about') }}</router-link
           >
-          <a :href="t('footer.privacyLink')" target="_blank">{{
-            t('footer.privacy')
-          }}</a>
-          <a :href="t('footer.legalLink')" target="_blank">{{
-            t('footer.legal')
-          }}</a>
+          <a :href="t('footer.privacyLink')">{{ t('footer.privacy') }}</a>
+          <a :href="t('footer.legalLink')">{{ t('footer.legal') }}</a>
         </div>
         <div class="foot-item-cy">
           <p class="mail">{{ openCommunityInfo.email }}</p>

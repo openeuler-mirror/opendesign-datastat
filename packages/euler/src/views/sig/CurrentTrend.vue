@@ -124,7 +124,7 @@ const goData = () => {
         id="curEchartPolar"
         :fields-key="fieldsKey"
         :data="polarData"
-        width="400px"
+        width="350px"
       ></o-echart-polar>
     </div>
     <div class="table">
@@ -165,13 +165,10 @@ const goData = () => {
 .table {
   font-size: 12px;
   color: #4e5865;
+  width: 306px;
   th {
     font-weight: 500;
   }
-}
-.polar {
-  display: inline-block;
-  width: 400px;
 }
 .border {
   border-bottom: 1px solid #dee2e8;

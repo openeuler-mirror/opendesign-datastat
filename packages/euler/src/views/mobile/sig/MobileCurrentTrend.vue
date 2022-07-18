@@ -114,8 +114,8 @@ const initData = () => {
 };
 initData();
 const goData = () => {
-  const routeData: any = router.resolve(`/${useCommon.language}/about`);
-  window.open(routeData.href, '_blank');
+  const routeData: any = router.resolve(`/${useCommon.language}/mobile/about`);
+  window.open(routeData.href, '_self');
 };
 </script>
 <template>

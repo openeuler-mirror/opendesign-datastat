@@ -38,6 +38,7 @@ const getOption = (): EChartsOption => {
       {
         name: 'Outer',
         type: 'pie',
+        center: ['50%', '55%'],
         radius: ['53%', '62%'],
         emphasis: {
           disabled: true,
@@ -45,6 +46,7 @@ const getOption = (): EChartsOption => {
             show: false,
           },
         },
+        top: '20%',
         label: {
           show: false,
         },
@@ -66,6 +68,7 @@ const getOption = (): EChartsOption => {
       },
       {
         name: 'Inner',
+        center: ['50%', '55%'],
         type: 'pie',
         radius: ['0%', '53%'],
         zlevel: 0,
@@ -87,6 +90,7 @@ const getOption = (): EChartsOption => {
       },
       {
         type: 'gauge',
+        center: ['50%', '55%'],
         zlevel: 1,
         startAngle: 230,
         endAngle: -50,

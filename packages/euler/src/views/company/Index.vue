@@ -423,8 +423,8 @@ const showDropdown = (e:any) => {
                 placement="bottom-start"
                 @visible-change="showDropdown"
               >
-                <div class="main-left-title">
-                  <span :title="sencondTitle">{{ sencondTitle }}</span>
+                <div :title="sencondTitle" class="main-left-title">
+                  {{ sencondTitle }}
                   <span class="btnc"></span>
                 </div>
 
@@ -499,6 +499,8 @@ const showDropdown = (e:any) => {
               <o-echart-circular-pile
                 id="circularPile"
                 :data="oechartData"
+                width="232px"
+                height="232px"
               ></o-echart-circular-pile>
             </div>
           </div>
@@ -725,13 +727,16 @@ const showDropdown = (e:any) => {
 .main {
   display: grid;
   grid-template-columns: 28% 72%;
+  &-left {
+    padding-right: 24px;
+  }
   &-left-title {
     font-size: 24px;
     font-family: HarmonyOS_Sans_SC_Medium;
     color: #002fa7;
     line-height: 32px;
     text-overflow: ellipsis;
-    width: 380px;
+    width: 350px;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -1126,7 +1131,7 @@ const showDropdown = (e:any) => {
   width: 24px;
   height: 24px;
   position: absolute;
-  right: 5px;
+  right: -15px;
 }
 .lastcontributors-panel {
   // padding-top: 24px;
