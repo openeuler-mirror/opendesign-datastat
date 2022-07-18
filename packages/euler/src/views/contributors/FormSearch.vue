@@ -9,6 +9,7 @@ import { useCommonStore } from '@/stores/common';
 import TheForm from '@/components/TheForm.vue';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
+import { testIsPhone } from 'shared/utils/helper';
 const { t } = useI18n();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
@@ -128,6 +129,7 @@ const getContributeInfo = (item: IObject) => {
 onMounted(() => {
   useCompany.getCompanyData();
 });
+const isMobile: boolean = testIsPhone();
 </script>
 
 <template>
@@ -138,8 +140,7 @@ onMounted(() => {
       @get-contribute-info="getContributeInfo"
     >
       <template #searchInput>
-        <div class="searchInput">
-
+        <div class="searchInput" :class="{ inputHeight: isMobile }">
           <el-autocomplete
             v-model="searchInput"
             :fetch-suggestions="querySearch"
@@ -154,13 +155,11 @@ onMounted(() => {
             @keydown.enter="myKeydown"
             @clear="clearSearchInput"
           >
-
             <template #prefix>
               <o-icon class="search-icon"
                 ><icon-user></icon-user
               ></o-icon> </template
           ></el-autocomplete>
-
         </div>
       </template>
     </the-form>
@@ -172,7 +171,7 @@ onMounted(() => {
 .searchInput {
   padding-left: 110px;
   width: 100%;
-  margin: -16px 0 20px;
+  margin: -16px 0 16px;
   .search-icon {
     font-size: 20px;
   }
@@ -200,9 +199,12 @@ onMounted(() => {
     box-shadow: 0 0 0 1px #002fa7 inset;
   }
   :deep(.el-input__inner) {
-    height: 56px
+    height: 56px;
   }
-
 }
-
+.inputHeight {
+  :deep(.el-input__inner) {
+    height: 2rem;
+  }
+}
 </style>

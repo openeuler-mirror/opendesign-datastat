@@ -8,7 +8,7 @@ import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
 import { queryCompanySigs } from 'shared/api';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import DropSelect from '../common/DropSelect.vue';
 import Introduction from './Introduction.vue';
@@ -16,6 +16,7 @@ import Technology from './Technology.vue';
 import Contribution from './Contribution.vue';
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 const useCommon = useCommonStore();
 useCommon.isBlackHeader = false;
 const modules = [Pagination];
@@ -25,6 +26,11 @@ const onSwiper = (swiper: any) => {
 };
 const onSlideChange = (swiper: any) => {
   useCommon.companyNav = swiper.activeIndex;
+  router.replace({
+    query: {
+      num: swiper.activeIndex,
+    },
+  });
 };
 // 监听导航跳转
 watch(
@@ -64,6 +70,7 @@ const getSencondTitle = () => {
 };
 onMounted(() => {
   getSencondTitle();
+  !swiperRef.value.destroyed && swiperRef.value.slideTo(route.query.num || 0);
 });
 </script>
 

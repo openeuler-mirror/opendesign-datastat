@@ -11,6 +11,7 @@ import logoBlack from '@/assets/datastat-black.png';
 import logoBlackZh from '@/assets/datastat-zh-black.png';
 import communityLogoSmall from '@/assets/openeuler-small.png';
 import communityLogoSmallWhite from '@/assets/openeuler-small-white.png';
+import Bitmap from '@/assets/Bitmap.png';
 
 import AppMobileMenu from './AppMobileMenu.vue';
 import { useStoreData, showGuard, logout } from 'shared/utils/login';
@@ -22,15 +23,6 @@ const { guardAuthClient, isLoggingIn } = useStoreData();
 let dialogVisible = ref(false);
 const { t } = useI18n();
 const isblack = computed(() => useCommon.isBlackHeader);
-const navActive = ref('overview');
-watch(
-  () => {
-    return useCommon.isBlackHeader;
-  },
-  (val) => {
-    navActive.value = val ? 'overview' : 'detail';
-  }
-);
 
 const language = computed(() => (useCommon.language === 'zh' ? false : true));
 
@@ -73,7 +65,7 @@ const goMobileHome = () => {
         @click="goMobileHome"
       />
       <span class="line"></span>
-      <a target="_blank" :href="openCommunityInfo.link"
+      <a :href="openCommunityInfo.link"
         ><img class="community-logo" :src="communityLogoSmallWhite"
       /></a>
     </template>
@@ -85,16 +77,20 @@ const goMobileHome = () => {
         @click="goMobileHome"
       />
       <span class="line" style="background: #000"></span>
-      <a target="_blank" :href="openCommunityInfo.link"
+      <a :href="openCommunityInfo.link"
         ><img class="community-logo" :src="communityLogoSmall"
       /></a>
     </template>
     <div class="opt-user">
-      <loading-arc v-if="isLoggingIn"></loading-arc>
+      <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
       <el-dropdown v-else-if="guardAuthClient.photo">
         <div class="el-dropdown-link">
           <img
-            :src="guardAuthClient.photo"
+            :src="
+              guardAuthClient.photo.includes('no_portrait.png')
+                ? Bitmap
+                : guardAuthClient.photo
+            "
             :alt="guardAuthClient.nickname || 'LogOut'"
             class="img"
           />
@@ -107,14 +103,14 @@ const goMobileHome = () => {
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <div
+      <img
         v-else
-        class="phone-login"
-        :class="{ black: isblack }"
+        src="@/assets/nologin.png"
+        alt="LogIn"
+        class="img"
+        style="background-color: #fff"
         @click="showGuard(openCommunityInfo.name)"
-      >
-        登录
-      </div>
+      />
     </div>
     <el-dialog v-model="dialogVisible" title="Confirm" width="80%">
       <p style="word-break: break-word">

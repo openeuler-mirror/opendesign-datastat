@@ -284,7 +284,7 @@ const showDropdown = (e: any) => {
                 id="combinedActivity"
                 :name="t('combinedActivity')"
                 :value="sorceData.score"
-                width="330px"
+                width="280px"
               ></o-echart-gauge>
               <current-trend :sig="sencondTitle"></current-trend>
             </div>
@@ -351,13 +351,14 @@ const showDropdown = (e: any) => {
   display: grid;
   grid-template-columns: 28% 72%;
   &-left {
+    padding-right: 24px;
     .edropdown {
       .btnc {
         background-image: url('@/assets/down.png');
         width: 24px;
         height: 24px;
         position: absolute;
-        right: 5px;
+        right: -15px;
       }
     }
     &-title {
@@ -366,7 +367,7 @@ const showDropdown = (e: any) => {
       color: #002fa7;
       line-height: 32px;
       text-overflow: ellipsis;
-      width: 380px;
+      width: 350px;
       white-space: nowrap;
       overflow: hidden;
     }

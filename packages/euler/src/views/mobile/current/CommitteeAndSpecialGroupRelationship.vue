@@ -14,7 +14,6 @@
                   <span class="group-name">{{ scope.row.name }}</span>
                   <a
                     :href="`http://gitee.com/${scope.row.user}`"
-                    target="_blank"
                     class="group-email"
                     >@{{ scope.row.user }}</a
                   >
@@ -59,7 +58,6 @@
                   <span class="group-name">{{ scope.row.name }}</span>
                   <a
                     :href="`http://gitee.com/${scope.row.user}`"
-                    target="_blank"
                     class="group-email"
                     >@{{ scope.row.user }}</a
                   >
@@ -121,7 +119,7 @@ const lowSig = computed(() =>
 const hightSig = computed(() => groupData.value.slice(0, number.value));
 const goToSig = (item: any) => {
   const routeData: any = router.resolve(`/${useCommon.language}/mobile/sig/${item}`);
-  window.open(routeData.href, '_blank');
+  window.open(routeData.href, '_self');
 };
 </script>
 <style scoped lang="scss">

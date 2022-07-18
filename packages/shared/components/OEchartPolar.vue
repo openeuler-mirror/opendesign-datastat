@@ -49,7 +49,7 @@ const getOption = (): EChartsOption => {
         indicator: props.data.map((item: any) => ({
           text: item.title,
         })),
-        center: ['50%', '50%'],
+        center: ['50%', '55%'],
         radius: 80,
         startAngle: 90,
         splitNumber: 4,

@@ -127,6 +127,7 @@ const getOption = (): EChartsOption => {
     },
     legend: {
       icon: 'path://M0,0 L20, 0L20, 4L0, 4L0, 0z',
+      itemWidth: 16,
       left: 0,
       itemGap: 15,
       data: getLegendData(),

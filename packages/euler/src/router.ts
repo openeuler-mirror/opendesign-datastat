@@ -117,6 +117,16 @@ export const routes = [
     },
   },
   {
+    path: '/zh/mobile/about',
+    name: 'zh_mobile_about',
+    component: () => {
+      return import('@/views/about/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
     path: '/zh/about',
     name: 'zh_about',
     component: () => {
@@ -246,6 +256,16 @@ export const routes = [
   {
     path: '/en/about',
     name: 'en_about',
+    component: () => {
+      return import('@/views/about/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/about',
+    name: 'en_mobile_about',
     component: () => {
       return import('@/views/about/Index.vue');
     },
