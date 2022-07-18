@@ -36,6 +36,8 @@ const memberData = ref([] as IObject[]);
 const memberMax = ref(0);
 const memberList = ref([] as IObject[]);
 const rankNum = ref(1);
+const sumContribute = ref(0);
+
 const getMemberData = () => {
   querySigCompanyContribute(param.value).then((data) => {
     memberList.value =
@@ -59,6 +61,9 @@ const getMemberData = () => {
       0,
       Number(param.value.displayRange)
     );
+    sumContribute.value = memberData.value.reduce((total, currentValue) => {
+      return total + currentValue.contribute;
+    }, 0);
   });
 };
 // 个人信息
@@ -316,6 +321,13 @@ const goToCompany = (data: IObject) => {
                 }}
               </p>
               <span class="num">{{ item.contribute }} </span>
+              <span
+                >{{
+                  (
+                    Math.round((item.contribute / sumContribute) * 10000) / 100
+                  ).toFixed(1) + '%'
+                }}
+              </span>
             </div>
           </template>
           <div class="progress">
@@ -380,7 +392,7 @@ const goToCompany = (data: IObject) => {
     box-shadow: 0 0 0 1px #002fa7 inset;
   }
   :deep(.el-input__inner) {
-    height: 56px
+    height: 56px;
   }
 }
 .bar-panel {
@@ -500,7 +512,7 @@ const goToCompany = (data: IObject) => {
     .num {
       font-size: 16px;
       color: #000000;
-      margin-left: 40px;
+      margin-right: 20px;
       .percentage {
         margin-left: 10px;
         font-size: 12px;
