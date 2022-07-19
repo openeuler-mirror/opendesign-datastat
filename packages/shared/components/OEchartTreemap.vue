@@ -3,6 +3,7 @@ import OEchart from './OEchart.vue';
 import { watch, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IObject } from '../@types/interface';
+import { testIsPhone } from '../utils/helper';
 const { t } = useI18n();
 type EChartsOption = echarts.EChartsOption;
 interface groupItem {
@@ -149,6 +150,7 @@ const typeObj: IObject = {
   lastoneyear: t('from.lastoneyear'),
   all: t('from.all'),
 };
+const isMobile: boolean = testIsPhone();
 const getData = () => {
   const _data = props.group.map((item) => {
     const children = props.value
@@ -171,6 +173,7 @@ const getOption = (): EChartsOption => {
   return {
     name: props.name,
     tooltip: {
+      confine: isMobile,
       backgroundColor: 'rgba(255, 255, 255, 0.85)',
       formatter: function (info: any) {
         let { value, treePathInfo, color } = info;
@@ -183,7 +186,7 @@ const getOption = (): EChartsOption => {
           `<div style="font-size:12px;color: #9097A3; margin-bottom: 8px">${
             typeObj[props.type]
           } 的 ${props.name}</div>`,
-          `<div style="font-size:12px;color: #4E5865; display: flex; align-items: center">
+          `<div style="font-size:12px;color: #4E5865; display: flex; align-items: center;">
           <div style="display: inline-block;
                   width: 12px;
                   height: 12px;
@@ -191,8 +194,13 @@ const getOption = (): EChartsOption => {
                   background-color: ${color}">
           </div>
           ${treePath.join('>')}
-          <span style="font-size:16px;color: #000000;margin-left:24px; font-weight: 500">${percent}% (${value})</span>
+          <span style="font-size:16px;color: #000000;margin-left:24px; font-weight: 500;display: ${
+            isMobile ? 'none' : 'inline'
+          }">${percent}% (${value})</span>
         </div>`,
+          `<span style="font-size:16px;color: #000000; font-weight: 600;display: ${
+            isMobile ? 'inline' : 'none'
+          }">${percent}% <span style="font-size:12px;margin-left: 4px">${value}</span></span>`,
         ].join('');
       },
     },

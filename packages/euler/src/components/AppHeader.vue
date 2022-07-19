@@ -149,7 +149,7 @@ watch(
         </el-dropdown>
       </div>
 
-      <div class="opt-user">
+      <!-- <div class="opt-user">
         <loading-arc v-if="isLoggingIn"></loading-arc>
         <el-dropdown v-else-if="guardAuthClient.photo">
           <div class="el-dropdown-link">
@@ -174,7 +174,7 @@ watch(
         <div v-else class="login" @click="showGuard(openCommunityInfo.name)">
           登录
         </div>
-      </div>
+      </div> -->
       <el-dialog v-model="dialogVisible" title="Confirm" width="30%">
         <span
           >Are you sure you want to exit? The page is refreshed after you
