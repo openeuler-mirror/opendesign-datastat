@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import * as d3 from 'd3';
 import { HierarchyNode } from 'd3';
-import { onMounted, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
+import html2canvas from 'html2canvas';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { IObject } from '../@types/interface';
@@ -293,21 +294,55 @@ watch(
   () => props.data,
   () => {
     chart();
+    if (isPhone) {
+      nextTick(() => {
+        html2canvas(wrapIns.value as HTMLElement, {
+          useCORS: true,
+          allowTaint: true,
+        }).then((canvas) => {
+          const img = new Image();
+          // 导出图片地址
+          img.src = canvas.toDataURL();
+          imgSrc.value = canvas.toDataURL();
+        });
+      });
+    }
   },
   { deep: true }
 );
 onMounted(() => {
   chart();
 });
+const wrapIns = ref({});
+const imgSrc = ref('');
 </script>
 <template>
-  <div>
-    <svg v-if="isPhone" id="svg" :width="'100%'" :height="'100%'"></svg>
-    <svg v-else id="svg" :width="width" :height="width"></svg>
+  <div class="img-wrap">
+    <div
+      ref="wrapIns"
+      :style="{ visibility: isPhone && imgSrc ? 'hidden' : 'visible' }"
+    >
+      <svg v-if="isPhone" id="svg" :width="'100%'" :height="'100%'"></svg>
+      <svg v-else id="svg" :width="width" :height="width"></svg>
+    </div>
+    <div v-if="isPhone && imgSrc" class="img-png">
+      <img :src="imgSrc" alt="img" class="png" />
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
 .t {
   transition: 'opcity' 3s;
+}
+.img-wrap {
+  position: relative;
+  .img-png {
+    position: absolute;
+    top: 0;
+  }
+}
+.png {
+  width: 100%;
+  height: 100%;
 }
 </style>
