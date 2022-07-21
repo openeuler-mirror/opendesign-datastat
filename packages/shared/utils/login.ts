@@ -1,12 +1,12 @@
-import { Guard, GuardMode } from '@authing/native-js-ui-components';
 import { IObject } from '../@types/interface';
 import { queryCourse } from '../api/index';
 import { useCounter } from '../stores/counter';
 import { storeToRefs } from 'pinia';
 import { testIsPhone } from './helper';
+import { AuthenticationClient } from 'authing-js-sdk';
 const LOGIN_KEYS = {
   USER_TOKEN: '_U_T_',
-  USER_ID: '_U_I_',
+  USER_INFO: '_U_I_',
 };
 
 function setCookie(cname: string, cvalue: string, exdays: number) {
@@ -31,33 +31,47 @@ function deleteCookie(cname: string) {
 }
 
 // 存储用户id及token，用于下次登录
-export function saveUserAuth(id = '', code = '') {
-  if (!id && !code) {
+export function saveUserAuth(code = '', user?: IObject) {
+  if (!user && !code) {
     deleteCookie(LOGIN_KEYS.USER_TOKEN);
-    deleteCookie(LOGIN_KEYS.USER_ID);
+    deleteCookie(LOGIN_KEYS.USER_INFO);
   } else {
     setCookie(LOGIN_KEYS.USER_TOKEN, code, 1);
-    setCookie(LOGIN_KEYS.USER_ID, id, 1);
+    setCookie(LOGIN_KEYS.USER_INFO, JSON.stringify(user), 1);
   }
 }
 
 // 获取用户id及token
 export function getUserAuth() {
   const token = getCookie(LOGIN_KEYS.USER_TOKEN) || '';
-  const userId = getCookie(LOGIN_KEYS.USER_ID) || '';
-  if (!token || !userId) {
+  const _userInfo = getCookie(LOGIN_KEYS.USER_INFO) || '';
+  let userInfo: IObject = {};
+  try {
+    userInfo = JSON.parse(_userInfo);
+  } catch (error) {
+    userInfo = {};
+  }
+  if (!token || !_userInfo) {
     saveUserAuth();
   }
   return {
-    userId,
+    userInfo,
     token,
   };
 }
+const redirectUri = `${location.origin}/`;
 
 // 退出登录
-export function logout() {
+export function logout(community: string) {
+  const client1 = createClient(community);
+  const { userInfo } = getUserAuth();
+  const logoutUrl = client1.buildLogoutUrl({
+    expert: true,
+    redirectUri,
+    idToken: userInfo.id_token,
+  });
   saveUserAuth();
-  goToHome();
+  location.href = logoutUrl;
 }
 
 // 跳转首页
@@ -70,56 +84,74 @@ export function goToHome() {
   }
 }
 
-// 登录弹窗
-let guard: any;
-export function showGuard(community: string) {
-  const { isLoggingIn } = useStoreData();
-  isLoggingIn.value = !isLoggingIn.value;
-  if (!guard) {
-    initGuard(community);
-  } else {
-    guard.show();
-  }
-  guard.show();
-}
-export function initGuard(community: string) {
-  if (!guard) {
-    const appId = '62845f26b7dbf20f7890c0ad';
-    guard = new Guard(appId, {
-      mode: GuardMode.Modal,
-      clickCloseable: true,
-      escCloseable: true,
-      disableRegister: true,
-      disableResetPwd: true,
+export function getCodeByUrl(community: string) {
+  const query = getUrlParam();
+  if (query.code && query.state) {
+    const param = {
+      code: query.code,
+      permission: 'sigRead',
+      community,
+    };
+    queryCourse(param).then((res) => {
+      const { data = {} } = res;
+      const { id_token = '', permissions = [], photo = '', token = '' } = data;
+      const info = { id_token, permissions, photo };
+      saveUserAuth(token, info);
+      const { guardAuthClient } = useStoreData();
+      guardAuthClient.value = info;
+      // 去掉url中的code
+      const newUrl = `${location.origin}`;
+      if (window.history.replaceState) {
+        window.history.replaceState({}, '', newUrl);
+      } else {
+        window.location.href = newUrl;
+      }
     });
-    guard.on('login', (user: IObject) => {
-      const params = {
-        userId: user.id,
-        permission: 'sigRead',
-        community,
-      };
-      queryCourse(params).then((res) => {
-        const { data } = res;
-        const { guardAuthClient } = useStoreData();
-        guardAuthClient.value = data;
-        saveUserAuth(data.id, data.token);
-        setTimeout(() => {
-          guard.hide();
-          removeGuard();
-          window.location.reload();
-        }, 300);
-      });
-    });
-    guard.on('close', () => {
-      const { isLoggingIn } = useStoreData();
-      isLoggingIn.value = false;
-      });
   }
-  return guard;
 }
 
-export function removeGuard() {
-  guard = null;
+function getUrlParam(url = window.location.search) {
+  const param = {} as IObject;
+  const arr = url.split('?');
+  if (arr[1]) {
+    const _arr = arr[1].split('&') || [];
+    _arr.forEach((item) => {
+      const it = item.split('=');
+      if (it.length === 2) {
+        const obj = {
+          [it[0]]: it[1],
+        };
+        Object.assign(param, obj);
+      }
+    });
+  }
+  return param;
+}
+
+function createClient(community: string) {
+  const obj: IObject = {
+    openeuler: {
+      // appId: '62845f26b7dbf20f7890c0ad',
+      appId: '62679eab0b22b146d2ea0a3a',
+      appHost: 'https://fuxi.authing.cn',
+      redirectUri,
+    },
+  };
+  if (obj[community]) {
+    return new AuthenticationClient(obj[community]);
+  }
+  return new AuthenticationClient(obj.openeuler);
+}
+
+export function showGuard(community: string) {
+  const client = createClient(community);
+  // 构造 OIDC 授权登录 URL
+  const url = client.buildAuthorizeUrl();
+  // 如果需要获取 Refresh token，请在 scope 中加入 offline_access 项
+  const url2 = client.buildAuthorizeUrl({
+    scope: 'openid profile offline_access',
+  });
+  location.href = url;
 }
 
 // token失效跳转首页
@@ -140,20 +172,11 @@ export function useStoreData() {
 }
 
 // 刷新页面后store内参数被清除，需重新设定
-export function setStoreData(community: string) {
+export function setStoreData(community?: string) {
   const { guardAuthClient } = useStoreData();
-  const { userId } = getUserAuth();
-  if (!guardAuthClient.value.photo && userId) {
-    const params = {
-      userId,
-      permission: 'sigRead',
-      community,
-    };
-    queryCourse(params).then((res) => {
-      const { data } = res;
-      guardAuthClient.value = data;
-      saveUserAuth(data.id, data.token);
-    });
+  const { userInfo } = getUserAuth();
+  if (!guardAuthClient.value.photo && userInfo) {
+    guardAuthClient.value = userInfo;
   }
 }
 

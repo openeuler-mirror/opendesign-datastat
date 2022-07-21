@@ -81,7 +81,7 @@ const goMobileHome = () => {
         ><img class="community-logo" :src="communityLogoSmall"
       /></a>
     </template>
-    <!-- <div class="opt-user">
+    <div class="opt-user">
       <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
       <el-dropdown v-else-if="guardAuthClient.photo">
         <div class="el-dropdown-link">
@@ -111,7 +111,7 @@ const goMobileHome = () => {
         style="background-color: #fff"
         @click="showGuard(openCommunityInfo.name)"
       />
-    </div> -->
+    </div>
     <el-dialog v-model="dialogVisible" title="Confirm" width="80%">
       <p style="word-break: break-word">
         Are you sure you want to exit? The page is refreshed after you exit.
@@ -123,7 +123,7 @@ const goMobileHome = () => {
             type="primary"
             @click="
               dialogVisible = false;
-              logout();
+              logout(openCommunityInfo.name);
             "
             >Confirm</el-button
           >

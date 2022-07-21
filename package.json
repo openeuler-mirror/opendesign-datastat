@@ -19,6 +19,7 @@
     "@authing/native-js-ui-components": "^3.1.16",
     "@element-plus/icons-vue": "^2.0.4",
     "@types/d3": "^7.4.0",
+    "authing-js-sdk": "^4.23.33",
     "axios": "^0.26.0",
     "d3": "^7.4.4",
     "echarts": "^5.3.2",
