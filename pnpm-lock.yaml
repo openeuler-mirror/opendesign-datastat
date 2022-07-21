@@ -15,6 +15,7 @@ importers:
       '@vitejs/plugin-vue': ^2.2.0
       '@vue/eslint-config-prettier': ^7.0.0
       '@vue/eslint-config-typescript': ^10.0.0
+      authing-js-sdk: ^4.23.33
       axios: ^0.26.0
       d3: ^7.4.4
       echarts: ^5.3.2
@@ -40,6 +41,7 @@ importers:
       '@authing/native-js-ui-components': 3.1.16
       '@element-plus/icons-vue': 2.0.4_vue@3.2.31
       '@types/d3': 7.4.0
+      authing-js-sdk: 4.23.33
       axios: registry.npmmirror.com/axios/0.26.1
       d3: 7.4.4
       echarts: 5.3.2
@@ -229,8 +231,8 @@ packages:
       vue-i18n:
         optional: true
     dependencies:
-      '@intlify/message-compiler': 9.2.0-beta.39
-      '@intlify/shared': 9.2.0-beta.39
+      '@intlify/message-compiler': 9.2.0-beta.40
+      '@intlify/shared': 9.2.0-beta.40
       jsonc-eslint-parser: 1.4.1
       source-map: 0.6.1
       vue-i18n: registry.npmmirror.com/vue-i18n/9.1.9_vue@3.2.31
@@ -245,11 +247,11 @@ packages:
       '@intlify/shared': 9.1.9
       source-map: 0.6.1
 
-  /@intlify/message-compiler/9.2.0-beta.39:
-    resolution: {integrity: sha512-wHb3zzk/H3Wfx9U/SaXVenQ/qq2suqJMl/ppu+IdyGGMZxqC57zFqkgwWxEpqP4DzGeisjHe2myjLZQyV1haEQ==}
+  /@intlify/message-compiler/9.2.0-beta.40:
+    resolution: {integrity: sha512-6QWTSYewmkew4nsRqgkwTVuGFKzxVCOK8EXsPt15N+tN1g+OYjC3PfGA2dPB6cVkNxqA9mV/hNK02uHPWU9t0A==}
     engines: {node: '>= 14'}
     dependencies:
-      '@intlify/shared': 9.2.0-beta.39
+      '@intlify/shared': 9.2.0-beta.40
       source-map: 0.6.1
     dev: true
 
@@ -257,8 +259,8 @@ packages:
     resolution: {integrity: sha512-xKGM1d0EAxdDFCWedcYXOm6V5Pfw/TMudd6/qCdEb4tv0hk9EKeg7lwQF1azE0dP2phvx0yXxrt7UQK+IZjNdw==}
     engines: {node: '>= 10'}
 
-  /@intlify/shared/9.2.0-beta.39:
-    resolution: {integrity: sha512-FqzpkZVk/cTsywWc4mVbI2/fDQwYm8oXVwi7yuassiLps3yJK7P0s6grZaaXIX8gMODNLjJtJPd2KEOSj1lUyw==}
+  /@intlify/shared/9.2.0-beta.40:
+    resolution: {integrity: sha512-xWz+SFjgt/LfaSbbHVn+V7gmvX4ZNP3cIFta790GWZ/tEgwJeC3tkV7i45iUbZ4ZimOerFgKH05b7qvJlKb6RQ==}
     engines: {node: '>= 14'}
     dev: true
 
@@ -543,6 +545,19 @@ packages:
 
   /authing-js-sdk/4.23.30-alpha.3:
     resolution: {integrity: sha512-dme1T52n7hd7JzMhMcy76b7M6TOjqI3KqHemqUzIj65P4n4r72RkhSvtvPrPmkqX1m1FXLXWQZXi19GK0TZdIQ==}
+    engines: {node: '>=8.9'}
+    dependencies:
+      axios: 0.19.2
+      crypto-js: 4.1.1
+      jsencrypt: 3.2.1
+      jwt-decode: 2.2.0
+      sm-crypto: 0.3.8
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /authing-js-sdk/4.23.33:
+    resolution: {integrity: sha512-VdQa/5IWHv4CJGWbFmCsMhmmbjBhBI2lBDLYaCsdsGtOsPHzxFFpWV+k5riL4NcD7ALU1NCD367WpFBdQJpDuQ==}
     engines: {node: '>=8.9'}
     dependencies:
       axios: 0.19.2
@@ -896,6 +911,18 @@ packages:
     dependencies:
       ms: 2.0.0
     dev: false
+
+  /debug/4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+    dev: true
 
   /delaunator/5.0.0:
     resolution: {integrity: sha512-AyLvtyJdbv/U1GkiS6gUUzclRoAY4Gs75qkMygJJhU75LW4DNuSF2RMzpxs9jw9Oz1BobHjTdkG3zdP55VxAqw==}
@@ -1321,6 +1348,9 @@ packages:
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
     dev: false
+
+  /ms/2.1.2:
+    resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
   /nano-css/5.3.5:
     resolution: {integrity: sha512-vSB9X12bbNu4ALBu7nigJgRViZ6ja3OU7CeuiV1zMIbXOdmkLahgtPmh3GBOlDxbKY0CitqlPdOReGlBLSp+yg==}
@@ -2134,7 +2164,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: registry.npmmirror.com/ajv/6.12.6
-      debug: registry.npmmirror.com/debug/4.3.4
+      debug: 4.3.4
       espree: 9.3.1
       globals: registry.npmmirror.com/globals/13.13.0
       ignore: registry.npmmirror.com/ignore/5.2.0
@@ -2153,7 +2183,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': registry.npmmirror.com/@humanwhocodes/object-schema/1.2.1
-      debug: registry.npmmirror.com/debug/4.3.4
+      debug: 4.3.4
       minimatch: registry.npmmirror.com/minimatch/3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -2246,7 +2276,7 @@ packages:
         optional: true
     dependencies:
       '@intlify/bundle-utils': 3.1.0_vue-i18n@9.1.9
-      '@intlify/shared': 9.2.0-beta.39
+      '@intlify/shared': 9.2.0-beta.40
       '@rollup/pluginutils': registry.npmmirror.com/@rollup/pluginutils/4.2.0
       debug: registry.npmmirror.com/debug/4.3.4
       fast-glob: registry.npmmirror.com/fast-glob/3.2.11
@@ -2417,7 +2447,7 @@ packages:
         optional: true
     dependencies:
       '@typescript-eslint/utils': registry.npmmirror.com/@typescript-eslint/utils/5.16.0_ynv3edxl3ah44xwgrna2g2yine
-      debug: registry.npmmirror.com/debug/4.3.4
+      debug: 4.3.4
       eslint: registry.npmmirror.com/eslint/8.11.0
       tsutils: registry.npmmirror.com/tsutils/3.21.0_typescript@4.6.2
       typescript: registry.npmmirror.com/typescript/4.6.2
@@ -2446,7 +2476,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': registry.npmmirror.com/@typescript-eslint/types/5.16.0
       '@typescript-eslint/visitor-keys': registry.npmmirror.com/@typescript-eslint/visitor-keys/5.16.0
-      debug: registry.npmmirror.com/debug/4.3.4
+      debug: 4.3.4
       globby: registry.npmmirror.com/globby/11.1.0
       is-glob: registry.npmmirror.com/is-glob/4.0.3
       semver: 7.3.5
@@ -2972,7 +3002,7 @@ packages:
       supports-color:
         optional: true
     dependencies:
-      ms: registry.npmmirror.com/ms/2.1.2
+      ms: 2.1.2
 
   registry.npmmirror.com/deep-is/0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/deep-is/-/deep-is-0.1.4.tgz}
@@ -3859,11 +3889,6 @@ packages:
     dependencies:
       brace-expansion: registry.npmmirror.com/brace-expansion/2.0.1
     dev: true
-
-  registry.npmmirror.com/ms/2.1.2:
-    resolution: {integrity: sha1-0J0fNXtEP0kzgqjrPM0YOHKuYAk=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ms/download/ms-2.1.2.tgz}
-    name: ms
-    version: 2.1.2
 
   registry.npmmirror.com/nanoid/3.3.1:
     resolution: {integrity: sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/nanoid/-/nanoid-3.3.1.tgz}
@@ -4824,7 +4849,7 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
     dependencies:
-      debug: registry.npmmirror.com/debug/4.3.4
+      debug: 4.3.4
       eslint: registry.npmmirror.com/eslint/8.11.0
       eslint-scope: registry.npmmirror.com/eslint-scope/7.1.1
       eslint-visitor-keys: 3.3.0

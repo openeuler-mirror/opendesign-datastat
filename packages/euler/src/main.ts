@@ -8,6 +8,7 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import { router } from './router';
 import OIcon from 'shared/components/OIcon.vue';
+import './before.ts';
 
 // import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
