@@ -133,7 +133,7 @@ function createClient(community: string) {
     openeuler: {
       // appId: '62845f26b7dbf20f7890c0ad',
       appId: '62679eab0b22b146d2ea0a3a',
-      appHost: 'https://fuxi.authing.cn',
+      appHost: 'https://datastat.authing.cn',
       redirectUri,
     },
   };
