@@ -13,6 +13,7 @@ import {
 } from 'shared/api';
 import OEchartCircularPile from 'shared/components/OEchartCircularPile.vue';
 import { useRouter } from 'vue-router';
+import DataShow from '@/views/company/DataShow.vue';
 const router = useRouter();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -151,12 +152,9 @@ watch(
 onMounted(() => {
   getSencondTitle();
 });
-const goTo = (item: any) => {
-  router.push(`/${useCommon.language}/mobile/sig/${item}`);
-};
 </script>
 <template>
-  <div class="left-first">
+  <!-- <div class="left-first">
     <div class="left-first-child">
       <span>{{ t('Mergerequest') }} PR</span>
       <div class="left-first-child-data">
@@ -181,8 +179,8 @@ const goTo = (item: any) => {
         {{ toThousands(contributors) }}
       </div>
     </div>
-  </div>
-
+  </div> -->
+  <data-show :company="title"></data-show>
   <div class="circularPile">
     <div class="circularPile-sp">
       {{ t('Contributordistribution') }}
@@ -202,23 +200,6 @@ const goTo = (item: any) => {
         width="200px"
         height="200px"
       ></o-echart-circular-pile>
-    </div>
-  </div>
-
-  <div class="left-second">
-    <span class="left-second-sp">{{ t('SIGParticipation') }}:</span>
-    <div v-if="sigsData.sigs?.length === 0" class="left-second-nosp">
-      {{ t('noSIGPart') }}
-    </div>
-    <div class="atlas">
-      <span
-        v-for="item in sigsData.sigs"
-        :key="item.value"
-        class="atlas-sp"
-        @click="goTo(item)"
-      >
-        {{ item }}
-      </span>
     </div>
   </div>
 </template>

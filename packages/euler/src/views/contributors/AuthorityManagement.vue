@@ -16,8 +16,8 @@
         ><img
           src="@/assets/right.png"
           alt=""
-          @click="goToAllSig"
           style="cursor: pointer"
+          @click="goToAllSig"
         />
       </div>
     </div>
@@ -70,7 +70,8 @@
                     :key="index"
                     class="group-email"
                     @click="goToSig(value)"
-                    >{{ value }},
+                    >{{ value
+                    }}{{ index < scope.row.sigs.length - 1 ? ',' : '' }}
                   </span>
                 </div>
               </template></el-table-column
@@ -114,7 +115,8 @@
                     :key="index"
                     class="group-email"
                     @click="goToSig(value)"
-                    >{{ value }},
+                    >{{ value
+                    }}{{ index < scope.row.sigs.length - 1 ? ',' : '' }}
                   </span>
                 </div>
               </template></el-table-column
@@ -221,6 +223,7 @@ const lowSig = computed(() =>
   groupData.value.slice(number.value, groupData.value.length)
 );
 const hightSig = computed(() => groupData.value.slice(0, number.value));
+
 const goToSig = (item: any) => {
   const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
   window.open(routeData.href, '_blank');

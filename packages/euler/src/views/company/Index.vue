@@ -9,13 +9,11 @@ import {
   sigsProcessing,
   treeProcessing,
   processing,
-  toThousands
 } from 'shared/utils/helper';
 import {
   queryCompanySigDetails,
-  queryCompanyUserContribute,
   queryCompanyUsers,
-  queryCompanySigs
+  queryCompanySigs,
 } from 'shared/api';
 import OEchartCircularPile from 'shared/components/OEchartCircularPile.vue';
 import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
@@ -30,6 +28,8 @@ import { useRouter } from 'vue-router';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
 import { ElScrollbar } from 'element-plus';
 import { number } from 'echarts';
+import TableList from './TableList.vue';
+import DataShow from './DataShow.vue';
 const router = useRouter();
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
@@ -45,7 +45,9 @@ const getSencondTitle = (value?: string) => {
   };
   queryCompanySigs(query).then((data) => {
     allcompany.value = data?.data || [];
-    allcompany.value.sort((a:any, b:any) => a.company_cn.localeCompare(b.company_cn));
+    allcompany.value.sort((a: any, b: any) =>
+      a.company_cn.localeCompare(b.company_cn)
+    );
     const name = value || route.params.name;
     const findOne: IObject =
       allcompany.value.find(
@@ -59,10 +61,6 @@ const getSencondTitle = (value?: string) => {
 };
 const sigsData = ref({} as IObject);
 const treeData = ref({} as IObject);
-const mergeRequest = ref(0);
-const issueData = ref(0);
-const comment = ref(0);
-const contributors = ref(0);
 const oechartData = ref({
   D0: 0,
   D1: 0,
@@ -81,7 +79,6 @@ const getoechartTreeValue = () => {
   };
   queryCompanyUsers(query).then((data) => {
     const Data = processing(data?.data || []);
-    contributors.value = Data.sigData['0'];
     oechartData.value.D0 = Data.sigData['0'];
     oechartData.value.D1 = Data.sigData['1'];
     oechartData.value.D2 = Data.sigData['2'];
@@ -178,48 +175,6 @@ const getSigsData = () => {
     sigsData.value = sigsProcessing(data?.data || []);
   });
 };
-const getprlistData = () => {
-  const query = {
-    company: sencondTitleValue.value,
-    timeRange: 'all',
-    community: 'openeuler',
-    contributeType: 'pr',
-  };
-  queryCompanyUserContribute(query).then((data) => {
-    const value = data?.data || [];
-    mergeRequest.value = getItemListData(value, 'contribute');
-  });
-};
-
-const getissuelistData = () => {
-  const query = {
-    company: sencondTitleValue.value,
-    timeRange: 'all',
-    community: 'openeuler',
-    contributeType: 'issue',
-  };
-  queryCompanyUserContribute(query).then((data) => {
-    const value = data?.data || [];
-    issueData.value = getItemListData(value, 'contribute');
-  });
-};
-
-const getcommentlistData = () => {
-  const query = {
-    company: sencondTitleValue.value,
-    timeRange: 'all',
-    community: 'openeuler',
-    contributeType: 'comment',
-  };
-  queryCompanyUserContribute(query).then((data) => {
-    const value = data?.data || [];
-    comment.value = getItemListData(value, 'contribute');
-  });
-};
-
-const getItemListData = (data: IObject[], template: string) => {
-  return data.reduce((sum, e) => sum + Number(e[template]), 0);
-};
 const clickDrownItem = (item: IObject) => {
   sencondTitle.value = item.label;
   sencondTitleValue.value = item.label;
@@ -233,9 +188,6 @@ watch(
   }
 );
 const getallData = () => {
-  getprlistData();
-  getissuelistData();
-  getcommentlistData();
   getDrownData();
   getSigsData();
   getoechartTreeValue();
@@ -334,7 +286,7 @@ const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
 };
-const anchorData = ['ecological', 'staffContributor'];
+const anchorData = ['ecological', 'SIGContribution', 'staffContributor'];
 
 // 搜索过滤
 const searchInput = ref('');
@@ -367,9 +319,9 @@ const queryListSearch = () => {
     const newList = tableData.value.filter((item: any) =>
       item.gitee_id.toLowerCase().includes(searchListInput.value)
     );
-    reallListData.value = newList
+    reallListData.value = newList;
   } else {
-    reallListData.value = tableData.value
+    reallListData.value = tableData.value;
   }
 };
 const clearListSearchInput = () => {
@@ -379,7 +331,7 @@ const clearListSearchInput = () => {
 watch(
   () => tableData.value,
   () => {
-    reallListData.value = tableData.value
+    reallListData.value = tableData.value;
   }
 );
 const goTo = (item: any) => {
@@ -393,7 +345,7 @@ const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
 };
-const showDropdown = (e:any) => {
+const showDropdown = (e: any) => {
   if (e) {
     let number = 0;
     reallData.value.forEach((item: any, index) => {
@@ -457,30 +409,7 @@ const showDropdown = (e:any) => {
             </div>
           </div>
 
-          <div class="left-title">{{ t('Currentcontributionranking') }}</div>
-          <div class="left-first">
-            <div class="left-first-child">
-              <span>{{ t('Mergerequest') }} PR</span>
-              <div class="left-first-child-data">{{ toThousands(mergeRequest) }}</div>
-            </div>
-            <div class="left-first-child">
-              <span title="Needs & Problems Issue"
-                >{{ t('NeedsProblems') }} Issue</span
-              >
-              <div class="left-first-child-data">{{ toThousands(issueData)}}</div>
-            </div>
-            <div class="left-first-child">
-              <span title="123">{{ t('review') }} Comment</span>
-              <div class="left-first-child-data">{{ toThousands(comment) }}</div>
-            </div>
-            <div class="left-first-child">
-              <span title="Number of contributors">{{
-                t('Numbercontributors')
-              }}</span>
-              <div class="left-first-child-data">{{toThousands (contributors) }}</div>
-            </div>
-          </div>
-
+          <data-show :company="sencondTitle"></data-show>
           <div class="circularPile">
             <div class="circularPile-sp">
               {{ t('Contributordistribution') }}
@@ -502,23 +431,6 @@ const showDropdown = (e:any) => {
                 width="232px"
                 height="232px"
               ></o-echart-circular-pile>
-            </div>
-          </div>
-
-          <div class="left-second">
-            <span class="left-second-sp">{{ t('SIGParticipation') }}:</span>
-            <div v-if="sigsData.sigs?.length === 0" class="left-second-nosp">
-              {{ t('noSIGPart') }}
-            </div>
-            <div class="atlas">
-              <span
-                v-for="item in sigsData.sigs"
-                :key="item.value"
-                class="atlas-sp"
-                @click="goTo(item)"
-              >
-                {{ item }}
-              </span>
             </div>
           </div>
         </div>
@@ -571,7 +483,13 @@ const showDropdown = (e:any) => {
             </div>
             <div v-else><o-no-data-image></o-no-data-image></div>
           </div>
+          <div class="contributors-panel">
+            <h3 id="SIGContribution" class="sigContribution">
+              {{ sencondTitle + ' ' + t('SIGContribution') }}
+            </h3>
 
+            <table-list :company="sencondTitle" />
+          </div>
           <div class="lastcontributors-panel">
             <h3 id="staffContributor" class="stafftitle">
               {{ `${sencondTitle} ${t('staffContributor')}` }}
@@ -743,85 +661,10 @@ const showDropdown = (e:any) => {
   &-left-top {
     display: flex;
     position: relative;
+    margin-bottom: 72px;
   }
 }
-.left-first {
-  width: 370px;
-  height: 176px;
-  display: flex;
-  flex-wrap: wrap;
-  &-child {
-    text-align: center;
-    width: 180px;
-    height: 80px;
-    font-size: 16px;
-    font-family: HarmonyOS_Sans_SC;
-    color: #4e5865;
-    line-height: 24px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    &-data {
-      font-size: 40px;
-      font-family: HarmonyOS_Sans_SC;
-      color: #000000;
-      line-height: 48px;
-    }
-  }
-}
-.left-title {
-  margin-bottom: 16px;
-  margin-top: 24px;
-  font-size: 16px;
-  font-family: HarmonyOS_Sans_SC;
-  color: #000000;
-  line-height: 24px;
-  padding-top: 24px;
-}
-.left-second {
-  width: 200px;
-  font-size: 16px;
-  font-family: HarmonyOS_Sans_SC;
-  color: #000000;
-  line-height: 24px;
-  padding-top: 24px;
-  padding-bottom: 24px;
 
-  &-sp {
-    width: 100px;
-    height: 24px;
-    font-size: 16px;
-    font-family: HarmonyOS_Sans_SC;
-    color: #000000;
-    line-height: 24px;
-  }
-  &-nosp {
-    width: 100px;
-    height: 24px;
-    font-size: 14px;
-    margin-top: 8px;
-    font-family: HarmonyOS_Sans_SC;
-    color: #555555;
-    line-height: 22px;
-  }
-  .atlas {
-    width: 248px;
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-
-    &-sp {
-      min-width: 80px;
-      height: 22px;
-      font-size: 16px;
-      font-family: HarmonyOS_Sans_SC_Medium;
-      color: #002fa7;
-      line-height: 22px;
-      margin-bottom: 8px;
-      cursor: pointer;
-    }
-  }
-}
 
 .circularPile {
   margin-top: 60px;
@@ -855,7 +698,7 @@ const showDropdown = (e:any) => {
   padding: 24px;
 }
 .contributors-panel {
-  padding: 5px;
+  padding: 24px;
   background: #fff;
   margin-top: 60px;
   .title {
@@ -929,6 +772,13 @@ const showDropdown = (e:any) => {
   font-family: HarmonyOS_Sans_SC;
   color: #000000;
   line-height: 24px;
+}
+.sigContribution {
+  font-size: 16px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #000000;
+  line-height: 24px;
+  margin-bottom: 22px;
 }
 .topstafftitle {
   padding: 24px;
@@ -1093,7 +943,7 @@ const showDropdown = (e:any) => {
 .searchListInput {
   width: 88%;
   margin-left: 110px;
-   margin-top: -16px;
+  margin-top: -16px;
   margin-bottom: 20px;
 
   .search-icon {
@@ -1122,7 +972,7 @@ const showDropdown = (e:any) => {
   :deep(.el-input__inner:focus) {
     box-shadow: 0 0 0 1px #002fa7 inset;
   }
-   :deep(.el-input__inner) {
+  :deep(.el-input__inner) {
     height: 56px;
   }
 }
@@ -1152,9 +1002,6 @@ const showDropdown = (e:any) => {
   font-family: HarmonyOS_Sans_SC;
   color: #000000;
   line-height: 24px;
-}
-.noSig {
-  margin-top: 10px;
 }
 .dropdownItem {
   color: #b461f6;

@@ -86,10 +86,7 @@ onMounted(() => {
       @slide-change="onSlideChange"
     >
       <swiper-slide>
-        <o-mobile-template
-          header="Currentcontributionranking"
-          padding-top="0.75rem"
-        >
+        <o-mobile-template padding-top="0.75rem">
           <template #content>
             <introduction :title="sencondTitle"></introduction
           ></template>

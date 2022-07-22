@@ -1,8 +1,18 @@
 <template>
-  <div class="main-menu">
+  <div ref="slideRef" class="main-menu">
+    <div v-if="isScroll" class="backtop" @click="backtop">
+      {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
+    </div>
+    <div class="activation">
+      <span class="sp">{{ t('active') }}</span>
+      <p class="spp">0</p>
+      <span class="liveness"></span>
+      <p class="spp">1</p>
+    </div>
     <div class="Innovation">{{ t('repositoryTechnology') }}</div>
+
     <div v-for="value in getInnovationValue()" :key="value.feature">
-      <el-tooltip
+      <div
         :key="value.feature"
         placement="bottom-end"
         effect="light"
@@ -20,7 +30,7 @@
         >
           <span class="start-menu-span">{{ value.feature }}</span>
         </div>
-        <template #content>
+        <!-- <template #content>
           <div class="titlelable">{{ value.feature }}</div>
           <div class="info">
             <p>
@@ -45,11 +55,11 @@
               >
             </p>
           </div>
-        </template>
-      </el-tooltip>
+        </template> -->
+      </div>
 
       <div class="wrapper">
-        <el-tooltip
+        <div
           v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
               (a.sig_names + '').localeCompare(b.sig_names + '')
             )"
@@ -72,20 +82,12 @@
               {{ val.sig_names }}</span
             >
           </div>
-
-        </el-tooltip>
+        </div>
       </div>
     </div>
     <div class="Community">{{ t('governanceAndOperation') }}</div>
     <div v-for="value in getCommunityValue()" :key="value.feature">
-      <el-tooltip
-        :key="value.feature"
-        placement="bottom-end"
-        effect="light"
-        :show-after="showAfter"
-        class:bar-tooltip
-        :show-arrow="false"
-      >
+      <div :key="value.feature">
         <div
           class="start-menu menu-item"
           :style="({
@@ -96,7 +98,7 @@
         >
           <span class="start-menu-span">{{ value.feature }}</span>
         </div>
-        <template #content>
+        <!-- <template #content>
           <div class="titlelable">{{ value.feature }}</div>
           <div class="info">
             <p>
@@ -121,11 +123,11 @@
               >
             </p>
           </div>
-        </template>
-      </el-tooltip>
+        </template> -->
+      </div>
 
       <div class="wrapper">
-        <el-tooltip
+        <!-- <el-tooltip
           v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
               (a.sig_names + '').localeCompare(b.sig_names + '')
             )"
@@ -135,6 +137,12 @@
           :show-after="showAfter"
           class:bar-tooltip
           :show-arrow="false"
+        > -->
+        <div
+          v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
+              (a.sig_names + '').localeCompare(b.sig_names + '')
+            )"
+          :key="ind"
         >
           <div
             class="detail-menu menu-item"
@@ -148,14 +156,40 @@
               {{ val.sig_names }}</span
             >
           </div>
-
-        </el-tooltip>
+        </div>
       </div>
     </div>
   </div>
+  <el-dialog v-model="dialogFormVisible" top="40vh" :show-close="false">
+    <div class="info">
+      <h3>{{ title }}</h3>
+      <p>
+        <span class="index">{{ t('ranking') }}</span>
+        <span class="numberIndex"> #{{ sigRank }}</span>
+      </p>
+    </div>
+    <div class="info">
+      <p>
+        <span class="index">{{ t('active') }}</span>
+        <span class="numberIndex">
+          {{ (Math.round(sigContrubution * 100) / 100).toFixed(2) }}</span
+        >
+      </p>
+    </div>
+    <div class="info">
+      <p>
+        <span style="cursor: pointer" @click="goToSigs(title)">查看详情</span>
+        <span>
+          <el-icon :size="16" class="right-btn" @click="goToSigs(title)">
+            <right class="app-text-btn" />
+          </el-icon>
+        </span>
+      </p>
+    </div>
+  </el-dialog>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Right } from '@element-plus/icons-vue';
 import { useCommonStore } from '@/stores/common';
@@ -203,8 +237,36 @@ const getCommunityValue = () => {
   });
 };
 getList();
+const dialogFormVisible = ref(false);
+const title = ref('');
+const sigRank = ref('');
+const sigContrubution = ref(0);
 const goTo = (item: any) => {
-  router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
+  // router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
+  dialogFormVisible.value = true;
+  title.value = item.sig_names;
+  sigRank.value = item.rank;
+  sigContrubution.value = item.score;
+};
+const goToSigs = (title: any) => {
+  router.push(`/${useCommon.language}/mobile/sig/${title}`);
+};
+// 滚动事件
+const isScroll = ref(false);
+const slideRef = ref<any>(null);
+onMounted(() => {
+  slideRef.value?.addEventListener(
+    'scroll',
+    () => {
+      nextTick(() => {
+        isScroll.value = slideRef.value?.scrollTop > 200 ? true : false;
+      });
+    },
+    true
+  );
+});
+const backtop = () => {
+  slideRef.value.scrollTop = 0;
 };
 </script>
 <style scoped lang="scss">
@@ -305,6 +367,9 @@ const goTo = (item: any) => {
   color: #4e5865;
   line-height: 16px;
 }
+p {
+  margin-top: 10px;
+}
 // 按钮样式
 .app-text-btn {
   cursor: pointer;
@@ -315,8 +380,7 @@ const goTo = (item: any) => {
 }
 .right-btn {
   position: absolute;
-  left: 68px;
-  bottom: 6px;
+  left: 120px;
 }
 .numberIndex {
   position: absolute;
@@ -338,5 +402,42 @@ const goTo = (item: any) => {
   /* 声明行间距和列间距 */
   grid-gap: 8px;
   margin-bottom: 16px;
+}
+.activation {
+  .liveness {
+    display: inline-block;
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(270deg, #002fa7 0%, rgba(0, 47, 167, 0.2) 100%);
+  }
+  .sp {
+    display: inline-block;
+    height: 16px;
+    font-size: 12px;
+    font-family: HarmonyOS_Sans_SC;
+    color: #4e5865;
+    line-height: 16px;
+    text-align: center;
+  }
+  .spp {
+    display: inline-block;
+    width: 7px;
+    height: 16px;
+    font-size: 12px;
+    font-family: HarmonyOS_Sans_SC;
+    color: #8d98aa;
+    line-height: 16px;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+</style>
+<style lang="scss">
+.el-dialog__header {
+  padding: 0px !important;
+}
+.el-dialog__body {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 </style>

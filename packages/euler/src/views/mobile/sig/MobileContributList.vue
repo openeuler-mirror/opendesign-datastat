@@ -316,7 +316,7 @@ const getcontributeValue = (item: any) => {
   font-size: 12px;
   align-items: center;
   &-box {
-    width: 54px;
+    width: 37px;
     height: 16px;
     background: #0062dc;
     border-radius: 2px;
