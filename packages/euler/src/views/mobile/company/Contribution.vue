@@ -210,7 +210,7 @@ watch(
         show-overflow-tooltip
         ><template #default="scope">
           <div class="usertype-box">
-            <span class="num"
+            <!-- <span class="num"
               >{{ scope.row.gitee_id
               }}<span v-if="scope.row.is_TC_owner" class="TCbox">TC</span
               ><span
@@ -228,7 +228,29 @@ watch(
                           } as any)"
                 >Maintainer
               </span>
-            </span>
+            </span> -->
+            <div class="num">
+              {{ scope.row.gitee_id }}
+              <span v-if="scope.row.is_TC_owner" class="TCbox">TC</span>
+            </div>
+            <div
+              v-if="scope.row.usertype === 'committers'"
+              class="usertypecolorbox"
+              :style="({
+                            '--color': '225deg, #FEB32A 0%, #F6D365 100%',
+                          } as any)"
+            >
+              Committer
+            </div>
+            <div
+              v-if="scope.row.usertype === 'maintainers'"
+              class="usertypecolorbox"
+              :style="({
+                            '--color': '45deg, #005CD3 0%, #002FA7 100%',
+                          } as any)"
+            >
+              Maintainer
+            </div>
           </div>
         </template>
       </el-table-column>
@@ -300,8 +322,8 @@ watch(
     }
   }
   .usertype-box {
-    display: flex;
-    align-items: left;
+    // display: flex;
+    // align-items: left;
     flex-wrap: wrap;
     .num {
       // width: 200px;
@@ -311,11 +333,11 @@ watch(
       flex-wrap: wrap;
       .TCbox {
         display: inline-block;
-        width: 20px;
+        width: 30px;
         height: 22px;
         background: linear-gradient(45deg, #b461f6 0%, #7d32ea 100%);
         border-radius: 2px;
-        font-size: 10px;
+        font-size: 8px;
         font-family: HarmonyOS_Sans_SC;
         color: #ffffff;
         line-height: 12px;
@@ -323,6 +345,7 @@ watch(
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 2px, 6px;
       }
     }
   }
@@ -406,19 +429,20 @@ watch(
   align-items: center;
 }
 .usertypecolorbox {
-  margin-left: 5px;
+  // margin-left: 5px;
   background: linear-gradient(var(--color));
   border-radius: 2px;
-  font-size: 10px;
+  font-size: 8px;
   font-family: HarmonyOS_Sans_SC;
   color: #ffffff;
   line-height: 12px;
-  height: 16px;
-  width: 4rem;
+  // height: 16px;
+  width: 5rem;
   height: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 2px 6px;
 }
 .tc {
   height: 18px;

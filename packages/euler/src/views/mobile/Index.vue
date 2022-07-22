@@ -144,6 +144,8 @@ const isScroll = ref(false);
 const slideRef = ref<any>(null);
 const isScroll1 = ref(false);
 const slideRef1 = ref<any>(null);
+const isScroll2 = ref(false);
+const slideRef2 = ref<any>(null);
 onMounted(() => {
   slideRef.value?.addEventListener(
     'scroll',
@@ -163,6 +165,15 @@ onMounted(() => {
     },
     true
   );
+  slideRef2.value?.addEventListener(
+    'scroll',
+    () => {
+      nextTick(() => {
+        isScroll2.value = slideRef2.value?.scrollTop > 200 ? true : false;
+      });
+    },
+    true
+  );
 });
 
 const backtop = () => {
@@ -170,6 +181,9 @@ const backtop = () => {
 };
 const backtop1 = () => {
   slideRef1.value.scrollTop = 0;
+};
+const backtop2 = () => {
+  slideRef2.value.scrollTop = 0;
 };
 const goToCompany = (data: IObject) => {
   if (
@@ -265,14 +279,47 @@ const goToCompany = (data: IObject) => {
               class="company-content-item"
             >
               <p class="name" @click="goToCompany(item)">
-                <span class="index">{{ item.index }}</span
-                >{{
-                  useCommon.language === 'zh'
-                    ? item.company_cn
-                    : item.company_en === ''
-                    ? item.company_cn
-                    : item.company_en
-                }}
+                <span class="index">{{ item.index }}</span>
+                <span
+                  v-if="
+                    item.company_cn === '个人贡献者' ||
+                    item.company_en === 'independent'
+                  "
+                  class="name"
+                  :style="{
+                    color: '#555555',
+                  }"
+                  >{{
+                    useCommon.language === 'zh'
+                      ? item.company_cn
+                      : item.company_en === ''
+                      ? item.company_cn
+                      : item.company_en
+                  }}</span
+                >
+                <span
+                  v-else
+                  class="name"
+                  :title="
+                    useCommon.language === 'zh'
+                      ? item.company_cn
+                      : item.company_en === ''
+                      ? item.company_cn
+                      : item.company_en
+                  "
+                  :style="{
+                    cursor: hasPermission('sigRead') ? 'pointer' : 'auto',
+                    color: hasPermission('sigRead') ? '#002FA7' : '#555555',
+                  }"
+                  @click="goToCompany(item)"
+                  >{{
+                    useCommon.language === 'zh'
+                      ? item.company_cn
+                      : item.company_en === ''
+                      ? item.company_cn
+                      : item.company_en
+                  }}</span
+                >
               </p>
               <div class="progress">
                 <div
@@ -343,9 +390,13 @@ const goToCompany = (data: IObject) => {
         </div>
       </div>
     </swiper-slide>
+
     <swiper-slide v-if="hasPermission('sigRead')">
       <o-mobile-template header="groupActive">
         <template #content>
+          <div v-if="isScroll2" class="backtop" @click="backtop2">
+            {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
+          </div>
           <special-interest-group-diagram></special-interest-group-diagram>
         </template>
       </o-mobile-template>

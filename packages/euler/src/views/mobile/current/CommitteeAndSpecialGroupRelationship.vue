@@ -33,7 +33,8 @@
                     :key="index"
                     class="group-email"
                     @click="goToSig(value)"
-                    >{{ value }},
+                    >{{ value
+                    }}{{ index < scope.row.sigs.length - 1 ? ',' : '' }}
                   </span>
                 </div>
               </template></el-table-column
@@ -76,7 +77,8 @@
                     :key="index"
                     class="group-email"
                     @click="goToSig(value)"
-                    >{{ value }},
+                    >{{ value
+                    }}{{ index < scope.row.sigs.length - 1 ? ',' : '' }}
                   </span>
                 </div>
               </template></el-table-column
