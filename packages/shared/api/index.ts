@@ -195,3 +195,23 @@ export function queryTCSigs(params: object) {
     .get(url, { params, global: true })
     .then((res: AxiosResponse) => res.data);
 }
+
+/**
+ *公司下sig组明细
+ */
+export function queryCompanySigContribute(params: object) {
+  const url = '/query/company/sigcontribute';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+
+/**
+ *个人sig组明细
+ */
+export function queryUserSigContribute(params: object) {
+  const url = '/query/user/sigcontribute';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}

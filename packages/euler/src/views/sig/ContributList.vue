@@ -9,6 +9,10 @@ import { sortExp } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
+import { useCommonStore } from '@/stores/common';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const useCommon = useCommonStore();
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -154,6 +158,11 @@ const getcontributeValue = (item: any) => {
   item.isSelected = !item.isSelected;
   querySearch();
 };
+// 跳转个人详情
+const goToUser = (data: IObject) => {
+  const routeData: any = router.resolve(`/${useCommon.language}/user/${data}`);
+  window.open(routeData.href, '_blank');
+};
 </script>
 <template>
   <div>
@@ -242,7 +251,14 @@ const getcontributeValue = (item: any) => {
                     '--color': '#FEB32A',
                   } as any)"
                 ></span>
-                <span class="num">{{ scope.row.gitee_id }}</span>
+                <span
+                  class="num"
+                  :style="{
+                    cursor: 'pointer',
+                  }"
+                  @click="goToUser(scope.row.gitee_id)"
+                  >{{ scope.row.gitee_id }}</span
+                >
               </div>
             </template>
           </el-table-column>

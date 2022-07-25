@@ -356,6 +356,11 @@ const showDropdown = (e: any) => {
     inputSlider(number * 32);
   }
 };
+// 跳转个人详情
+const goToUser = (data: IObject) => {
+  const routeData: any = router.resolve(`/${useCommon.language}/user/${data}`);
+  window.open(routeData.href, '_blank');
+};
 </script>
 <template>
   <div class="container">
@@ -561,8 +566,10 @@ const showDropdown = (e: any) => {
                     width="400"
                     ><template #default="scope">
                       <div class="usertype-box">
-                        <span class="num"
-                          >{{ scope.row.gitee_id
+                        <span class="num" @click="goToUser(scope.row.gitee_id)"
+                          :style="{
+              cursor: 'pointer',
+            }">{{ scope.row.gitee_id
                           }}<span v-if="scope.row.is_TC_owner" class="TCbox"
                             >TC</span
                           ><span
@@ -664,7 +671,6 @@ const showDropdown = (e: any) => {
     margin-bottom: 72px;
   }
 }
-
 
 .circularPile {
   margin-top: 60px;

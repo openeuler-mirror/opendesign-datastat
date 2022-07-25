@@ -67,6 +67,26 @@ export const routes = [
     },
   },
   {
+    path: '/zh/user/:name',
+    name: 'zh_user',
+    component: () => {
+      return import('@/views/person/index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/user',
+    name: 'zh_all_user',
+    component: () => {
+      return import('@/views/person/index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
     path: '/zh/mobile',
     name: 'zh_mobile',
     component: () => {
@@ -198,6 +218,26 @@ export const routes = [
     name: 'en_all_sig',
     component: () => {
       return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/user/:name',
+    name: 'en_user',
+    component: () => {
+      return import('@/views/person/index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/user',
+    name: 'en_all_user',
+    component: () => {
+      return import('@/views/person/index.vue');
     },
     beforeEnter: () => {
       localStorage.setItem('lang', 'en');
