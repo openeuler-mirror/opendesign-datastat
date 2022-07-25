@@ -11,6 +11,22 @@ export function queryCourse(params: object) {
     .then((res: AxiosResponse) => res.data);
 }
 /**
+ * 获取授权token链接
+ */
+export function queryToken(params: object) {
+  const url = '/authing/token/apply';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
+ * 获取idtoken用于退出
+ */
+export function queryIDToken() {
+  const url = '/authing/logout';
+  return request.get(url).then((res: AxiosResponse) => res.data);
+}
+/**
  * 获取指定sig活跃度及排名
  */
 export function getSigScore(params: object) {

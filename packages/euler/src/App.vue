@@ -1,22 +1,34 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue';
-import { setStoreData } from 'shared/utils/login';
+import { setStoreData, useStoreData } from 'shared/utils/login';
 import { openCommunityInfo } from './api';
 
 setStoreData(openCommunityInfo.name);
+const { loginIframeSrc } = useStoreData();
 </script>
 
 <template>
-  <header><app-header></app-header></header>
-  <!-- <router-view></router-view> -->
-  <router-view v-slot="{ Component, route }">
-    <transition :name="route.meta.transition">
-      <component :is="Component" />
-    </transition>
-  </router-view>
+  <div v-if="!loginIframeSrc">
+    <header><app-header></app-header></header>
+    <router-view v-slot="{ Component, route }">
+      <transition :name="route.meta.transition">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+  </div>
+  <iframe
+    v-else
+    :src="loginIframeSrc"
+    class="login-iframe"
+    frameborder="0"
+  ></iframe>
 </template>
 
 <style lang="scss">
+.login-iframe {
+  width: 100%;
+  height: 100vh;
+}
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
