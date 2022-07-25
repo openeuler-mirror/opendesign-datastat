@@ -1,8 +1,9 @@
 <template>
+
   <div ref="slideRef" class="main-menu">
-    <div v-if="isScroll" class="backtop" @click="backtop">
+    <!-- <div v-if="isScroll" class="backtop" @click="backtop">
       {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
-    </div>
+    </div> -->
     <div class="activation">
       <span class="sp">{{ t('active') }}</span>
       <p class="spp">0</p>

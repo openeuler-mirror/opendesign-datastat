@@ -9,7 +9,7 @@ import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import OFormRadio from '@/components/OFormRadio.vue';
-import { queryCompanySigContribute } from 'shared/api/index';
+import { queryUserSigContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
@@ -19,7 +19,7 @@ const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
 const props = defineProps({
-  company: {
+  user: {
     type: String,
     required: true,
     default: '',
@@ -29,7 +29,7 @@ const param = ref({
   contributeType: 'pr',
   timeRange: 'lastonemonth',
   community: openCommunityInfo.name,
-  company: computed(() => props.company),
+  user: computed(() => props.user),
   displayRange: '10',
 } as IObject);
 const memberData = ref([] as IObject[]);
@@ -39,7 +39,7 @@ const rankNum = ref(1);
 const sumContribute = ref(0);
 
 const getMemberData = () => {
-  queryCompanySigContribute(param.value).then((data) => {
+  queryUserSigContribute(param.value).then((data) => {
     memberList.value =
       (data.data && data.data.sort(sortExp('contribute', false))) || [];
     memberMax.value = ceil(memberList.value[0].contribute, -2) || 0;
@@ -100,7 +100,6 @@ const formOption = computed(() => {
       active: '10',
       list: [
         { label: 'Top10', value: '10' },
-        { label: 'Top20', value: '20' },
         { label: t('from.all'), value: 'all' },
       ],
     },
@@ -164,8 +163,9 @@ const querySearch = (queryString: string, cb: any) => {
   cb(results);
 };
 const createFilter = (queryString: string) => {
-  return (list: formType) => {
-    const items = language.value === 'zh' ? list.company_cn : list.company_en;
+  return (list: any) => {
+    const items = list.sig_name;
+
     return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
   };
 };
@@ -173,7 +173,7 @@ const createFilter = (queryString: string) => {
 const handleSelect = (item: IObject) => {
   param.value.displayRange = '1';
   memberList.value.forEach((element: IObject) => {
-    if (element.company_cn === item.company_cn) {
+    if (element.sig_name === item.sig_name) {
       memberData.value = [item];
     }
   });
@@ -197,15 +197,15 @@ const clearSearchInput = () => {
 
 const emits = defineEmits(['searchState']);
 
-// 如果是选择条件是显示范围则前端处理数据
-// 否则请求接口
 watch(
-  () => props.company,
+  () => props.user,
   () => {
     getMemberData();
   }
 );
-
+onMounted(() => {
+  getMemberData();
+});
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
   const routeData: any = router.resolve(
@@ -229,9 +229,7 @@ const goToCompany = (data: IObject) => {
             :trigger-on-focus="false"
             clearable
             :debounce="300"
-            :value-key="language === 'zh' ? 'company_cn' : 'company_en'"
             size="large"
-            :class="{ active: useCompany.searchRanking !== 0 }"
             :placeholder="t('from.pleasePartner')"
             @select="handleSelect"
             @keydown.enter="myKeydown"
@@ -280,7 +278,7 @@ const goToCompany = (data: IObject) => {
             </div>
             <div class="info">
               <p>
-                <span class="index">{{ item.index }}</span>
+                <span class="index">{{ item.rank }}</span>
                 {{ item.sig_name }}
               </p>
               <span class="num">{{ item.contribute }} </span>

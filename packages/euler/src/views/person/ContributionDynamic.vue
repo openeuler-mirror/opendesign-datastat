@@ -94,16 +94,6 @@ const formOption = computed(() => {
         { label: t('from.all'), value: 'all' },
       ],
     },
-    {
-      label: t('from.displayRange'),
-      id: 'displayRange',
-      active: '10',
-      list: [
-        { label: 'Top10', value: '10' },
-        { label: 'Top20', value: '20' },
-        { label: t('from.all'), value: 'all' },
-      ],
-    },
   ];
 });
 const getContributeInfo = (e: IObject) => {
@@ -209,7 +199,7 @@ watch(
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
   const routeData: any = router.resolve(
-    `/${useCommon.language}/sig/${data.sig_name}`
+    `/${useCommon.language}/company/${data.company_cn}`
   );
   window.open(routeData.href, '_blank');
 };
@@ -246,6 +236,15 @@ const goToCompany = (data: IObject) => {
       </template>
     </o-form-radio>
   </div>
+  <div class="detail">
+    <img src="@/assets/MainPR.png" alt="" />
+    <span class="sp">主要特性PR</span>
+    <img src="@/assets/CommonPR.png" alt="" /><span class="sp">一般特性PR</span>
+    <div class="page">
+      <span class="sp">共<span class="num">100</span>条结果</span>
+      <span>每页显示<span class="num"></span>条</span>
+    </div>
+  </div>
   <div class="bar-panel">
     <ul class="bar-content">
       <li
@@ -253,73 +252,14 @@ const goToCompany = (data: IObject) => {
         :key="'com' + index"
         class="bar-content-item"
       >
+        <div class="index">{{ item.index }}</div>
         <p class="infos">
-          <span class="index">{{ item.rank }}</span>
-          <span
-            class="name"
-            :style="{
-              cursor: 'pointer',
-              color: '#002FA7',
-            }"
-            @click="goToCompany(item)"
-            >{{ item.sig_name }}</span
-          >
+          在<span class="index">{{ item.index }}</span
+          >创建了Pull Request
+          <span class="index">{{ item.index }}</span>
         </p>
-
-        <el-tooltip
-          placement="bottom-start"
-          effect="light"
-          popper-class="bar-tooltip"
-          :show-arrow="false"
-        >
-          <template #content>
-            <div class="lable">
-              {{ timeRangeText }}
-              <span class="text">{{ t('de') }}</span>
-              {{ typeLable }}
-            </div>
-            <div class="info">
-              <p>
-                <span class="index">{{ item.index }}</span>
-                {{ item.sig_name }}
-              </p>
-              <span class="num">{{ item.contribute }} </span>
-              <span
-                >{{
-                  (
-                    Math.round((item.contribute / sumContribute) * 10000) / 100
-                  ).toFixed(1) + '%'
-                }}
-              </span>
-            </div>
-          </template>
-          <div class="progress">
-            <div
-              class="progress-inner"
-              :style="{
-                width: progressFormat(item.contribute) + '%',
-              }"
-            >
-              <span v-if="progressFormat(item.contribute) > 80">{{
-                formatNumber(item.contribute)
-              }}</span>
-            </div>
-            <span v-if="progressFormat(item.contribute) < 80" class="val">{{
-              formatNumber(item.contribute)
-            }}</span>
-          </div>
-        </el-tooltip>
       </li>
     </ul>
-    <div class="bar-columns">
-      <div class="num"><span>0</span></div>
-      <div class="num">
-        <span>{{ formatNumber(memberMax / 2) }}</span>
-      </div>
-      <div class="num">
-        <span>{{ formatNumber(memberMax) }}</span>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -362,38 +302,6 @@ const goToCompany = (data: IObject) => {
   position: relative;
   height: 100%;
   padding-bottom: 12px;
-  .bar-columns {
-    position: absolute;
-    bottom: 0;
-    top: 0;
-    left: 324px;
-    display: flex;
-    justify-content: space-between;
-    right: 0;
-    .num {
-      color: #9097a3;
-      font-size: 12px;
-      position: relative;
-      display: flex;
-      align-items: end;
-      min-width: 8px;
-      &::after {
-        position: absolute;
-        top: 0;
-        left: 48%;
-        width: 1px;
-        border-left: 1px dashed #ccc;
-        bottom: 20px;
-        content: '';
-      }
-      &:last-child {
-        &::after {
-          left: inherit;
-          right: 0;
-        }
-      }
-    }
-  }
 }
 .bar-content {
   position: relative;
@@ -416,71 +324,40 @@ const goToCompany = (data: IObject) => {
         color: #9097a3;
         text-align: center;
       }
-      .name {
-        width: 304px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
     }
   }
 }
-.progress {
-  height: 24px;
+.detail {
   display: flex;
-  width: 100%;
   align-items: center;
-  &-inner {
-    background: #002fa7;
-    box-shadow: 4px 8px 12px 0px rgba(0, 92, 219, 0.25);
+  position: relative;
+  .sp {
+    width: 69px;
+    height: 18px;
     font-size: 12px;
-    color: #fff;
-    height: 100%;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    padding-right: 0px;
-    transition: all 0.3s ease-in-out;
-    span {
-      padding-right: 8px;
-    }
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #555555;
+    line-height: 18px;
+    margin-left: 5px;
+    margin-right: 24px;
   }
-  .val {
-    color: #000;
-    font-size: 12px;
-    margin-left: 8px;
-  }
-}
-.bar-tooltip {
-  padding: 12px 16px;
-  box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05),
-    0px 0px 32px 0px rgba(10, 11, 13, 0.1);
-
-  .lable {
-    color: #9097a3;
-    font-weight: bold;
-    .text {
-      font-weight: 100;
-    }
-  }
-  .info {
-    color: #4e5865;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    min-width: 280px;
-    .index {
-      color: #9097a3;
-    }
+  .page {
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #555555;
+    line-height: 22px;
     .num {
       font-size: 16px;
+      font-family: Roboto-Medium, Roboto;
+      font-weight: 500;
       color: #000000;
-      margin-right: 20px;
-      .percentage {
-        margin-left: 10px;
-        font-size: 12px;
-        color: #4e5865;
-      }
+      line-height: 24px;
+      padding-left: 5px;
+      padding-right: 5px;
     }
   }
 }
