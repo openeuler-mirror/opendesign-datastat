@@ -163,16 +163,19 @@ export function setStoreData(community: string) {
 
 // 刷新后重新请求登录用户信息
 export function refreshInfo(community: string) {
-  queryCourse({ community }).then((res) => {
-    const { data } = res;
-    const { guardAuthClient } = useStoreData();
-    if (
-      !guardAuthClient.value.photo &&
-      Object.prototype.toString.call(data) === '[object Object]'
-    ) {
-      guardAuthClient.value = data;
-    }
-  });
+  const { token } = getUserAuth();
+  if (token) {
+    queryCourse({ community }).then((res) => {
+      const { data } = res;
+      const { guardAuthClient } = useStoreData();
+      if (
+        !guardAuthClient.value.photo &&
+        Object.prototype.toString.call(data) === '[object Object]'
+      ) {
+        guardAuthClient.value = data;
+      }
+    });
+  }
 }
 
 export function hasPermission(per: string) {
