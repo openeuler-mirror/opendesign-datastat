@@ -390,16 +390,20 @@ const goToCompany = (data: IObject) => {
         </div>
       </div>
     </swiper-slide>
-
     <swiper-slide v-if="hasPermission('sigRead')">
+      <!-- <div ref="slideRef2" class="slide-panel"> -->
+      <!-- <div v-if="isScroll2" class="backtop" @click="backtop2">
+          {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
+        </div>
+        <div class="slide-panel-content"> -->
+
       <o-mobile-template header="groupActive">
         <template #content>
-          <div v-if="isScroll2" class="backtop" @click="backtop2">
-            {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
-          </div>
           <special-interest-group-diagram></special-interest-group-diagram>
         </template>
       </o-mobile-template>
+      <!-- </div>
+      </div> -->
     </swiper-slide>
     <swiper-slide v-if="hasPermission('sigRead')">
       <o-mobile-template header="companyRelations">

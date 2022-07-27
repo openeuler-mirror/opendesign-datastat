@@ -8,8 +8,8 @@ import { useCommonStore } from '@/stores/common';
 import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
-import OFormRadio from '@/components/OFormRadio.vue';
-import { queryCompanySigContribute } from 'shared/api/index';
+import MobileOFormRadio from '../sig/MobileOFormRadio.vue';
+import { queryUserSigContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
@@ -19,7 +19,7 @@ const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
 const props = defineProps({
-  company: {
+  user: {
     type: String,
     required: true,
     default: '',
@@ -29,7 +29,7 @@ const param = ref({
   contributeType: 'pr',
   timeRange: 'lastonemonth',
   community: openCommunityInfo.name,
-  company: computed(() => props.company),
+  user: computed(() => props.user),
   displayRange: '10',
 } as IObject);
 const memberData = ref([] as IObject[]);
@@ -39,23 +39,13 @@ const rankNum = ref(1);
 const sumContribute = ref(0);
 
 const getMemberData = () => {
-  queryCompanySigContribute(param.value).then((data) => {
+  queryUserSigContribute(param.value).then((data) => {
     memberList.value =
       (data.data && data.data.sort(sortExp('contribute', false))) || [];
-    memberMax.value = ceil(memberList.value[0].contribute, -2) || 0;
-    // memberList.value.forEach((item) => {
-    //   if (
-    //     item.company_cn !== '个人贡献者' ||
-    //     item.company_en !== 'independent'
-    //   ) {
-    //     item.index = rankNum.value++;
-    //   } else {
-    //     item.index = '*';
-    //   }
-    // });
+    memberMax.value = ceil(memberList.value[0]?.contribute, -2) || 0;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
-      return (memberData.value = memberList.value);
+      return (reallData.value = memberList.value);
     }
     memberData.value = memberList.value.slice(
       0,
@@ -64,6 +54,7 @@ const getMemberData = () => {
     sumContribute.value = memberData.value.reduce((total, currentValue) => {
       return total + currentValue.contribute;
     }, 0);
+    reallData.value = memberData.value;
   });
 };
 // 个人信息
@@ -91,6 +82,15 @@ const formOption = computed(() => {
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
         { label: t('from.lastoneyear'), value: 'lastoneyear' },
+        { label: t('from.all'), value: 'all' },
+      ],
+    },
+    {
+      label: t('from.displayRange'),
+      id: 'displayRange',
+      active: '10',
+      list: [
+        { label: 'Top10', value: '10' },
         { label: t('from.all'), value: 'all' },
       ],
     },
@@ -137,201 +137,102 @@ const switchType = () => {
 };
 switchType();
 
-const isSearch = ref(false);
 // 搜索过滤
 const searchInput = ref('');
-const querySearch = (queryString: string, cb: any) => {
-  let queryList = memberList.value;
-  const results = queryString
-    ? queryList.filter(createFilter(queryString) as any)
-    : queryList;
-
-  if (results.length > 0) {
-    isSearch.value = false;
-  } else {
-    isSearch.value = true;
-  }
-  cb(results);
-};
-const createFilter = (queryString: string) => {
-  return (list: formType) => {
-    const items = language.value === 'zh' ? list.company_cn : list.company_en;
-    return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
-  };
-};
 // 搜索结果
-const handleSelect = (item: IObject) => {
-  param.value.displayRange = '1';
-  memberList.value.forEach((element: IObject) => {
-    if (element.company_cn === item.company_cn) {
-      memberData.value = [item];
-    }
-  });
-};
-
-// 回车判断结果
-const myKeydown = () => {
-  if (isSearch.value) {
-    emits('searchState', isSearch.value);
+const reallData = ref([] as IObject[]);
+const querySearch = () => {
+  if (searchInput.value !== '') {
+    const newList = memberData.value.filter((item: any) =>
+      item.sig_name.toLowerCase().includes(searchInput.value)
+    );
+    reallData.value = newList;
+    // filterReallData();
+  } else {
+    getMemberData();
   }
 };
-
-// 清除搜索
 const clearSearchInput = () => {
-  isSearch.value = false;
-  emits('searchState', isSearch.value);
-  param.value.displayRange = '10';
   getMemberData();
   searchInput.value = '';
 };
 
-const emits = defineEmits(['searchState']);
-
-// 如果是选择条件是显示范围则前端处理数据
-// 否则请求接口
 watch(
-  () => props.company,
+  () => props.user,
   () => {
     getMemberData();
   }
 );
-
+onMounted(() => {
+  getMemberData();
+});
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/company/${data.company_cn}`
-  );
-  window.open(routeData.href, '_blank');
-};
-const options = [
-  {
-    value: '10',
-    label: '10',
-  },
-  {
-    value: '20',
-    label: '20',
-  },
-  {
-    value: '50',
-    label: '50',
-  },
-];
-
-const value = ref('');
-const istrue = ref(true);
-const changeTage = () => {
-  istrue.value = !istrue.value;
+  router.push(`/${useCommon.language}/mobile/sig/${data.sig_name}`);
 };
 </script>
 
 <template>
   <div class="contributions-statistical">
-    <div class="sel">
-      <div class="title">SIG筛选</div>
-      <el-select v-model="value" class="m-2" placeholder="Select" size="large">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-    </div>
-    <div class="line"></div>
-    <o-form-radio
+    <mobile-o-form-radio
       :option="formOption"
       @get-contribute-info="getContributeInfo($event)"
     >
       <template #searchInput>
         <div class="searchInput">
-          <el-autocomplete
+          <el-input
             v-model="searchInput"
-            :fetch-suggestions="querySearch"
             :trigger-on-focus="false"
             clearable
             :debounce="300"
-            :value-key="language === 'zh' ? 'company_cn' : 'company_en'"
             size="large"
-            :class="{ active: useCompany.searchRanking !== 0 }"
-            :placeholder="t('from.pleasePartner')"
-            @select="handleSelect"
-            @keydown.enter="myKeydown"
+            :placeholder="t('enterSIG')"
+            @change="querySearch"
             @clear="clearSearchInput"
           >
             <template #prefix>
               <o-icon class="search-icon"
                 ><icon-user></icon-user
               ></o-icon> </template
-          ></el-autocomplete>
+          ></el-input>
         </div>
       </template>
-    </o-form-radio>
-  </div>
-  <div class="detail">
-    <span
-      :style="{
-        cursor: 'pointer',
-      }"
-      @click="changeTage()"
-      ><img v-if="istrue" src="@/assets/MainPR.png" alt="" />
-      <img v-else src="@/assets/CommonPR.png" alt=""
-    /></span>
-    <span
-      class="sp"
-      :style="{
-        cursor: 'pointer',
-      }"
-      @click="changeTage()"
-      >主要特性PR</span
-    >
-    <span
-      :style="{
-        cursor: 'pointer',
-      }"
-      @click="changeTage()"
-    >
-      <img v-if="istrue" src="@/assets/CommonPR.png" alt="" /><img
-        v-else
-        src="@/assets/MainPR.png"
-        alt="" /></span
-    ><span
-      class="sp"
-      :style="{
-        cursor: 'pointer',
-      }"
-      @click="changeTage()"
-      >一般特性PR</span
-    >
-
-    <div class="page">
-      <span class="sp">共<span class="num">100</span>条结果</span>
-      <span
-        >每页显示<span class="num">
-          <el-select v-model="value" class="m-2" placeholder="10" size="small">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            /> </el-select></span
-        >条</span
-      >
-    </div>
+    </mobile-o-form-radio>
   </div>
   <div class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in memberData"
+        v-for="(item, index) in reallData"
         :key="'com' + index"
         class="bar-content-item"
       >
-        <div class="index">{{ item.index }}</div>
         <p class="infos">
-          在<span class="index">{{ item.index }}</span
-          >创建了Pull Request
-          <span class="index">{{ item.index }}</span>
+          <span class="index">{{ item.rank }}</span>
+          <span
+            class="name"
+            :style="{
+              cursor: 'pointer',
+              color: '#002FA7',
+            }"
+            @click="goToCompany(item)"
+            >{{ item.sig_name }}</span
+          >
         </p>
+        <div class="progress">
+          <div
+            class="progress-inner"
+            :style="{
+              width: progressFormat(item.contribute) + '%',
+            }"
+          >
+            <span v-if="progressFormat(item.contribute) > 80">{{
+              formatNumber(item.contribute)
+            }}</span>
+          </div>
+          <span v-if="progressFormat(item.contribute) < 80" class="val">{{
+            formatNumber(item.contribute)
+          }}</span>
+        </div>
       </li>
     </ul>
   </div>
@@ -376,6 +277,38 @@ const changeTage = () => {
   position: relative;
   height: 100%;
   padding-bottom: 12px;
+  .bar-columns {
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 324px;
+    display: flex;
+    justify-content: space-between;
+    right: 0;
+    .num {
+      color: #9097a3;
+      font-size: 12px;
+      position: relative;
+      display: flex;
+      align-items: end;
+      min-width: 8px;
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 48%;
+        width: 1px;
+        border-left: 1px dashed #ccc;
+        bottom: 20px;
+        content: '';
+      }
+      &:last-child {
+        &::after {
+          left: inherit;
+          right: 0;
+        }
+      }
+    }
+  }
 }
 .bar-content {
   position: relative;
@@ -383,8 +316,8 @@ const changeTage = () => {
   &-item {
     margin: 16px 0;
     list-style: none;
-    display: flex;
-    justify-content: space-between;
+    // display: flex;
+    // justify-content: space-between;
     .infos {
       font-size: 16px;
       color: #000000;
@@ -398,70 +331,72 @@ const changeTage = () => {
         color: #9097a3;
         text-align: center;
       }
+      .name {
+        width: 304px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
   }
 }
-.detail {
+.progress {
+  height: 24px;
   display: flex;
+  width: 100%;
   align-items: center;
-  position: relative;
-  .sp {
-    width: 69px;
-    height: 18px;
+  &-inner {
+    background: #002fa7;
+    box-shadow: 4px 8px 12px 0px rgba(0, 92, 219, 0.25);
     font-size: 12px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #555555;
-    line-height: 18px;
-    margin-left: 5px;
-    margin-right: 24px;
+    color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 0px;
+    transition: all 0.3s ease-in-out;
+    span {
+      padding-right: 8px;
+    }
   }
-  .page {
-    position: absolute;
-    right: 0;
-    font-size: 14px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #555555;
-    line-height: 22px;
+  .val {
+    color: #000;
+    font-size: 12px;
+    margin-left: 8px;
+  }
+}
+.bar-tooltip {
+  padding: 12px 16px;
+  box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05),
+    0px 0px 32px 0px rgba(10, 11, 13, 0.1);
+
+  .lable {
+    color: #9097a3;
+    font-weight: bold;
+    .text {
+      font-weight: 100;
+    }
+  }
+  .info {
+    color: #4e5865;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    min-width: 280px;
+    .index {
+      color: #9097a3;
+    }
     .num {
       font-size: 16px;
-      font-family: Roboto-Medium, Roboto;
-      font-weight: 500;
       color: #000000;
-      line-height: 24px;
-      padding-left: 5px;
-      padding-right: 5px;
+      margin-right: 20px;
+      .percentage {
+        margin-left: 10px;
+        font-size: 12px;
+        color: #4e5865;
+      }
     }
   }
-}
-.sel {
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  .title {
-    width: 122px;
-  }
-}
-.line {
-  border-bottom: 1px solid #dfe1e8;
-  margin-bottom: 18px;
-}
-</style>
-<style lang="scss">
-.num {
-  .el-select .el-input__inner {
-    width: 48px;
-    height: 24px;
-  }
-}
-.sel {
-  .el-select .el-input__inner {
-    width: 368px;
-    height: 32px;
-  }
-}
-.el-select-dropdown__item {
-  padding: 0 15px 0 15px;
 }
 </style>

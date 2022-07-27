@@ -111,6 +111,7 @@ export default {
   noContributor: 'No contributor',
   noSIGPart: 'No SIG participation',
   enterGitee: 'Please enter a Gitee ID',
+  enterSIG:'Please enter a SIG',
   noMentor: 'No mentor',
   CurrentSIG: 'Current SIG',
   enterName: 'Please enter a name',

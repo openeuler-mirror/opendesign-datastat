@@ -8,7 +8,7 @@ import { useCommonStore } from '@/stores/common';
 import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
-import OFormRadio from '@/components/OFormRadio.vue';
+import MobileOFormRadio from '../sig/MobileOFormRadio.vue';
 import { queryCompanySigContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
@@ -239,7 +239,7 @@ const changeTage = () => {
       </el-select>
     </div>
     <div class="line"></div>
-    <o-form-radio
+    <mobile-o-form-radio
       :option="formOption"
       @get-contribute-info="getContributeInfo($event)"
     >
@@ -266,7 +266,7 @@ const changeTage = () => {
           ></el-autocomplete>
         </div>
       </template>
-    </o-form-radio>
+    </mobile-o-form-radio>
   </div>
   <div class="detail">
     <span
@@ -283,7 +283,7 @@ const changeTage = () => {
         cursor: 'pointer',
       }"
       @click="changeTage()"
-      >主要特性PR</span
+      >主要PR</span
     >
     <span
       :style="{
@@ -301,13 +301,13 @@ const changeTage = () => {
         cursor: 'pointer',
       }"
       @click="changeTage()"
-      >一般特性PR</span
+      >一般PR</span
     >
 
     <div class="page">
-      <span class="sp">共<span class="num">100</span>条结果</span>
+      <span class="sp">共<span class="num">100</span>条</span>
       <span
-        >每页显示<span class="num">
+        >每页<span class="num">
           <el-select v-model="value" class="m-2" placeholder="10" size="small">
             <el-option
               v-for="item in options"
@@ -406,26 +406,26 @@ const changeTage = () => {
   align-items: center;
   position: relative;
   .sp {
-    width: 69px;
+    // width: 69px;
     height: 18px;
-    font-size: 12px;
+    font-size: 3px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #555555;
     line-height: 18px;
-    margin-left: 5px;
-    margin-right: 24px;
+    margin-left: 2px;
+    margin-right: 4px;
   }
   .page {
     position: absolute;
     right: 0;
-    font-size: 14px;
+    font-size: 3px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #555555;
     line-height: 22px;
     .num {
-      font-size: 16px;
+      font-size: 3px;
       font-family: Roboto-Medium, Roboto;
       font-weight: 500;
       color: #000000;
@@ -437,10 +437,12 @@ const changeTage = () => {
 }
 .sel {
   margin-bottom: 14px;
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
   .title {
+    margin-bottom: 14px;
     width: 122px;
+    font-size: 12px;
   }
 }
 .line {
@@ -457,7 +459,7 @@ const changeTage = () => {
 }
 .sel {
   .el-select .el-input__inner {
-    width: 368px;
+    // width: 368px;
     height: 32px;
   }
 }
