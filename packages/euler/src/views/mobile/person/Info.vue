@@ -1,3 +1,38 @@
+<template>
+  <div class="userInfo">
+    <div class="title">个人简介</div>
+    <el-avatar :size="120" :src="circleUrl" />
+    <div class="slogan">{{ sigInfo.description }}</div>
+  </div>
+  <div class="first">
+    <div class="home"></div>
+    <div class="toHome">
+      <a
+        style="color: #002fa7"
+        target="_blank"
+        :href="`https://gitee.com/${props.user}`"
+      >
+        {{ t('toHome') }}</a
+      >
+    </div>
+  </div>
+  <div class="first">
+    <div class="Maintainer"></div>
+    <div class="List">
+      <span>社区角色： </span>
+      <a
+        v-for="item in sigInfo.maintainers"
+        :key="item.value"
+        class="item"
+        target="_blank"
+        :href="`https://gitee.com/${item}`"
+      >
+        @{{ item }}
+      </a>
+    </div>
+  </div>
+  <data-show :user="props.user"></data-show>
+</template>
 <script setup lang="ts">
 import { useCommonStore } from '@/stores/common';
 import OAnchor from 'shared/components/OAnchor.vue';
@@ -9,8 +44,6 @@ import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
 import { ElScrollbar } from 'element-plus';
-import SigContribution from './SigContribution.vue';
-import ContributionDynamic from './ContributionDynamic.vue';
 import DataShow from './DataShow.vue';
 const useCommon = useCommonStore();
 const router = useRouter();
@@ -18,7 +51,13 @@ const route = useRoute();
 const sencondTitle = ref('');
 const { t } = useI18n();
 const drownData = ref([] as any[]);
-sencondTitle.value = route.params.name as string;
+const props = defineProps({
+  user: {
+    type: String,
+    default: '',
+  },
+});
+// sencondTitle.value = props.user;
 // const getDrownData = () => {
 //   let community = 'openeuler';
 //   querySigName(community).then((data) => {
@@ -119,114 +158,7 @@ const state = reactive({
 
 const { circleUrl } = toRefs(state);
 </script>
-<template>
-  <div class="container">
-    <o-anchor :data="anchorData" top="11rem"></o-anchor>
-    <div class="wrap">
-      <div class="step">
-        <span class="step-one" @click="goToTetail()">{{
-          t('nav.contributors')
-        }}</span>
-        <span> > {{ sencondTitle }}</span>
-      </div>
-      <div class="main">
-        <div class="main-left">
-          <div class="main-left-top">
-            <div class="edropdown">
-              <el-dropdown
-                placement="bottom-start"
-                @visible-change="showDropdown"
-              >
-                <div class="main-left-title">
-                  {{ sencondTitle }}
-                  <span class="btnc"></span>
-                </div>
-
-                <template #dropdown>
-                  <div class="searchInput">
-                    <el-input
-                      v-model="searchInput"
-                      clearable
-                      :debounce="300"
-                      class="w-50 m-2"
-                      placeholder="请输入SIG名称搜索"
-                      :prefix-icon="Search"
-                      @input="querySearch"
-                      @clear="clearSearchInput"
-                    />
-                  </div>
-                  <el-scrollbar ref="scrollbarRef" height="400px">
-                    <el-dropdown-item
-                      v-for="item in reallData"
-                      :key="item.value"
-                      @click="clickDrownItem(item as any)"
-                    >
-                      {{ item }}
-                    </el-dropdown-item>
-                  </el-scrollbar>
-                </template>
-              </el-dropdown>
-            </div>
-          </div>
-          <div class="main-left-sp">
-            <div class="userInfo">
-              <div class="title">个人简介</div>
-              <el-avatar :size="120" :src="circleUrl" />
-              <div class="slogan">{{ sigInfo.description }}</div>
-            </div>
-            <div class="first">
-              <div class="home"></div>
-              <div class="toHome">
-                <a
-                  style="color: #002fa7"
-                  target="_blank"
-                  :href="`https://gitee.com/${sencondTitle}`"
-                >
-                  {{ t('toHome') }}</a
-                >
-              </div>
-            </div>
-            <div class="first">
-              <div class="Maintainer"></div>
-              <div class="List">
-                <span>社区角色： </span>
-                <a
-                  v-for="item in sigInfo.maintainers"
-                  :key="item.value"
-                  class="item"
-                  target="_blank"
-                  :href="`https://gitee.com/${item}`"
-                >
-                  @{{ item }}
-                </a>
-              </div>
-            </div>
-            <data-show :user="sencondTitle"></data-show>
-          </div>
-        </div>
-        <div class="main-right">
-          <div class="contributors-panel">
-            <h3 id="SIGContribution" class="title">
-              {{ sencondTitle + ' ' + t('SIGContribution') }}
-            </h3>
-            <sig-contribution :user="sencondTitle"></sig-contribution>
-          </div>
-          <div class="contributors-panel">
-            <h3 id="DynamicContribute" class="title">
-              {{ sencondTitle + ' ' + t('DynamicContribute') }}
-            </h3>
-            <contribution-dynamic :sig="sencondTitle"></contribution-dynamic>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <app-footer></app-footer>
-  </footer>
-</template>
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .contributors-panel {
   padding: 24px;
   background: #fff;
@@ -318,7 +250,6 @@ const { circleUrl } = toRefs(state);
           width: 24px;
           height: 24px;
           margin-right: 8px;
-
         }
       }
     }
@@ -360,6 +291,40 @@ const { circleUrl } = toRefs(state);
   }
   .slogan {
     margin-top: 16px;
+  }
+}
+.first {
+  margin-top: 18px;
+  display: flex;
+  position: relative;
+  .toHome {
+    padding-top: 3px;
+    color: #002fa7;
+    cursor: pointer;
+  }
+  .List {
+    padding-top: 3px;
+    display: flex;
+    flex-direction: column;
+    .item {
+      margin-top: 8px;
+      font-size: 14px;
+      font-family: HarmonyOS_Sans_SC_Medium;
+      color: #002fa7;
+      line-height: 22px;
+    }
+  }
+  .home {
+    background-image: url('@/assets/home-outlined.png');
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  .Maintainer {
+    background-image: url('@/assets/cose.png');
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
   }
 }
 </style>

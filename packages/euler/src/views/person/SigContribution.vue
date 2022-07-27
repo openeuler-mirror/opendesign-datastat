@@ -42,20 +42,10 @@ const getMemberData = () => {
   queryUserSigContribute(param.value).then((data) => {
     memberList.value =
       (data.data && data.data.sort(sortExp('contribute', false))) || [];
-    memberMax.value = ceil(memberList.value[0].contribute, -2) || 0;
-    // memberList.value.forEach((item) => {
-    //   if (
-    //     item.company_cn !== '个人贡献者' ||
-    //     item.company_en !== 'independent'
-    //   ) {
-    //     item.index = rankNum.value++;
-    //   } else {
-    //     item.index = '*';
-    //   }
-    // });
+    memberMax.value = ceil(memberList.value[0]?.contribute, -2) || 0;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
-      return (memberData.value = memberList.value);
+      return (reallData.value = memberList.value);
     }
     memberData.value = memberList.value.slice(
       0,
@@ -64,6 +54,7 @@ const getMemberData = () => {
     sumContribute.value = memberData.value.reduce((total, currentValue) => {
       return total + currentValue.contribute;
     }, 0);
+    reallData.value = memberData.value;
   });
 };
 // 个人信息
@@ -146,56 +137,25 @@ const switchType = () => {
 };
 switchType();
 
-const isSearch = ref(false);
 // 搜索过滤
 const searchInput = ref('');
-const querySearch = (queryString: string, cb: any) => {
-  let queryList = memberList.value;
-  const results = queryString
-    ? queryList.filter(createFilter(queryString) as any)
-    : queryList;
-
-  if (results.length > 0) {
-    isSearch.value = false;
-  } else {
-    isSearch.value = true;
-  }
-  cb(results);
-};
-const createFilter = (queryString: string) => {
-  return (list: any) => {
-    const items = list.sig_name;
-
-    return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
-  };
-};
 // 搜索结果
-const handleSelect = (item: IObject) => {
-  param.value.displayRange = '1';
-  memberList.value.forEach((element: IObject) => {
-    if (element.sig_name === item.sig_name) {
-      memberData.value = [item];
-    }
-  });
-};
-
-// 回车判断结果
-const myKeydown = () => {
-  if (isSearch.value) {
-    emits('searchState', isSearch.value);
+const reallData = ref([] as IObject[]);
+const querySearch = () => {
+  if (searchInput.value !== '') {
+    const newList = memberData.value.filter((item: any) =>
+      item.sig_name.toLowerCase().includes(searchInput.value)
+    );
+    reallData.value = newList;
+    // filterReallData();
+  } else {
+    getMemberData();
   }
 };
-
-// 清除搜索
 const clearSearchInput = () => {
-  isSearch.value = false;
-  emits('searchState', isSearch.value);
-  param.value.displayRange = '10';
   getMemberData();
   searchInput.value = '';
 };
-
-const emits = defineEmits(['searchState']);
 
 watch(
   () => props.user,
@@ -223,23 +183,21 @@ const goToCompany = (data: IObject) => {
     >
       <template #searchInput>
         <div class="searchInput">
-          <el-autocomplete
+          <el-input
             v-model="searchInput"
-            :fetch-suggestions="querySearch"
             :trigger-on-focus="false"
             clearable
             :debounce="300"
             size="large"
-            :placeholder="t('from.pleasePartner')"
-            @select="handleSelect"
-            @keydown.enter="myKeydown"
+            :placeholder="t('enterSIG')"
+            @change="querySearch"
             @clear="clearSearchInput"
           >
             <template #prefix>
               <o-icon class="search-icon"
                 ><icon-user></icon-user
               ></o-icon> </template
-          ></el-autocomplete>
+          ></el-input>
         </div>
       </template>
     </o-form-radio>
@@ -247,7 +205,7 @@ const goToCompany = (data: IObject) => {
   <div class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in memberData"
+        v-for="(item, index) in reallData"
         :key="'com' + index"
         class="bar-content-item"
       >

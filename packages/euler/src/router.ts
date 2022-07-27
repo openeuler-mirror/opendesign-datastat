@@ -156,6 +156,26 @@ export const routes = [
       localStorage.setItem('lang', 'zh');
     },
   },
+  {
+    path: '/zh/mobile/user/:name',
+    name: 'zh_mobile_user',
+    component: () => {
+      return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/mobile/user',
+    name: 'zh_mobile_all_user',
+    component: () => {
+      return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
   // en
   {
     path: '/en',
@@ -308,6 +328,26 @@ export const routes = [
     name: 'en_mobile_about',
     component: () => {
       return import('@/views/about/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/user/:name',
+    name: 'en_mobile_user',
+    component: () => {
+      return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/user',
+    name: 'en_mobile_all_user',
+    component: () => {
+      return import('@/views/mobile/person/Index.vue');
     },
     beforeEnter: () => {
       localStorage.setItem('lang', 'en');

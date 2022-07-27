@@ -3,13 +3,14 @@ import { useCommonStore } from '@/stores/common';
 import { IObject } from 'shared/@types/interface';
 import { onMounted, ref, watch, computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { sigsProcessing } from 'shared/utils/helper';
 import { queryCompanySigDetails, queryCompanySigs } from 'shared/api';
 import TheForm from './TheForm.vue';
 import TheProgress from '@/components/TheProgress.vue';
 import { useStaffStore } from '@/stores/staff';
 import OMobilePagination from 'shared/components/OMobilePagination.vue';
+const router = useRouter();
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -163,6 +164,10 @@ watch(
   },
   { deep: true }
 );
+// 跳转个人详情
+const goToUser = (data: IObject) => {
+  router.push(`/${useCommon.language}/mobile/user/${data}`);
+};
 </script>
 <template>
   <div class="theSecondForm">
@@ -210,27 +215,10 @@ watch(
         show-overflow-tooltip
         ><template #default="scope">
           <div class="usertype-box">
-            <!-- <span class="num"
-              >{{ scope.row.gitee_id
-              }}<span v-if="scope.row.is_TC_owner" class="TCbox">TC</span
-              ><span
-                v-if="scope.row.usertype === 'committers'"
-                class="usertypecolorbox"
-                :style="({
-                            '--color': '225deg, #FEB32A 0%, #F6D365 100%',
-                          } as any)"
-                >Committer</span
-              ><span
-                v-if="scope.row.usertype === 'maintainers'"
-                class="usertypecolorbox"
-                :style="({
-                            '--color': '45deg, #005CD3 0%, #002FA7 100%',
-                          } as any)"
-                >Maintainer
-              </span>
-            </span> -->
             <div class="num">
-              {{ scope.row.gitee_id }}
+              <span @click="goToUser(scope.row.gitee_id)">{{
+                scope.row.gitee_id
+              }}</span>
               <span v-if="scope.row.is_TC_owner" class="TCbox">TC</span>
             </div>
             <div

@@ -8,6 +8,10 @@ import { sortExp } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import OMobilePagination from 'shared/components/OMobilePagination.vue';
 import MobileOFormRadio from './MobileOFormRadio.vue';
+import { useRouter } from 'vue-router';
+import { useCommonStore } from '@/stores/common';
+const useCommon = useCommonStore();
+const router = useRouter();
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -149,6 +153,10 @@ const getcontributeValue = (item: any) => {
   item.isSelected = !item.isSelected;
   querySearch();
 };
+// 跳转个人详情
+const goToUser = (data: IObject) => {
+  router.push(`/${useCommon.language}/mobile/user/${data}`);
+};
 </script>
 <template>
   <div>
@@ -215,7 +223,14 @@ const getcontributeValue = (item: any) => {
                     '--color': '#FEB32A',
                   } as any)"
               ></span>
-              <span class="num">{{ scope.row.gitee_id }}</span>
+              <span
+                class="num"
+                :style="{
+                  cursor: 'pointer',
+                }"
+                @click="goToUser(scope.row.gitee_id)"
+                >{{ scope.row.gitee_id }}</span
+              >
             </div>
           </template>
         </el-table-column>

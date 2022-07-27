@@ -109,6 +109,7 @@ export default {
   noContributor: '暂无贡献者',
   noSIGPart: '暂未参与SIG',
   enterGitee: '请输入Gitee ID搜索',
+  enterSIG:'请输入SIG名称搜索',
   noMentor: '暂无Mentor',
   CurrentSIG: '当前SIG',
   enterName: '请输入名称搜索',
