@@ -84,6 +84,7 @@ const getprlistData = () => {
   queryUserSigContribute(query).then((data) => {
     const value = data?.data || [];
     mergeRequest.value = getItemListData(value, 'contribute');
+    contributors.value = value.length
   });
 };
 

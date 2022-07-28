@@ -751,6 +751,7 @@ const goToUser = (data: IObject) => {
       text-align: left;
       display: flex;
       align-items: center;
+      color: #002fa7;
       .TCbox {
         display: inline-block;
         width: 32px;

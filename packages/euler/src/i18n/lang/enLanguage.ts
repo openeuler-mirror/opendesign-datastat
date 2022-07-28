@@ -112,6 +112,7 @@ export default {
   noSIGPart: 'No SIG participation',
   enterGitee: 'Please enter a Gitee ID',
   enterSIG:'Please enter a SIG',
+  enterWord:'Please enter a keyword search',
   noMentor: 'No mentor',
   CurrentSIG: 'Current SIG',
   enterName: 'Please enter a name',
