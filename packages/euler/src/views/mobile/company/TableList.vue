@@ -9,7 +9,7 @@ import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import MobileOFormRadio from '../sig/MobileOFormRadio.vue';
-import { queryUserSigContribute } from 'shared/api/index';
+import { queryCompanySigContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
@@ -19,7 +19,7 @@ const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
 const props = defineProps({
-  user: {
+  company: {
     type: String,
     required: true,
     default: '',
@@ -29,10 +29,9 @@ const param = ref({
   contributeType: 'pr',
   timeRange: 'lastonemonth',
   community: openCommunityInfo.name,
-  user: computed(() => props.user),
+  company: computed(() => props.company),
   displayRange: '10',
 } as IObject);
-const reallData = ref([] as IObject[]);
 const memberData = ref([] as IObject[]);
 const memberMax = ref(0);
 const memberList = ref([] as IObject[]);
@@ -40,10 +39,10 @@ const rankNum = ref(1);
 const sumContribute = ref(0);
 
 const getMemberData = () => {
-  queryUserSigContribute(param.value).then((data) => {
+  queryCompanySigContribute(param.value).then((data) => {
     memberList.value =
       (data.data && data.data.sort(sortExp('contribute', false))) || [];
-    memberMax.value = ceil(memberList.value[0]?.contribute, -2) || 0;
+    memberMax.value = ceil(memberList.value[0].contribute, -2) || 0;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
       return (
@@ -95,6 +94,7 @@ const formOption = computed(() => {
       active: '10',
       list: [
         { label: 'Top10', value: '10' },
+        { label: 'Top20', value: '20' },
         { label: t('from.all'), value: 'all' },
       ],
     },
@@ -144,7 +144,7 @@ switchType();
 // 搜索过滤
 const searchInput = ref('');
 // 搜索结果
-
+const reallData = ref([] as IObject[]);
 const querySearch = () => {
   if (searchInput.value !== '') {
     const newList = memberData.value.filter((item: any) =>
@@ -161,18 +161,21 @@ const clearSearchInput = () => {
   searchInput.value = '';
 };
 
+// 如果是选择条件是显示范围则前端处理数据
+// 否则请求接口
 watch(
-  () => props.user,
+  () => props.company,
   () => {
     getMemberData();
   }
 );
-onMounted(() => {
-  getMemberData();
-});
+
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  router.push(`/${useCommon.language}/mobile/sig/${data.sig_name}`);
+  const routeData: any = router.resolve(
+    `/${useCommon.language}/sig/${data.sig_name}`
+  );
+  window.open(routeData.href, '_blank');
 };
 </script>
 
@@ -186,10 +189,13 @@ const goToCompany = (data: IObject) => {
         <div class="searchInput">
           <el-input
             v-model="searchInput"
+            :fetch-suggestions="querySearch"
             :trigger-on-focus="false"
             clearable
             :debounce="300"
+            :value-key="language === 'zh' ? 'company_cn' : 'company_en'"
             size="large"
+            :class="{ active: useCompany.searchRanking !== 0 }"
             :placeholder="t('enterSIG')"
             @change="querySearch"
             @clear="clearSearchInput"
@@ -222,21 +228,29 @@ const goToCompany = (data: IObject) => {
             >{{ item.sig_name }}</span
           >
         </p>
-        <div class="progress">
-          <div
-            class="progress-inner"
-            :style="{
-              width: progressFormat(item.contribute) + '%',
-            }"
-          >
-            <span v-if="progressFormat(item.contribute) > 80">{{
+
+        <el-tooltip
+          placement="bottom-start"
+          effect="light"
+          popper-class="bar-tooltip"
+          :show-arrow="false"
+        >
+          <div class="progress">
+            <div
+              class="progress-inner"
+              :style="{
+                width: progressFormat(item.contribute) + '%',
+              }"
+            >
+              <span v-if="progressFormat(item.contribute) > 80">{{
+                formatNumber(item.contribute)
+              }}</span>
+            </div>
+            <span v-if="progressFormat(item.contribute) < 80" class="val">{{
               formatNumber(item.contribute)
             }}</span>
           </div>
-          <span v-if="progressFormat(item.contribute) < 80" class="val">{{
-            formatNumber(item.contribute)
-          }}</span>
-        </div>
+        </el-tooltip>
       </li>
     </ul>
   </div>

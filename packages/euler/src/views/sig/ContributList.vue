@@ -324,6 +324,7 @@ const goToUser = (data: IObject) => {
     .num {
       width: 100px;
       text-align: left;
+      color: #002fa7;
     }
   }
 }

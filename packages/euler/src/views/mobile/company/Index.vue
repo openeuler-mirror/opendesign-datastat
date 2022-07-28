@@ -14,6 +14,7 @@ import DropSelect from '../common/DropSelect.vue';
 import Introduction from './Introduction.vue';
 import Technology from './Technology.vue';
 import Contribution from './Contribution.vue';
+import TableList from './TableList.vue'
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -100,6 +101,16 @@ onMounted(() => {
           <template #content>
             <technology :title="sencondTitle"></technology>
           </template>
+        </o-mobile-template>
+      </swiper-slide>
+      <swiper-slide>
+        <o-mobile-template padding-top="0.75rem">
+          <template #header>
+            {{ t('company') + ' ' + t('SIGContribution') }}
+          </template>
+          <template #content
+            ><table-list :company="sencondTitle"></table-list
+          ></template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>

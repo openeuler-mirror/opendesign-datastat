@@ -254,7 +254,7 @@ const changeTage = () => {
             :value-key="language === 'zh' ? 'company_cn' : 'company_en'"
             size="large"
             :class="{ active: useCompany.searchRanking !== 0 }"
-            :placeholder="t('from.pleasePartner')"
+            :placeholder="t('enterWord')"
             @select="handleSelect"
             @keydown.enter="myKeydown"
             @clear="clearSearchInput"

@@ -45,7 +45,10 @@ const getMemberData = () => {
     memberMax.value = ceil(memberList.value[0]?.contribute, -2) || 0;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
-      return (reallData.value = memberList.value);
+      return (
+        (reallData.value = memberList.value),
+        (memberData.value = memberList.value)
+      );
     }
     memberData.value = memberList.value.slice(
       0,
