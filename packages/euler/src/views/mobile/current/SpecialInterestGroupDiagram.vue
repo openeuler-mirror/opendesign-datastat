@@ -1,9 +1,7 @@
 <template>
 
   <div ref="slideRef" class="main-menu">
-    <!-- <div v-if="isScroll" class="backtop" @click="backtop">
-      {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
-    </div> -->
+
     <div class="activation">
       <span class="sp">{{ t('active') }}</span>
       <p class="spp">0</p>
@@ -251,23 +249,6 @@ const goTo = (item: any) => {
 };
 const goToSigs = (title: any) => {
   router.push(`/${useCommon.language}/mobile/sig/${title}`);
-};
-// 滚动事件
-const isScroll = ref(false);
-const slideRef = ref<any>(null);
-onMounted(() => {
-  slideRef.value?.addEventListener(
-    'scroll',
-    () => {
-      nextTick(() => {
-        isScroll.value = slideRef.value?.scrollTop > 200 ? true : false;
-      });
-    },
-    true
-  );
-});
-const backtop = () => {
-  slideRef.value.scrollTop = 0;
 };
 </script>
 <style scoped lang="scss">

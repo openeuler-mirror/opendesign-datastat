@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-useless-template-attributes -->
 <script setup lang="ts">
 import { ref, onMounted, watch, computed, nextTick } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -144,8 +145,6 @@ const isScroll = ref(false);
 const slideRef = ref<any>(null);
 const isScroll1 = ref(false);
 const slideRef1 = ref<any>(null);
-const isScroll2 = ref(false);
-const slideRef2 = ref<any>(null);
 onMounted(() => {
   slideRef.value?.addEventListener(
     'scroll',
@@ -165,15 +164,6 @@ onMounted(() => {
     },
     true
   );
-  slideRef2.value?.addEventListener(
-    'scroll',
-    () => {
-      nextTick(() => {
-        isScroll2.value = slideRef2.value?.scrollTop > 200 ? true : false;
-      });
-    },
-    true
-  );
 });
 
 const backtop = () => {
@@ -181,9 +171,6 @@ const backtop = () => {
 };
 const backtop1 = () => {
   slideRef1.value.scrollTop = 0;
-};
-const backtop2 = () => {
-  slideRef2.value.scrollTop = 0;
 };
 const goToCompany = (data: IObject) => {
   if (
@@ -391,19 +378,11 @@ const goToCompany = (data: IObject) => {
       </div>
     </swiper-slide>
     <swiper-slide v-if="hasPermission('sigRead')">
-      <!-- <div ref="slideRef2" class="slide-panel"> -->
-      <!-- <div v-if="isScroll2" class="backtop" @click="backtop2">
-          {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
-        </div>
-        <div class="slide-panel-content"> -->
-
       <o-mobile-template header="groupActive">
         <template #content>
           <special-interest-group-diagram></special-interest-group-diagram>
         </template>
       </o-mobile-template>
-      <!-- </div>
-      </div> -->
     </swiper-slide>
     <swiper-slide v-if="hasPermission('sigRead')">
       <o-mobile-template header="companyRelations">

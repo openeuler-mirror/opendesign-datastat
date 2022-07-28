@@ -161,6 +161,17 @@ const showItem = (test: boolean): boolean => {
       </div>
       <div class="action">
         <el-switch
+          v-if="drawerBlack === 'black'"
+          v-model="languageRadio"
+          size="large"
+          active-text="English"
+          inactive-text="中文"
+          active-color="#002fa7"
+          class="blackSwitch"
+          @click="chaneLanguage"
+        />
+        <el-switch
+          v-else
           v-model="languageRadio"
           size="large"
           active-text="English"
@@ -176,6 +187,11 @@ const showItem = (test: boolean): boolean => {
 <style lang="scss">
 :deep(.el-switch) {
   color: #999;
+}
+.blackSwitch {
+  .el-switch__label.is-active {
+    color: #f5f6f8 !important;
+  }
 }
 .menu-bar {
   position: absolute;

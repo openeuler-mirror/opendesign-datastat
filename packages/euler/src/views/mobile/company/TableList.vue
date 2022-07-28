@@ -172,10 +172,7 @@ watch(
 
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/sig/${data.sig_name}`
-  );
-  window.open(routeData.href, '_blank');
+  router.push(`/${useCommon.language}/mobile/sig/${data.sig_name}`);
 };
 </script>
 
