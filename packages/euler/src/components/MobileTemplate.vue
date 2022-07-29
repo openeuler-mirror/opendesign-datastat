@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { ref, onMounted, nextTick } from 'vue';
+import { useCommonStore } from '@/stores/common';
 
 const { t } = useI18n();
 const props = defineProps({
@@ -16,7 +18,24 @@ const props = defineProps({
     default: '62px',
   },
 });
-
+// 回到顶部
+const useCommon = useCommonStore();
+const isScroll2 = ref(false);
+const slideRef2 = ref<any>(null);
+const backtop2 = () => {
+  slideRef2.value.scrollTop = 0;
+};
+onMounted(() => {
+  slideRef2.value?.addEventListener(
+    'scroll',
+    () => {
+      nextTick(() => {
+        isScroll2.value = slideRef2.value?.scrollTop > 200 ? true : false;
+      });
+    },
+    true
+  );
+});
 </script>
 
 <template>
@@ -24,11 +43,16 @@ const props = defineProps({
     class="mobile-template"
     :style="{ 'padding-top': paddingTop, 'padding-bottom': paddingBottom }"
   >
-    <div class="mobile-main">
+    <div ref="slideRef2" class="mobile-main">
       <h3 class="mobile-main-title">
         <span v-if="props.header"> {{ t(props.header) }} </span>
         <slot name="header"></slot>
       </h3>
+
+      <div v-if="isScroll2" class="backtop" @click="backtop2">
+        {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
+      </div>
+
       <slot name="content"></slot>
     </div>
   </div>
