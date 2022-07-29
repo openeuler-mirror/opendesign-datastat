@@ -9,7 +9,10 @@ import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import OFormRadio from '@/components/OFormRadio.vue';
-import { queryCompanySigContribute } from 'shared/api/index';
+import {
+  queryCompanySigContribute,
+  queryUserSigContribute,
+} from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
@@ -19,7 +22,7 @@ const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
 const props = defineProps({
-  company: {
+  sig: {
     type: String,
     required: true,
     default: '',
@@ -29,7 +32,7 @@ const param = ref({
   contributeType: 'pr',
   timeRange: 'lastonemonth',
   community: openCommunityInfo.name,
-  company: computed(() => props.company),
+  company: computed(() => props.sig),
   displayRange: '10',
 } as IObject);
 const memberData = ref([] as IObject[]);
@@ -190,19 +193,20 @@ const emits = defineEmits(['searchState']);
 // 如果是选择条件是显示范围则前端处理数据
 // 否则请求接口
 watch(
-  () => props.company,
+  () => props.sig,
   () => {
     getMemberData();
+    getprlistData();
   }
 );
 
 // 跳转社区详情
-const goToCompany = (data: IObject) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/company/${data.company_cn}`
-  );
-  window.open(routeData.href, '_blank');
-};
+// const goToCompany = (data: IObject) => {
+//   const routeData: any = router.resolve(
+//     `/${useCommon.language}/company/${data.company_cn}`
+//   );
+//   window.open(routeData.href, '_blank');
+// };
 const options = [
   {
     value: '10',
@@ -223,18 +227,40 @@ const istrue = ref(true);
 const changeTage = () => {
   istrue.value = !istrue.value;
 };
+const selData = ref();
+const getprlistData = () => {
+  const query = {
+    user: props.sig,
+    timeRange: 'all',
+    community: 'openeuler',
+    contributeType: 'pr',
+  };
+  queryUserSigContribute(query).then((data) => {
+    const value = data?.data || [];
+    const seldata: any = [];
+    value.map((item: any) => {
+      seldata.push({
+        name: item.sig_name,
+      });
+    });
+    selData.value = seldata.sort((a: { name: string }, b: { name: string }) =>
+      a.name.localeCompare(b.name)
+    );
+  });
+};
+getprlistData();
 </script>
 
 <template>
   <div class="contributions-statistical">
     <div class="sel">
       <div class="title">SIG筛选</div>
-      <el-select v-model="value" class="m-2" placeholder="Select" size="large">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+      <el-select v-model="value" class="m-2" placeholder="全部" size="large">
+        <el-option label="全部" value="all" /><el-option
+          v-for="item in selData"
+          :key="item.name"
+          :label="item.name"
+          :value="item.name"
         />
       </el-select>
     </div>
@@ -406,7 +432,7 @@ const changeTage = () => {
   align-items: center;
   position: relative;
   .sp {
-    width: 69px;
+    // width: 69px;
     height: 18px;
     font-size: 12px;
     font-family: PingFangSC-Regular, PingFang SC;

@@ -25,6 +25,7 @@ import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.v
 import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialGroupRelationship.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { IObject } from 'shared/@types/interface';
+import MobileTemplate from '@/components/MobileTemplate.vue';
 const router = useRouter();
 const route = useRoute();
 const useCompany = useCompanyStore();
@@ -378,11 +379,11 @@ const goToCompany = (data: IObject) => {
       </div>
     </swiper-slide>
     <swiper-slide v-if="hasPermission('sigRead')">
-      <o-mobile-template header="groupActive">
+      <mobile-template header="groupActive">
         <template #content>
           <special-interest-group-diagram></special-interest-group-diagram>
         </template>
-      </o-mobile-template>
+      </mobile-template>
     </swiper-slide>
     <swiper-slide v-if="hasPermission('sigRead')">
       <o-mobile-template header="companyRelations">

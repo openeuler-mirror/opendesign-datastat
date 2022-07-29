@@ -566,11 +566,11 @@ const goToUser = (data: IObject) => {
                     width="400"
                     ><template #default="scope">
                       <div class="usertype-box">
-                        <span class="num" @click="goToUser(scope.row.gitee_id)"
+                        <span class="num"><span @click="goToUser(scope.row.gitee_id)"
                           :style="{
               cursor: 'pointer',
             }">{{ scope.row.gitee_id
-                          }}<span v-if="scope.row.is_TC_owner" class="TCbox"
+                          }}</span><span v-if="scope.row.is_TC_owner" class="TCbox"
                             >TC</span
                           ><span
                             v-if="scope.row.usertype === 'committers'"
@@ -747,7 +747,7 @@ const goToUser = (data: IObject) => {
     display: flex;
     align-items: left;
     .num {
-      width: 200px;
+      // width: 200px;
       text-align: left;
       display: flex;
       align-items: center;
