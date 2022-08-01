@@ -12,6 +12,7 @@ import OFormRadio from '@/components/OFormRadio.vue';
 import {
   queryCompanySigContribute,
   queryUserSigContribute,
+  queryUserContributeDetails,
 } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
@@ -28,50 +29,39 @@ const props = defineProps({
     default: '',
   },
 });
+const selvalue = ref('');
+const value = ref(10);
+const cursorValue = ref();
 const param = ref({
+  user: props.sig,
+  // sig: computed(() => selvalue.value),
+  community: 'openeuler',
   contributeType: 'pr',
+  pageSize: computed(() => value.value),
   timeRange: 'lastonemonth',
-  community: openCommunityInfo.name,
-  company: computed(() => props.sig),
-  displayRange: '10',
+  lastCursor: computed(() => cursorValue.value),
 } as IObject);
-const memberData = ref([] as IObject[]);
-const memberMax = ref(0);
-const memberList = ref([] as IObject[]);
-const rankNum = ref(1);
-const sumContribute = ref(0);
-
-const getMemberData = () => {
-  queryCompanySigContribute(param.value).then((data) => {
-    memberList.value =
-      (data.data && data.data.sort(sortExp('contribute', false))) || [];
-    memberMax.value = ceil(memberList.value[0].contribute, -2) || 0;
-    // memberList.value.forEach((item) => {
-    //   if (
-    //     item.company_cn !== '个人贡献者' ||
-    //     item.company_en !== 'independent'
-    //   ) {
-    //     item.index = rankNum.value++;
-    //   } else {
-    //     item.index = '*';
-    //   }
-    // });
-    rankNum.value = 1;
-    if (param.value.displayRange === 'all') {
-      return (memberData.value = memberList.value);
-    }
-    memberData.value = memberList.value.slice(
-      0,
-      Number(param.value.displayRange)
-    );
-    sumContribute.value = memberData.value.reduce((total, currentValue) => {
-      return total + currentValue.contribute;
-    }, 0);
-  });
-};
-// 个人信息
-const progressFormat = (item: number) => {
-  return (memberMax.value !== 0 ? 100 / memberMax.value : 0) * item;
+const selParam = () => {
+  if (selvalue.value !== 'all' && selvalue.value !== '') {
+    param.value = {
+      user: props.sig,
+      sig: computed(() => selvalue.value),
+      community: 'openeuler',
+      contributeType: 'pr',
+      pageSize: computed(() => value.value),
+      timeRange: 'lastonemonth',
+      // lastCursor: cursorValue.value,
+    };
+  } else {
+    param.value = {
+      user: props.sig,
+      community: 'openeuler',
+      contributeType: 'pr',
+      pageSize: computed(() => value.value),
+      timeRange: 'lastonemonth',
+      // lastCursor: cursorValue.value,
+    };
+  }
 };
 // 组织贡献from
 const formOption = computed(() => {
@@ -101,9 +91,9 @@ const formOption = computed(() => {
 });
 const getContributeInfo = (e: IObject) => {
   param.value[e.id] = e.active;
-  getMemberData();
   switchTime();
   switchType();
+  getDetailsData();
 };
 // 格式化统计周期文字
 const timeRangeText = ref('');
@@ -140,63 +130,52 @@ const switchType = () => {
 };
 switchType();
 
-const isSearch = ref(false);
 // 搜索过滤
 const searchInput = ref('');
-const querySearch = (queryString: string, cb: any) => {
-  let queryList = memberList.value;
-  const results = queryString
-    ? queryList.filter(createFilter(queryString) as any)
-    : queryList;
-
-  if (results.length > 0) {
-    isSearch.value = false;
-  } else {
-    isSearch.value = true;
-  }
-  cb(results);
-};
-const createFilter = (queryString: string) => {
-  return (list: formType) => {
-    const items = language.value === 'zh' ? list.company_cn : list.company_en;
-    return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
-  };
-};
 // 搜索结果
-const handleSelect = (item: IObject) => {
-  param.value.displayRange = '1';
-  memberList.value.forEach((element: IObject) => {
-    if (element.company_cn === item.company_cn) {
-      memberData.value = [item];
-    }
-  });
-};
-
-// 回车判断结果
-const myKeydown = () => {
-  if (isSearch.value) {
-    emits('searchState', isSearch.value);
+const reallData = ref([] as IObject[]);
+const querySearch = () => {
+  if (searchInput.value !== '') {
+    const newList = detailsData.value.filter(
+      (item: any) =>
+        item.info.toLowerCase().includes(searchInput.value) ||
+        item.repo.toLowerCase().includes(searchInput.value) ||
+        item.time
+          .split('T')
+          .slice(0, 1)
+          .toString()
+          .toLowerCase()
+          .includes(searchInput.value)
+    );
+    reallData.value = newList;
+    // filterReallData();
+  } else {
+    getDetailsData();
   }
 };
-
-// 清除搜索
 const clearSearchInput = () => {
-  isSearch.value = false;
-  emits('searchState', isSearch.value);
-  param.value.displayRange = '10';
-  getMemberData();
+  getDetailsData();
   searchInput.value = '';
 };
-
-const emits = defineEmits(['searchState']);
-
-// 如果是选择条件是显示范围则前端处理数据
-// 否则请求接口
 watch(
   () => props.sig,
   () => {
-    getMemberData();
     getprlistData();
+    getDetailsData();
+  }
+);
+watch(
+  () => value.value,
+  () => {
+    selParam();
+    getDetailsData();
+  }
+);
+watch(
+  () => selvalue.value,
+  () => {
+    selParam();
+    getDetailsData();
   }
 );
 
@@ -221,8 +200,6 @@ const options = [
     label: '50',
   },
 ];
-
-const value = ref('');
 const istrue = ref(true);
 const changeTage = () => {
   istrue.value = !istrue.value;
@@ -249,14 +226,38 @@ const getprlistData = () => {
   });
 };
 getprlistData();
+const detailsData = ref();
+const totalCount = ref(0);
+
+const getDetailsData = () => {
+  queryUserContributeDetails(param.value).then((data) => {
+    const value = data?.data || [];
+    totalCount.value = data?.totalCount || 0;
+    detailsData.value = value;
+    reallData.value = value;
+    cursorValue.value = data?.cursor || '';
+    // console.log('a', cursorValue.value);
+  });
+};
+getDetailsData();
+// 分页器
+// const handleSizeChange = (size: number) => {
+//   // pageSize.value = size;
+//   getDetailsData();
+// };
+// const handleCurrentChange = (page: number) => {
+//   // currentPage.value = page;
+//   getDetailsData();
+// };
 </script>
 
 <template>
   <div class="contributions-statistical">
     <div class="sel">
       <div class="title">SIG筛选</div>
-      <el-select v-model="value" class="m-2" placeholder="全部" size="large">
-        <el-option label="全部" value="all" /><el-option
+      <el-select v-model="selvalue" placeholder="全部" size="large">
+        <el-option label="全部" value="all" />
+        <el-option
           v-for="item in selData"
           :key="item.name"
           :label="item.name"
@@ -271,67 +272,73 @@ getprlistData();
     >
       <template #searchInput>
         <div class="searchInput">
-          <el-autocomplete
+          <el-input
             v-model="searchInput"
-            :fetch-suggestions="querySearch"
             :trigger-on-focus="false"
             clearable
             :debounce="300"
-            :value-key="language === 'zh' ? 'company_cn' : 'company_en'"
             size="large"
-            :class="{ active: useCompany.searchRanking !== 0 }"
             :placeholder="t('enterWord')"
-            @select="handleSelect"
-            @keydown.enter="myKeydown"
+            @change="querySearch"
             @clear="clearSearchInput"
           >
             <template #prefix>
               <o-icon class="search-icon"
                 ><icon-user></icon-user
               ></o-icon> </template
-          ></el-autocomplete>
+          ></el-input>
         </div>
       </template>
     </o-form-radio>
   </div>
   <div class="detail">
-    <span
-      :style="{
-        cursor: 'pointer',
-      }"
-      @click="changeTage()"
-      ><img v-if="istrue" src="@/assets/MainPR.png" alt="" />
-      <img v-else src="@/assets/CommonPR.png" alt=""
-    /></span>
-    <span
-      class="sp"
-      :style="{
-        cursor: 'pointer',
-      }"
-      @click="changeTage()"
-      >主要特性PR</span
-    >
-    <span
-      :style="{
-        cursor: 'pointer',
-      }"
-      @click="changeTage()"
-    >
-      <img v-if="istrue" src="@/assets/CommonPR.png" alt="" /><img
-        v-else
-        src="@/assets/MainPR.png"
-        alt="" /></span
-    ><span
-      class="sp"
-      :style="{
-        cursor: 'pointer',
-      }"
-      @click="changeTage()"
-      >一般特性PR</span
-    >
-
+    <div v-if="param.contributeType === 'pr'" class="prType">
+      <span
+        :style="{
+          cursor: 'pointer',
+        }"
+        @click="changeTage()"
+        ><img v-if="istrue" src="@/assets/MainPR.png" alt="" />
+        <img v-else src="@/assets/CommonPR.png" alt=""
+      /></span>
+      <span
+        class="sp"
+        :style="{
+          cursor: 'pointer',
+        }"
+        @click="changeTage()"
+        >主要特性PR</span
+      >
+      <span
+        :style="{
+          cursor: 'pointer',
+        }"
+        @click="changeTage()"
+      >
+        <img v-if="istrue" src="@/assets/CommonPR.png" alt="" /><img
+          v-else
+          src="@/assets/MainPR.png"
+          alt="" /></span
+      ><span
+        class="sp"
+        :style="{
+          cursor: 'pointer',
+        }"
+        @click="changeTage()"
+        >一般特性PR</span
+      >
+    </div>
+    <div v-else-if="param.contributeType === 'issue'">
+      <span><img src="@/assets/!.png" alt="" /> Issue</span>
+    </div>
+    <div v-else>
+      <span> <img src="@/assets/text.png" alt="" /> Comment</span>
+    </div>
     <div class="page">
-      <span class="sp">共<span class="num">100</span>条结果</span>
+      <span class="sp"
+        >共<span class="num">{{ totalCount }}</span
+        >条结果</span
+      >
       <span
         >每页显示<span class="num">
           <el-select v-model="value" class="m-2" placeholder="10" size="small">
@@ -348,19 +355,52 @@ getprlistData();
   <div class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in memberData"
+        v-for="(item, index) in reallData"
         :key="'com' + index"
         class="bar-content-item"
       >
-        <div class="index">{{ item.index }}</div>
+        <div class="index">
+          {{ item.time.split('T').slice(0, 1).toString() }}
+        </div>
         <p class="infos">
-          在<span class="index">{{ item.index }}</span
-          >创建了Pull Request
-          <span class="index">{{ item.index }}</span>
+          <img
+            v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
+            src="@/assets/MainPR.png"
+            alt=""
+          />
+          <img
+            v-if="param.contributeType === 'pr' && item.is_main_feature === 0"
+            src="@/assets/CommonPR.png"
+            alt=""
+          />
+          <span v-if="param.contributeType === 'pr'">在</span
+          ><span v-else> 评论了</span
+          ><a
+            class="index"
+            :href="`https://gitee.com/${item.repo}`"
+            target="_blank"
+            >{{ item.repo }}</a
+          ><span v-if="param.contributeType === 'pr'">创建了Pull Request</span
+          ><span v-else-if="param.contributeType === 'issue'">创建了 任务</span
+          ><span v-else> 的 Pull Request</span>
+          <a :href="item.url" target="_blank" class="rigth-index"
+            >!{{ item.no }}{{ item.info }}</a
+          >
         </p>
       </li>
     </ul>
   </div>
+  <!-- <div class="pagin">
+    <el-pagination
+      :page-size="value"
+      big
+      background
+      layout="prev, pager, next, jumper"
+      :total="totalCount"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+  </div> -->
 </template>
 
 <style lang="scss" scoped>
@@ -409,20 +449,27 @@ getprlistData();
   &-item {
     margin: 16px 0;
     list-style: none;
-    display: flex;
-    justify-content: space-between;
+    // display: flex;
+    // justify-content: space-between;
     .infos {
       font-size: 16px;
       color: #000000;
       line-height: 22px;
 
-      display: flex;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
       .index {
-        width: 16px;
+        // width: 16px;
+        // width:auto;
         margin-right: 8px;
         font-size: 16px;
-        color: #9097a3;
-        text-align: center;
+        color: #002fa7;
+        // text-align: center;
+      }
+      .rigth-index {
+        margin-left: 8px;
+        color: #002fa7;
       }
     }
   }
@@ -431,6 +478,10 @@ getprlistData();
   display: flex;
   align-items: center;
   position: relative;
+  .prType {
+    display: flex;
+    align-items: center;
+  }
   .sp {
     // width: 69px;
     height: 18px;
@@ -472,6 +523,11 @@ getprlistData();
 .line {
   border-bottom: 1px solid #dfe1e8;
   margin-bottom: 18px;
+}
+.pagin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
 <style lang="scss">

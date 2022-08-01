@@ -4,7 +4,12 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import { ref, onMounted, watch, reactive, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { querySigRepos, querySigName, querySigInfo } from 'shared/api';
+import {
+  querySigRepos,
+  querySigName,
+  querySigInfo,
+  queryUserOwnertype,
+} from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
@@ -12,6 +17,8 @@ import { ElScrollbar } from 'element-plus';
 import SigContribution from './SigContribution.vue';
 import ContributionDynamic from './ContributionDynamic.vue';
 import DataShow from './DataShow.vue';
+import { useStaffStore } from '@/stores/staff';
+const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -91,12 +98,13 @@ const sigInfo = ref({
 const querySigInfoData = () => {
   const params = {
     community: openCommunityInfo.name,
-    sig: sencondTitle.value,
+    user: sencondTitle.value,
   };
-  querySigInfo(params).then((data) => {
-    sigInfo.value = data?.data[0] || {};
+  queryUserOwnertype(params).then((data) => {
+    sigInfo.value = data?.data || {};
   });
 };
+querySigInfoData();
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
@@ -118,6 +126,11 @@ const state = reactive({
 });
 
 const { circleUrl } = toRefs(state);
+
+const goToSig = (data: IObject) => {
+  const routeData: any = router.resolve(`/${useCommon.language}/sig/${data}`);
+  window.open(routeData.href, '_blank');
+};
 </script>
 <template>
   <div class="container">
@@ -132,7 +145,7 @@ const { circleUrl } = toRefs(state);
       <div class="main">
         <div class="main-left">
           <div class="main-left-top">
-            <div class="edropdown">
+            <!-- <div class="edropdown">
               <el-dropdown
                 placement="bottom-start"
                 @visible-change="showDropdown"
@@ -166,6 +179,9 @@ const { circleUrl } = toRefs(state);
                   </el-scrollbar>
                 </template>
               </el-dropdown>
+            </div> -->
+            <div class="main-left-title">
+              {{ sencondTitle }}
             </div>
           </div>
           <div class="main-left-sp">
@@ -190,15 +206,28 @@ const { circleUrl } = toRefs(state);
               <div class="Maintainer"></div>
               <div class="List">
                 <span>社区角色： </span>
-                <a
-                  v-for="item in sigInfo.maintainers"
-                  :key="item.value"
-                  class="item"
-                  target="_blank"
-                  :href="`https://gitee.com/${item}`"
-                >
-                  @{{ item }}
-                </a>
+                <span v-for="items in sigInfo" :key="items.value" class="item">
+                  <span style="cursor: pointer" @click="goToSig(items.sig)">{{
+                    items.sig
+                  }}</span>
+                  <span v-for="item in items.type" :key="item.value"
+                    ><span
+                      v-if="item === 'committers'"
+                      class="usertypecolorbox"
+                      :style="({
+                              '--color': '225deg, #FEB32A 0%, #F6D365 100%',
+                            } as any)"
+                      >Committer</span
+                    ><span
+                      v-if="item === 'maintainers'"
+                      class="usertypecolorbox"
+                      :style="({
+                              '--color': '45deg, #005CD3 0%, #002FA7 100%',
+                            } as any)"
+                      >Maintainer
+                    </span></span
+                  >
+                </span>
               </div>
             </div>
             <data-show :user="sencondTitle"></data-show>
@@ -305,6 +334,7 @@ const { circleUrl } = toRefs(state);
             font-family: HarmonyOS_Sans_SC_Medium;
             color: #002fa7;
             line-height: 22px;
+            display: flex;
           }
         }
         .home {
@@ -318,7 +348,6 @@ const { circleUrl } = toRefs(state);
           width: 24px;
           height: 24px;
           margin-right: 8px;
-
         }
       }
     }
@@ -361,5 +390,20 @@ const { circleUrl } = toRefs(state);
   .slogan {
     margin-top: 16px;
   }
+}
+.usertypecolorbox {
+  margin-left: 5px;
+  background: linear-gradient(var(--color));
+  border-radius: 2px;
+  font-size: 10px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #ffffff;
+  line-height: 12px;
+  height: 16px;
+  width: 73px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
