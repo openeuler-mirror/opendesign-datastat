@@ -215,3 +215,21 @@ export function queryUserSigContribute(params: object) {
     .get(url, { params, global: true })
     .then((res: AxiosResponse) => res.data);
 }
+/**
+ *个人贡献详情
+ */
+export function queryUserContributeDetails(params: object) {
+  const url = '/query/user/contribute/details';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
+ *个人社区角色
+ */
+export function queryUserOwnertype(params: object) {
+  const url = '/query/user/ownertype';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}

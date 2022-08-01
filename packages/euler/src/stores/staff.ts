@@ -24,6 +24,8 @@ export const useStaffStore = defineStore('staff', {
       contributeType: 'pr',
       timeRange: 'lastonemonth',
     } as Form,
+    sigName: '',
+    companyName: '',
   }),
   actions: {
     async getStaffData(companyName: any) {
