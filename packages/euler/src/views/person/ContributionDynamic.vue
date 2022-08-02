@@ -3,25 +3,14 @@ import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
-import { useCompanyStore } from '@/stores/company';
-import { useCommonStore } from '@/stores/common';
-import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import OFormRadio from '@/components/OFormRadio.vue';
 import {
-  queryCompanySigContribute,
   queryUserSigContribute,
   queryUserContributeDetails,
 } from 'shared/api/index';
-import { sortExp, formatNumber } from 'shared/utils/helper';
-import { ceil } from 'lodash-es';
-import { useRouter } from 'vue-router';
-const router = useRouter();
 const { t } = useI18n();
-const useCompany = useCompanyStore();
-const useCommon = useCommonStore();
-const language = computed(() => useCommon.language);
 const props = defineProps({
   sig: {
     type: String,
@@ -34,12 +23,10 @@ const value = ref(10);
 const cursorValue = ref();
 const param = ref({
   user: props.sig,
-  // sig: computed(() => selvalue.value),
   community: 'openeuler',
   contributeType: 'pr',
   pageSize: computed(() => value.value),
   timeRange: 'lastonemonth',
-  lastCursor: computed(() => cursorValue.value),
 } as IObject);
 const selParam = () => {
   if (selvalue.value !== 'all' && selvalue.value !== '') {
@@ -47,18 +34,18 @@ const selParam = () => {
       user: props.sig,
       sig: computed(() => selvalue.value),
       community: 'openeuler',
-      contributeType: 'pr',
+      contributeType: typeData.value,
       pageSize: computed(() => value.value),
-      timeRange: 'lastonemonth',
+      timeRange: timeData.value,
       // lastCursor: cursorValue.value,
     };
   } else {
     param.value = {
       user: props.sig,
       community: 'openeuler',
-      contributeType: 'pr',
+      contributeType: typeData.value,
       pageSize: computed(() => value.value),
-      timeRange: 'lastonemonth',
+      timeRange: timeData.value,
       // lastCursor: cursorValue.value,
     };
   }
@@ -97,39 +84,47 @@ const getContributeInfo = (e: IObject) => {
 };
 // 格式化统计周期文字
 const timeRangeText = ref('');
+const timeData = ref('');
 const switchTime = () => {
   switch (param.value.timeRange) {
     case 'lastonemonth':
       timeRangeText.value = t('from.lastonemonth');
+      timeData.value = 'lastonemonth';
       break;
     case 'lasthalfyear':
       timeRangeText.value = t('from.lasthalfyear');
+      timeData.value = 'lasthalfyear';
       break;
     case 'lastoneyear':
       timeRangeText.value = t('from.lastoneyear');
+      timeData.value = 'lastoneyear';
       break;
     default:
       timeRangeText.value = t('from.all');
+      timeData.value = 'all';
       break;
   }
 };
 switchTime();
 const typeLable = ref('');
+const typeData = ref('')
 const switchType = () => {
   switch (param.value.contributeType) {
     case 'pr':
       typeLable.value = t('home.prs');
+      typeData.value = 'pr'
       break;
     case 'issue':
       typeLable.value = t('home.issues');
+      typeData.value = 'issue'
       break;
     case 'comment':
       typeLable.value = t('home.comments');
+      typeData.value = 'comment'
       break;
   }
 };
 switchType();
-
 // 搜索过滤
 const searchInput = ref('');
 // 搜索结果
@@ -148,7 +143,6 @@ const querySearch = () => {
           .includes(searchInput.value)
     );
     reallData.value = newList;
-    // filterReallData();
   } else {
     getDetailsData();
   }
@@ -167,7 +161,6 @@ watch(
 watch(
   () => value.value,
   () => {
-    selParam();
     getDetailsData();
   }
 );
@@ -178,14 +171,6 @@ watch(
     getDetailsData();
   }
 );
-
-// 跳转社区详情
-// const goToCompany = (data: IObject) => {
-//   const routeData: any = router.resolve(
-//     `/${useCommon.language}/company/${data.company_cn}`
-//   );
-//   window.open(routeData.href, '_blank');
-// };
 const options = [
   {
     value: '10',
@@ -236,7 +221,6 @@ const getDetailsData = () => {
     detailsData.value = value;
     reallData.value = value;
     cursorValue.value = data?.cursor || '';
-    // console.log('a', cursorValue.value);
   });
 };
 getDetailsData();
