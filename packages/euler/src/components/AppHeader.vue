@@ -171,11 +171,11 @@ const jumpToUserZone = () => {
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="dialogVisible = true"
-                >退出登录</el-dropdown-item
-              >
               <el-dropdown-item @click="jumpToUserZone()"
                 >个人中心</el-dropdown-item
+              >
+              <el-dropdown-item @click="dialogVisible = true"
+                >退出登录</el-dropdown-item
               >
             </el-dropdown-menu>
           </template>
