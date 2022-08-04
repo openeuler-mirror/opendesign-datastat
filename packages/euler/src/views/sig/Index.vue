@@ -66,10 +66,12 @@ const getCubeData = () => {
 };
 
 const getllData = () => {
+  clean();
+  querySearch();
   querySigInfoData();
   querySorceData();
   getCubeData();
-  clean();
+
 };
 onMounted(() => {
   getDrownData();
@@ -99,6 +101,8 @@ const querySearch = () => {
       item.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
+  } else {
+    reallData.value = drownData.value;
   }
 };
 // 清除搜索

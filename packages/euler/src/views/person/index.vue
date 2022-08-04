@@ -4,12 +4,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import { ref, onMounted, watch, reactive, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import {
-  querySigRepos,
-  querySigName,
-  querySigInfo,
-  queryUserOwnertype,
-} from 'shared/api';
+import { querySigRepos, queryUserList, queryUserOwnertype } from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
@@ -17,8 +12,6 @@ import { ElScrollbar } from 'element-plus';
 import SigContribution from './SigContribution.vue';
 import ContributionDynamic from './ContributionDynamic.vue';
 import DataShow from './DataShow.vue';
-import { useStaffStore } from '@/stores/staff';
-const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -26,21 +19,28 @@ const sencondTitle = ref('');
 const { t } = useI18n();
 const drownData = ref([] as any[]);
 sencondTitle.value = route.params.name as string;
-// const getDrownData = () => {
-//   let community = 'openeuler';
-//   querySigName(community).then((data) => {
-//     const allSigs = data?.data || {};
-//     allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
-//     const findOne =
-//       allSigs.openeuler.find((item: any) => item === route.params.name) ||
-//       allSigs.openeuler[0];
-//     sencondTitle.value = findOne;
-//     const firstKeys = Object.keys(allSigs);
-//     drownData.value = allSigs[firstKeys[0]];
-//     reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
-//     getllData();
-//   });
-// };
+const sigTitle = ref('');
+sigTitle.value = route.query.organization as string;
+const group = ref('');
+group.value = route.query.group as string
+const allSigs = ref()
+const getDrownData = () => {
+  const query = {
+    group: group.value,
+    community: openCommunityInfo.name,
+    name: sigTitle.value,
+  };
+  queryUserList(query as any).then((data) => {
+    allSigs.value = data?.data || {};
+    allSigs.value.sort((a: any, b: any) => a.localeCompare(b));
+    const findOne =
+      allSigs.value.find((item: any) => item === route.params.organization) || allSigs.value[0];
+    // sencondTitle.value = findOne;
+    drownData.value = allSigs.value;
+    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
+    getllData();
+  });
+};
 
 const anchorData = ['SIGContribution', 'DynamicContribute'];
 const clickDrownItem = (item: string) => {
@@ -61,12 +61,14 @@ const getCubeData = () => {
 };
 
 const getllData = () => {
+  clean();
+  querySearch();
   querySigInfoData();
   getCubeData();
-  clean();
+
 };
 onMounted(() => {
-  // getDrownData();
+  getDrownData();
 });
 // 跳转首页
 const goToTetail = () => {
@@ -81,12 +83,15 @@ const querySearch = () => {
       item.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
+  } else {
+    reallData.value = drownData.value;
   }
 };
 // 清除搜索
 const clearSearchInput = () => {
   // getDrownData();
   searchInput.value = '';
+  // getDrownData();
 };
 const clean = () => {
   searchInput.value = '';
@@ -145,7 +150,7 @@ const goToSig = (data: IObject) => {
       <div class="main">
         <div class="main-left">
           <div class="main-left-top">
-            <!-- <div class="edropdown">
+            <div class="edropdown">
               <el-dropdown
                 placement="bottom-start"
                 @visible-change="showDropdown"
@@ -162,7 +167,7 @@ const goToSig = (data: IObject) => {
                       clearable
                       :debounce="300"
                       class="w-50 m-2"
-                      placeholder="请输入SIG名称搜索"
+                      placeholder="请输入Gitee ID搜索"
                       :prefix-icon="Search"
                       @input="querySearch"
                       @clear="clearSearchInput"
@@ -179,16 +184,13 @@ const goToSig = (data: IObject) => {
                   </el-scrollbar>
                 </template>
               </el-dropdown>
-            </div> -->
-            <div class="main-left-title">
-              {{ sencondTitle }}
             </div>
           </div>
           <div class="main-left-sp">
             <div class="userInfo">
               <div class="title">个人简介</div>
               <el-avatar :size="120" :src="circleUrl" />
-              <div class="slogan">{{ sigInfo.description }}</div>
+              <!-- <div class="slogan">{{ sigInfo.description }}</div> -->
             </div>
             <div class="first">
               <div class="home"></div>

@@ -233,3 +233,12 @@ export function queryUserOwnertype(params: object) {
     .get(url, { params, global: true })
     .then((res: AxiosResponse) => res.data);
 }
+/**
+ *个人社区用户列表
+ */
+export function queryUserList(params: object) {
+  const url = '/query/userlist';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
