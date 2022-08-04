@@ -105,6 +105,12 @@ watch(
     isAbout.value = p === 'about' ? true : false;
   }
 );
+const jumpToUserZone = () => {
+  window.open(
+    'https://jldibemigdfj.authing.cn/u?app_id=62679eab0b22b146d2ea0a3a',
+    '_blank'
+  );
+};
 </script>
 
 <template>
@@ -167,6 +173,9 @@ watch(
             <el-dropdown-menu>
               <el-dropdown-item @click="dialogVisible = true"
                 >退出登录</el-dropdown-item
+              >
+              <el-dropdown-item @click="jumpToUserZone()"
+                >个人中心</el-dropdown-item
               >
             </el-dropdown-menu>
           </template>
