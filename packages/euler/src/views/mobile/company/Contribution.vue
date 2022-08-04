@@ -166,7 +166,13 @@ watch(
 );
 // 跳转个人详情
 const goToUser = (data: IObject) => {
-  router.push(`/${useCommon.language}/mobile/user/${data}`);
+  router.push({
+    path: `/${useCommon.language}/mobile/user/${data}`,
+    query: {
+      group: 'company',
+      organization: props.title,
+    },
+  })
 };
 </script>
 <template>

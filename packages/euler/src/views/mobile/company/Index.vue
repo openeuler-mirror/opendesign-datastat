@@ -67,6 +67,7 @@ const getSencondTitle = () => {
       drownData.value.find((item: IObject) => item.value === name)?.value ||
       drownData.value[0]?.value ||
       name;
+
   });
 };
 onMounted(() => {

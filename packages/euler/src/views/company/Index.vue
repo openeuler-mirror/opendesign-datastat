@@ -358,7 +358,13 @@ const showDropdown = (e: any) => {
 };
 // 跳转个人详情
 const goToUser = (data: IObject) => {
-  const routeData: any = router.resolve(`/${useCommon.language}/user/${data}`);
+  const routeData: any = router.resolve({
+    path: `/${useCommon.language}/user/${data}`,
+    query: {
+      group: 'company',
+      organization: sencondTitle.value,
+    },
+  });
   window.open(routeData.href, '_blank');
 };
 </script>
@@ -566,11 +572,14 @@ const goToUser = (data: IObject) => {
                     width="400"
                     ><template #default="scope">
                       <div class="usertype-box">
-                        <span class="num"><span @click="goToUser(scope.row.gitee_id)"
-                          :style="{
-              cursor: 'pointer',
-            }">{{ scope.row.gitee_id
-                          }}</span><span v-if="scope.row.is_TC_owner" class="TCbox"
+                        <span class="num"
+                          ><span
+                            :style="{
+                              cursor: 'pointer',
+                            }"
+                            @click="goToUser(scope.row.gitee_id)"
+                            >{{ scope.row.gitee_id }}</span
+                          ><span v-if="scope.row.is_TC_owner" class="TCbox"
                             >TC</span
                           ><span
                             v-if="scope.row.usertype === 'committers'"

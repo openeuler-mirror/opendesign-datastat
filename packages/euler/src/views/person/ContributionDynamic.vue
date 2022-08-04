@@ -6,6 +6,7 @@ import { IObject } from 'shared/@types/interface';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import OFormRadio from '@/components/OFormRadio.vue';
+import { toThousands } from 'shared/utils/helper';
 import {
   queryUserSigContribute,
   queryUserContributeDetails,
@@ -22,7 +23,7 @@ const selvalue = ref('');
 const value = ref(10);
 const cursorValue = ref();
 const param = ref({
-  user: props.sig,
+  user: computed(() => props.sig),
   community: 'openeuler',
   contributeType: 'pr',
   pageSize: computed(() => value.value),
@@ -37,7 +38,6 @@ const selParam = () => {
       contributeType: typeData.value,
       pageSize: computed(() => value.value),
       timeRange: timeData.value,
-      // lastCursor: cursorValue.value,
     };
   } else {
     param.value = {
@@ -46,7 +46,6 @@ const selParam = () => {
       contributeType: typeData.value,
       pageSize: computed(() => value.value),
       timeRange: timeData.value,
-      // lastCursor: cursorValue.value,
     };
   }
 };
@@ -107,20 +106,20 @@ const switchTime = () => {
 };
 switchTime();
 const typeLable = ref('');
-const typeData = ref('')
+const typeData = ref('');
 const switchType = () => {
   switch (param.value.contributeType) {
     case 'pr':
       typeLable.value = t('home.prs');
-      typeData.value = 'pr'
+      typeData.value = 'pr';
       break;
     case 'issue':
       typeLable.value = t('home.issues');
-      typeData.value = 'issue'
+      typeData.value = 'issue';
       break;
     case 'comment':
       typeLable.value = t('home.comments');
-      typeData.value = 'comment'
+      typeData.value = 'comment';
       break;
   }
 };
@@ -224,15 +223,14 @@ const getDetailsData = () => {
   });
 };
 getDetailsData();
-// 分页器
-// const handleSizeChange = (size: number) => {
-//   // pageSize.value = size;
-//   getDetailsData();
-// };
-// const handleCurrentChange = (page: number) => {
-//   // currentPage.value = page;
-//   getDetailsData();
-// };
+
+// 默认显示第1页
+const currentPage = ref(1);
+// 显示第几页
+const handleCurrentChange = (val: number) => {
+  // 改变默认的页数
+  currentPage.value = val;
+};
 </script>
 
 <template>
@@ -320,7 +318,7 @@ getDetailsData();
     </div>
     <div class="page">
       <span class="sp"
-        >共<span class="num">{{ totalCount }}</span
+        >共<span class="num">{{ toThousands(totalCount) }}</span
         >条结果</span
       >
       <span
@@ -339,7 +337,10 @@ getDetailsData();
   <div class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in reallData"
+        v-for="(item, index) in reallData.slice(
+          (currentPage - 1) * value,
+          currentPage * value
+        )"
         :key="'com' + index"
         class="bar-content-item"
       >
@@ -347,16 +348,18 @@ getDetailsData();
           {{ item.time.split('T').slice(0, 1).toString() }}
         </div>
         <p class="infos">
-          <img
-            v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
-            src="@/assets/MainPR.png"
-            alt=""
-          />
-          <img
-            v-if="param.contributeType === 'pr' && item.is_main_feature === 0"
-            src="@/assets/CommonPR.png"
-            alt=""
-          />
+          <span class="infos-img">
+            <img
+              v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
+              src="@/assets/MainPR.png"
+              alt=""
+            />
+            <img
+              v-if="param.contributeType === 'pr' && item.is_main_feature === 0"
+              src="@/assets/CommonPR.png"
+              alt=""
+            />
+          </span>
           <span v-if="param.contributeType === 'pr'">在</span
           ><span v-else> 评论了</span
           ><a
@@ -368,23 +371,23 @@ getDetailsData();
           ><span v-else-if="param.contributeType === 'issue'">创建了 任务</span
           ><span v-else> 的 Pull Request</span>
           <a :href="item.url" target="_blank" class="rigth-index"
-            >!{{ item.no }}{{ item.info }}</a
+            >!{{ item.no }} {{ item.info }}</a
           >
         </p>
       </li>
     </ul>
   </div>
-  <!-- <div class="pagin">
+  <div class="demo-pagination-block">
     <el-pagination
+      v-show="reallData.length > 10"
       :page-size="value"
-      big
+      :current-page="currentPage"
       background
       layout="prev, pager, next, jumper"
-      :total="totalCount"
-      @size-change="handleSizeChange"
+      :total="reallData.length"
       @current-change="handleCurrentChange"
     />
-  </div> -->
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -433,23 +436,20 @@ getDetailsData();
   &-item {
     margin: 16px 0;
     list-style: none;
-    // display: flex;
-    // justify-content: space-between;
     .infos {
       font-size: 16px;
       color: #000000;
-      line-height: 22px;
-
-      // display: flex;
-      // align-items: center;
-      // justify-content: center;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      &-img {
+        margin-right: 3px;
+      }
       .index {
-        // width: 16px;
-        // width:auto;
         margin-right: 8px;
         font-size: 16px;
         color: #002fa7;
-        // text-align: center;
       }
       .rigth-index {
         margin-left: 8px;
@@ -508,10 +508,11 @@ getDetailsData();
   border-bottom: 1px solid #dfe1e8;
   margin-bottom: 18px;
 }
-.pagin {
+.demo-pagination-block {
+  margin-top: 10px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 </style>
 <style lang="scss">

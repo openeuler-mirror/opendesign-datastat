@@ -155,7 +155,13 @@ const getcontributeValue = (item: any) => {
 };
 // 跳转个人详情
 const goToUser = (data: IObject) => {
-  router.push(`/${useCommon.language}/mobile/user/${data}`);
+  router.push({
+    path: `/${useCommon.language}/mobile/user/${data}`,
+    query: {
+      group: 'sig',
+      organization: props.sig,
+    },
+  });
 };
 </script>
 <template>

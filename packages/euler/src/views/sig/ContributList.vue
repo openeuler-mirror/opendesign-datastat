@@ -162,7 +162,13 @@ const getcontributeValue = (item: any) => {
 };
 // 跳转个人详情
 const goToUser = (data: IObject) => {
-  const routeData: any = router.resolve(`/${useCommon.language}/user/${data}`);
+  const routeData: any = router.resolve({
+    path: `/${useCommon.language}/user/${data}`,
+    query: {
+      group: 'sig',
+      organization: props.sig,
+    },
+  });
   window.open(routeData.href, '_blank');
   useStaff.sigName = props.sig
 };
