@@ -276,6 +276,7 @@ const changeTage = (item: any) => {
         class="m-2"
         placeholder="Select"
         size="large"
+        filterable
       >
         <el-option label="全部" value="all" />
         <el-option
@@ -524,6 +525,20 @@ const changeTage = (item: any) => {
   display: flex;
   align-items: center;
   position: relative;
+  .prType {
+    display: flex;
+    align-items: center;
+    .color-box {
+      margin-right: 24px;
+      display: flex;
+      align-items: center;
+      .sp {
+        padding-left: 1px;
+        font-size: 12px;
+        line-height: 18px;
+      }
+    }
+  }
   .sp {
     // width: 69px;
     height: 18px;

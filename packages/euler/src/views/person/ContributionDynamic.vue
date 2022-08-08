@@ -11,6 +11,8 @@ import {
   queryUserSigContribute,
   queryUserContributeDetails,
 } from 'shared/api/index';
+import MainPR from '@/assets/MainPR.png';
+import CommonPR from '@/assets/CommonPR.png';
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -243,13 +245,13 @@ const handleCurrentChange = (val: number) => {
 // 图表筛选
 const contributionSelectBox = ref([
   {
-    color: '/src/assets/MainPR.png',
+    color: MainPR,
     isSelected: true,
     label: '主要特性PR',
     key: 1,
   },
   {
-    color: '/src/assets/CommonPR.png',
+    color: CommonPR,
     isSelected: true,
     label: '一般特性PR',
     key: 0,
@@ -260,15 +262,13 @@ const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
   querySearch();
 };
-
-
 </script>
 
 <template>
   <div class="contributions-statistical">
     <div class="sel">
       <div class="title">SIG筛选</div>
-      <el-select v-model="selvalue" placeholder="全部" size="large">
+      <el-select v-model="selvalue" filterable placeholder="全部" size="large">
         <el-option label="全部" value="all" />
         <el-option
           v-for="item in selData"
@@ -332,7 +332,12 @@ const changeTage = (item: any) => {
       >
       <span
         >每页显示<span class="num">
-          <el-select v-model="pageSize" class="m-2" placeholder="10" size="small">
+          <el-select
+            v-model="pageSize"
+            class="m-2"
+            placeholder="10"
+            size="small"
+          >
             <el-option
               v-for="item in options"
               :key="item.value"
