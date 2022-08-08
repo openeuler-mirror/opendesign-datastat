@@ -268,7 +268,12 @@ const changeTage = (item: any) => {
   <div class="contributions-statistical">
     <div class="sel">
       <div class="title">SIG筛选</div>
-      <el-select v-model="selvalue" filterable placeholder="全部" size="large">
+      <el-select
+        v-model="selvalue"
+        filterable
+        placeholder="请输入SIG搜索"
+        size="large"
+      >
         <el-option label="全部" value="all" />
         <el-option
           v-for="item in selData"
@@ -403,11 +408,11 @@ const changeTage = (item: any) => {
   </div>
   <div class="demo-pagination-block">
     <el-pagination
-      v-show="reallData.length > 10"
+      v-show="reallData.length / pageSize > 1"
       v-model:page-size="pageSize"
       v-model:currentPage="currentPage"
       background
-      layout="prev, pager, next, jumper"
+      layout="prev, pager, next,jumper"
       :total="reallData.length"
       @current-change="handleCurrentChange"
     />
@@ -481,6 +486,9 @@ const changeTage = (item: any) => {
       }
     }
   }
+  .index {
+    margin-bottom: 4px;
+  }
 }
 .detail {
   display: flex;
@@ -490,7 +498,6 @@ const changeTage = (item: any) => {
     display: flex;
     align-items: center;
     .color-box {
-      margin-right: 24px;
       display: flex;
       align-items: center;
       .sp {
@@ -503,7 +510,7 @@ const changeTage = (item: any) => {
   .sp {
     // width: 69px;
     height: 18px;
-    font-size: 12px;
+    font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #555555;
@@ -525,8 +532,8 @@ const changeTage = (item: any) => {
       font-weight: 500;
       color: #000000;
       line-height: 24px;
-      padding-left: 5px;
-      padding-right: 5px;
+      padding-left: 2px;
+      padding-right: 2px;
     }
   }
 }
@@ -555,6 +562,8 @@ const changeTage = (item: any) => {
   .el-select .el-input__inner {
     width: 48px;
     height: 24px;
+    margin-right: 2px;
+    margin-left: 2px;
   }
 }
 .sel {
@@ -566,4 +575,5 @@ const changeTage = (item: any) => {
 .el-select-dropdown__item {
   padding: 0 15px 0 15px;
 }
+
 </style>
