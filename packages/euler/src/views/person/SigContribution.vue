@@ -260,11 +260,13 @@ const goToCompany = (data: IObject) => {
                 width: progressFormat(item.contribute) + '%',
               }"
             >
-              <span>{{ formatNumber(item.contribute) }}</span>
+              <span v-if="progressFormat(item.contribute) >= 80">{{
+                formatNumber(item.contribute)
+              }}</span>
             </div>
-            <!-- <span v-if="progressFormat(item.contribute) > formatNumber(memberMax / 2)" class="val">{{
+            <span v-if="progressFormat(item.contribute) < 80" class="val">{{
               formatNumber(item.contribute)
-            }}</span> -->
+            }}</span>
           </div>
         </el-tooltip>
       </li>
@@ -400,7 +402,7 @@ const goToCompany = (data: IObject) => {
     padding-right: 0px;
     transition: all 0.3s ease-in-out;
     span {
-      padding-right: 8px;
+      padding-right: 4px;
     }
   }
   .val {
