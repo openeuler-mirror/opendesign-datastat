@@ -60,6 +60,6 @@ body {
 }
 footer {
   background: #060612;
-  margin-top: 60px;
+  // margin-top: 60px;
 }
 </style>

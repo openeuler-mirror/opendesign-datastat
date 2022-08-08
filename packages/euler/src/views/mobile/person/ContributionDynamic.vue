@@ -27,7 +27,7 @@ const param = ref({
   user: computed(() => props.sig),
   community: 'openeuler',
   contributeType: 'pr',
-  pageSize: computed(() => value.value),
+  // pageSize: computed(() => value.value),
   timeRange: 'lastonemonth',
 } as IObject);
 const selParam = () => {
@@ -37,7 +37,7 @@ const selParam = () => {
       sig: computed(() => selvalue.value),
       community: 'openeuler',
       contributeType: typeData.value,
-      pageSize: computed(() => value.value),
+      // pageSize: computed(() => value.value),
       timeRange: timeData.value,
       // lastCursor: cursorValue.value,
     };
@@ -46,7 +46,7 @@ const selParam = () => {
       user: props.sig,
       community: 'openeuler',
       contributeType: typeData.value,
-      pageSize: computed(() => value.value),
+      // pageSize: computed(() => value.value),
       timeRange: timeData.value,
       // lastCursor: cursorValue.value,
     };
@@ -129,6 +129,13 @@ const switchType = () => {
 switchType();
 // 搜索过滤
 const searchInput = ref('');
+const filterReallData = () => {
+  reallData.value = reallData.value.filter((item) => {
+    return contributionSelectBox.value.some((it) => {
+      return it.isSelected && item.is_main_feature === it.key;
+    });
+  });
+};
 // 搜索结果
 const reallData = ref([] as IObject[]);
 const querySearch = () => {
@@ -145,6 +152,7 @@ const querySearch = () => {
           .includes(searchInput.value)
     );
     reallData.value = newList;
+    filterReallData();
   } else {
     getDetailsData();
   }
@@ -173,24 +181,24 @@ watch(
     getDetailsData();
   }
 );
-const options = [
-  {
-    value: '10',
-    label: '10',
-  },
-  {
-    value: '20',
-    label: '20',
-  },
-  {
-    value: '50',
-    label: '50',
-  },
-];
-const istrue = ref(true);
-const changeTage = () => {
-  istrue.value = !istrue.value;
-};
+// const options = [
+//   {
+//     value: '10',
+//     label: '10',
+//   },
+//   {
+//     value: '20',
+//     label: '20',
+//   },
+//   {
+//     value: '50',
+//     label: '50',
+//   },
+// ];
+// const istrue = ref(true);
+// const changeTage = () => {
+//   istrue.value = !istrue.value;
+// };
 const selData = ref();
 const getprlistData = () => {
   const query = {
@@ -223,6 +231,9 @@ const getDetailsData = () => {
     detailsData.value = value;
     reallData.value = value;
     cursorValue.value = data?.cursor || '';
+    if (param.value.contributeType === 'pr') {
+      filterReallData();
+    }
   });
 };
 getDetailsData();
@@ -233,6 +244,26 @@ const currentPage = ref(1);
 const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
+};
+// 图表筛选
+const contributionSelectBox = ref([
+  {
+    color: '/src/assets/MainPR.png',
+    isSelected: true,
+    label: '主要特性PR',
+    key: 1,
+  },
+  {
+    color: '/src/assets/CommonPR.png',
+    isSelected: true,
+    label: '一般特性PR',
+    key: 0,
+  },
+]);
+
+const changeTage = (item: any) => {
+  item.isSelected = !item.isSelected;
+  querySearch();
 };
 </script>
 
@@ -281,8 +312,8 @@ const handleCurrentChange = (val: number) => {
       </template>
     </mobile-o-form-radio>
   </div>
-   <div class="detail">
-    <div v-if="param.contributeType === 'pr'" class="prType">
+  <div class="detail">
+    <!-- <div v-if="param.contributeType === 'pr'" class="prType">
       <span
         :style="{
           cursor: 'pointer',
@@ -317,6 +348,20 @@ const handleCurrentChange = (val: number) => {
         @click="changeTage()"
         >一般特性PR</span
       >
+    </div> -->
+     <div v-if="param.contributeType === 'pr'" class="prType">
+      <div
+        v-for="item in contributionSelectBox"
+        :key="item.label"
+        class="color-box"
+        style="cursor: pointer"
+        @click="changeTage(item)"
+      >
+        <img :src="item.color" alt="" />
+        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }">{{
+          item.label
+        }}</span>
+      </div>
     </div>
     <div v-else-if="param.contributeType === 'issue'">
       <span><img src="@/assets/!.png" alt="" /> Issue</span>
@@ -366,8 +411,18 @@ const handleCurrentChange = (val: number) => {
             src="@/assets/CommonPR.png"
             alt=""
           />
-          <span v-if="param.contributeType === 'pr'">在</span
-          ><span v-else> 评论了</span
+          <img
+            v-if="param.contributeType === 'issue'"
+            src="@/assets/!.png"
+            alt=""
+          />
+          <img
+            v-if="param.contributeType === 'comment'"
+            src="@/assets/text.png"
+            alt=""
+          />
+          <span v-if="param.contributeType === 'comment'">评论了</span
+          ><span v-else>在</span
           ><a
             class="index"
             :href="`https://gitee.com/${item.repo}`"

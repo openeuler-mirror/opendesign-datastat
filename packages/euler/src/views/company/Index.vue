@@ -958,7 +958,7 @@ const goToUser = (data: IObject) => {
 }
 .searchListInput {
   width: 88%;
-  margin-left: 110px;
+  margin-left: 86px;
   margin-top: -16px;
   margin-bottom: 20px;
 

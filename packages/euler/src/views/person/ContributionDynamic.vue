@@ -20,13 +20,13 @@ const props = defineProps({
   },
 });
 const selvalue = ref('');
-const value = ref(10);
+const pageSize = ref(10);
 const cursorValue = ref();
 const param = ref({
   user: computed(() => props.sig),
   community: 'openeuler',
   contributeType: 'pr',
-  pageSize: computed(() => value.value),
+  // pageSize: computed(() => value.value),
   timeRange: 'lastonemonth',
 } as IObject);
 const selParam = () => {
@@ -36,7 +36,7 @@ const selParam = () => {
       sig: computed(() => selvalue.value),
       community: 'openeuler',
       contributeType: typeData.value,
-      pageSize: computed(() => value.value),
+      // pageSize: computed(() => value.value),
       timeRange: timeData.value,
     };
   } else {
@@ -44,7 +44,7 @@ const selParam = () => {
       user: props.sig,
       community: 'openeuler',
       contributeType: typeData.value,
-      pageSize: computed(() => value.value),
+      // pageSize: computed(() => value.value),
       timeRange: timeData.value,
     };
   }
@@ -142,6 +142,7 @@ const querySearch = () => {
           .includes(searchInput.value)
     );
     reallData.value = newList;
+    filterReallData();
   } else {
     getDetailsData();
   }
@@ -158,7 +159,7 @@ watch(
   }
 );
 watch(
-  () => value.value,
+  () => pageSize.value,
   () => {
     getDetailsData();
   }
@@ -172,22 +173,18 @@ watch(
 );
 const options = [
   {
-    value: '10',
+    value: 10,
     label: '10',
   },
   {
-    value: '20',
+    value: 20,
     label: '20',
   },
   {
-    value: '50',
+    value: 50,
     label: '50',
   },
 ];
-const istrue = ref(true);
-const changeTage = () => {
-  istrue.value = !istrue.value;
-};
 const selData = ref();
 const getprlistData = () => {
   const query = {
@@ -213,6 +210,14 @@ getprlistData();
 const detailsData = ref();
 const totalCount = ref(0);
 
+const filterReallData = () => {
+  reallData.value = reallData.value.filter((item) => {
+    return contributionSelectBox.value.some((it) => {
+      return it.isSelected && item.is_main_feature === it.key;
+    });
+  });
+};
+
 const getDetailsData = () => {
   queryUserContributeDetails(param.value).then((data) => {
     const value = data?.data || [];
@@ -220,6 +225,9 @@ const getDetailsData = () => {
     detailsData.value = value;
     reallData.value = value;
     cursorValue.value = data?.cursor || '';
+    if (param.value.contributeType === 'pr') {
+      filterReallData();
+    }
   });
 };
 getDetailsData();
@@ -231,6 +239,29 @@ const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
 };
+
+// 图表筛选
+const contributionSelectBox = ref([
+  {
+    color: '/src/assets/MainPR.png',
+    isSelected: true,
+    label: '主要特性PR',
+    key: 1,
+  },
+  {
+    color: '/src/assets/CommonPR.png',
+    isSelected: true,
+    label: '一般特性PR',
+    key: 0,
+  },
+]);
+
+const changeTage = (item: any) => {
+  item.isSelected = !item.isSelected;
+  querySearch();
+};
+
+
 </script>
 
 <template>
@@ -275,40 +306,18 @@ const handleCurrentChange = (val: number) => {
   </div>
   <div class="detail">
     <div v-if="param.contributeType === 'pr'" class="prType">
-      <span
-        :style="{
-          cursor: 'pointer',
-        }"
-        @click="changeTage()"
-        ><img v-if="istrue" src="@/assets/MainPR.png" alt="" />
-        <img v-else src="@/assets/CommonPR.png" alt=""
-      /></span>
-      <span
-        class="sp"
-        :style="{
-          cursor: 'pointer',
-        }"
-        @click="changeTage()"
-        >主要特性PR</span
+      <div
+        v-for="item in contributionSelectBox"
+        :key="item.label"
+        class="color-box"
+        style="cursor: pointer"
+        @click="changeTage(item)"
       >
-      <span
-        :style="{
-          cursor: 'pointer',
-        }"
-        @click="changeTage()"
-      >
-        <img v-if="istrue" src="@/assets/CommonPR.png" alt="" /><img
-          v-else
-          src="@/assets/MainPR.png"
-          alt="" /></span
-      ><span
-        class="sp"
-        :style="{
-          cursor: 'pointer',
-        }"
-        @click="changeTage()"
-        >一般特性PR</span
-      >
+        <img :src="item.color" alt="" />
+        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }">{{
+          item.label
+        }}</span>
+      </div>
     </div>
     <div v-else-if="param.contributeType === 'issue'">
       <span><img src="@/assets/!.png" alt="" /> Issue</span>
@@ -323,7 +332,7 @@ const handleCurrentChange = (val: number) => {
       >
       <span
         >每页显示<span class="num">
-          <el-select v-model="value" class="m-2" placeholder="10" size="small">
+          <el-select v-model="pageSize" class="m-2" placeholder="10" size="small">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -338,8 +347,8 @@ const handleCurrentChange = (val: number) => {
     <ul class="bar-content">
       <li
         v-for="(item, index) in reallData.slice(
-          (currentPage - 1) * value,
-          currentPage * value
+          (currentPage - 1) * pageSize,
+          currentPage * pageSize
         )"
         :key="'com' + index"
         class="bar-content-item"
@@ -359,9 +368,19 @@ const handleCurrentChange = (val: number) => {
               src="@/assets/CommonPR.png"
               alt=""
             />
+            <img
+              v-if="param.contributeType === 'issue'"
+              src="@/assets/!.png"
+              alt=""
+            />
+            <img
+              v-if="param.contributeType === 'comment'"
+              src="@/assets/text.png"
+              alt=""
+            />
           </span>
-          <span v-if="param.contributeType === 'pr'">在</span
-          ><span v-else> 评论了</span
+          <span v-if="param.contributeType === 'comment'">评论了</span
+          ><span v-else>在</span
           ><a
             class="index"
             :href="`https://gitee.com/${item.repo}`"
@@ -380,8 +399,8 @@ const handleCurrentChange = (val: number) => {
   <div class="demo-pagination-block">
     <el-pagination
       v-show="reallData.length > 10"
-      :page-size="value"
-      :current-page="currentPage"
+      v-model:page-size="pageSize"
+      v-model:currentPage="currentPage"
       background
       layout="prev, pager, next, jumper"
       :total="reallData.length"
@@ -465,6 +484,16 @@ const handleCurrentChange = (val: number) => {
   .prType {
     display: flex;
     align-items: center;
+    .color-box {
+      margin-right: 24px;
+      display: flex;
+      align-items: center;
+      .sp {
+        padding-left: 1px;
+        font-size: 12px;
+        line-height: 18px;
+      }
+    }
   }
   .sp {
     // width: 69px;
@@ -501,7 +530,8 @@ const handleCurrentChange = (val: number) => {
   display: flex;
   align-items: center;
   .title {
-    width: 122px;
+    // width: 122px;
+    margin-right: 24px;
   }
 }
 .line {

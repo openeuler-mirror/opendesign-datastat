@@ -11,8 +11,6 @@ import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import { useCommonStore } from '@/stores/common';
 import { useRouter } from 'vue-router';
-import { useStaffStore } from '@/stores/staff';
-const useStaff = useStaffStore();
 const router = useRouter();
 const useCommon = useCommonStore();
 const { t } = useI18n();
@@ -170,7 +168,6 @@ const goToUser = (data: IObject) => {
     },
   });
   window.open(routeData.href, '_blank');
-  useStaff.sigName = props.sig
 };
 </script>
 <template>
