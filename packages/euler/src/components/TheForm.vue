@@ -42,13 +42,7 @@ let form = computed(() => {
 </script>
 
 <template>
-  <el-form
-    ref="formRef"
-    class="theForm"
-    label-position="left"
-    :model="form"
-    label-width="110px"
-  >
+  <el-form ref="formRef" class="theForm" label-position="left" :model="form">
     <el-form-item v-for="item in option" :key="item.id" :label="item.label">
       <el-radio-group v-model="form[item.id]">
         <el-radio
@@ -67,4 +61,11 @@ let form = computed(() => {
 
 <style lang="scss" scoped>
 @import '@/shared/styles/style.scss';
+</style>
+<style lang="scss">
+.theForm {
+  .el-form-item__label {
+    padding-right: 24px;
+  }
+}
 </style>

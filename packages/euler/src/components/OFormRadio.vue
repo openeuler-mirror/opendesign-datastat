@@ -57,10 +57,11 @@ let form = ref(
   align-items: center;
   margin-bottom: 14px;
   .label {
-    width: 122px;
+    // width:88px;
+    margin-right: 24px;
   }
 }
 .searchInput {
-  margin-left: 122px;
+  margin-left: 85px;
 }
 </style>

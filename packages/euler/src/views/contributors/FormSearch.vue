@@ -169,7 +169,7 @@ const isMobile: boolean = testIsPhone();
 <style lang="scss" scoped>
 @import '@/shared/styles/style.scss';
 .searchInput {
-  padding-left: 110px;
+  padding-left: 86px;
   width: 100%;
   margin: -16px 0 16px;
   .search-icon {
