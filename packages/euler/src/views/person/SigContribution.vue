@@ -42,7 +42,8 @@ const getMemberData = () => {
   queryUserSigContribute(param.value).then((data) => {
     memberList.value =
       (data.data && data.data.sort(sortExp('contribute', false))) || [];
-    memberMax.value = ceil(memberList.value[0]?.contribute, -2) || 0;
+    memberMax.value = ceil(memberList.value[0]?.contribute, -1) || 0;
+    // memberMax.value = memberList.value[0]?.contribute;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
       return (
@@ -259,13 +260,11 @@ const goToCompany = (data: IObject) => {
                 width: progressFormat(item.contribute) + '%',
               }"
             >
-              <span v-if="progressFormat(item.contribute) > 80">{{
-                formatNumber(item.contribute)
-              }}</span>
+              <span>{{ formatNumber(item.contribute) }}</span>
             </div>
-            <span v-if="progressFormat(item.contribute) < 80" class="val">{{
+            <!-- <span v-if="progressFormat(item.contribute) > formatNumber(memberMax / 2)" class="val">{{
               formatNumber(item.contribute)
-            }}</span>
+            }}</span> -->
           </div>
         </el-tooltip>
       </li>
