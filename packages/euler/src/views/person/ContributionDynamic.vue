@@ -13,6 +13,7 @@ import {
 } from 'shared/api/index';
 import MainPR from '@/assets/MainPR.png';
 import CommonPR from '@/assets/CommonPR.png';
+import { Search } from '@element-plus/icons-vue';
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -206,6 +207,7 @@ const getprlistData = () => {
     selData.value = seldata.sort((a: { name: string }, b: { name: string }) =>
       a.name.localeCompare(b.name)
     );
+    firstreallData.value = selData.value
   });
 };
 getprlistData();
@@ -262,21 +264,46 @@ const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
   querySearch();
 };
+
+// first搜索过滤
+const firstsearchInput = ref();
+const firstreallData = ref([] as IObject[]);
+const firstquerySearch = () => {
+  if (firstsearchInput.value !== '') {
+    const newList = selData.value.filter((item: any) =>
+      item.name.toLowerCase().includes(firstsearchInput.value)
+    );
+    firstreallData.value = newList;
+  } else {
+    firstreallData.value = selData.value;
+  }
+};
+// 清除搜索
+const firstclearSearchInput = () => {
+  // getDrownData();
+  searchInput.value = '';
+  // getDrownData();
+};
 </script>
 
 <template>
   <div class="contributions-statistical">
     <div class="sel">
       <div class="title">SIG筛选</div>
-      <el-select
-        v-model="selvalue"
-        filterable
-        placeholder="请输入SIG搜索"
-        size="large"
-      >
+      <el-select v-model="selvalue" placeholder="全部" size="large">
+        <el-input
+          v-model="firstsearchInput"
+          clearable
+          :debounce="300"
+          class="w-50 m-2"
+          placeholder="请输入SIG搜索"
+          :prefix-icon="Search"
+          @input="firstquerySearch"
+          @clear="firstclearSearchInput"
+        />
         <el-option label="全部" value="all" />
         <el-option
-          v-for="item in selData"
+          v-for="item in firstreallData"
           :key="item.name"
           :label="item.name"
           :value="item.name"

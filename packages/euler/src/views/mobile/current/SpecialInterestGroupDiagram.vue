@@ -96,7 +96,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, ref} from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
@@ -145,13 +145,17 @@ const getCommunityValue = () => {
   });
 };
 getList();
-const goTo = (item: any) => {
+interface Form {
+  sig_names: string;
+  rank: number;
+  score: number;
+}
+const goTo = (item: Form) => {
   useStaff.dialogFormVisible = true;
   useStaff.title = item.sig_names;
   useStaff.sigRank = item.rank;
   useStaff.sigContrubution = item.score;
 };
-
 </script>
 <style scoped lang="scss">
 .main-menu {
