@@ -26,6 +26,9 @@ import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialG
 import { useRoute, useRouter } from 'vue-router';
 import { IObject } from 'shared/@types/interface';
 import MobileTemplate from '@/components/MobileTemplate.vue';
+import { Right } from '@element-plus/icons-vue';
+import { useStaffStore } from '@/stores/staff';
+const useStaff = useStaffStore();
 const router = useRouter();
 const route = useRoute();
 const useCompany = useCompanyStore();
@@ -183,6 +186,10 @@ const goToCompany = (data: IObject) => {
     router.push(`/${useCommon.language}/mobile/company/${data.company_cn}`);
   } else {
   }
+};
+const goToSigs = (title: any) => {
+  router.push(`/${useCommon.language}/mobile/sig/${title}`);
+  useStaff.dialogFormVisible = false;
 };
 </script>
 <template>
@@ -385,6 +392,45 @@ const goToCompany = (data: IObject) => {
         </template>
       </mobile-template>
     </swiper-slide>
+    <el-dialog
+      v-model="useStaff.dialogFormVisible"
+      top="40vh"
+      :show-close="false"
+    >
+      <div class="info">
+        <h3>{{ useStaff.title }}</h3>
+        <p>
+          <span class="index">{{ t('ranking') }}</span>
+          <span class="numberIndex"> #{{ useStaff.sigRank }}</span>
+        </p>
+      </div>
+      <div class="info">
+        <p>
+          <span class="index">{{ t('active') }}</span>
+          <span class="numberIndex">
+            {{
+              (Math.round(useStaff.sigContrubution * 100) / 100).toFixed(2)
+            }}</span
+          >
+        </p>
+      </div>
+      <div class="info">
+        <p>
+          <span style="cursor: pointer" @click="goToSigs(useStaff.title)"
+            >查看详情</span
+          >
+          <span>
+            <el-icon
+              :size="16"
+              class="right-btn"
+              @click="goToSigs(useStaff.title)"
+            >
+              <right class="app-text-btn" />
+            </el-icon>
+          </span>
+        </p>
+      </div>
+    </el-dialog>
     <swiper-slide v-if="hasPermission('sigRead')">
       <o-mobile-template header="companyRelations">
         <template #content>
@@ -726,5 +772,54 @@ const goToCompany = (data: IObject) => {
       opacity: 1;
     }
   }
+}
+.bar-tooltip {
+  padding: 12px 16px;
+  box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05),
+    0px 0px 32px 0px rgba(10, 11, 13, 0.1);
+  .lable {
+    font-size: 12px;
+    font-family: HarmonyOS_Sans_SC;
+    color: #4e5865;
+    line-height: 16px;
+
+    .text {
+      font-weight: 100;
+    }
+  }
+  .info {
+    color: #4e5865;
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+    min-width: 180px;
+    align-items: center;
+    position: relative;
+  }
+}
+.index {
+  font-size: 12px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #4e5865;
+  line-height: 16px;
+}
+p {
+  margin-top: 10px;
+}
+// 按钮样式
+.app-text-btn {
+  cursor: pointer;
+  color: rgba(#002fa7, 1);
+  &:active {
+    color: rgba(0, 47, 167, 0.7);
+  }
+}
+.right-btn {
+  position: absolute;
+  left: 120px;
+}
+.numberIndex {
+  position: absolute;
+  right: 12px;
 }
 </style>

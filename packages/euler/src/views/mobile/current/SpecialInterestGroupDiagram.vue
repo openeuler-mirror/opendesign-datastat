@@ -1,7 +1,5 @@
 <template>
-
   <div ref="slideRef" class="main-menu">
-
     <div class="activation">
       <span class="sp">{{ t('active') }}</span>
       <p class="spp">0</p>
@@ -29,32 +27,6 @@
         >
           <span class="start-menu-span">{{ value.feature }}</span>
         </div>
-        <!-- <template #content>
-          <div class="titlelable">{{ value.feature }}</div>
-          <div class="info">
-            <p>
-              <span class="index">{{ t('numberofsigs') }}</span>
-              <span class="titlenumberIndex"> {{ value.arry.length }}</span>
-            </p>
-          </div>
-          <div class="info">
-            <p>
-              <span v-if="value.arry.length" class="index">{{
-                t('averageActiveness')
-              }}</span>
-              <span v-else class="index">{{
-                t('averageActiveness') + ' 0'
-              }}</span>
-              <span class="titlenumberIndex">
-                {{
-                  (Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
-                    value.arry.length) * 100) / 100).toFixed(2)
-
-                }}</span
-              >
-            </p>
-          </div>
-        </template> -->
       </div>
 
       <div class="wrapper">
@@ -97,46 +69,9 @@
         >
           <span class="start-menu-span">{{ value.feature }}</span>
         </div>
-        <!-- <template #content>
-          <div class="titlelable">{{ value.feature }}</div>
-          <div class="info">
-            <p>
-              <span class="index">{{ t('numberofsigs') }}</span>
-              <span class="titlenumberIndex"> {{ value.arry.length }}</span>
-            </p>
-          </div>
-          <div class="info">
-            <p>
-              <span v-if="value.arry.length" class="index">{{
-                t('averageActiveness')
-              }}</span>
-              <span v-else class="index">{{
-                t('averageActiveness') + ' 0'
-              }}</span>
-              <span class="titlenumberIndex">
-                {{
-                  (Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
-                    value.arry.length) * 100) / 100).toFixed(2)
-
-                }}</span
-              >
-            </p>
-          </div>
-        </template> -->
       </div>
 
       <div class="wrapper">
-        <!-- <el-tooltip
-          v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
-              (a.sig_names + '').localeCompare(b.sig_names + '')
-            )"
-          :key="ind"
-          placement="bottom-end"
-          effect="light"
-          :show-after="showAfter"
-          class:bar-tooltip
-          :show-arrow="false"
-        > -->
         <div
           v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
               (a.sig_names + '').localeCompare(b.sig_names + '')
@@ -159,42 +94,16 @@
       </div>
     </div>
   </div>
-  <el-dialog v-model="dialogFormVisible" top="40vh" :show-close="false">
-    <div class="info">
-      <h3>{{ title }}</h3>
-      <p>
-        <span class="index">{{ t('ranking') }}</span>
-        <span class="numberIndex"> #{{ sigRank }}</span>
-      </p>
-    </div>
-    <div class="info">
-      <p>
-        <span class="index">{{ t('active') }}</span>
-        <span class="numberIndex">
-          {{ (Math.round(sigContrubution * 100) / 100).toFixed(2) }}</span
-        >
-      </p>
-    </div>
-    <div class="info">
-      <p>
-        <span style="cursor: pointer" @click="goToSigs(title)">查看详情</span>
-        <span>
-          <el-icon :size="16" class="right-btn" @click="goToSigs(title)">
-            <right class="app-text-btn" />
-          </el-icon>
-        </span>
-      </p>
-    </div>
-  </el-dialog>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref} from 'vue';
 import { useRouter } from 'vue-router';
-import { Right } from '@element-plus/icons-vue';
 import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
+import { useStaffStore } from '@/stores/staff';
+const useStaff = useStaffStore();
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
@@ -236,20 +145,13 @@ const getCommunityValue = () => {
   });
 };
 getList();
-const dialogFormVisible = ref(false);
-const title = ref('');
-const sigRank = ref('');
-const sigContrubution = ref(0);
 const goTo = (item: any) => {
-  // router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
-  dialogFormVisible.value = true;
-  title.value = item.sig_names;
-  sigRank.value = item.rank;
-  sigContrubution.value = item.score;
+  useStaff.dialogFormVisible = true;
+  useStaff.title = item.sig_names;
+  useStaff.sigRank = item.rank;
+  useStaff.sigContrubution = item.score;
 };
-const goToSigs = (title: any) => {
-  router.push(`/${useCommon.language}/mobile/sig/${title}`);
-};
+
 </script>
 <style scoped lang="scss">
 .main-menu {
@@ -317,66 +219,6 @@ const goToSigs = (title: any) => {
 .detail-menu:hover {
   transform: scaleY(1.1) scaleX(1.1) translateZ(0);
   border: 2px solid #000000;
-}
-
-.bar-tooltip {
-  padding: 12px 16px;
-  box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05),
-    0px 0px 32px 0px rgba(10, 11, 13, 0.1);
-  .lable {
-    font-size: 12px;
-    font-family: HarmonyOS_Sans_SC;
-    color: #4e5865;
-    line-height: 16px;
-
-    .text {
-      font-weight: 100;
-    }
-  }
-  .info {
-    color: #4e5865;
-    display: flex;
-    justify-content: center;
-    margin-top: 6px;
-    min-width: 180px;
-    align-items: center;
-    position: relative;
-  }
-}
-.index {
-  font-size: 12px;
-  font-family: HarmonyOS_Sans_SC;
-  color: #4e5865;
-  line-height: 16px;
-}
-p {
-  margin-top: 10px;
-}
-// 按钮样式
-.app-text-btn {
-  cursor: pointer;
-  color: rgba(#002fa7, 1);
-  &:active {
-    color: rgba(0, 47, 167, 0.7);
-  }
-}
-.right-btn {
-  position: absolute;
-  left: 120px;
-}
-.numberIndex {
-  position: absolute;
-  right: 12px;
-}
-.lable {
-  min-width: 100px;
-}
-.titlelable {
-  min-width: 160px;
-}
-.titlenumberIndex {
-  position: absolute;
-  right: 16px;
 }
 .wrapper {
   display: grid;

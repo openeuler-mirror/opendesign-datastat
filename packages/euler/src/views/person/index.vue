@@ -187,11 +187,11 @@ const goToSig = (data: IObject) => {
             </div>
           </div>
           <div class="main-left-sp">
-            <div class="userInfo">
+            <!-- <div class="userInfo">
               <div class="title">个人简介</div>
               <el-avatar :size="120" :src="circleUrl" />
-              <!-- <div class="slogan">{{ sigInfo.description }}</div> -->
-            </div>
+              <div class="slogan">{{ sigInfo.description }}</div>
+            </div> -->
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
@@ -204,7 +204,7 @@ const goToSig = (data: IObject) => {
                 >
               </div>
             </div>
-            <div class="first">
+            <div class="firstLast">
               <div class="Maintainer"></div>
               <div class="List">
                 <span>社区角色： </span>
@@ -318,7 +318,41 @@ const goToSig = (data: IObject) => {
       flex-direction: column;
       margin-top: 24px;
       .first {
-        margin-top: 18px;
+        margin-bottom: 18px;
+        display: flex;
+        position: relative;
+        .toHome {
+          padding-top: 3px;
+          color: #002fa7;
+          cursor: pointer;
+        }
+        .List {
+          padding-top: 3px;
+          display: flex;
+          flex-direction: column;
+          .item {
+            margin-top: 8px;
+            font-size: 14px;
+            font-family: HarmonyOS_Sans_SC_Medium;
+            color: #002fa7;
+            line-height: 22px;
+            display: flex;
+          }
+        }
+        .home {
+          background-image: url('@/assets/home-outlined.png');
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+        .Maintainer {
+          background-image: url('@/assets/cose.png');
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+        }
+      }
+      .firstLast {
         display: flex;
         position: relative;
         .toHome {
@@ -408,4 +442,5 @@ const goToSig = (data: IObject) => {
   justify-content: center;
   align-items: center;
 }
+
 </style>

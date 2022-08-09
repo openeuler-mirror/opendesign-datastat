@@ -906,7 +906,7 @@ const goToUser = (data: IObject) => {
   }
 }
 .demo-pagination-block {
-  margin-top: 10px;
+  margin-top: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1000,7 +1000,7 @@ const goToUser = (data: IObject) => {
   right: -15px;
 }
 .lastcontributors-panel {
-  // padding-top: 24px;
+  padding-bottom: 24px;
   background: #fff;
   margin-top: 60px;
   margin-bottom: 60px;
