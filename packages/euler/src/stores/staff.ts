@@ -26,6 +26,10 @@ export const useStaffStore = defineStore('staff', {
     } as Form,
     sigName: '',
     companyName: '',
+    dialogFormVisible: false,
+    title: '',
+    sigRank: '',
+    sigContrubution: '',
   }),
   actions: {
     async getStaffData(companyName: any) {

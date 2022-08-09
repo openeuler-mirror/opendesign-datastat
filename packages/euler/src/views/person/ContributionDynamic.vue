@@ -472,8 +472,12 @@ const changeTage = (item: any) => {
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow: hidden;
+      align-items: center;
+
       &-img {
         margin-right: 3px;
+        height: 16px;
+        vertical-align: baseline;
       }
       .index {
         margin-right: 8px;
@@ -575,5 +579,4 @@ const changeTage = (item: any) => {
 .el-select-dropdown__item {
   padding: 0 15px 0 15px;
 }
-
 </style>

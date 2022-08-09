@@ -350,7 +350,7 @@ const changeTage = (item: any) => {
         >一般特性PR</span
       >
     </div> -->
-     <div v-if="param.contributeType === 'pr'" class="prType">
+    <div v-if="param.contributeType === 'pr'" class="prType">
       <div
         v-for="item in contributionSelectBox"
         :key="item.label"
@@ -402,26 +402,28 @@ const changeTage = (item: any) => {
           {{ item.time.split('T').slice(0, 1).toString() }}
         </div>
         <p class="infos">
-          <img
-            v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
-            src="@/assets/MainPR.png"
-            alt=""
-          />
-          <img
-            v-if="param.contributeType === 'pr' && item.is_main_feature === 0"
-            src="@/assets/CommonPR.png"
-            alt=""
-          />
-          <img
-            v-if="param.contributeType === 'issue'"
-            src="@/assets/!.png"
-            alt=""
-          />
-          <img
-            v-if="param.contributeType === 'comment'"
-            src="@/assets/text.png"
-            alt=""
-          />
+          <span class="infos-img">
+            <img
+              v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
+              src="@/assets/MainPR.png"
+              alt=""
+            />
+            <img
+              v-if="param.contributeType === 'pr' && item.is_main_feature === 0"
+              src="@/assets/CommonPR.png"
+              alt=""
+            />
+            <img
+              v-if="param.contributeType === 'issue'"
+              src="@/assets/!.png"
+              alt=""
+            />
+            <img
+              v-if="param.contributeType === 'comment'"
+              src="@/assets/text.png"
+              alt=""
+            />
+          </span>
           <span v-if="param.contributeType === 'comment'">评论了</span
           ><span v-else>在</span
           ><a
@@ -488,7 +490,7 @@ const changeTage = (item: any) => {
 .bar-panel {
   position: relative;
   height: 100%;
-  padding-bottom: 12px;
+  margin-bottom: 100px;
 }
 .bar-content {
   position: relative;
@@ -496,8 +498,6 @@ const changeTage = (item: any) => {
   &-item {
     margin: 16px 0;
     list-style: none;
-    // display: flex;
-    // justify-content: space-between;
     .infos {
       font-size: 16px;
       color: #000000;
@@ -506,19 +506,23 @@ const changeTage = (item: any) => {
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow: hidden;
+
+      &-img {
+        margin-right: 3px;
+      }
       .index {
-        // width: 16px;
-        // width:auto;
         margin-right: 8px;
         font-size: 16px;
         color: #002fa7;
-        // text-align: center;
       }
       .rigth-index {
         margin-left: 8px;
         color: #002fa7;
       }
     }
+  }
+  .index {
+    margin-bottom: 4px;
   }
 }
 .detail {
@@ -584,8 +588,9 @@ const changeTage = (item: any) => {
   margin-bottom: 18px;
 }
 .demo-pagination-block {
-  margin-top: 30px;
+  margin-top: 200px;
   display: flex;
+
   justify-content: center;
   align-items: center;
 }
