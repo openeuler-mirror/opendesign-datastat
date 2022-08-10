@@ -70,8 +70,7 @@ const getllData = () => {
   querySearch();
   querySigInfoData();
   querySorceData();
-  getCubeData();
-
+  // getCubeData();
 };
 onMounted(() => {
   getDrownData();
@@ -258,14 +257,13 @@ const showDropdown = (e: any) => {
                 <span>{{ t('warehouse') }}：</span>
                 <div class="atlas">
                   <a
-                    v-for="item in cubeData"
+                    v-for="item in sigInfo.repos"
                     :key="item"
                     class="item"
-                    :href="item"
+                    :href="`https://gitee.com/${item}`"
                     target="_blank"
                   >
-                    ./openeuler/
-                    {{ item.split('/')[item.split('/').length - 1] }}
+                    ./{{ item }}
                   </a>
                 </div>
               </div>
@@ -534,9 +532,10 @@ const showDropdown = (e: any) => {
   }
 }
 .atlas {
-  width: 350px;
+  // width: 350px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 24px;
 }
 .searchInput {
   width: 350px;
