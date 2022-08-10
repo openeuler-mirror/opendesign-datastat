@@ -39,7 +39,7 @@ const querySigInfoData = () => {
 };
 const getllData = () => {
   querySigInfoData();
-  getCubeData();
+  // getCubeData();
 };
 watch(
   () => props.sig,
@@ -59,10 +59,7 @@ watch(
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
-                <a
-                  style="color: #002fa7"
-                  :href="`https://gitee.com/${sig}`"
-                >
+                <a style="color: #002fa7" :href="`https://gitee.com/${sig}`">
                   {{ t('toHome') }}</a
                 >
               </div>
@@ -118,13 +115,12 @@ watch(
                 <span>{{ t('warehouse') }}：</span>
                 <div class="atlas">
                   <a
-                    v-for="item in cubeData"
+                    v-for="item in sigInfo.repos"
                     :key="item"
                     class="item"
-                    :href="item"
+                    :href="`https://gitee.com/${item}`"
                   >
-                    ./openeuler/
-                    {{ item.split('/')[item.split('/').length - 1] }}
+                    ./{{ item }}
                   </a>
                 </div>
               </div>
@@ -215,7 +211,7 @@ watch(
   }
 }
 .atlas {
-  width: 350px;
+  // width: 350px;
   display: flex;
   flex-direction: column;
 }

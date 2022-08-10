@@ -14,6 +14,8 @@ import {
 import MainPR from '@/assets/MainPR.png';
 import CommonPR from '@/assets/CommonPR.png';
 import { Search } from '@element-plus/icons-vue';
+import ONoDataImage from 'shared/components/ONoDataImage.vue';
+const loading = ref(false);
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -207,7 +209,7 @@ const getprlistData = () => {
     selData.value = seldata.sort((a: { name: string }, b: { name: string }) =>
       a.name.localeCompare(b.name)
     );
-    firstreallData.value = selData.value
+    firstreallData.value = selData.value;
   });
 };
 getprlistData();
@@ -223,16 +225,20 @@ const filterReallData = () => {
 };
 
 const getDetailsData = () => {
-  queryUserContributeDetails(param.value).then((data) => {
-    const value = data?.data || [];
-    totalCount.value = data?.totalCount || 0;
-    detailsData.value = value;
-    reallData.value = value;
-    cursorValue.value = data?.cursor || '';
-    if (param.value.contributeType === 'pr') {
-      filterReallData();
-    }
-  });
+  loading.value = true;
+  queryUserContributeDetails(param.value)
+    .then((data) => {
+      const value = data?.data || [];
+      totalCount.value = data?.totalCount || 0;
+      detailsData.value = value;
+      reallData.value = value;
+      cursorValue.value = data?.cursor || '';
+      if (param.value.contributeType === 'pr') {
+        filterReallData();
+      }
+      loading.value = false;
+    })
+    .catch(() => (loading.value = false));
 };
 getDetailsData();
 
@@ -380,7 +386,7 @@ const firstclearSearchInput = () => {
       >
     </div>
   </div>
-  <div class="bar-panel">
+  <div v-if="reallData.length" v-loading="loading" class="bar-panel">
     <ul class="bar-content">
       <li
         v-for="(item, index) in reallData.slice(
@@ -433,6 +439,7 @@ const firstclearSearchInput = () => {
       </li>
     </ul>
   </div>
+  <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
     <el-pagination
       v-show="reallData.length / pageSize > 1"

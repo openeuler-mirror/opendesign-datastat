@@ -13,6 +13,7 @@ import { queryUserSigContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
+import ONoDataImage from 'shared/components/ONoDataImage.vue';
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();
@@ -210,7 +211,7 @@ const goToCompany = (data: IObject) => {
       </template>
     </o-form-radio>
   </div>
-  <div class="bar-panel">
+  <div v-if="reallData.length" class="bar-panel">
     <ul class="bar-content">
       <li
         v-for="(item, index) in reallData"
@@ -285,6 +286,7 @@ const goToCompany = (data: IObject) => {
       </div>
     </div>
   </div>
+   <div v-else><o-no-data-image></o-no-data-image></div>
 </template>
 
 <style lang="scss" scoped>
