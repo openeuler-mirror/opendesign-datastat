@@ -22,8 +22,8 @@ sencondTitle.value = route.params.name as string;
 const sigTitle = ref('');
 sigTitle.value = route.query.organization as string;
 const group = ref('');
-group.value = route.query.group as string
-const allSigs = ref()
+group.value = route.query.group as string;
+const allSigs = ref();
 const getDrownData = () => {
   const query = {
     group: group.value,
@@ -34,7 +34,8 @@ const getDrownData = () => {
     allSigs.value = data?.data || {};
     allSigs.value.sort((a: any, b: any) => a.localeCompare(b));
     const findOne =
-      allSigs.value.find((item: any) => item === route.params.organization) || allSigs.value[0];
+      allSigs.value.find((item: any) => item === route.params.organization) ||
+      allSigs.value[0];
     // sencondTitle.value = findOne;
     drownData.value = allSigs.value;
     reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
@@ -65,7 +66,6 @@ const getllData = () => {
   querySearch();
   querySigInfoData();
   getCubeData();
-
 };
 onMounted(() => {
   getDrownData();
@@ -187,11 +187,11 @@ const goToSig = (data: IObject) => {
             </div>
           </div>
           <div class="main-left-sp">
-            <!-- <div class="userInfo">
+            <div class="userInfo">
               <div class="title">个人简介</div>
-              <el-avatar :size="120" :src="circleUrl" />
-              <div class="slogan">{{ sigInfo.description }}</div>
-            </div> -->
+              <!-- <el-avatar :size="120" :src="circleUrl" />
+              <div class="slogan">{{ sigInfo.description }}</div> -->
+            </div>
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
@@ -292,7 +292,7 @@ const goToSig = (data: IObject) => {
     padding-right: 24px;
     .edropdown {
       .btnc {
-        background-image: url('@/assets/down.png');
+        background-image: url('@/assets/linedown.png');
         width: 24px;
         height: 24px;
         position: absolute;
@@ -442,5 +442,4 @@ const goToSig = (data: IObject) => {
   justify-content: center;
   align-items: center;
 }
-
 </style>

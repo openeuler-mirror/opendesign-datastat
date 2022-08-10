@@ -41,7 +41,11 @@ const sumContribute = ref(0);
 const getMemberData = () => {
   queryUserSigContribute(param.value).then((data) => {
     memberList.value =
-      (data.data && data.data.sort(sortExp('contribute', false))) || [];
+      (data.data &&
+        data.data
+          .sort(sortExp('contribute', false))
+          .filter((item: any) => item.contribute !== 0)) ||
+      [];
     memberMax.value = ceil(memberList.value[0]?.contribute + 1, 0) || 0;
     // memberMax.value = memberList.value[0]?.contribute;
     rankNum.value = 1;
@@ -271,7 +275,7 @@ const goToCompany = (data: IObject) => {
         </el-tooltip>
       </li>
     </ul>
-    <div class="bar-columns">
+    <div v-if="reallData.length" class="bar-columns">
       <div class="num"><span>0</span></div>
       <div class="num">
         <span>{{ formatNumber(memberMax / 2) }}</span>
@@ -428,14 +432,15 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
-    min-width: 280px;
+    // min-width: 280px;
     .index {
       color: #9097a3;
     }
     .num {
       font-size: 16px;
       color: #000000;
-      margin-right: 20px;
+      margin-right: 8px;
+      margin-left: 16px;
       .percentage {
         margin-left: 10px;
         font-size: 12px;
