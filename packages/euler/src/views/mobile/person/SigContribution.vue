@@ -13,6 +13,7 @@ import { queryUserSigContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
+import ONoDataImage from 'shared/components/ONoDataImage.vue';
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();
@@ -42,7 +43,11 @@ const sumContribute = ref(0);
 const getMemberData = () => {
   queryUserSigContribute(param.value).then((data) => {
     memberList.value =
-      (data.data && data.data.sort(sortExp('contribute', false))) || [];
+      (data.data &&
+        data.data
+          .sort(sortExp('contribute', false))
+          .filter((item: any) => item.contribute !== 0)) ||
+      [];
     memberMax.value = ceil(memberList.value[0]?.contribute, -2) || 0;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
@@ -203,7 +208,7 @@ const goToCompany = (data: IObject) => {
       </template>
     </mobile-o-form-radio>
   </div>
-  <div class="bar-panel">
+  <div v-if="reallData.length" class="bar-panel">
     <ul class="bar-content">
       <li
         v-for="(item, index) in reallData"
@@ -240,6 +245,7 @@ const goToCompany = (data: IObject) => {
       </li>
     </ul>
   </div>
+  <div v-else><o-no-data-image></o-no-data-image></div>
 </template>
 
 <style lang="scss" scoped>
