@@ -332,6 +332,7 @@ watch(
   () => tableData.value,
   () => {
     reallListData.value = tableData.value;
+    currentPage.value = 1;
   }
 );
 const goTo = (item: any) => {

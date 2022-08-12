@@ -13,6 +13,7 @@ import { queryCompanySigContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
+import ONoDataImage from 'shared/components/ONoDataImage.vue';
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();
@@ -41,8 +42,12 @@ const sumContribute = ref(0);
 const getMemberData = () => {
   queryCompanySigContribute(param.value).then((data) => {
     memberList.value =
-      (data.data && data.data.sort(sortExp('contribute', false))) || [];
-    memberMax.value = ceil(memberList.value[0].contribute, -2) || 0;
+      (data.data &&
+        data.data
+          .sort(sortExp('contribute', false))
+          .filter((item: any) => item.contribute !== 0)) ||
+      [];
+    memberMax.value = ceil(memberList.value[0]?.contribute + 1, 0) || 0;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
       return (
@@ -207,7 +212,7 @@ const goToCompany = (data: IObject) => {
       </template>
     </o-form-radio>
   </div>
-  <div class="bar-panel">
+  <div v-if="reallData.length" class="bar-panel">
     <ul class="bar-content">
       <li
         v-for="(item, index) in reallData"
@@ -261,7 +266,7 @@ const goToCompany = (data: IObject) => {
                 width: progressFormat(item.contribute) + '%',
               }"
             >
-              <span v-if="progressFormat(item.contribute) > 80">{{
+              <span v-if="progressFormat(item.contribute) >= 80">{{
                 formatNumber(item.contribute)
               }}</span>
             </div>
@@ -272,7 +277,7 @@ const goToCompany = (data: IObject) => {
         </el-tooltip>
       </li>
     </ul>
-    <div class="bar-columns">
+    <div v-if="reallData.length" class="bar-columns">
       <div class="num"><span>0</span></div>
       <div class="num">
         <span>{{ formatNumber(memberMax / 2) }}</span>
@@ -282,6 +287,7 @@ const goToCompany = (data: IObject) => {
       </div>
     </div>
   </div>
+  <div v-else><o-no-data-image></o-no-data-image></div>
 </template>
 
 <style lang="scss" scoped>
@@ -429,14 +435,15 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
-    min-width: 280px;
+    // min-width: 280px;
     .index {
       color: #9097a3;
     }
     .num {
       font-size: 16px;
       color: #000000;
-      margin-right: 20px;
+      margin-right: 8px;
+      margin-left: 16px;
       .percentage {
         margin-left: 10px;
         font-size: 12px;

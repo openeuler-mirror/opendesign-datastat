@@ -191,7 +191,9 @@ const showDropdown = (e: any) => {
             </div>
           </div>
           <div class="main-left-sp">
-            <div class="slogan">{{ sigInfo.description }}</div>
+            <div class="slogan">
+              {{ sigInfo.description === '.' ? '' : sigInfo.description }}
+            </div>
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
@@ -216,7 +218,9 @@ const showDropdown = (e: any) => {
                   class="item"
                   target="_blank"
                 >
-                  {{ sigInfo.mailing_list }}
+                  {{
+                    sigInfo.mailing_list === 'NA' ? '' : sigInfo.mailing_list
+                  }}
                 </a>
               </div>
             </div>
