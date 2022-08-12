@@ -237,6 +237,7 @@ const getDetailsData = () => {
         filterReallData();
       }
       loading.value = false;
+      currentPage.value = 1;
     })
     .catch(() => (loading.value = false));
 };

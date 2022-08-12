@@ -48,7 +48,6 @@ const getMemberData = () => {
           .filter((item: any) => item.contribute !== 0)) ||
       [];
     memberMax.value = ceil(memberList.value[0]?.contribute + 1, 0) || 0;
-    // memberMax.value = memberList.value[0]?.contribute;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
       return (

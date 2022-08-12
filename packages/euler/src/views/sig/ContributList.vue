@@ -68,6 +68,7 @@ const getMemberData = () => {
       reallData.value = memberData.value;
     }
     filterReallData();
+    currentPage.value = 1;
   });
 };
 
