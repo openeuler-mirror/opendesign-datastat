@@ -357,11 +357,11 @@ const firstclearSearchInput = () => {
         }}</span>
       </div>
     </div>
-    <div v-else-if="param.contributeType === 'issue'">
-      <span><img src="@/assets/!.png" alt="" /> Issue</span>
+    <div v-else-if="param.contributeType === 'issue'" class="prType">
+      <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
-    <div v-else>
-      <span> <img src="@/assets/text.png" alt="" /> Comment</span>
+    <div v-else class="prType">
+      <img src="@/assets/text.png" alt="" /><span class="sp">Comment</span>
     </div>
     <div class="page">
       <span class="sp"
@@ -399,8 +399,8 @@ const firstclearSearchInput = () => {
         <div class="index">
           {{ item.time.split('T').slice(0, 1).toString() }}
         </div>
-        <p class="infos">
-          <span class="infos-img">
+        <div class="infos">
+          <div class="infos-img">
             <img
               v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
               src="@/assets/MainPR.png"
@@ -421,21 +421,24 @@ const firstclearSearchInput = () => {
               src="@/assets/text.png"
               alt=""
             />
-          </span>
-          <span v-if="param.contributeType === 'comment'">评论了</span
-          ><span v-else>在</span
-          ><a
-            class="index"
-            :href="`https://gitee.com/${item.repo}`"
-            target="_blank"
-            >{{ item.repo }}</a
-          ><span v-if="param.contributeType === 'pr'">创建了Pull Request</span
-          ><span v-else-if="param.contributeType === 'issue'">创建了 任务</span
-          ><span v-else> 的 Pull Request</span>
-          <a :href="item.url" target="_blank" class="rigth-index"
-            >!{{ item.no }} {{ item.info }}</a
-          >
-        </p>
+          </div>
+          <div class="infos-text">
+            <span v-if="param.contributeType === 'comment'">评论了</span
+            ><span v-else>在</span>
+            <a
+              class="index"
+              :href="`https://gitee.com/${item.repo}`"
+              target="_blank"
+              >{{ item.repo }}</a
+            ><span v-if="param.contributeType === 'pr'">创建了Pull Request</span
+            ><span v-else-if="param.contributeType === 'issue'"
+              >创建了 任务</span
+            ><span v-else> 的 Pull Request</span>
+            <a :href="item.url" target="_blank" class="rigth-index"
+              >!{{ item.no }} {{ item.info }}</a
+            >
+          </div>
+        </div>
       </li>
     </ul>
   </div>
@@ -500,22 +503,26 @@ const firstclearSearchInput = () => {
     margin: 16px 0;
     list-style: none;
     .infos {
-      font-size: 16px;
+      font-size: 14px;
       color: #000000;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      align-items: center;
-
+      line-height: 22px;
+      display: grid;
+      grid-template-columns: 20px auto;
       &-img {
+        display: inline-flex;
+        align-items: center;
         margin-right: 3px;
-        height: 16px;
-        vertical-align: baseline;
+        height: 22px;
+      }
+      &-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
       }
       .index {
         margin-right: 8px;
-        font-size: 16px;
+        font-size: 14px;
         color: #002fa7;
       }
       .rigth-index {
@@ -526,6 +533,9 @@ const firstclearSearchInput = () => {
   }
   .index {
     margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
   }
 }
 .detail {

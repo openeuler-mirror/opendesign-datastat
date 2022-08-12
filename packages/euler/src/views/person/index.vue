@@ -4,7 +4,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import { ref, onMounted, watch, reactive, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { querySigRepos, queryUserList, queryUserOwnertype } from 'shared/api';
+import { queryUserList, queryUserOwnertype } from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
@@ -48,24 +48,11 @@ const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
   getllData();
 };
-const cubeData = ref([] as any[]);
-const getCubeData = () => {
-  const query = {
-    timeRange: 'lastonemonth',
-    community: 'openeuler',
-    sig: sencondTitle.value,
-  };
-  querySigRepos(query).then((data) => {
-    const value = data?.data || {};
-    cubeData.value = value[sencondTitle.value];
-  });
-};
 
 const getllData = () => {
   clean();
   querySearch();
   querySigInfoData();
-  getCubeData();
 };
 onMounted(() => {
   getDrownData();
@@ -107,9 +94,24 @@ const querySigInfoData = () => {
   };
   queryUserOwnertype(params).then((data) => {
     sigInfo.value = data?.data || {};
+    sigInfo.value.sort((a: any, b: any) =>
+      a['sig'].localeCompare(b['sig'], 'zh')
+    );
+    sigInfo.value.forEach((item: any, index: any) => {
+      if (item.sig === 'TC') {
+        sigInfo.value.unshift(sigInfo.value.splice(index, 1)[0]);
+      }
+    });
+    sigInfo.value.map((item: any) =>
+      item.type.sort((a: any, b: any) => b.length - a.length)
+    );
+    sigInfo.value.sort((a: any, b: any) =>
+      b['type'][0].localeCompare(a['type'][0], 'zh')
+    );
   });
 };
-querySigInfoData();
+
+// querySigInfoData();
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
@@ -125,12 +127,6 @@ const showDropdown = (e: any) => {
     inputSlider(number * 32);
   }
 };
-const state = reactive({
-  circleUrl:
-    'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
-});
-
-const { circleUrl } = toRefs(state);
 
 const goToSig = (data: IObject) => {
   const routeData: any = router.resolve(`/${useCommon.language}/sig/${data}`);
@@ -189,8 +185,6 @@ const goToSig = (data: IObject) => {
           <div class="main-left-sp">
             <div class="userInfo">
               <div class="title">个人简介</div>
-              <!-- <el-avatar :size="120" :src="circleUrl" />
-              <div class="slogan">{{ sigInfo.description }}</div> -->
             </div>
             <div class="first">
               <div class="home"></div>
@@ -209,9 +203,21 @@ const goToSig = (data: IObject) => {
               <div class="List">
                 <span>社区角色： </span>
                 <span v-for="items in sigInfo" :key="items.value" class="item">
-                  <span style="cursor: pointer" @click="goToSig(items.sig)">{{
-                    items.sig
-                  }}</span>
+                  <span
+                    v-if="items.sig === 'TC'"
+                    class="usertypecolorboxTC"
+                    :style="({
+                              '--color': '45deg, #B461F6 0%, #7D32EA 100%',
+                            } as any)"
+                    >TC</span
+                  >
+                  <span
+                    v-if="items.sig !== 'TC'"
+                    style="cursor: pointer"
+                    @click="goToSig(items.sig)"
+                    >{{ items.sig }}</span
+                  >
+
                   <span v-for="item in items.type" :key="item.value"
                     ><span
                       v-if="item === 'committers'"
@@ -221,7 +227,7 @@ const goToSig = (data: IObject) => {
                             } as any)"
                       >Committer</span
                     ><span
-                      v-if="item === 'maintainers'"
+                      v-if="item === 'maintainers' && items.sig !== 'TC'"
                       class="usertypecolorbox"
                       :style="({
                               '--color': '45deg, #005CD3 0%, #002FA7 100%',
@@ -437,6 +443,19 @@ const goToSig = (data: IObject) => {
   line-height: 12px;
   height: 16px;
   width: 73px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.usertypecolorboxTC {
+  background: linear-gradient(var(--color));
+  border-radius: 2px;
+  font-size: 10px;
+  font-family: HarmonyOS_Sans_SC;
+  color: #ffffff;
+  line-height: 12px;
+  width: 32px;
   height: 22px;
   display: flex;
   justify-content: center;

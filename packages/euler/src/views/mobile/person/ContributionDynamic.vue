@@ -12,6 +12,7 @@ import {
   queryUserSigContribute,
   queryUserContributeDetails,
 } from 'shared/api/index';
+import ONoDataImage from 'shared/components/ONoDataImage.vue';
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -223,18 +224,22 @@ const getprlistData = () => {
 getprlistData();
 const detailsData = ref();
 const totalCount = ref(0);
-
+const loading = ref(false);
 const getDetailsData = () => {
-  queryUserContributeDetails(param.value).then((data) => {
-    const value = data?.data || [];
-    totalCount.value = data?.totalCount || 0;
-    detailsData.value = value;
-    reallData.value = value;
-    cursorValue.value = data?.cursor || '';
-    if (param.value.contributeType === 'pr') {
-      filterReallData();
-    }
-  });
+  loading.value = true;
+  queryUserContributeDetails(param.value)
+    .then((data) => {
+      const value = data?.data || [];
+      totalCount.value = data?.totalCount || 0;
+      detailsData.value = value;
+      reallData.value = value;
+      cursorValue.value = data?.cursor || '';
+      if (param.value.contributeType === 'pr') {
+        filterReallData();
+      }
+      loading.value = false;
+    })
+    .catch(() => (loading.value = false));
 };
 getDetailsData();
 
@@ -314,42 +319,6 @@ const changeTage = (item: any) => {
     </mobile-o-form-radio>
   </div>
   <div class="detail">
-    <!-- <div v-if="param.contributeType === 'pr'" class="prType">
-      <span
-        :style="{
-          cursor: 'pointer',
-        }"
-        @click="changeTage()"
-        ><img v-if="istrue" src="@/assets/MainPR.png" alt="" />
-        <img v-else src="@/assets/CommonPR.png" alt=""
-      /></span>
-      <span
-        class="sp"
-        :style="{
-          cursor: 'pointer',
-        }"
-        @click="changeTage()"
-        >主要特性PR</span
-      >
-      <span
-        :style="{
-          cursor: 'pointer',
-        }"
-        @click="changeTage()"
-      >
-        <img v-if="istrue" src="@/assets/CommonPR.png" alt="" /><img
-          v-else
-          src="@/assets/MainPR.png"
-          alt="" /></span
-      ><span
-        class="sp"
-        :style="{
-          cursor: 'pointer',
-        }"
-        @click="changeTage()"
-        >一般特性PR</span
-      >
-    </div> -->
     <div v-if="param.contributeType === 'pr'" class="prType">
       <div
         v-for="item in contributionSelectBox"
@@ -364,31 +333,14 @@ const changeTage = (item: any) => {
         }}</span>
       </div>
     </div>
-    <div v-else-if="param.contributeType === 'issue'">
-      <span><img src="@/assets/!.png" alt="" /> Issue</span>
+   <div v-else-if="param.contributeType === 'issue'" class="prType">
+      <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
-    <div v-else>
-      <span> <img src="@/assets/text.png" alt="" /> Comment</span>
+    <div v-else class="prType">
+      <img src="@/assets/text.png" alt="" /><span class="sp">Comment</span>
     </div>
-    <!-- <div class="page">
-      <span class="sp"
-        >共<span class="num">{{ toThousands(totalCount) }}</span
-        >条结果</span
-      >
-      <span
-        >每页显示<span class="num">
-          <el-select v-model="value" class="m-2" placeholder="10" size="small">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            /> </el-select></span
-        >条</span
-      >
-    </div> -->
   </div>
-  <div class="bar-panel">
+  <div v-if="reallData.length"  v-loading="loading" class="bar-panel">
     <ul class="bar-content">
       <li
         v-for="(item, index) in reallData.slice(
@@ -401,8 +353,8 @@ const changeTage = (item: any) => {
         <div class="index">
           {{ item.time.split('T').slice(0, 1).toString() }}
         </div>
-        <p class="infos">
-          <span class="infos-img">
+        <div class="infos">
+          <div class="infos-img">
             <img
               v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
               src="@/assets/MainPR.png"
@@ -423,24 +375,28 @@ const changeTage = (item: any) => {
               src="@/assets/text.png"
               alt=""
             />
-          </span>
-          <span v-if="param.contributeType === 'comment'">评论了</span
-          ><span v-else>在</span
-          ><a
-            class="index"
-            :href="`https://gitee.com/${item.repo}`"
-            target="_blank"
-            >{{ item.repo }}</a
-          ><span v-if="param.contributeType === 'pr'">创建了Pull Request</span
-          ><span v-else-if="param.contributeType === 'issue'">创建了 任务</span
-          ><span v-else> 的 Pull Request</span>
-          <a :href="item.url" target="_blank" class="rigth-index"
-            >!{{ item.no }} {{ item.info }}</a
-          >
-        </p>
+          </div>
+          <div class="infos-text">
+            <span v-if="param.contributeType === 'comment'">评论了</span
+            ><span v-else>在</span>
+            <a
+              class="index"
+              :href="`https://gitee.com/${item.repo}`"
+              target="_blank"
+              >{{ item.repo }}</a
+            ><span v-if="param.contributeType === 'pr'">创建了Pull Request</span
+            ><span v-else-if="param.contributeType === 'issue'"
+              >创建了 任务</span
+            ><span v-else> 的 Pull Request</span>
+            <a :href="item.url" target="_blank" class="rigth-index"
+              >!{{ item.no }} {{ item.info }}</a
+            >
+          </div>
+        </div>
       </li>
     </ul>
   </div>
+  <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
     <o-mobile-pagination
       v-show="reallData.length > 10"
@@ -499,20 +455,26 @@ const changeTage = (item: any) => {
     margin: 16px 0;
     list-style: none;
     .infos {
-      font-size: 16px;
+      font-size: 12px;
       color: #000000;
-      // line-height: 22px;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-
+      line-height: 16px;
+      display: grid;
+      grid-template-columns: 20px auto;
       &-img {
+        display: inline-flex;
+        align-items: center;
         margin-right: 3px;
+        height: 22px;
+      }
+      &-text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
       }
       .index {
         margin-right: 8px;
-        font-size: 16px;
+        font-size: 12px;
         color: #002fa7;
       }
       .rigth-index {
@@ -523,6 +485,9 @@ const changeTage = (item: any) => {
   }
   .index {
     margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
   }
 }
 .detail {
@@ -554,25 +519,8 @@ const changeTage = (item: any) => {
     margin-left: 2px;
     margin-right: 4px;
   }
-  .page {
-    position: absolute;
-    right: 0;
-    font-size: 3px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #555555;
-    line-height: 22px;
-    .num {
-      font-size: 3px;
-      font-family: Roboto-Medium, Roboto;
-      font-weight: 500;
-      color: #000000;
-      line-height: 24px;
-      padding-left: 5px;
-      padding-right: 5px;
-    }
-  }
 }
+
 .sel {
   margin-bottom: 14px;
   // display: flex;
@@ -588,7 +536,6 @@ const changeTage = (item: any) => {
   margin-bottom: 18px;
 }
 .demo-pagination-block {
-  margin-top: 200px;
   display: flex;
 
   justify-content: center;

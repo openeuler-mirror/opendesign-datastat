@@ -185,7 +185,7 @@ onMounted(() => {
   background-image: url('@/assets/linedown.png');
   width: 24px;
   height: 24px;
-  margin-left: 24px;
+  margin-left: 8px;
 }
 .main-left-title {
   display: flex;
