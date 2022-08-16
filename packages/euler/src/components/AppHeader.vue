@@ -119,7 +119,10 @@ const jumpToUserZone = () => {
 };
 
 const photoSrc = computed(() => {
-  const { photo = '' } = getUserAuth();
+  let { photo = '' } = getUserAuth();
+  if(photo?.includes('no_portrait.png')){
+    photo = Bitmap
+  }
   if (guardAuthClient.value?.photo) {
     return guardAuthClient.value.photo?.includes('no_portrait.png')
       ? Bitmap

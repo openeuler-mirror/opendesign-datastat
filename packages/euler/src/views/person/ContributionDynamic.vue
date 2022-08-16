@@ -15,6 +15,7 @@ import MainPR from '@/assets/MainPR.png';
 import CommonPR from '@/assets/CommonPR.png';
 import { Search } from '@element-plus/icons-vue';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
+import { ElScrollbar } from 'element-plus';
 const loading = ref(false);
 const { t } = useI18n();
 const props = defineProps({
@@ -291,13 +292,23 @@ const firstclearSearchInput = () => {
   searchInput.value = '';
   // getDrownData();
 };
+
+const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
+const inputSlider = (value: number) => {
+  scrollbarRef.value?.setScrollTop(value);
+};
 </script>
 
 <template>
   <div class="contributions-statistical">
     <div class="sel">
       <div class="title">SIG筛选</div>
-      <el-select v-model="selvalue" placeholder="全部" size="large">
+      <el-select
+        v-model="selvalue"
+        placeholder="全部"
+        size="large"
+        popper-class="remove-scrollbar"
+      >
         <el-input
           v-model="firstsearchInput"
           clearable
@@ -308,13 +319,15 @@ const firstclearSearchInput = () => {
           @input="firstquerySearch"
           @clear="firstclearSearchInput"
         />
-        <el-option label="全部" value="all" />
-        <el-option
-          v-for="item in firstreallData"
-          :key="item.name"
-          :label="item.name"
-          :value="item.name"
-        />
+        <el-scrollbar class="Escrollbar">
+          <el-option label="全部" value="all" />
+          <el-option
+            v-for="item in firstreallData"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name"
+          />
+        </el-scrollbar>
       </el-select>
     </div>
     <div class="line"></div>
@@ -605,6 +618,7 @@ const firstclearSearchInput = () => {
   justify-content: center;
   align-items: center;
 }
+
 </style>
 <style lang="scss">
 .num {
@@ -624,4 +638,23 @@ const firstclearSearchInput = () => {
 .el-select-dropdown__item {
   padding: 0 15px 0 15px;
 }
+
+// .remove-scrollbar {
+//   .el-scrollbar__wrap {
+//     overflow: visible; //超出部分不滚动，直接显示
+//   }
+//   .el-scrollbar__thumb {
+//     display: none; //去掉右侧滚动条
+//   }
+// }
+
+// .Escrollbar {
+//   .el-scrollbar__wrap {
+//     overflow: auto;
+//   }
+//   .el-scrollbar__thumb {
+//     display: inside;
+//   }
+// }
+
 </style>
