@@ -14,8 +14,15 @@ import communityLogoSmallWhite from '@/assets/openeuler-small-white.png';
 import Bitmap from '@/assets/Bitmap.png';
 
 import AppMobileMenu from './AppMobileMenu.vue';
-import { useStoreData, showGuard, logout } from 'shared/utils/login';
+import {
+  useStoreData,
+  showGuard,
+  logout,
+  getUserAuth,
+} from 'shared/utils/login';
 import LoadingArc from './LoadingArc.vue';
+
+const { token } = getUserAuth();
 const useCommon = useCommonStore();
 const route = useRoute();
 const router = useRouter();
@@ -52,6 +59,16 @@ const goMobileHome = () => {
   useCommon.moNav = 0;
   useCommon.isBlackHeader = true;
 };
+
+const photoSrc = computed(() => {
+  const { photo = '' } = getUserAuth();
+  if (guardAuthClient.value?.photo) {
+    return guardAuthClient.value.photo?.includes('no_portrait.png')
+      ? Bitmap
+      : guardAuthClient.value.photo;
+  }
+  return photo || Bitmap;
+});
 </script>
 
 <template>
@@ -83,14 +100,10 @@ const goMobileHome = () => {
     </template>
     <div class="opt-user">
       <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
-      <el-dropdown v-else-if="guardAuthClient.photo">
+      <el-dropdown v-else-if="token">
         <div class="el-dropdown-link">
           <img
-            :src="
-              guardAuthClient.photo.includes('no_portrait.png')
-                ? Bitmap
-                : guardAuthClient.photo
-            "
+            :src="photoSrc"
             :alt="guardAuthClient.nickname || 'LogOut'"
             class="img"
           />

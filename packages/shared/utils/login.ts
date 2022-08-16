@@ -10,6 +10,7 @@ const LOGIN_KEYS = {
 };
 
 function setCookie(cname: string, cvalue: string, exdays: number) {
+  deleteCookie(cname);
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   const expires = `expires=${d.toUTCString()}`;
@@ -31,22 +32,26 @@ function deleteCookie(cname: string) {
 }
 
 // 存储用户id及token，用于下次登录
-export function saveUserAuth(code = '') {
+export function saveUserAuth(code = '', photo = '') {
   if (!code) {
     deleteCookie(LOGIN_KEYS.USER_TOKEN);
+    deleteCookie(LOGIN_KEYS.USER_INFO);
   } else {
     setCookie(LOGIN_KEYS.USER_TOKEN, code, 1);
+    setCookie(LOGIN_KEYS.USER_INFO, photo, 1);
   }
 }
 
 // 获取用户id及token
 export function getUserAuth() {
   const token = getCookie(LOGIN_KEYS.USER_TOKEN) || '';
+  const photo = getCookie(LOGIN_KEYS.USER_INFO) || '';
   if (!token) {
     saveUserAuth();
   }
   return {
     token,
+    photo,
   };
 }
 const redirectUri = `${location.origin}/`;
@@ -86,8 +91,8 @@ export function getCodeByUrl(community: string) {
     };
     queryToken(param).then((res) => {
       const { data = {} } = res;
-      const { token = '' } = data;
-      saveUserAuth(token);
+      const { token = '', photo = '' } = data;
+      saveUserAuth(token, photo);
       const newUrl = `${location.origin}`;
       window.parent.window.location.href = newUrl;
     });
@@ -173,6 +178,7 @@ export function refreshInfo(community: string) {
         Object.prototype.toString.call(data) === '[object Object]'
       ) {
         guardAuthClient.value = data;
+        saveUserAuth(token, data.photo);
       }
     });
   }
