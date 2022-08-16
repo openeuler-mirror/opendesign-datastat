@@ -10,7 +10,6 @@ const LOGIN_KEYS = {
 };
 
 function setCookie(cname: string, cvalue: string, exdays: number) {
-  deleteCookie(cname);
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   const expires = `expires=${d.toUTCString()}`;
