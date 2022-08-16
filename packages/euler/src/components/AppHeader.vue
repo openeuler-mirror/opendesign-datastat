@@ -7,7 +7,12 @@ import ONav from 'shared/components/ONav.vue';
 import { useRouter, useRoute } from 'vue-router';
 import AppHeaderMobile from './AppHeaderMobile.vue';
 import { IObject } from 'shared/@types/interface';
-import { showGuard, logout, useStoreData } from 'shared/utils/login';
+import {
+  showGuard,
+  logout,
+  useStoreData,
+  getUserAuth,
+} from 'shared/utils/login';
 
 import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
@@ -17,6 +22,7 @@ import chevronDown from '~icons/app/chevron-down';
 import { testIsPhone } from 'shared/utils/helper';
 import LoadingArc from './LoadingArc.vue';
 
+const { token } = getUserAuth();
 const { guardAuthClient, isLoggingIn } = useStoreData();
 let dialogVisible = ref(false);
 const useCommon = useCommonStore();
@@ -111,6 +117,16 @@ const jumpToUserZone = () => {
     '_blank'
   );
 };
+
+const photoSrc = computed(() => {
+  const { photo = '' } = getUserAuth();
+  if (guardAuthClient.value?.photo) {
+    return guardAuthClient.value.photo?.includes('no_portrait.png')
+      ? Bitmap
+      : guardAuthClient.value.photo;
+  }
+  return photo || Bitmap;
+});
 </script>
 
 <template>
@@ -157,14 +173,10 @@ const jumpToUserZone = () => {
 
       <div class="opt-user">
         <loading-arc v-if="isLoggingIn"></loading-arc>
-        <el-dropdown v-else-if="guardAuthClient.photo">
+        <el-dropdown v-else-if="token">
           <div class="el-dropdown-link">
             <img
-              :src="
-                guardAuthClient.photo.includes('no_portrait.png')
-                  ? Bitmap
-                  : guardAuthClient.photo
-              "
+              :src="photoSrc"
               :alt="guardAuthClient.nickname || 'LogOut'"
               class="img"
             />
