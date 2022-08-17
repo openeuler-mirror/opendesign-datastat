@@ -40,6 +40,7 @@ const querySorceData = () => {
         created_at: item.created_at,
         score: item.score,
       })) || [];
+
     echartData.value = [
       {
         name: computed(() => t('combinedActivity')),
@@ -63,6 +64,7 @@ const querySorceData = () => {
                 data: [_data],
               };
             });
+
           } else {
             Object.keys(keyToI18n).forEach((item, index) => {
               const _data = {
@@ -75,6 +77,7 @@ const querySorceData = () => {
           return pre;
         }, []) || [];
       echartData.value.push(...addData);
+      console.log(echartData.value)
     });
   });
 };

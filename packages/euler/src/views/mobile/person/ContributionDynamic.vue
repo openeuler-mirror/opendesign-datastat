@@ -13,6 +13,9 @@ import {
   queryUserContributeDetails,
 } from 'shared/api/index';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
+import MainPR from '@/assets/MainPR.png';
+import CommonPR from '@/assets/CommonPR.png';
+import { Search } from '@element-plus/icons-vue';
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -219,6 +222,7 @@ const getprlistData = () => {
     selData.value = seldata.sort((a: { name: string }, b: { name: string }) =>
       a.name.localeCompare(b.name)
     );
+     firstreallData.value = selData.value;
   });
 };
 getprlistData();
@@ -253,13 +257,13 @@ const handleCurrentChange = (val: number) => {
 // 图表筛选
 const contributionSelectBox = ref([
   {
-    color: '/src/assets/MainPR.png',
+    color: MainPR,
     isSelected: true,
     label: '主要特性PR',
     key: 1,
   },
   {
-    color: '/src/assets/CommonPR.png',
+    color: CommonPR,
     isSelected: true,
     label: '一般特性PR',
     key: 0,
@@ -270,22 +274,46 @@ const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
   querySearch();
 };
+
+// first搜索过滤
+const firstsearchInput = ref();
+const firstreallData = ref([] as IObject[]);
+const firstquerySearch = () => {
+  if (firstsearchInput.value !== '') {
+    const newList = selData.value.filter((item: any) =>
+      item.name.toLowerCase().includes(firstsearchInput.value)
+    );
+    firstreallData.value = newList;
+  } else {
+    firstreallData.value = selData.value;
+  }
+};
+// 清除搜索
+const firstclearSearchInput = () => {
+  // getDrownData();
+  searchInput.value = '';
+  // getDrownData();
+};
 </script>
 
 <template>
   <div class="contributions-statistical">
     <div class="sel">
       <div class="title">SIG筛选</div>
-      <el-select
-        v-model="selvalue"
-        class="m-2"
-        placeholder="Select"
-        size="large"
-        filterable
-      >
+      <el-select v-model="selvalue" placeholder="全部" size="large">
+        <el-input
+          v-model="firstsearchInput"
+          clearable
+          :debounce="300"
+          class="w-50 m-2"
+          placeholder="请输入SIG搜索"
+          :prefix-icon="Search"
+          @input="firstquerySearch"
+          @clear="firstclearSearchInput"
+        />
         <el-option label="全部" value="all" />
         <el-option
-          v-for="item in selData"
+          v-for="item in firstreallData"
           :key="item.name"
           :label="item.name"
           :value="item.name"
