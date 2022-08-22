@@ -62,8 +62,8 @@ const goMobileHome = () => {
 
 const photoSrc = computed(() => {
   let { photo = '' } = getUserAuth();
-  if(photo?.includes('no_portrait.png')){
-    photo = Bitmap
+  if (photo?.includes('no_portrait.png')) {
+    photo = Bitmap;
   }
   if (guardAuthClient.value?.photo) {
     return guardAuthClient.value.photo?.includes('no_portrait.png')
@@ -113,9 +113,9 @@ const photoSrc = computed(() => {
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="dialogVisible = true"
-              >退出登录</el-dropdown-item
-            >
+            <el-dropdown-item @click="dialogVisible = true">{{
+              t('logout')
+            }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -128,20 +128,22 @@ const photoSrc = computed(() => {
         @click="showGuard(openCommunityInfo.name)"
       />
     </div>
-    <el-dialog v-model="dialogVisible" title="Confirm" width="80%">
+    <el-dialog v-model="dialogVisible" :title="t('pleaseConfirm')" width="80%">
       <p style="word-break: break-word">
-        Are you sure you want to exit? The page is refreshed after you exit.
+        {{ t('titleConfirm') }}
       </p>
       <template #footer>
         <div style="display: flex; justify-content: center">
-          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button @click="dialogVisible = false">{{
+            t('Cancel')
+          }}</el-button>
           <el-button
             type="primary"
             @click="
               dialogVisible = false;
               logout(openCommunityInfo.name);
             "
-            >Confirm</el-button
+            >{{ t('Confirm') }}</el-button
           >
         </div>
       </template>

@@ -163,7 +163,7 @@ const goToSig = (data: IObject) => {
                       clearable
                       :debounce="300"
                       class="w-50 m-2"
-                      placeholder="请输入Gitee ID搜索"
+                      :placeholder="t('enterGitee')"
                       :prefix-icon="Search"
                       @input="querySearch"
                       @clear="clearSearchInput"
@@ -184,7 +184,7 @@ const goToSig = (data: IObject) => {
           </div>
           <div class="main-left-sp">
             <div class="userInfo">
-              <div class="title">个人简介</div>
+              <div class="title">{{ t('individual') }}</div>
             </div>
             <div class="first">
               <div class="home"></div>
@@ -201,7 +201,7 @@ const goToSig = (data: IObject) => {
             <div class="firstLast">
               <div class="Maintainer"></div>
               <div class="List">
-                <span>社区角色： </span>
+                <span>{{ t('community') }}： </span>
                 <span v-for="items in sigInfo" :key="items.value" class="item">
                   <span
                     v-if="items.sig === 'TC'"

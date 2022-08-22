@@ -257,13 +257,13 @@ const contributionSelectBox = ref([
   {
     color: MainPR,
     isSelected: true,
-    label: '主要特性PR',
+    label: 'key',
     key: 1,
   },
   {
     color: CommonPR,
     isSelected: true,
-    label: '一般特性PR',
+    label: 'general',
     key: 0,
   },
 ]);
@@ -302,10 +302,10 @@ const inputSlider = (value: number) => {
 <template>
   <div class="contributions-statistical">
     <div class="sel">
-      <div class="title">SIG筛选</div>
+      <div class="title">SIG {{ t('filtrate') }}</div>
       <el-select
         v-model="selvalue"
-        placeholder="全部"
+        :placeholder="t('all')"
         size="large"
         popper-class="remove-scrollbar"
       >
@@ -314,13 +314,13 @@ const inputSlider = (value: number) => {
           clearable
           :debounce="300"
           class="w-50 m-2"
-          placeholder="请输入SIG搜索"
+          :placeholder="t('enterSIG')"
           :prefix-icon="Search"
           @input="firstquerySearch"
           @clear="firstclearSearchInput"
         />
         <el-scrollbar class="Escrollbar">
-          <el-option label="全部" value="all" />
+          <el-option :label="t('all')" value="all" />
           <el-option
             v-for="item in firstreallData"
             :key="item.name"
@@ -366,9 +366,9 @@ const inputSlider = (value: number) => {
         @click="changeTage(item)"
       >
         <img :src="item.color" alt="" />
-        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }">{{
-          item.label
-        }}</span>
+        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }"
+          >{{ t(item.label) }} PR</span
+        >
       </div>
     </div>
     <div v-else-if="param.contributeType === 'issue'" class="prType">
@@ -379,11 +379,12 @@ const inputSlider = (value: number) => {
     </div>
     <div class="page">
       <span class="sp"
-        >共<span class="num">{{ toThousands(totalCount) }}</span
-        >条结果</span
+        >{{ t('total') }}<span class="num">{{ toThousands(totalCount) }}</span
+        >{{ t('result') }}</span
       >
       <span
-        >每页显示<span class="num">
+        >{{ t('display')
+        }}<span class="num">
           <el-select
             v-model="pageSize"
             class="m-2"
@@ -396,7 +397,7 @@ const inputSlider = (value: number) => {
               :label="item.label"
               :value="item.value"
             /> </el-select></span
-        >条</span
+        >{{ t('bar') }}</span
       >
     </div>
   </div>
@@ -437,17 +438,19 @@ const inputSlider = (value: number) => {
             />
           </div>
           <div class="infos-text">
-            <span v-if="param.contributeType === 'comment'">评论了</span
-            ><span v-else>在</span>
+            <span v-if="param.contributeType === 'comment'"
+              >{{ t('comment') }} </span
+            ><span v-else>{{ t('In') }}</span>
             <a
               class="index"
               :href="`https://gitee.com/${item.repo}`"
               target="_blank"
               >{{ item.repo }}</a
-            ><span v-if="param.contributeType === 'pr'">创建了Pull Request</span
+            ><span v-if="param.contributeType === 'pr'"
+              >{{ t('create') }} Pull Request</span
             ><span v-else-if="param.contributeType === 'issue'"
-              >创建了 任务</span
-            ><span v-else> 的 Pull Request</span>
+              >{{ t('create') }} {{ t('task') }}</span
+            ><span v-else> {{ t('de') }} Pull Request</span>
             <a :href="item.url" target="_blank" class="rigth-index"
               >!{{ item.no }} {{ item.info }}</a
             >
@@ -535,12 +538,13 @@ const inputSlider = (value: number) => {
         overflow: hidden;
       }
       .index {
-        margin-right: 8px;
+        margin-right: 3px;
         font-size: 14px;
         color: #002fa7;
+        margin-left: 3px;
       }
       .rigth-index {
-        margin-left: 8px;
+        margin-left: 3px;
         color: #002fa7;
       }
     }
@@ -618,7 +622,6 @@ const inputSlider = (value: number) => {
   justify-content: center;
   align-items: center;
 }
-
 </style>
 <style lang="scss">
 .num {
@@ -656,5 +659,4 @@ const inputSlider = (value: number) => {
 //     display: inside;
 //   }
 // }
-
 </style>
