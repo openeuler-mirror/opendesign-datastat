@@ -416,9 +416,9 @@ const goToSigs = (title: any) => {
       </div>
       <div class="info">
         <p>
-          <span style="cursor: pointer" @click="goToSigs(useStaff.title)"
-            >查看详情</span
-          >
+          <span style="cursor: pointer" @click="goToSigs(useStaff.title)">{{
+            t('viewDetail')
+          }}</span>
           <span>
             <el-icon
               :size="16"

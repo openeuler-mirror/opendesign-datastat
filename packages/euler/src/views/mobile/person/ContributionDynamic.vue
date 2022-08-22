@@ -259,13 +259,13 @@ const contributionSelectBox = ref([
   {
     color: MainPR,
     isSelected: true,
-    label: '主要特性PR',
+    label: 'key',
     key: 1,
   },
   {
     color: CommonPR,
     isSelected: true,
-    label: '一般特性PR',
+    label: 'general',
     key: 0,
   },
 ]);
@@ -299,19 +299,19 @@ const firstclearSearchInput = () => {
 <template>
   <div class="contributions-statistical">
     <div class="sel">
-      <div class="title">SIG筛选</div>
-      <el-select v-model="selvalue" placeholder="全部" size="large">
+      <div class="title">SIG{{ t('filtrate') }}</div>
+      <el-select v-model="selvalue" :placeholder="t('all')" size="large">
         <el-input
           v-model="firstsearchInput"
           clearable
           :debounce="300"
           class="w-50 m-2"
-          placeholder="请输入SIG搜索"
+          :placeholder="t('enterSIG')"
           :prefix-icon="Search"
           @input="firstquerySearch"
           @clear="firstclearSearchInput"
         />
-        <el-option label="全部" value="all" />
+        <el-option :label="t('all')" value="all" />
         <el-option
           v-for="item in firstreallData"
           :key="item.name"
@@ -356,9 +356,9 @@ const firstclearSearchInput = () => {
         @click="changeTage(item)"
       >
         <img :src="item.color" alt="" />
-        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }">{{
-          item.label
-        }}</span>
+        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }"
+          >{{ t(item.label) }} PR</span
+        >
       </div>
     </div>
    <div v-else-if="param.contributeType === 'issue'" class="prType">
@@ -405,17 +405,17 @@ const firstclearSearchInput = () => {
             />
           </div>
           <div class="infos-text">
-            <span v-if="param.contributeType === 'comment'">评论了</span
-            ><span v-else>在</span>
+            <span v-if="param.contributeType === 'comment'">{{ t('comment') }} </span
+            ><span v-else>{{ t('In') }}</span>
             <a
               class="index"
               :href="`https://gitee.com/${item.repo}`"
               target="_blank"
               >{{ item.repo }}</a
-            ><span v-if="param.contributeType === 'pr'">创建了Pull Request</span
+            ><span v-if="param.contributeType === 'pr'">{{ t('create') }} Pull Request</span
             ><span v-else-if="param.contributeType === 'issue'"
-              >创建了 任务</span
-            ><span v-else> 的 Pull Request</span>
+              >{{ t('create') }} {{ t('task') }}</span
+            ><span v-else> {{ t('de') }} Pull Request</span>
             <a :href="item.url" target="_blank" class="rigth-index"
               >!{{ item.no }} {{ item.info }}</a
             >
@@ -473,8 +473,8 @@ const firstclearSearchInput = () => {
 }
 .bar-panel {
   position: relative;
-  height: 100%;
-  margin-bottom: 100px;
+  // height: 100%;
+  // margin-bottom: 400px;
 }
 .bar-content {
   position: relative;
@@ -501,9 +501,10 @@ const firstclearSearchInput = () => {
         overflow: hidden;
       }
       .index {
-        margin-right: 8px;
+        margin-right: 3px;
         font-size: 12px;
         color: #002fa7;
+        margin-left: 3px;
       }
       .rigth-index {
         margin-left: 8px;
@@ -565,7 +566,6 @@ const firstclearSearchInput = () => {
 }
 .demo-pagination-block {
   display: flex;
-
   justify-content: center;
   align-items: center;
 }

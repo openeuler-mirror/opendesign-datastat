@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ timeTitle }}
+        {{ t(timeTitle) }}{{ t('contribute') }}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,7 +12,7 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-          {{ item.label }}</el-dropdown-item
+          {{ t(item.label) }}{{ t('contribute') }}</el-dropdown-item
         >
       </template>
     </el-dropdown>
@@ -48,9 +48,8 @@
 import { toRefs, ref, onMounted, watch } from 'vue';
 import { queryUserSigContribute } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
-import { processing, toThousands } from 'shared/utils/helper';
+import { toThousands } from 'shared/utils/helper';
 import { useI18n } from 'vue-i18n';
-
 const { t } = useI18n();
 const props = defineProps({
   user: {
@@ -65,10 +64,13 @@ const issueData = ref(0);
 const comment = ref(0);
 const contributors = ref(0);
 const timeRange = [
-  { label: t('from.lastonemonth') + t('contribute'), value: 'lastonemonth' },
-  { label: t('from.lasthalfyear') + t('contribute'), value: 'lasthalfyear' },
-  { label: t('from.lastoneyear') + t('contribute'), value: 'lastoneyear' },
-  { label: t('from.all') + t('contribute'), value: 'all' },
+  {
+    label: 'from.lastonemonth',
+    value: 'lastonemonth',
+  },
+  { label: 'from.lasthalfyear', value: 'lasthalfyear' },
+  { label: 'from.lastoneyear', value: 'lastoneyear' },
+  { label: 'from.all', value: 'all' },
 ];
 const time = ref('');
 const getItemListData = (data: IObject[], template: string) => {
@@ -136,13 +138,6 @@ watch(
     getAllData();
   }
 );
-// watch(
-//   () => company.value,
-//   () => {
-//     time.value = 'all';
-//     timeTitle.value = '全部';
-//   }
-// );
 const timeTitle = ref('');
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
@@ -151,7 +146,7 @@ const clickDrownItem = (item: IObject) => {
 };
 onMounted(() => {
   time.value = 'all';
-  timeTitle.value = t('from.all') + t('contribute');
+  timeTitle.value = 'from.all' ;
   getAllData();
 });
 </script>

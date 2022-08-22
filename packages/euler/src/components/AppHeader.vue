@@ -120,8 +120,8 @@ const jumpToUserZone = () => {
 
 const photoSrc = computed(() => {
   let { photo = '' } = getUserAuth();
-  if(photo?.includes('no_portrait.png')){
-    photo = Bitmap
+  if (photo?.includes('no_portrait.png')) {
+    photo = Bitmap;
   }
   if (guardAuthClient.value?.photo) {
     return guardAuthClient.value.photo?.includes('no_portrait.png')
@@ -186,34 +186,37 @@ const photoSrc = computed(() => {
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="jumpToUserZone()"
-                >个人中心</el-dropdown-item
-              >
-              <el-dropdown-item @click="dialogVisible = true"
-                >退出登录</el-dropdown-item
-              >
+              <el-dropdown-item @click="jumpToUserZone()">{{
+                t('personalCenter')
+              }}</el-dropdown-item>
+              <el-dropdown-item @click="dialogVisible = true">{{
+                t('logout')
+              }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
         <div v-else class="login" @click="showGuard(openCommunityInfo.name)">
-          登录
+          {{ t('login') }}
         </div>
       </div>
-      <el-dialog v-model="dialogVisible" title="Confirm" width="30%">
-        <span
-          >Are you sure you want to exit? The page is refreshed after you
-          exit.</span
-        >
+      <el-dialog
+        v-model="dialogVisible"
+        :title="t('pleaseConfirm')"
+        width="30%"
+      >
+        <span>{{ t('titleConfirm') }}</span>
         <template #footer>
           <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">Cancel</el-button>
+            <el-button @click="dialogVisible = false">{{
+              t('Cancel')
+            }}</el-button>
             <el-button
               type="primary"
               @click="
                 dialogVisible = false;
                 logout(openCommunityInfo.name);
               "
-              >Confirm</el-button
+              >{{ t('Confirm') }}</el-button
             >
           </span>
         </template>

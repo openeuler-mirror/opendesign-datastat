@@ -91,7 +91,9 @@
                 </p>
               </div>
               <div class="info">
-                <div style="cursor: pointer" @click="goTo(val)">查看详情</div>
+                <div style="cursor: pointer" @click="goTo(val)">
+                  {{ t('viewDetail') }}
+                </div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
@@ -194,7 +196,9 @@
                 </p>
               </div>
               <div class="info">
-                <div style="cursor: pointer" @click="goTo(val)">查看详情</div>
+                <div style="cursor: pointer" @click="goTo(val)">
+                  {{ t('viewDetail') }}
+                </div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
@@ -373,7 +377,7 @@ const goTo = (item: any) => {
 }
 .right-btn {
   position: absolute;
-  left: 68px;
+  left: 80px;
   bottom: 6px;
 }
 .numberIndex {

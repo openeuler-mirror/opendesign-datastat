@@ -244,7 +244,7 @@ const goToAllSig = () => {
   }
   .sp {
     display: inline-block;
-    width: 36px;
+    // width: 36px;
     height: 16px;
     font-size: 12px;
     font-family: HarmonyOS_Sans_SC;
@@ -254,7 +254,7 @@ const goToAllSig = () => {
   }
   .spp {
     display: inline-block;
-    width: 7px;
+    // width: 7px;
     height: 16px;
     font-size: 12px;
     font-family: HarmonyOS_Sans_SC;

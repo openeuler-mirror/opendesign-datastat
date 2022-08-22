@@ -1,6 +1,6 @@
 <template>
   <div class="userInfo">
-    <div class="title">个人简介</div>
+    <div class="title">{{ t('individual') }}</div>
   </div>
   <div class="first">
     <div class="home"></div>
@@ -17,7 +17,7 @@
   <div class="first">
     <div class="Maintainer"></div>
     <div class="List">
-      <span>社区角色： </span>
+      <span>{{ t('community') }}： </span>
       <span v-for="items in sigInfo" :key="items.value" class="item">
         <span
           v-if="items.sig === 'TC'"
