@@ -87,6 +87,7 @@ export function getCodeByUrl(community: string) {
       code: query.code,
       permission: 'sigRead',
       community,
+      redirect: redirectUri,
     };
     queryToken(param)
       .then((res) => {
