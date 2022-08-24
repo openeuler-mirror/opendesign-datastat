@@ -88,13 +88,18 @@ export function getCodeByUrl(community: string) {
       permission: 'sigRead',
       community,
     };
-    queryToken(param).then((res) => {
-      const { data = {} } = res;
-      const { token = '', photo = '' } = data;
-      saveUserAuth(token, photo);
-      const newUrl = `${location.origin}`;
-      window.parent.window.location.href = newUrl;
-    });
+    queryToken(param)
+      .then((res) => {
+        const { data = {} } = res;
+        const { token = '', photo = '' } = data;
+        saveUserAuth(token, photo);
+        const newUrl = `${location.origin}`;
+        window.parent.window.location.href = newUrl;
+      })
+      .catch(() => {
+        const newUrl = `${location.origin}`;
+        window.parent.window.location.href = newUrl;
+      });
   }
 }
 
