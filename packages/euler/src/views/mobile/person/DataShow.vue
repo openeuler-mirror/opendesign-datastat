@@ -152,7 +152,7 @@ const clickDrownItem = (item: IObject) => {
 onMounted(() => {
   time.value = 'all';
   timeTitle.value = t('from.all') + t('contribute');
-  getAllData();
+  // getAllData();
 });
 </script>
 <style scoped lang="scss">
