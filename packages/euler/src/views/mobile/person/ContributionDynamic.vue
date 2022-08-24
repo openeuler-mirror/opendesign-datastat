@@ -300,7 +300,7 @@ const firstclearSearchInput = () => {
   <div class="contributions-statistical">
     <div class="sel">
       <div class="title">SIG{{ t('filtrate') }}</div>
-      <el-select v-model="selvalue" :placeholder="t('all')" size="large">
+      <el-select v-model="selvalue" :placeholder="t('from.all')" size="large">
         <el-input
           v-model="firstsearchInput"
           clearable
@@ -311,7 +311,7 @@ const firstclearSearchInput = () => {
           @input="firstquerySearch"
           @clear="firstclearSearchInput"
         />
-        <el-option :label="t('all')" value="all" />
+        <el-option :label="t('from.all')" value="all" />
         <el-option
           v-for="item in firstreallData"
           :key="item.name"

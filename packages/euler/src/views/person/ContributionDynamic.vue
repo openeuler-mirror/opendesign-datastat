@@ -305,7 +305,7 @@ const inputSlider = (value: number) => {
       <div class="title">SIG {{ t('filtrate') }}</div>
       <el-select
         v-model="selvalue"
-        :placeholder="t('all')"
+        :placeholder="t('from.all')"
         size="large"
         popper-class="remove-scrollbar"
       >
@@ -320,7 +320,7 @@ const inputSlider = (value: number) => {
           @clear="firstclearSearchInput"
         />
         <el-scrollbar class="Escrollbar">
-          <el-option :label="t('all')" value="all" />
+          <el-option :label="t('from.all')" value="all" />
           <el-option
             v-for="item in firstreallData"
             :key="item.name"
