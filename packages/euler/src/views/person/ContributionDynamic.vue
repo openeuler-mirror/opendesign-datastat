@@ -13,6 +13,8 @@ import {
 } from 'shared/api/index';
 import MainPR from '@/assets/MainPR.png';
 import CommonPR from '@/assets/CommonPR.png';
+import comment from '@/assets/comment.png';
+import text from '@/assets/text.png';
 import { Search } from '@element-plus/icons-vue';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
 import { ElScrollbar } from 'element-plus';
@@ -218,11 +220,19 @@ const detailsData = ref();
 const totalCount = ref(0);
 
 const filterReallData = () => {
-  reallData.value = reallData.value.filter((item) => {
-    return contributionSelectBox.value.some((it) => {
-      return it.isSelected && item.is_main_feature === it.key;
+  if (param.value.contributeType === 'comment') {
+    reallData.value = reallData.value.filter((item) => {
+      return commentSelectBox.value.some((it) => {
+        return it.isSelected && item.is_main_feature === it.key;
+      });
     });
-  });
+  } else {
+    reallData.value = reallData.value.filter((item) => {
+      return contributionSelectBox.value.some((it) => {
+        return it.isSelected && item.is_main_feature === it.key;
+      });
+    });
+  }
 };
 
 const getDetailsData = () => {
@@ -234,7 +244,10 @@ const getDetailsData = () => {
       detailsData.value = value;
       reallData.value = value;
       cursorValue.value = data?.cursor || '';
-      if (param.value.contributeType === 'pr') {
+      if (
+        param.value.contributeType === 'pr' ||
+        param.value.contributeType === 'comment'
+      ) {
         filterReallData();
       }
       loading.value = false;
@@ -267,7 +280,21 @@ const contributionSelectBox = ref([
     key: 0,
   },
 ]);
-
+// 评论图表筛选
+const commentSelectBox = ref([
+  {
+    color: comment,
+    isSelected: true,
+    label: 'General',
+    key: 1,
+  },
+  {
+    color: text,
+    isSelected: true,
+    label: 'Order',
+    key: 0,
+  },
+]);
 const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
   querySearch();
@@ -375,8 +402,20 @@ const inputSlider = (value: number) => {
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
     <div v-else class="prType">
-      <img src="@/assets/text.png" alt="" /><span class="sp">Comment</span>
+      <div
+        v-for="item in commentSelectBox"
+        :key="item.label"
+        class="color-box"
+        style="cursor: pointer"
+        @click="changeTage(item)"
+      >
+        <img :src="item.color" alt="" />
+        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }">{{
+          t(item.label)
+        }}</span>
+      </div>
     </div>
+
     <div class="page">
       <span class="sp"
         >{{ t('total') }}<span class="num">{{ toThousands(totalCount) }}</span
@@ -432,8 +471,17 @@ const inputSlider = (value: number) => {
               alt=""
             />
             <img
-              v-if="param.contributeType === 'comment'"
+              v-if="
+                param.contributeType === 'comment' && item.is_main_feature === 0
+              "
               src="@/assets/text.png"
+              alt=""
+            />
+            <img
+              v-if="
+                param.contributeType === 'comment' && item.is_main_feature === 1
+              "
+              src="@/assets/comment.png"
               alt=""
             />
           </div>
