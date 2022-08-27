@@ -305,13 +305,16 @@ const goToUser = (data: IObject) => {
 </template>
 <style scoped lang="scss">
 @import '@/shared/styles/style.scss';
-.theSecondForm {
-  padding-right: 24px;
-}
+// .theSecondForm {
+//   // padding-right: 24px;
+// }
 .ranking-list {
   display: grid;
   grid-template-columns: 100%;
-  padding-right: 24px;
+  // padding-right: 24px;
+  :deep(.el-scrollbar__bar.is-horizontal) {
+    height: 0px;
+  }
   .caption {
     font-size: 16px;
     color: #000;

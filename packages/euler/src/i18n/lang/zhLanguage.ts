@@ -137,5 +137,7 @@ export default {
   Cancel:'取消',
   titleConfirm:'您确定要退出吗? 退出后，页面会自动刷新',
   pleaseConfirm:'请确认',
+  General:'常规评论',
+  Order:'命令型评论'
 
 };

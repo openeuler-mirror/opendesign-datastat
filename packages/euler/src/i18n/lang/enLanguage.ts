@@ -139,5 +139,6 @@ export default {
   Cancel:'Cancel',
   titleConfirm:'Are you sure you want to exit? The page is refreshed after you exit.',
   pleaseConfirm:'Confirm',
-
+  General:'General Comment',
+  Order:'Order Comment'
 };

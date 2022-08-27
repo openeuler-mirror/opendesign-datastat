@@ -136,11 +136,14 @@ function createClient(community: string) {
   }
   return new AuthenticationClient(obj.openeuler);
 }
-
+// scope配置，设置登录后用户返回信息
+const scopeConfig = {
+  scope: 'openid profile username',
+};
 export function showGuard(community: string) {
   const client = createClient(community);
   // 构造 OIDC 授权登录 URL
-  const url = client.buildAuthorizeUrl();
+  const url = client.buildAuthorizeUrl(scopeConfig);
   // 如果需要获取 Refresh token，请在 scope 中加入 offline_access 项
   const url2 = client.buildAuthorizeUrl({
     scope: 'openid profile offline_access',
