@@ -241,8 +241,8 @@ const getDetailsData = () => {
     .then((data) => {
       const value = data?.data || [];
       totalCount.value = data?.totalCount || 0;
-      detailsData.value = value;
-      reallData.value = value;
+      detailsData.value = value[props.sig];
+      reallData.value = value[props.sig];
       cursorValue.value = data?.cursor || '';
       if (
         param.value.contributeType === 'pr' ||
