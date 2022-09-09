@@ -223,7 +223,7 @@ const filterReallData = () => {
   if (param.value.contributeType === 'comment') {
     reallData.value = reallData.value.filter((item) => {
       return commentSelectBox.value.some((it) => {
-        return it.isSelected && item.is_main_feature === it.key;
+        return it.isSelected && item.is_invalid_comment === it.key;
       });
     });
   } else {
@@ -472,14 +472,14 @@ const inputSlider = (value: number) => {
             />
             <img
               v-if="
-                param.contributeType === 'comment' && item.is_main_feature === 0
+                param.contributeType === 'comment' && item.is_invalid_comment === 0
               "
               src="@/assets/text.png"
               alt=""
             />
             <img
               v-if="
-                param.contributeType === 'comment' && item.is_main_feature === 1
+                param.contributeType === 'comment' && item.is_invalid_comment === 1
               "
               src="@/assets/comment.png"
               alt=""

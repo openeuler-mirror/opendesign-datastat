@@ -139,7 +139,7 @@ const filterReallData = () => {
   if (param.value.contributeType === 'comment') {
     reallData.value = reallData.value.filter((item) => {
       return commentSelectBox.value.some((it) => {
-        return it.isSelected && item.is_main_feature === it.key;
+        return it.isSelected && item.is_invalid_comment === it.key;
       });
     });
   } else {
@@ -246,8 +246,8 @@ const getDetailsData = () => {
     .then((data) => {
       const value = data?.data || [];
       totalCount.value = data?.totalCount || 0;
-      detailsData.value = value;
-      reallData.value = value;
+      detailsData.value = value[props.sig];
+      reallData.value = value[props.sig];
       cursorValue.value = data?.cursor || '';
       if (param.value.contributeType === 'pr' ||
         param.value.contributeType === 'comment') {
@@ -438,8 +438,17 @@ const commentSelectBox = ref([
               alt=""
             />
             <img
-              v-if="param.contributeType === 'comment'"
+              v-if="
+                param.contributeType === 'comment' && item.is_invalid_comment === 0
+              "
               src="@/assets/text.png"
+              alt=""
+            />
+            <img
+              v-if="
+                param.contributeType === 'comment' && item.is_invalid_comment === 1
+              "
+              src="@/assets/comment.png"
               alt=""
             />
           </div>
