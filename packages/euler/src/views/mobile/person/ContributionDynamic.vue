@@ -16,6 +16,7 @@ import ONoDataImage from 'shared/components/ONoDataImage.vue';
 import MainPR from '@/assets/MainPR.png';
 import CommonPR from '@/assets/CommonPR.png';
 import comment from '@/assets/comment.png';
+import noclick from '@/assets/noclick.png';
 import text from '@/assets/text.png';
 import { Search } from '@element-plus/icons-vue';
 const { t } = useI18n();
@@ -233,7 +234,7 @@ const getprlistData = () => {
     selData.value = seldata.sort((a: { name: string }, b: { name: string }) =>
       a.name.localeCompare(b.name)
     );
-     firstreallData.value = selData.value;
+    firstreallData.value = selData.value;
   });
 };
 getprlistData();
@@ -249,8 +250,10 @@ const getDetailsData = () => {
       detailsData.value = value[props.sig];
       reallData.value = value[props.sig];
       cursorValue.value = data?.cursor || '';
-      if (param.value.contributeType === 'pr' ||
-        param.value.contributeType === 'comment') {
+      if (
+        param.value.contributeType === 'pr' ||
+        param.value.contributeType === 'comment'
+      ) {
         filterReallData();
       }
       loading.value = false;
@@ -374,7 +377,7 @@ const commentSelectBox = ref([
       </template>
     </mobile-o-form-radio>
   </div>
-  <div class="detail">
+  <div class="detail" v-if="reallData?.length">
     <!-- <div v-if="param.contributeType === 'pr'" class="prType">
       <div
         v-for="item in contributionSelectBox"
@@ -389,7 +392,11 @@ const commentSelectBox = ref([
         >
       </div>
     </div> -->
-   <div v-if="param.contributeType === 'issue'" class="prType">
+    <div v-if="param.contributeType === 'pr'" class="prType">
+      <img :src="CommonPR" alt="" />
+      <span class="sp">{{ t('general') }} PR</span>
+    </div>
+    <div v-if="param.contributeType === 'issue'" class="prType">
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
     <div v-if="param.contributeType === 'comment'" class="prType">
@@ -400,14 +407,14 @@ const commentSelectBox = ref([
         style="cursor: pointer"
         @click="changeTage(item)"
       >
-        <img :src="item.color" alt="" />
-        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }">{{
+        <img :src="item.isSelected ? item.color : noclick" alt="" />
+        <span class="sp" :style="{ color: item.isSelected ? '' : '#CCCCCC' }">{{
           t(item.label)
         }}</span>
       </div>
     </div>
   </div>
-  <div v-if="reallData.length"  v-loading="loading" class="bar-panel">
+  <div v-if="reallData?.length" v-loading="loading" class="bar-panel">
     <ul class="bar-content">
       <li
         v-for="(item, index) in reallData.slice(
@@ -439,28 +446,32 @@ const commentSelectBox = ref([
             />
             <img
               v-if="
-                param.contributeType === 'comment' && item.is_invalid_comment === 1
+                param.contributeType === 'comment' &&
+                item.is_invalid_comment === 1
               "
               src="@/assets/text.png"
               alt=""
             />
             <img
               v-if="
-                param.contributeType === 'comment' && item.is_invalid_comment === 0
+                param.contributeType === 'comment' &&
+                item.is_invalid_comment === 0
               "
               src="@/assets/comment.png"
               alt=""
             />
           </div>
           <div class="infos-text">
-            <span v-if="param.contributeType === 'comment'">{{ t('comment') }} </span
+            <span v-if="param.contributeType === 'comment'"
+              >{{ t('comment') }} </span
             ><span v-else>{{ t('In') }}</span>
             <a
               class="index"
               :href="`https://gitee.com/${item.repo}`"
               target="_blank"
               >{{ item.repo }}</a
-            ><span v-if="param.contributeType === 'pr'">{{ t('create') }} Pull Request</span
+            ><span v-if="param.contributeType === 'pr'"
+              >{{ t('create') }} Pull Request</span
             ><span v-else-if="param.contributeType === 'issue'"
               >{{ t('create') }} {{ t('task') }}</span
             ><span v-else> {{ t('de') }} Pull Request</span>
@@ -475,10 +486,10 @@ const commentSelectBox = ref([
   <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
     <o-mobile-pagination
-      v-show="reallData.length > 10"
+      v-show="reallData?.length > 10"
       :current-page="currentPage"
       :page-size="10"
-      :total="reallData.length"
+      :total="reallData?.length"
       @current-change="handleCurrentChange"
     />
   </div>
