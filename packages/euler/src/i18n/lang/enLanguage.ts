@@ -74,6 +74,7 @@ export default {
   company: 'Organization',
   interestGroup: 'SIG',
   ranking: 'Rank',
+  Number:'Number',
   backVitality: 'Back to Overview',
   searchTips:
     'The organization you are  searching for has no contributions under the current search criteria. Try  different search criteria.   ',

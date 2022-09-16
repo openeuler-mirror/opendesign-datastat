@@ -357,7 +357,7 @@ const goToSigs = (title: any) => {
               type="index"
               width="48"
               align="center"
-              :label="t('ranking')"
+              :label="t('Number')"
             />
             <el-table-column
               prop="gitee_id"
@@ -399,10 +399,10 @@ const goToSigs = (title: any) => {
     >
       <div class="info">
         <h3>{{ useStaff.title }}</h3>
-        <p>
+        <!-- <p>
           <span class="index">{{ t('ranking') }}</span>
           <span class="numberIndex"> #{{ useStaff.sigRank }}</span>
-        </p>
+        </p> -->
       </div>
       <div class="info">
         <p>

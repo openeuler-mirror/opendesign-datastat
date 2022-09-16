@@ -76,12 +76,12 @@
               <div class="lable">
                 {{ val.sig_names }}
               </div>
-              <div class="info">
+              <!-- <div class="info">
                 <p>
                   <span class="index">{{ t('ranking') }}</span>
                   <span class="numberIndex"> #{{ val.rank }}</span>
                 </p>
-              </div>
+              </div> -->
               <div class="info">
                 <p>
                   <span class="index">{{ t('active') }}</span>
@@ -181,12 +181,12 @@
               <div class="lable">
                 {{ val.sig_names }}
               </div>
-              <div class="info">
+              <!-- <div class="info">
                 <p>
                   <span class="index">{{ t('ranking') }}</span>
                   <span class="numberIndex"> #{{ val.rank }}</span>
                 </p>
-              </div>
+              </div> -->
               <div class="info">
                 <p>
                   <span class="index">{{ t('active') }}</span>

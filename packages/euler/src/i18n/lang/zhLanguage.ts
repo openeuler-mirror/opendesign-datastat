@@ -81,6 +81,7 @@ export default {
   Participated2: '个特别兴趣小组',
   Participated3: '共有',
   Participated4: '个单位会员参与',
+  Number:'序号',
   footer: {
     about: '关于数据',
     privacy: '隐私政策',

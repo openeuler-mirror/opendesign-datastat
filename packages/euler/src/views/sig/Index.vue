@@ -19,6 +19,8 @@ import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
 import { ElScrollbar } from 'element-plus';
+import AppFooter from '@/components/AppFooter.vue';
+// import { hasPermission } from 'shared/utils/login';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -308,7 +310,7 @@ const showDropdown = (e: any) => {
 
             <table-list :sig="sencondTitle" />
           </div>
-          <div class="contributors-panel">
+          <div class="contributors-panel-last">
             <h3 id="userContributor" class="title">
               {{ sencondTitle + ' ' + t('userContributor') }}
             </h3>
@@ -317,16 +319,30 @@ const showDropdown = (e: any) => {
         </div>
       </div>
     </div>
+    <footer>
+      <app-footer></app-footer>
+    </footer>
   </div>
-  <footer>
-    <app-footer></app-footer>
-  </footer>
 </template>
 <style lang="scss" scoped>
 .contributors-panel {
   padding: 24px;
   background: #fff;
   margin-bottom: 24px;
+  .title {
+    font-size: 16px;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .img {
+    display: flex;
+  }
+}
+.contributors-panel-last {
+  padding: 24px;
+  background: #fff;
+  // margin-bottom: 24px;
   .title {
     font-size: 16px;
     color: #000;

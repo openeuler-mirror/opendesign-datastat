@@ -248,7 +248,7 @@ const goToSig = (data: IObject) => {
             </h3>
             <sig-contribution :user="sencondTitle"></sig-contribution>
           </div>
-          <div class="contributors-panel">
+          <div class="contributors-panel-last">
             <h3 id="DynamicContribute" class="title">
               {{ sencondTitle + ' ' + t('DynamicContribute') }}
             </h3>
@@ -257,17 +257,29 @@ const goToSig = (data: IObject) => {
         </div>
       </div>
     </div>
-  </div>
-
-  <footer>
+    <footer>
     <app-footer></app-footer>
   </footer>
+  </div>
+
+
 </template>
 <style lang="scss" scoped>
 .contributors-panel {
   padding: 24px;
   background: #fff;
   margin-bottom: 24px;
+  .title {
+    font-size: 16px;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+}
+.contributors-panel-last{
+  padding: 24px;
+  background: #fff;
+  // margin-bottom: 24px;
   .title {
     font-size: 16px;
     color: #000;

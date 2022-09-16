@@ -109,6 +109,13 @@ const anchorData = computed(() => {
       ]
     : ['companyContributor', 'userContributor'];
 });
+// const anchorData = [
+//   'companyContributor',
+//   'userContributor',
+//   'groupActive',
+//   'companyRelations',
+//   'groupRelations',
+// ];
 const goToCompany = () => {
   const routeData: any = router.resolve(`/${useCommon.language}/company`);
   window.open(routeData.href, '_blank');
@@ -167,7 +174,7 @@ const goToCompany = () => {
                 <el-table-column
                   type="index"
                   align="center"
-                  :label="t('ranking')"
+                  :label="t('Number')"
                   width="100"
                 />
                 <el-table-column
@@ -203,7 +210,7 @@ const goToCompany = () => {
                   type="index"
                   :index="indexMethod"
                   align="center"
-                  :label="t('ranking')"
+                  :label="t('Number')"
                   width="100"
                 ></el-table-column>
                 <el-table-column
@@ -232,6 +239,7 @@ const goToCompany = () => {
         <authority-management
           v-if="hasPermission('sigRead')"
         ></authority-management>
+        <!-- <authority-management /> -->
       </div>
       <footer>
         <app-footer></app-footer>

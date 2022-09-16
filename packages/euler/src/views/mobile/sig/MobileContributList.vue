@@ -202,7 +202,7 @@ const goToUser = (data: IObject) => {
         <el-table-column
           prop="rank"
           align="center"
-          :label="t('ranking')"
+          :label="t('Number')"
           width="40"
         />
         <el-table-column
