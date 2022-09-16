@@ -562,7 +562,7 @@ const goToUser = (data: IObject) => {
                   <el-table-column
                     prop="rank"
                     align="center"
-                    :label="t('ranking')"
+                    :label="t('Number')"
                     width="120"
                   />
                   <el-table-column
@@ -635,11 +635,13 @@ const goToUser = (data: IObject) => {
           </div>
         </div>
       </div>
+
     </div>
-  </div>
-  <footer>
+    <footer>
     <app-footer></app-footer>
   </footer>
+  </div>
+
 </template>
 <style lang="scss" scoped>
 @import '@/shared/styles/style.scss';
@@ -1004,7 +1006,7 @@ const goToUser = (data: IObject) => {
   padding-bottom: 24px;
   background: #fff;
   margin-top: 60px;
-  margin-bottom: 60px;
+  // margin-bottom: 60px;
   .title {
     font-size: 24px;
     color: #000;

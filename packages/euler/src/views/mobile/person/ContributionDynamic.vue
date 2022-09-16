@@ -313,13 +313,13 @@ const commentSelectBox = ref([
     color: comment,
     isSelected: true,
     label: 'General',
-    key: 1,
+    key: 0,
   },
   {
     color: text,
     isSelected: true,
     label: 'Order',
-    key: 0,
+    key: 1,
   },
 ]);
 </script>
@@ -375,7 +375,7 @@ const commentSelectBox = ref([
     </mobile-o-form-radio>
   </div>
   <div class="detail">
-    <div v-if="param.contributeType === 'pr'" class="prType">
+    <!-- <div v-if="param.contributeType === 'pr'" class="prType">
       <div
         v-for="item in contributionSelectBox"
         :key="item.label"
@@ -388,11 +388,11 @@ const commentSelectBox = ref([
           >{{ t(item.label) }} PR</span
         >
       </div>
-    </div>
-   <div v-else-if="param.contributeType === 'issue'" class="prType">
+    </div> -->
+   <div v-if="param.contributeType === 'issue'" class="prType">
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
-    <div v-else class="prType">
+    <div v-if="param.contributeType === 'comment'" class="prType">
       <div
         v-for="item in commentSelectBox"
         :key="item.label"
@@ -439,14 +439,14 @@ const commentSelectBox = ref([
             />
             <img
               v-if="
-                param.contributeType === 'comment' && item.is_invalid_comment === 0
+                param.contributeType === 'comment' && item.is_invalid_comment === 1
               "
               src="@/assets/text.png"
               alt=""
             />
             <img
               v-if="
-                param.contributeType === 'comment' && item.is_invalid_comment === 1
+                param.contributeType === 'comment' && item.is_invalid_comment === 0
               "
               src="@/assets/comment.png"
               alt=""
