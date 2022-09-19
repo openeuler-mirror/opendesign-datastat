@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { IObject } from '../@types/interface';
-
+import { hasPermission } from '../utils/login';
 const props = defineProps({
   data: {
     type: Object,
@@ -72,6 +72,7 @@ const router = useRouter();
 const colorin = '#000';
 const colornone = '#ccc';
 const colorCompany = '#002FA7';
+const nocolor = '#cccccc';
 const colorSig = '#FEB32A';
 const width = 1200;
 const radius = width / 2.8;
@@ -101,8 +102,10 @@ function id(node: IObject): string {
   return `${node.parent ? `${id(node.parent)}.` : ''}${node.data.name}`;
 }
 const getTextColor = (d: IObject) => {
-  if (d?.parent?.data?.name === 'company') {
+  if (d?.parent?.data?.name === 'company' && hasPermission('sigRead')) {
     return colorCompany;
+  } else if (d?.parent?.data?.name === 'company' && !hasPermission('sigRead')) {
+    return nocolor;
   }
   return colorSig;
 };
@@ -127,7 +130,7 @@ const getTipsHtml = (d: IObject) => {
   const jump = () => {
     router.push('/${localStorage.lang}/company/${d.data.name}');
   };
-  if (d?.parent?.data?.name === 'company' && d.data.key !== '学生') {
+  if (d?.parent?.data?.name === 'company' && hasPermission('sigRead')) {
     return `<div>${t('company')}</div>
             <div style="padding: 8px 0">
               <span style="font-size: 16px" class="mark">${d.data.name}</span>
@@ -145,7 +148,7 @@ const getTipsHtml = (d: IObject) => {
         '_blank'
       )"
             >${t('viewDetail')} <span style="color: #002fa7">→</span></div>`;
-  } else if (d?.parent?.data?.name === 'company' && d.data.key === '学生') {
+  } else if (d?.parent?.data?.name === 'company' && !hasPermission('sigRead')) {
     return `<div>${t('company')}</div>
             <div style="padding: 8px 0">
               <span style="font-size: 16px" class="mark">${d.data.name}</span>
@@ -196,7 +199,7 @@ const chart = () => {
     .attr('text-anchor', (d) => (d.x < Math.PI ? 'start' : 'end'))
     .attr('transform', (d) => (d.x >= Math.PI ? 'rotate(180)' : null))
     .attr('cursor', (d: IObject) =>
-      d.data.key !== '学生' ? 'pointer' : 'auto'
+      hasPermission('sigRead') ? 'pointer' : 'auto'
     )
     .text((d: IObject) => d.data.name)
     .each(function (d: IObject) {
@@ -224,7 +227,7 @@ const chart = () => {
     if (isPhone) {
       return;
     }
-    if (d?.parent?.data?.name === 'company' && d.data.key !== '学生') {
+    if (d?.parent?.data?.name === 'company' && hasPermission('sigRead')) {
       window.open(
         `${window?.location?.origin}/${localStorage?.lang}/company/${d.data.key}`,
         '_blank'
