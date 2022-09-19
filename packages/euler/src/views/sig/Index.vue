@@ -4,7 +4,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import HistoricalTrend from './HistoricalTrend.vue';
 import CurrentTrend from './CurrentTrend.vue';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch ,computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import TableList from './TableList.vue';
@@ -20,7 +20,7 @@ import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
 import { ElScrollbar } from 'element-plus';
 import AppFooter from '@/components/AppFooter.vue';
-// import { hasPermission } from 'shared/utils/login';
+import { hasPermission } from 'shared/utils/login';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -44,12 +44,16 @@ const getDrownData = () => {
   });
 };
 
-const anchorData = [
-  'currentVitalityIndex',
-  'historicalVitalityIndicators',
-  'companyContributor',
-  'userContributor',
-];
+const anchorData = computed(() => {
+  return hasPermission('sigRead')
+    ? [
+        'currentVitalityIndex',
+        'historicalVitalityIndicators',
+        'companyContributor',
+        'userContributor',
+      ]
+    : ['companyContributor', 'userContributor'];
+});
 const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
   getllData();
@@ -277,7 +281,7 @@ const showDropdown = (e: any) => {
           </div>
         </div>
         <div class="main-right">
-          <div class="contributors-panel">
+          <div v-if="hasPermission('sigRead')" class="contributors-panel">
             <h3 id="currentVitalityIndex" class="title">
               {{ sencondTitle + ' ' + t('currentVitalityIndex') }}
             </h3>
@@ -297,7 +301,7 @@ const showDropdown = (e: any) => {
               <current-trend :sig="sencondTitle"></current-trend>
             </div>
           </div>
-          <div class="contributors-panel">
+          <div v-if="hasPermission('sigRead')" class="contributors-panel">
             <h3 id="historicalVitalityIndicators" class="title">
               {{ sencondTitle + ' ' + t('historicalVitalityIndicators') }}
             </h3>

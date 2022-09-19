@@ -384,7 +384,7 @@ const inputSlider = (value: number) => {
       </template>
     </o-form-radio>
   </div>
-  <div v-if="reallData?.length" class="detail">
+  <div  class="detail">
     <!-- <div v-if="param.contributeType === 'pr'" class="prType">
       <div
         v-for="item in contributionSelectBox"
@@ -399,11 +399,17 @@ const inputSlider = (value: number) => {
         >
       </div>
     </div> -->
-    <div v-if="param.contributeType === 'pr'" class="prType">
+    <div
+      v-if="param.contributeType === 'pr' && reallData?.length"
+      class="prType"
+    >
       <img :src="CommonPR" alt="" />
-      <span class="sp">{{ t('general') }} PR</span>
+      <span class="sp">PR</span>
     </div>
-    <div v-if="param.contributeType === 'issue'" class="prType">
+    <div
+      v-if="param.contributeType === 'issue' && reallData?.length"
+      class="prType"
+    >
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
     <div v-if="param.contributeType === 'comment'" class="prType">
@@ -421,7 +427,7 @@ const inputSlider = (value: number) => {
       </div>
     </div>
 
-    <div class="page">
+    <div v-if="reallData?.length" class="page">
       <span class="sp"
         >{{ t('total') }}<span class="num">{{ toThousands(totalCount) }}</span
         >{{ t('result') }}</span
