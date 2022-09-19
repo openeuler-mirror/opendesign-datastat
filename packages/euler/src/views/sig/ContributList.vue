@@ -11,6 +11,7 @@ import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import { useCommonStore } from '@/stores/common';
 import { useRouter } from 'vue-router';
+import { hasPermission } from 'shared/utils/login';
 const router = useRouter();
 const useCommon = useCommonStore();
 const { t } = useI18n();
@@ -161,14 +162,17 @@ const getcontributeValue = (item: any) => {
 };
 // 跳转个人详情
 const goToUser = (data: IObject) => {
-  const routeData: any = router.resolve({
-    path: `/${useCommon.language}/user/${data}`,
-    query: {
-      group: 'sig',
-      organization: props.sig,
-    },
-  });
-  window.open(routeData.href, '_blank');
+  if (hasPermission('sigRead')) {
+    const routeData: any = router.resolve({
+      path: `/${useCommon.language}/user/${data}`,
+      query: {
+        group: 'sig',
+        organization: props.sig,
+      },
+    });
+    window.open(routeData.href, '_blank');
+  } else {
+  }
 };
 </script>
 <template>

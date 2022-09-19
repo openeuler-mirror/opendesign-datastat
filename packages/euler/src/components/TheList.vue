@@ -82,7 +82,7 @@
                   <span class="numberIndex"> #{{ val.rank }}</span>
                 </p>
               </div> -->
-              <div class="info">
+              <div class="info" v-if="hasPermission('sigRead')">
                 <p>
                   <span class="index">{{ t('active') }}</span>
                   <span class="numberIndex">
@@ -187,7 +187,7 @@
                   <span class="numberIndex"> #{{ val.rank }}</span>
                 </p>
               </div> -->
-              <div class="info">
+              <div class="info" v-if="hasPermission('sigRead')">
                 <p>
                   <span class="index">{{ t('active') }}</span>
                   <span class="numberIndex">
@@ -219,6 +219,7 @@ import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
+import { hasPermission } from 'shared/utils/login';
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();

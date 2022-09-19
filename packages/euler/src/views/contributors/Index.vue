@@ -98,24 +98,24 @@ watch(
     }
   }
 );
-const anchorData = computed(() => {
-  return hasPermission('sigRead')
-    ? [
-        'companyContributor',
-        'userContributor',
-        'groupActive',
-        'companyRelations',
-        'groupRelations',
-      ]
-    : ['companyContributor', 'userContributor'];
-});
-// const anchorData = [
-//   'companyContributor',
-//   'userContributor',
-//   'groupActive',
-//   'companyRelations',
-//   'groupRelations',
-// ];
+// const anchorData = computed(() => {
+//   return hasPermission('sigRead')
+//     ? [
+//         'companyContributor',
+//         'userContributor',
+//         'groupActive',
+//         'companyRelations',
+//         'groupRelations',
+//       ]
+//     : ['companyContributor', 'userContributor'];
+// });
+const anchorData = [
+  'companyContributor',
+  'userContributor',
+  'groupActive',
+  'companyRelations',
+  'groupRelations',
+];
 const goToCompany = () => {
   const routeData: any = router.resolve(`/${useCommon.language}/company`);
   window.open(routeData.href, '_blank');
@@ -143,7 +143,7 @@ const goToCompany = () => {
             <p class="text">{{ t('searchTips') }}</p>
           </div>
           <the-bar v-else></the-bar>
-          <div class="goToCompany">
+          <div v-if="hasPermission('sigRead')" class="goToCompany">
             <span class="title" @click="goToCompany">{{
               t('viewOrganizationDetail')
             }}</span
@@ -236,10 +236,10 @@ const goToCompany = () => {
             </div>
           </div>
         </div>
-        <authority-management
+        <!-- <authority-management
           v-if="hasPermission('sigRead')"
-        ></authority-management>
-        <!-- <authority-management /> -->
+        ></authority-management> -->
+        <authority-management></authority-management>
       </div>
       <footer>
         <app-footer></app-footer>
