@@ -12,7 +12,7 @@ const LOGIN_KEYS = {
 function setCookie(cname: string, cvalue: string, exdays: number) {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  const expires = `expires=${d.toUTCString()}`;
+  const expires = `expires=${d.toUTCString()};path=/`;
   document.cookie = `${cname}=${cvalue}; ${expires}`;
 }
 function getCookie(cname: string) {
@@ -157,7 +157,7 @@ export function tokenFailIndicateLogin() {
   saveUserAuth();
   const { guardAuthClient } = useStoreData();
   guardAuthClient.value = {};
-  goToHome();
+  // goToHome();
 }
 
 /**

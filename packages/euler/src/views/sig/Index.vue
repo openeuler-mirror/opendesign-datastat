@@ -4,7 +4,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import HistoricalTrend from './HistoricalTrend.vue';
 import CurrentTrend from './CurrentTrend.vue';
-import { ref, onMounted, watch ,computed } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import TableList from './TableList.vue';
@@ -30,6 +30,7 @@ const drownData = ref([] as any[]);
 // sencondTitle.value = route.params.name as string;
 const getDrownData = () => {
   let community = 'openeuler';
+
   querySigName(community).then((data) => {
     const allSigs = data?.data || {};
     allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
@@ -65,6 +66,7 @@ const getCubeData = () => {
     community: 'openeuler',
     sig: sencondTitle.value,
   };
+
   querySigRepos(query).then((data) => {
     const value = data?.data || {};
     cubeData.value = value[sencondTitle.value];
@@ -89,9 +91,11 @@ const querySorceData = () => {
     sig: sencondTitle.value,
     timeRange: 'lastonemonth',
   };
-  getSigScore(params).then((data) => {
-    sorceData.value = data.data.pop();
-  });
+  if (hasPermission('sigRead')) {
+    getSigScore(params).then((data) => {
+      sorceData.value = data.data.pop();
+    });
+  }
 };
 // 跳转首页
 const goToTetail = () => {
@@ -127,6 +131,7 @@ const querySigInfoData = () => {
     community: openCommunityInfo.name,
     sig: sencondTitle.value,
   };
+
   querySigInfo(params).then((data) => {
     sigInfo.value = data?.data[0] || {};
   });
@@ -288,8 +293,12 @@ const showDropdown = (e: any) => {
             <div class="rank">
               <span>{{ t('communityRankings') }}</span>
               <span> # </span>
-              <span class="rank-num">{{ sorceData.rank }} </span>
-              <span>/ {{ drownData.length }}</span>
+              <span v-if="hasPermission('sigRead')" class="rank-num"
+                >{{ sorceData.rank }}
+              </span>
+              <span v-if="hasPermission('sigRead')"
+                >/ {{ drownData.length }}</span
+              >
             </div>
             <div class="img">
               <o-echart-gauge
@@ -305,7 +314,9 @@ const showDropdown = (e: any) => {
             <h3 id="historicalVitalityIndicators" class="title">
               {{ sencondTitle + ' ' + t('historicalVitalityIndicators') }}
             </h3>
-            <historical-trend :sig="sencondTitle"></historical-trend>
+            <historical-trend
+              :sig="sencondTitle"
+            ></historical-trend>
           </div>
           <div class="contributors-panel">
             <h3 id="companyContributor" class="title">
