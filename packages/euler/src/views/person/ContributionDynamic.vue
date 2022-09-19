@@ -14,6 +14,7 @@ import {
 import MainPR from '@/assets/MainPR.png';
 import CommonPR from '@/assets/CommonPR.png';
 import comment from '@/assets/comment.png';
+import noclick from '@/assets/noclick.png';
 import text from '@/assets/text.png';
 import { Search } from '@element-plus/icons-vue';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
@@ -383,7 +384,7 @@ const inputSlider = (value: number) => {
       </template>
     </o-form-radio>
   </div>
-  <div class="detail">
+  <div v-if="reallData?.length" class="detail">
     <!-- <div v-if="param.contributeType === 'pr'" class="prType">
       <div
         v-for="item in contributionSelectBox"
@@ -398,6 +399,10 @@ const inputSlider = (value: number) => {
         >
       </div>
     </div> -->
+    <div v-if="param.contributeType === 'pr'" class="prType">
+      <img :src="CommonPR" alt="" />
+      <span class="sp">{{ t('general') }} PR</span>
+    </div>
     <div v-if="param.contributeType === 'issue'" class="prType">
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
@@ -409,8 +414,8 @@ const inputSlider = (value: number) => {
         style="cursor: pointer"
         @click="changeTage(item)"
       >
-        <img :src="item.color" alt="" />
-        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }">{{
+        <img :src="item.isSelected ? item.color : noclick" alt="" />
+        <span class="sp" :style="{ color: item.isSelected ? '' : '#CCCCCC' }">{{
           t(item.label)
         }}</span>
       </div>
@@ -440,10 +445,10 @@ const inputSlider = (value: number) => {
       >
     </div>
   </div>
-  <div v-if="reallData.length" v-loading="loading" class="bar-panel">
+  <div v-if="reallData?.length" v-loading="loading" class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in reallData.slice(
+        v-for="(item, index) in reallData?.slice(
           (currentPage - 1) * pageSize,
           currentPage * pageSize
         )"
@@ -472,14 +477,16 @@ const inputSlider = (value: number) => {
             />
             <img
               v-if="
-                param.contributeType === 'comment' && item.is_invalid_comment === 1
+                param.contributeType === 'comment' &&
+                item.is_invalid_comment === 1
               "
               src="@/assets/text.png"
               alt=""
             />
             <img
               v-if="
-                param.contributeType === 'comment' && item.is_invalid_comment === 0
+                param.contributeType === 'comment' &&
+                item.is_invalid_comment === 0
               "
               src="@/assets/comment.png"
               alt=""
@@ -510,12 +517,12 @@ const inputSlider = (value: number) => {
   <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
     <el-pagination
-      v-show="reallData.length / pageSize > 1"
+      v-show="reallData?.length / pageSize > 1"
       v-model:page-size="pageSize"
       v-model:currentPage="currentPage"
       background
       layout="prev, pager, next,jumper"
-      :total="reallData.length"
+      :total="reallData?.length"
       @current-change="handleCurrentChange"
     />
   </div>
@@ -608,6 +615,7 @@ const inputSlider = (value: number) => {
   display: flex;
   align-items: center;
   position: relative;
+  margin-top: 16px;
   .prType {
     display: flex;
     align-items: center;
