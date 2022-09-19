@@ -14,6 +14,7 @@ import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
+import { hasPermission } from 'shared/utils/login';
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();
@@ -213,10 +214,12 @@ watch(
 
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/company/${data.company_cn}`
-  );
-  window.open(routeData.href, '_blank');
+  if (hasPermission('sigRead')) {
+    const routeData: any = router.resolve(
+      `/${useCommon.language}/company/${data.company_cn}`
+    );
+    window.open(routeData.href, '_blank');
+  }
 };
 </script>
 
@@ -288,8 +291,8 @@ const goToCompany = (data: IObject) => {
                 : item.company_en
             "
             :style="{
-              cursor: 'pointer',
-              color: '#002FA7',
+              cursor: hasPermission('sigRead') ? 'pointer' : 'auto',
+              color: hasPermission('sigRead') ? '#002FA7' : '#555555',
             }"
             @click="goToCompany(item)"
             >{{
