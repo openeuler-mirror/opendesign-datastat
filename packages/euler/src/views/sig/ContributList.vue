@@ -12,6 +12,7 @@ import OIcon from 'shared/components/OIcon.vue';
 import { useCommonStore } from '@/stores/common';
 import { useRouter } from 'vue-router';
 import { hasPermission } from 'shared/utils/login';
+import ONoDataImage from 'shared/components/ONoDataImage.vue';
 const router = useRouter();
 const useCommon = useCommonStore();
 const { t } = useI18n();
@@ -47,7 +48,7 @@ const filterReallData = () => {
 const reallData = ref([] as IObject[]);
 const param = ref({
   contributeType: 'pr',
-  timeRange: 'lastonemonth',
+  timeRange: 'all',
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
 } as IObject);
@@ -88,7 +89,7 @@ const lastformOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'lastonemonth',
+      active: 'all',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
@@ -213,14 +214,19 @@ const goToUser = (data: IObject) => {
             'background-color': value.isSelected ? value.color : '#cccccc',
           }"
         ></div>
-        <span>{{ value.label }}</span>
+        <span
+          :style="{
+            color: value.isSelected ? '' : '#cccccc',
+          }"
+          >{{ value.label }}</span
+        >
       </div>
     </div>
     <div class="leader">
       <div class="leader-box">Leader</div>
       <span>SIG Leader</span>
     </div>
-    <div class="ranking-list">
+    <div v-if="reallData?.length" class="ranking-list">
       <div class="ranking-list-item">
         <p class="caption"></p>
         <el-table
@@ -291,6 +297,7 @@ const goToUser = (data: IObject) => {
         </el-table>
       </div>
     </div>
+    <div v-else><o-no-data-image></o-no-data-image></div>
     <div class="demo-pagination-block">
       <el-pagination
         v-show="reallData.length > 10"

@@ -3,7 +3,17 @@
     <div class="Innovation">{{ t('repositoryTechnology') }}</div>
     <el-row>
       <div v-for="value in getInnovationValue()" :key="value.feature">
-        <el-tooltip
+        <div
+          class="start-menu menu-item"
+          :style="({
+                '--diaphaneity': (20 + Number((Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
+                    value.arry.length) * 100) / 100).toFixed(2)) * 80) / 100,
+
+              } as any)"
+        >
+          <span class="start-menu-span">{{ value.feature }}</span>
+        </div>
+        <!-- <el-tooltip
           :key="value.feature"
           placement="bottom-end"
           effect="light"
@@ -47,9 +57,28 @@
               </p>
             </div>
           </template>
-        </el-tooltip>
+        </el-tooltip> -->
         <el-col>
-          <el-tooltip
+          <div
+            v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
+              (a.sig_names + '').localeCompare(b.sig_names + '')
+            )"
+            :key="ind"
+          >
+            <div
+              class="detail-menu menu-item"
+              :style="({
+                '--diaphaneity': (20 + Number(val.score) * 80) / 100,
+                '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
+              } as any)"
+              @click="goTo(val)"
+            >
+              <span class="detail-menu-span" @click="goTo(val)">
+                {{ val.sig_names }}</span
+              >
+            </div>
+          </div>
+          <!-- <el-tooltip
             v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
               (a.sig_names + '').localeCompare(b.sig_names + '')
             )"
@@ -76,12 +105,12 @@
               <div class="lable">
                 {{ val.sig_names }}
               </div>
-              <!-- <div class="info">
+              <div class="info">
                 <p>
                   <span class="index">{{ t('ranking') }}</span>
                   <span class="numberIndex"> #{{ val.rank }}</span>
                 </p>
-              </div> -->
+              </div>
               <div class="info" v-if="hasPermission('sigRead')">
                 <p>
                   <span class="index">{{ t('active') }}</span>
@@ -101,14 +130,24 @@
                 </div>
               </div>
             </template>
-          </el-tooltip>
+          </el-tooltip> -->
         </el-col>
       </div>
     </el-row>
     <div class="Community">{{ t('governanceAndOperation') }}</div>
     <el-row>
       <div v-for="value in getCommunityValue()" :key="value.feature">
-        <el-tooltip
+        <div
+          class="start-menu menu-item"
+          :style="({
+                '--diaphaneity': (20 + Number((Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
+                    value.arry.length) * 100) / 100).toFixed(2)) * 80) / 100,
+
+              } as any)"
+        >
+          <span class="start-menu-span">{{ value.feature }}</span>
+        </div>
+        <!-- <el-tooltip
           :key="value.feature"
           placement="bottom-end"
           effect="light"
@@ -152,9 +191,28 @@
               </p>
             </div>
           </template>
-        </el-tooltip>
+        </el-tooltip> -->
         <el-col>
-          <el-tooltip
+          <div
+            v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
+              (a.sig_names + '').localeCompare(b.sig_names + '')
+            )"
+            :key="ind"
+          >
+            <div
+              class="detail-menu menu-item"
+              :style="({
+                '--diaphaneity': (20 + Number(val.score) * 80) / 100,
+                '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
+              } as any)"
+              @click="goTo(val)"
+            >
+              <span class="detail-menu-span" @click="goTo(val)">
+                {{ val.sig_names }}</span
+              >
+            </div>
+          </div>
+          <!-- <el-tooltip
             v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
               (a.sig_names + '').localeCompare(b.sig_names + '')
             )"
@@ -181,12 +239,12 @@
               <div class="lable">
                 {{ val.sig_names }}
               </div>
-              <!-- <div class="info">
+              <div class="info">
                 <p>
                   <span class="index">{{ t('ranking') }}</span>
                   <span class="numberIndex"> #{{ val.rank }}</span>
                 </p>
-              </div> -->
+              </div>
               <div class="info" v-if="hasPermission('sigRead')">
                 <p>
                   <span class="index">{{ t('active') }}</span>
@@ -206,9 +264,10 @@
                 </div>
               </div>
             </template>
-          </el-tooltip>
-        </el-col></div
-    ></el-row>
+          </el-tooltip> -->
+        </el-col>
+      </div></el-row
+    >
   </div>
 </template>
 <script setup lang="ts">

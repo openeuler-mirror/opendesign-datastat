@@ -88,7 +88,8 @@ const scrollToTop = () => {
       v-for="(item, index) in data"
       :key="item"
       class="line"
-      :class="index ? '' : 'first-line'"
+      :class="index==1||index == 0 ? 'first-line' : ''"
+
     >
       <div class="item">
         <div
@@ -119,7 +120,8 @@ const scrollToTop = () => {
     border-left: 2px solid #bfbfbf;
     margin-left: 16px;
     position: relative;
-    height: 48px;
+    display: flex;
+    height: 68px;
     .item {
       position: absolute;
       bottom: -3px;
@@ -141,16 +143,16 @@ const scrollToTop = () => {
         font-size: 16px;
         color: #000;
         margin-left: 8px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        // overflow: hidden;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
         max-width: 180px;
         cursor: pointer;
       }
     }
   }
   .first-line {
-    height: 30px;
+    height: 45px;
   }
 }
 </style>
