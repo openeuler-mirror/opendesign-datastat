@@ -292,12 +292,8 @@ const showDropdown = (e: any) => {
             <div class="rank">
               <span>{{ t('communityRankings') }}</span>
               <span> # </span>
-              <span v-if="hasPermission('sigRead')" class="rank-num"
-                >{{ sorceData.rank }}
-              </span>
-              <span v-if="hasPermission('sigRead')"
-                >/ {{ drownData.length }}</span
-              >
+              <span class="rank-num">{{ sorceData.rank }} </span>
+              <span>/ {{ drownData.length }}</span>
             </div>
             <div class="img">
               <o-echart-gauge

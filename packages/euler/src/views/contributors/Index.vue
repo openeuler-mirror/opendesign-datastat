@@ -98,24 +98,30 @@ watch(
     }
   }
 );
-// const anchorData = computed(() => {
-//   return hasPermission('sigRead')
-//     ? [
-//         'companyContributor',
-//         'userContributor',
-//         'groupActive',
-//         'companyRelations',
-//         'groupRelations',
-//       ]
-//     : ['companyContributor', 'userContributor'];
-// });
-const anchorData = [
-  'companyContributor',
-  'userContributor',
-  'groupActive',
-  'companyRelations',
-  'groupRelations',
-];
+const anchorData = computed(() => {
+  return hasPermission('sigRead')
+    ? [
+        'companyContributor',
+        'userContributor',
+        'groupActive',
+        'companyRelations',
+        'groupRelations',
+      ]
+    : [
+        'companyContributor',
+        'userContributor',
+        'groupActive',
+        // 'companyRelations',
+        'groupRelations',
+      ];
+});
+// const anchorData = [
+//   'companyContributor',
+//   'userContributor',
+//   'groupActive',
+//   'companyRelations',
+//   'groupRelations',
+// ];
 const goToCompany = () => {
   const routeData: any = router.resolve(`/${useCommon.language}/company`);
   window.open(routeData.href, '_blank');

@@ -21,7 +21,7 @@
         />
       </div>
     </div>
-    <div class="contributors-panel">
+    <div class="contributors-panel"  v-if="hasPermission('sigRead')">
       <h3 id="companyRelations" class="title">
         {{ t('companyRelations') }}
       </h3>
@@ -136,6 +136,7 @@ import { queryCompanySigs, queryTCSigs } from 'shared/api';
 import { useCommonStore } from '@/stores/common';
 import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
+import { hasPermission } from 'shared/utils/login';
 const { t } = useI18n();
 const router = useRouter();
 const useCommon = useCommonStore();
