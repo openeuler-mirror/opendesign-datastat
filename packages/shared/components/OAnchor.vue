@@ -127,7 +127,8 @@ const scrollToTop = () => {
       bottom: -3px;
       left: -7px;
       display: flex;
-      align-items: center;
+
+      align-items: flex-start;
       .circle {
         width: 12px;
         height: 12px;

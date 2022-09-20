@@ -56,6 +56,7 @@ const getllData = () => {
 };
 onMounted(() => {
   getDrownData();
+  querySigInfoData();
 });
 // 跳转首页
 const goToTetail = () => {
