@@ -174,7 +174,7 @@ const photoSrc = computed(() => {
         </el-dropdown>
       </div>
 
-      <div class="opt-user">
+      <!-- <div class="opt-user">
         <loading-arc v-if="isLoggingIn"></loading-arc>
         <el-dropdown v-else-if="token">
           <div class="el-dropdown-link">
@@ -220,7 +220,7 @@ const photoSrc = computed(() => {
             >
           </span>
         </template>
-      </el-dialog>
+      </el-dialog> -->
     </div>
   </div>
   <div v-else class="app-header-mo">
