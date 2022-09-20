@@ -28,7 +28,7 @@ const props = defineProps({
 });
 const param = ref({
   contributeType: 'pr',
-  timeRange: 'lastonemonth',
+  timeRange: 'all',
   community: openCommunityInfo.name,
   user: computed(() => props.user),
   displayRange: '10',
@@ -85,7 +85,7 @@ const formOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'lastonemonth',
+      active: 'all',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },

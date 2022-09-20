@@ -18,7 +18,7 @@ const props = defineProps({
   },
   height: {
     type: String,
-    default: '576px',
+    default: '300px',
   },
   img: {
     type: String,
@@ -26,7 +26,7 @@ const props = defineProps({
   },
   width:{
     type: String,
-    default: '480px',
+    default: '380px',
   }
 });
 const { title, height, img, width } = toRefs(props);
@@ -40,7 +40,7 @@ const { title, height, img, width } = toRefs(props);
   color: #555555;
   justify-content: center;
   .title {
-    margin-top: 16px;
+    // margin-top: 8px;
   }
 }
 </style>

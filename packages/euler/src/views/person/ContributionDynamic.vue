@@ -36,7 +36,7 @@ const param = ref({
   community: 'openeuler',
   contributeType: 'pr',
   // pageSize: computed(() => value.value),
-  timeRange: 'lastonemonth',
+  timeRange: 'all',
 } as IObject);
 const selParam = () => {
   if (selvalue.value !== 'all' && selvalue.value !== '') {
@@ -74,7 +74,7 @@ const formOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'lastonemonth',
+      active: 'all',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },

@@ -29,7 +29,7 @@ const props = defineProps({
 });
 const param = ref({
   contributeType: 'pr',
-  timeRange: 'lastonemonth',
+  timeRange: 'all',
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
   displayRange: '10',
@@ -92,7 +92,7 @@ const formOption = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'timeRange',
-      active: 'lastonemonth',
+      active: 'all',
       list: [
         { label: t('from.lastonemonth'), value: 'lastonemonth' },
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
@@ -356,7 +356,7 @@ const goToCompany = (data: IObject) => {
         </el-tooltip>
       </li>
     </ul>
-    <div v-if="memberData.length" class="bar-columns">
+    <div v-if="memberData?.length" class="bar-columns">
       <div class="num"><span>0</span></div>
       <div class="num">
         <span>{{ formatNumber(memberMax / 2) }}</span>
