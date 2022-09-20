@@ -16,6 +16,7 @@ import titleBg from '@/assets/title-bg.png';
 import chevronsUp from '~icons/app/chevrons-up';
 import AuthorityManagement from './AuthorityManagement.vue';
 import { hasPermission } from 'shared/utils/login';
+import { IObject } from 'shared/@types/interface';
 const { t, locale } = useI18n();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -126,6 +127,17 @@ const goToCompany = () => {
   const routeData: any = router.resolve(`/${useCommon.language}/company`);
   window.open(routeData.href, '_blank');
 };
+// 跳转个人详情
+const goToUser = (data: IObject) => {
+  const routeData: any = router.resolve({
+    path: `/${useCommon.language}/user/${data}`,
+    // query: {
+    //   // group: 'sig',
+    //   // organization: props.sig,
+    // },
+  });
+  window.open(routeData.href, '_blank');
+};
 </script>
 
 <template>
@@ -189,7 +201,18 @@ const goToCompany = () => {
                   label="Gitee ID"
                   show-overflow-tooltip
                   width="180"
-                />
+                  ><template #default="scope">
+                    <div>
+                      <span
+                        :style="{
+                          cursor: 'pointer',
+                        }"
+                        @click="goToUser(scope.row.gitee_id)"
+                        >{{ scope.row.gitee_id }}</span
+                      >
+                    </div>
+                  </template></el-table-column
+                >
                 <el-table-column
                   align="left"
                   class-name="type-label"
@@ -225,7 +248,18 @@ const goToCompany = () => {
                   show-overflow-tooltip
                   label="Gitee ID"
                   width="180"
-                />
+                  ><template #default="scope">
+                    <div>
+                      <span
+                        :style="{
+                          cursor: 'pointer',
+                        }"
+                        @click="goToUser(scope.row.gitee_id)"
+                        >{{ scope.row.gitee_id }}</span
+                      >
+                    </div>
+                  </template></el-table-column
+                >
                 <el-table-column
                   align="left"
                   class-name="type-label"
