@@ -91,11 +91,10 @@ const querySorceData = () => {
     sig: sencondTitle.value,
     timeRange: 'lastonemonth',
   };
-  if (hasPermission('sigRead')) {
-    getSigScore(params).then((data) => {
-      sorceData.value = data.data.pop();
-    });
-  }
+
+  getSigScore(params).then((data) => {
+    sorceData.value = data.data.pop();
+  });
 };
 // 跳转首页
 const goToTetail = () => {
@@ -314,9 +313,7 @@ const showDropdown = (e: any) => {
             <h3 id="historicalVitalityIndicators" class="title">
               {{ sencondTitle + ' ' + t('historicalVitalityIndicators') }}
             </h3>
-            <historical-trend
-              :sig="sencondTitle"
-            ></historical-trend>
+            <historical-trend :sig="sencondTitle"></historical-trend>
           </div>
           <div class="contributors-panel">
             <h3 id="companyContributor" class="title">

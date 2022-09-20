@@ -162,17 +162,14 @@ const getcontributeValue = (item: any) => {
 };
 // 跳转个人详情
 const goToUser = (data: IObject) => {
-  if (hasPermission('sigRead')) {
-    const routeData: any = router.resolve({
-      path: `/${useCommon.language}/user/${data}`,
-      query: {
-        group: 'sig',
-        organization: props.sig,
-      },
-    });
-    window.open(routeData.href, '_blank');
-  } else {
-  }
+  const routeData: any = router.resolve({
+    path: `/${useCommon.language}/user/${data}`,
+    query: {
+      group: 'sig',
+      organization: props.sig,
+    },
+  });
+  window.open(routeData.href, '_blank');
 };
 </script>
 <template>
