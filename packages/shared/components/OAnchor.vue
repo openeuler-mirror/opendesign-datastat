@@ -3,6 +3,7 @@ import OIcon from './OIcon.vue';
 import scrollTop from '~icons/app/scroll-top';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+
 const props = defineProps({
   // 产生滚动条的盒子ID， 默认为body
   id: {
@@ -80,6 +81,12 @@ const scrollToTop = () => {
   const body = document.getElementById(props.id) || document.documentElement;
   body.scrollTop = 0;
 };
+const btnInfo = () => {
+  window.open(
+    'https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0',
+    '_blank'
+  );
+};
 </script>
 <template>
   <div class="anchor" :style="{ top, right }">
@@ -88,8 +95,7 @@ const scrollToTop = () => {
       v-for="(item, index) in data"
       :key="item"
       class="line"
-      :class="index==1||index == 0 ? 'first-line' : ''"
-
+      :class="index == 1 || index == 0 ? 'first-line' : ''"
     >
       <div class="item">
         <div
@@ -99,6 +105,11 @@ const scrollToTop = () => {
         <a :title="t(item)" class="label" @click="selectAnchor(item)">{{
           t(item)
         }}</a>
+      </div>
+    </div>
+    <div class="box">
+      <div class="box-show" @click="btnInfo">
+        <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
       </div>
     </div>
   </div>
@@ -154,6 +165,40 @@ const scrollToTop = () => {
   }
   .first-line {
     height: 45px;
+  }
+}
+.box {
+  // margin-left: 8px;
+  height: 48px;
+  width: 48px;
+  background: #ffffff;
+  box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
+  margin-top: 340px;
+  background-image: url('../../euler/src/assets/edit.png');
+  background-repeat: no-repeat;
+  background-position: 50%;
+
+  .box-show {
+    display: none;
+    width: 48px;
+    height: 48px;
+    color: #fff;
+    background: #002fa7;
+    line-height: 18px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    padding-top: 6px;
+    .title {
+      display: flex;
+      width: 24px;
+      height: 36px;
+      margin: auto;
+    }
+  }
+  &:hover .box-show {
+    display: block;
   }
 }
 </style>

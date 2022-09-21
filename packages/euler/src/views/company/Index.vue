@@ -361,10 +361,10 @@ const showDropdown = (e: any) => {
 const goToUser = (data: IObject) => {
   const routeData: any = router.resolve({
     path: `/${useCommon.language}/user/${data}`,
-    query: {
-      group: 'company',
-      organization: sencondTitle.value,
-    },
+    // query: {
+    //   group: 'company',
+    //   organization: sencondTitle.value,
+    // },
   });
   window.open(routeData.href, '_blank');
 };

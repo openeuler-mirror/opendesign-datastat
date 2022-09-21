@@ -206,6 +206,7 @@ const goToUser = (data: IObject) => {
                       <span
                         :style="{
                           cursor: 'pointer',
+                          color: '#002FA7'
                         }"
                         @click="goToUser(scope.row.gitee_id)"
                         >{{ scope.row.gitee_id }}</span
@@ -253,6 +254,7 @@ const goToUser = (data: IObject) => {
                       <span
                         :style="{
                           cursor: 'pointer',
+                          color: '#002FA7'
                         }"
                         @click="goToUser(scope.row.gitee_id)"
                         >{{ scope.row.gitee_id }}</span
