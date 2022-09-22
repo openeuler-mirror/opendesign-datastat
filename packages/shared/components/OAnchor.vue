@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import OIcon from './OIcon.vue';
-import scrollTop from '~icons/app/scroll-top';
+// import OIcon from './OIcon.vue';
+// import scrollTop from '~icons/app/scroll-top';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -89,9 +89,8 @@ const btnInfo = () => {
 };
 </script>
 <template>
-  <div class="anchor" :style="{ top, right }">
-    <o-icon class="icon" @click="scrollToTop"><scroll-top></scroll-top></o-icon>
-    <div
+  <!-- <o-icon class="icon" @click="scrollToTop"><scroll-top></scroll-top></o-icon> -->
+  <!-- <div
       v-for="(item, index) in data"
       :key="item"
       class="line"
@@ -112,71 +111,96 @@ const btnInfo = () => {
         <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
       </div>
     </div>
+  </div> -->
+  <div class="md-anchor" :style="{ top }">
+    <a
+      v-for="(item, index) in data"
+      :key="index"
+      :href="`#${item}`"
+      class="anchor-link"
+      :class="{ 'active-link': item === selectId }"
+    >
+      <div class="anchor-link-inner" @click="selectAnchor(item)">
+        {{ t(item) }}
+      </div>
+    </a>
+    <div class="box">
+      <div class="box-show" @click="btnInfo">
+        <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
+      </div>
+    </div>
+    <div class="box-down">
+      <div class="box-show" @click="scrollToTop">
+        <div class="title"><sapn>回顶</sapn><sapn>到部</sapn></div>
+      </div>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
-@media screen and (max-width: 1700px) {
-  .anchor {
-    display: none;
-  }
-}
-.anchor {
-  position: fixed;
-  width: 200px;
-  .icon {
-    font-size: 34px;
-    cursor: pointer;
-  }
-  .line {
-    border-left: 2px solid #bfbfbf;
-    margin-left: 16px;
-    position: relative;
-    display: flex;
-    height: 68px;
-    .item {
-      position: absolute;
-      bottom: -3px;
-      left: -7px;
-      display: flex;
+// @media screen and (max-width: 1700px) {
+//   .anchor {
+//     display: none;
+//   }
+// }
+// .anchor {
+//   position: fixed;
+//   width: 200px;
+//   .icon {
+//     font-size: 34px;
+//     cursor: pointer;
+//   }
+//   .line {
+//     border-left: 2px solid #bfbfbf;
+//     margin-left: 16px;
+//     position: relative;
+//     display: flex;
+//     height: 68px;
+//     .item {
+//       position: absolute;
+//       bottom: -3px;
+//       left: -7px;
+//       display: flex;
 
-      align-items: flex-start;
-      .circle {
-        width: 12px;
-        height: 12px;
-        border: 2px solid #bfbfbf;
-        border-radius: 50%;
-        display: inline-block;
-        background-color: #ffffff;
-      }
-      .selected-circle {
-        border-color: #002fa7;
-      }
-      .label {
-        font-size: 16px;
-        color: #000;
-        margin-left: 8px;
-        // overflow: hidden;
-        // white-space: nowrap;
-        // text-overflow: ellipsis;
-        max-width: 180px;
-        cursor: pointer;
-      }
-    }
-  }
-  .first-line {
-    height: 45px;
-  }
-}
+//       align-items: flex-start;
+//       .circle {
+//         width: 12px;
+//         height: 12px;
+//         border: 2px solid #bfbfbf;
+//         border-radius: 50%;
+//         display: inline-block;
+//         background-color: #ffffff;
+//       }
+//       .selected-circle {
+//         border-color: #002fa7;
+//       }
+//       .label {
+//         font-size: 16px;
+//         color: #000;
+//         margin-left: 8px;
+//         // overflow: hidden;
+//         // white-space: nowrap;
+//         // text-overflow: ellipsis;
+//         max-width: 180px;
+//         cursor: pointer;
+//       }
+//     }
+//   }
+//   .first-line {
+//     height: 45px;
+//   }
+// }
 .box {
   // margin-left: 8px;
   height: 48px;
   width: 48px;
   background: #ffffff;
   box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
-  margin-top: 340px;
+  margin-top: 400px;
   background-image: url('../../euler/src/assets/edit.png');
   background-repeat: no-repeat;
   background-position: 50%;
+  position: fixed;
+  bottom: calc(20% + 52px);
 
   .box-show {
     display: none;
@@ -200,5 +224,70 @@ const btnInfo = () => {
   &:hover .box-show {
     display: block;
   }
+}
+.box-down {
+  // margin-left: 8px;
+  height: 48px;
+  width: 48px;
+  background: #ffffff;
+  box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
+  margin-top: 4px;
+  background-image: url('../../euler/src/assets/download.png');
+  background-repeat: no-repeat;
+  background-position: 50%;
+  position: fixed;
+  bottom: calc(20%);
+  .box-show {
+    display: none;
+    width: 48px;
+    height: 48px;
+    color: #fff;
+    background: #002fa7;
+    line-height: 18px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    padding-top: 6px;
+    .title {
+      display: flex;
+      width: 24px;
+      height: 36px;
+      margin: auto;
+    }
+  }
+  &:hover .box-show {
+    display: block;
+  }
+}
+.md-anchor {
+  position: fixed;
+  right: calc(10%);
+  width: 200px;
+  @media screen and (max-width: 1700px) {
+    display: none;
+  }
+}
+.anchor-link {
+  display: block;
+  cursor: pointer;
+  color: #707070;
+  line-height: 22px;
+  font-size: 14px;
+  border-left: 2px solid rgba(229, 229, 229, 1);
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  &:hover {
+    color: #002fa7;
+  }
+  &-inner {
+    padding: 8px 16px;
+  }
+}
+.active-link {
+  color: #002fa7;
+  border-left: 2px solid #002fa7;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
 }
 </style>
