@@ -94,6 +94,7 @@ export function getCodeByUrl(community: string) {
         const { data = {} } = res;
         const { token = '', photo = '' } = data;
         saveUserAuth(token, photo);
+        deleteUrlCode(query);
         const newUrl = `${location.origin}`;
         window.parent.window.location.href = newUrl;
       })
@@ -102,6 +103,20 @@ export function getCodeByUrl(community: string) {
         window.parent.window.location.href = newUrl;
       });
   }
+}
+// 删除url上的code
+function deleteUrlCode(query: IObject) {
+  const arr = Object.entries(query);
+  let url = location.origin + location.pathname;
+  if (arr.length > 2) {
+    const _arr = arr.filter((item) => !['code', 'state'].includes(item[0]));
+    const search = _arr.reduce((pre, next) => {
+      pre += `${next[0]}=${next[1]}`;
+      return pre;
+    }, '?');
+    url += search;
+  }
+  history.replaceState(null, '', url);
 }
 
 function getUrlParam(url = window.location.search) {
