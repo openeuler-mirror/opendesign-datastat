@@ -385,24 +385,24 @@ const goToSigs = (title: any) => {
         </div>
       </div>
     </swiper-slide>
-    <swiper-slide v-if="hasPermission('sigRead')">
+    <swiper-slide >
       <mobile-template header="groupActive">
         <template #content>
           <special-interest-group-diagram></special-interest-group-diagram>
         </template>
       </mobile-template>
     </swiper-slide>
-    <el-dialog
+    <!-- <el-dialog
       v-model="useStaff.dialogFormVisible"
       top="40vh"
       :show-close="false"
     >
       <div class="info">
         <h3>{{ useStaff.title }}</h3>
-        <!-- <p>
+        <p>
           <span class="index">{{ t('ranking') }}</span>
           <span class="numberIndex"> #{{ useStaff.sigRank }}</span>
-        </p> -->
+        </p>
       </div>
       <div class="info">
         <p>
@@ -430,15 +430,15 @@ const goToSigs = (title: any) => {
           </span>
         </p>
       </div>
-    </el-dialog>
-    <swiper-slide v-if="hasPermission('sigRead')">
+    </el-dialog> -->
+    <swiper-slide >
       <o-mobile-template header="companyRelations">
         <template #content>
           <menber-and-group-relationship></menber-and-group-relationship>
         </template>
       </o-mobile-template>
     </swiper-slide>
-    <swiper-slide v-if="hasPermission('sigRead')">
+    <swiper-slide >
       <o-mobile-template header="groupRelations">
         <template #content>
           <committee-and-special-group-relationship></committee-and-special-group-relationship>

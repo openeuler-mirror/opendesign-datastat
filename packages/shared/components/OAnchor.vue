@@ -262,7 +262,7 @@ const btnInfo = () => {
 }
 .md-anchor {
   position: fixed;
-  right: calc(10%);
+  left: calc(90%);
   width: 200px;
   @media screen and (max-width: 1700px) {
     display: none;
