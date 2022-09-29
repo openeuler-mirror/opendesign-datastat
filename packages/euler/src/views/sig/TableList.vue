@@ -319,7 +319,7 @@ const goToCompany = (data: IObject) => {
             </div>
             <div class="info">
               <p>
-                <span class="index">{{ item.index }}</span>
+                <!-- <span class="index">{{ item.index }}</span> -->
                 {{
                   useCommon.language === 'zh'
                     ? item.company_cn
