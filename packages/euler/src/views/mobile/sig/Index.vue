@@ -107,7 +107,7 @@ onMounted(() => {
           ></template>
         </o-mobile-template>
       </swiper-slide> -->
-      <swiper-slide>
+      <!-- <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
           <template #header>
             {{ 'SIG ' + t('companyContributor') }}
@@ -116,7 +116,7 @@ onMounted(() => {
             <mobile-table-list :sig="sencondTitle"></mobile-table-list
           ></template>
         </o-mobile-template>
-      </swiper-slide>
+      </swiper-slide> -->
       <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
           <template #header>

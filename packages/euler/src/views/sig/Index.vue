@@ -53,7 +53,7 @@ const anchorData = computed(() => {
         'companyContributor',
         'userContributor',
       ]
-    : ['companyContributor', 'userContributor'];
+    : [ 'userContributor'];
 });
 const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
@@ -311,13 +311,13 @@ const showDropdown = (e: any) => {
             </h3>
             <historical-trend :sig="sencondTitle"></historical-trend>
           </div>
-          <div class="contributors-panel">
+          <!-- <div class="contributors-panel">
             <h3 id="companyContributor" class="title">
               {{ sencondTitle + ' ' + t('companyContributor') }}
             </h3>
 
             <table-list :sig="sencondTitle" />
-          </div>
+          </div> -->
           <div class="contributors-panel-last">
             <h3 id="userContributor" class="title">
               {{ sencondTitle + ' ' + t('userContributor') }}
