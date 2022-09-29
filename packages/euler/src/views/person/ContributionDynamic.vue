@@ -384,7 +384,7 @@ const inputSlider = (value: number) => {
       </template>
     </o-form-radio>
   </div>
-  <div  class="detail">
+  <div class="detail">
     <!-- <div v-if="param.contributeType === 'pr'" class="prType">
       <div
         v-for="item in contributionSelectBox"
@@ -454,10 +454,11 @@ const inputSlider = (value: number) => {
   <div v-if="reallData?.length" v-loading="loading" class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in reallData?.slice(
-          (currentPage - 1) * pageSize,
-          currentPage * pageSize
-        )"
+        v-for="(item, index) in reallData.sort( (a:any, b:any)=> {
+            return a.time < b.time ? 1 : -1;
+          })
+          ?.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+          "
         :key="'com' + index"
         class="bar-content-item"
       >
