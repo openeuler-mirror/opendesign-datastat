@@ -218,7 +218,7 @@ const goToCompany = (data: IObject) => {
         class="bar-content-item"
       >
         <p class="infos">
-          <span class="index">{{ item.index }}</span>
+          <!-- <span class="index">{{ item.index }}</span> -->
           <span
             v-if="
               item.company_cn === '个人贡献者' ||

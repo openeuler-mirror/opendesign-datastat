@@ -45,8 +45,8 @@ const getMemberData = () => {
     memberList.value =
       (data.data &&
         data.data
-          .sort(sortExp('contribute', false))
-          .filter((item: any) => item.contribute !== 0)) ||
+          ?.sort(sortExp('contribute', false))
+          ?.filter((item: any) => item.contribute !== 0)) ||
       [];
     memberMax.value = ceil(memberList.value[0]?.contribute + 1, 0) || 0;
     rankNum.value = 1;

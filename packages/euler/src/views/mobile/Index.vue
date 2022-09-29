@@ -1,33 +1,33 @@
 <!-- eslint-disable vue/no-useless-template-attributes -->
 <script setup lang="ts">
-import { ref, onMounted, watch, computed, nextTick } from 'vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Pagination } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import { useI18n } from 'vue-i18n';
-import FormSearch from '../contributors/FormSearch.vue';
-import { openCommunityInfo } from '@/api/index';
-import { useCompanyStore } from '@/stores/company';
-import { usePersonalStore } from '@/stores/personal';
-import { useCommonStore } from '@/stores/common';
-import { hasPermission } from 'shared/utils/login';
-import TheForm from '@/components/TheForm.vue';
-import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
-import MenberAndGroupRelationship from './current/MenberAndGroupRelationship.vue';
-import { formatNumber, toThousands } from 'shared/utils/helper';
-import logo from '@/assets/datastat-black.png';
-import logoZh from '@/assets/datastat-zh-black.png';
-import communityLogo from '@/assets/openeuler.png';
-import bg_mo from '@/assets/bg_mo.png';
-import atomLogo from '@/assets/atom.png';
-import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.vue';
-import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialGroupRelationship.vue';
-import { useRoute, useRouter } from 'vue-router';
-import { IObject } from 'shared/@types/interface';
-import MobileTemplate from '@/components/MobileTemplate.vue';
-import { Right } from '@element-plus/icons-vue';
-import { useStaffStore } from '@/stores/staff';
+import { ref, onMounted, watch, computed, nextTick } from "vue";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Pagination } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
+import { useI18n } from "vue-i18n";
+import FormSearch from "../contributors/FormSearch.vue";
+import { openCommunityInfo } from "@/api/index";
+import { useCompanyStore } from "@/stores/company";
+import { usePersonalStore } from "@/stores/personal";
+import { useCommonStore } from "@/stores/common";
+import { hasPermission } from "shared/utils/login";
+import TheForm from "@/components/TheForm.vue";
+import OMobileTemplate from "shared/components/OMobileTemplate.vue";
+import MenberAndGroupRelationship from "./current/MenberAndGroupRelationship.vue";
+import { formatNumber, toThousands } from "shared/utils/helper";
+import logo from "@/assets/datastat-black.png";
+import logoZh from "@/assets/datastat-zh-black.png";
+import communityLogo from "@/assets/openeuler.png";
+import bg_mo from "@/assets/bg_mo.png";
+import atomLogo from "@/assets/atom.png";
+import SpecialInterestGroupDiagram from "./current/SpecialInterestGroupDiagram.vue";
+import CommitteeAndSpecialGroupRelationship from "./current/CommitteeAndSpecialGroupRelationship.vue";
+import { useRoute, useRouter } from "vue-router";
+import { IObject } from "shared/@types/interface";
+import MobileTemplate from "@/components/MobileTemplate.vue";
+import { Right } from "@element-plus/icons-vue";
+import { useStaffStore } from "@/stores/staff";
 const useStaff = useStaffStore();
 const router = useRouter();
 const route = useRoute();
@@ -64,36 +64,36 @@ const progressFormat = (item: number) => {
 const formOption = computed(() => {
   return [
     {
-      label: t('from.type'),
-      id: 'contributeType',
-      active: 'pr',
+      label: t("from.type"),
+      id: "contributeType",
+      active: "pr",
       list: [
-        { label: t('home.prs'), value: 'pr' },
-        { label: t('home.issues'), value: 'issue' },
-        { label: t('home.comments'), value: 'comment' },
+        { label: t("home.prs"), value: "pr" },
+        { label: t("home.issues"), value: "issue" },
+        { label: t("home.comments"), value: "comment" },
       ],
     },
     {
-      label: t('from.timeRange'),
-      id: 'timeRange',
-      active: 'mother',
+      label: t("from.timeRange"),
+      id: "timeRange",
+      active: "mother",
       list: [
-        { label: t('from.lastonemonth'), value: 'lastonemonth' },
-        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
-        { label: t('from.lastoneyear'), value: 'lastoneyear' },
-        { label: t('from.all'), value: 'all' },
+        { label: t("from.lastonemonth"), value: "lastonemonth" },
+        { label: t("from.lasthalfyear"), value: "lasthalfyear" },
+        { label: t("from.lastoneyear"), value: "lastoneyear" },
+        { label: t("from.all"), value: "all" },
       ],
     },
   ];
 });
 // theform组件调用
-const componentName = 'personal';
+const componentName = "personal";
 const getContributeInfo = () => {
   usePersonal.getPersonalData();
 };
 const loading = ref(true);
 
-const progressColor = ref('#002FA7');
+const progressColor = ref("#002FA7");
 const personalFormat = (item: number) => {
   return (100 / usePersonal.personalMaxNum) * item;
 };
@@ -112,19 +112,19 @@ const searchStsate = (item: boolean) => {
   search404.value = item;
 };
 
-locale.value = localStorage.getItem('lang') || 'zh';
+locale.value = localStorage.getItem("lang") || "zh";
 
-const contributeType = ref('');
+const contributeType = ref("");
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
-    case 'pr':
-      contributeType.value = 'home.prs';
+    case "pr":
+      contributeType.value = "home.prs";
       break;
-    case 'issue':
-      contributeType.value = 'home.issues';
+    case "issue":
+      contributeType.value = "home.issues";
       break;
-    case 'comment':
-      contributeType.value = 'home.comments';
+    case "comment":
+      contributeType.value = "home.comments";
       break;
   }
 };
@@ -151,7 +151,7 @@ const isScroll1 = ref(false);
 const slideRef1 = ref<any>(null);
 onMounted(() => {
   slideRef.value?.addEventListener(
-    'scroll',
+    "scroll",
     () => {
       nextTick(() => {
         isScroll.value = slideRef.value?.scrollTop > 200 ? true : false;
@@ -160,7 +160,7 @@ onMounted(() => {
     true
   );
   slideRef1.value?.addEventListener(
-    'scroll',
+    "scroll",
     () => {
       nextTick(() => {
         isScroll1.value = slideRef1.value?.scrollTop > 200 ? true : false;
@@ -178,9 +178,9 @@ const backtop1 = () => {
 };
 const goToCompany = (data: IObject) => {
   if (
-    hasPermission('sigRead') &&
-    data.company_cn !== '个人贡献者' &&
-    data.company_en !== 'independent'
+    hasPermission("sigRead") &&
+    data.company_cn !== "个人贡献者" &&
+    data.company_en !== "independent"
   ) {
     data;
     router.push(`/${useCommon.language}/mobile/company/${data.company_cn}`);
@@ -191,6 +191,11 @@ const goToSigs = (title: any) => {
   router.push(`/${useCommon.language}/mobile/sig/${title}`);
   useStaff.dialogFormVisible = false;
 };
+
+// 跳转个人详情
+const goToUser = (data: IObject) => {
+  router.push(`/${useCommon.language}/mobile/user/${data}`)
+};
 </script>
 <template>
   <swiper
@@ -200,56 +205,44 @@ const goToSigs = (title: any) => {
     @swiper="onSwiper"
     @slide-change="onSlideChange"
   >
-    <swiper-slide
-      class="slide-page1"
-      :style="'background-image:url(' + bg_mo + ')'"
-    >
+    <swiper-slide class="slide-page1" :style="'background-image:url(' + bg_mo + ')'">
       <div class="overview-page">
         <p class="overview-page-item">
-          {{ t('home.user')
+          {{ t("home.user")
           }}<span class="num">{{ toThousands(useCommon.allData.users) }}</span>
         </p>
         <p class="overview-page-item">
-          {{ t('home.contributors')
-          }}<span class="num">{{
-            toThousands(useCommon.allData.contributors)
-          }}</span>
+          {{ t("home.contributors")
+          }}<span class="num">{{ toThousands(useCommon.allData.contributors) }}</span>
         </p>
         <p class="overview-page-item">
-          {{ t('home.partners')
-          }}<span class="num">{{
-            toThousands(useCommon.allData.partners)
-          }}</span>
+          {{ t("home.partners")
+          }}<span class="num">{{ toThousands(useCommon.allData.partners) }}</span>
         </p>
       </div>
 
       <p class="time">{{ useCommon.time }}</p>
     </swiper-slide>
-    <swiper-slide
-      class="slide-page2"
-      :style="'background-image:url(' + bg_mo + ')'"
-    >
+    <swiper-slide class="slide-page2" :style="'background-image:url(' + bg_mo + ')'">
       <div class="overview-page2">
         <p class="overview-page2-item">
-          {{ t('home.prs') }}
+          {{ t("home.prs") }}
           <span class="num">{{ formatNumber(useCommon.allData.prs) }}</span>
         </p>
         <p class="overview-page2-item">
-          {{ t('home.issues') }}
+          {{ t("home.issues") }}
           <span class="num">{{ formatNumber(useCommon.allData.issues) }}</span>
         </p>
         <p class="overview-page2-item">
-          {{ t('home.comments') }}
-          <span class="num">{{
-            formatNumber(useCommon.allData.comments)
-          }}</span>
+          {{ t("home.comments") }}
+          <span class="num">{{ formatNumber(useCommon.allData.comments) }}</span>
         </p>
         <p class="overview-page2-item">
-          {{ t('home.sigs') }}
+          {{ t("home.sigs") }}
           <span class="num">{{ formatNumber(useCommon.allData.sigs) }}</span>
         </p>
         <p class="overview-page2-item">
-          {{ t('home.repos')
+          {{ t("home.repos")
           }}<span class="num">{{ toThousands(useCommon.allData.repos) }}</span>
         </p>
       </div>
@@ -258,14 +251,14 @@ const goToSigs = (title: any) => {
     <swiper-slide class="slide-page3">
       <div ref="slideRef" class="slide-panel">
         <div v-if="isScroll" class="backtop" @click="backtop">
-          {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
+          {{ useCommon.language === "zh" ? "点击回到顶部" : "Back to Top" }}
         </div>
         <div class="slide-panel-content">
-          <h3 class="title">{{ t('companyContributor') }}</h3>
+          <h3 class="title">{{ t("companyContributor") }}</h3>
           <form-search @search-state="searchStsate" />
           <div v-if="search404" class="search404">
             <img class="cover" src="@/assets/404.png" alt="404" />
-            <p class="text">{{ t('searchTips') }}</p>
+            <p class="text">{{ t("searchTips") }}</p>
           </div>
           <ul v-else class="company-content">
             <li
@@ -277,17 +270,16 @@ const goToSigs = (title: any) => {
                 <span class="index">{{ item.index }}</span>
                 <span
                   v-if="
-                    item.company_cn === '个人贡献者' ||
-                    item.company_en === 'independent'
+                    item.company_cn === '个人贡献者' || item.company_en === 'independent'
                   "
                   class="name"
                   :style="{
                     color: '#555555',
                   }"
                   >{{
-                    useCommon.language === 'zh'
+                    useCommon.language === "zh"
                       ? item.company_cn
-                      : item.company_en === ''
+                      : item.company_en === ""
                       ? item.company_cn
                       : item.company_en
                   }}</span
@@ -308,9 +300,9 @@ const goToSigs = (title: any) => {
                   }"
                   @click="goToCompany(item)"
                   >{{
-                    useCommon.language === 'zh'
+                    useCommon.language === "zh"
                       ? item.company_cn
-                      : item.company_en === ''
+                      : item.company_en === ""
                       ? item.company_cn
                       : item.company_en
                   }}</span
@@ -339,10 +331,10 @@ const goToSigs = (title: any) => {
     <swiper-slide class="slide-page3">
       <div ref="slideRef1" class="slide-panel">
         <div v-if="isScroll1" class="backtop" @click="backtop1">
-          {{ useCommon.language === 'zh' ? '点击回到顶部' : 'Back to Top' }}
+          {{ useCommon.language === "zh" ? "点击回到顶部" : "Back to Top" }}
         </div>
         <div class="slide-panel-content">
-          <h3 class="title">{{ t('userContributor') }}</h3>
+          <h3 class="title">{{ t("userContributor") }}</h3>
           <the-form
             :option="formOption"
             :component-name="componentName"
@@ -365,13 +357,23 @@ const goToSigs = (title: any) => {
               label="Gitee ID"
               show-overflow-tooltip
               width="110"
-            />
+              ><template #default="scope">
+                <div>
+                  <span
+                    :style="{
+                      cursor: 'pointer',
+                      color: '#002FA7',
+                    }"
+                    @click="goToUser(scope.row.gitee_id)"
+                    >{{ scope.row.gitee_id }}</span
+                  >
+                </div>
+              </template></el-table-column
+            >
             <el-table-column :label="t(contributeType)">
               <template #default="scope">
                 <div class="box">
-                  <span class="num">{{
-                    toThousands(scope.row.contribute)
-                  }}</span>
+                  <span class="num">{{ toThousands(scope.row.contribute) }}</span>
                   <el-progress
                     :show-text="false"
                     :stroke-width="8"
@@ -385,7 +387,7 @@ const goToSigs = (title: any) => {
         </div>
       </div>
     </swiper-slide>
-    <swiper-slide >
+    <swiper-slide>
       <mobile-template header="groupActive">
         <template #content>
           <special-interest-group-diagram></special-interest-group-diagram>
@@ -431,14 +433,14 @@ const goToSigs = (title: any) => {
         </p>
       </div>
     </el-dialog> -->
-    <swiper-slide >
+    <swiper-slide>
       <o-mobile-template header="companyRelations">
         <template #content>
           <menber-and-group-relationship></menber-and-group-relationship>
         </template>
       </o-mobile-template>
     </swiper-slide>
-    <swiper-slide >
+    <swiper-slide>
       <o-mobile-template header="groupRelations">
         <template #content>
           <committee-and-special-group-relationship></committee-and-special-group-relationship>
@@ -450,7 +452,7 @@ const goToSigs = (title: any) => {
         <div class="atom-item">
           <img :src="atomLogo" alt="" />
           <p>
-            {{ t('footer.atom') }}
+            {{ t("footer.atom") }}
           </p>
         </div>
 
@@ -460,23 +462,22 @@ const goToSigs = (title: any) => {
           <img :src="communityLogo" alt="" />
         </div>
         <div class="foot-item-link">
-          <router-link
-            :to="useCommon.language === 'zh' ? '/zh/about' : '/en/about'"
-            >{{ t('footer.about') }}</router-link
-          >
-          <a :href="t('footer.privacyLink')">{{ t('footer.privacy') }}</a>
-          <a :href="t('footer.legalLink')">{{ t('footer.legal') }}</a>
+          <router-link :to="useCommon.language === 'zh' ? '/zh/about' : '/en/about'">{{
+            t("footer.about")
+          }}</router-link>
+          <a :href="t('footer.privacyLink')">{{ t("footer.privacy") }}</a>
+          <a :href="t('footer.legalLink')">{{ t("footer.legal") }}</a>
         </div>
         <div class="foot-item-cy">
           <p class="mail">{{ openCommunityInfo.email }}</p>
-          <p class="cy">{{ t('footer.copyright') }}</p>
+          <p class="cy">{{ t("footer.copyright") }}</p>
         </div>
       </div>
     </swiper-slide>
   </swiper>
 </template>
 <style lang="scss" scoped>
-@import '@/shared/styles/style.scss';
+@import "@/shared/styles/style.scss";
 .swiper {
   height: 100vh;
   background: #f5f6f8;

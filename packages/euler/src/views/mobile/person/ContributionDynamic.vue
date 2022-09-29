@@ -226,7 +226,7 @@ const getprlistData = () => {
   queryUserSigContribute(query).then((data) => {
     const value = data?.data || [];
     const seldata: any = [];
-    value.map((item: any) => {
+    value?.map((item: any) => {
       seldata.push({
         name: item.sig_name,
       });
@@ -394,7 +394,8 @@ const commentSelectBox = ref([
     </div> -->
     <div v-if="param.contributeType === 'pr'" class="prType">
       <img :src="CommonPR" alt="" />
-      <span class="sp">{{ t('general') }} PR</span>
+      <!-- <span class="sp">{{ t('general') }} PR</span> -->
+      <span class="sp">PR</span>
     </div>
     <div v-if="param.contributeType === 'issue'" class="prType">
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
