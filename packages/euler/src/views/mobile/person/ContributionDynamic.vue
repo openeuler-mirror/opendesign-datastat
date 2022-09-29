@@ -418,7 +418,9 @@ const commentSelectBox = ref([
   <div v-if="reallData?.length" v-loading="loading" class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in reallData.slice(
+        v-for="(item, index) in reallData.sort( (a:any, b:any)=> {
+            return a.time < b.time ? 1 : -1;
+          }).slice(
           (currentPage - 1) * 10,
           currentPage * 10
         )"
