@@ -262,11 +262,13 @@ const btnInfo = () => {
 }
 .md-anchor {
   position: fixed;
-  left: calc(90%);
-  width: 200px;
-  @media screen and (max-width: 1700px) {
-    display: none;
-  }
+  // right: calc(5%);
+  right: 5px;
+  max-width: 200px;
+  z-index: 99;
+  // @media screen and (max-width: 1658px) {
+  //   display: none;
+  // }
 }
 .anchor-link {
   display: block;
