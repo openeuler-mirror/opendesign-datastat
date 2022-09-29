@@ -95,9 +95,9 @@ const allSigs = ref()
 const drownData = ref([] as any[]);
 const getDrownData = () => {
   const query = {
-    group: group.value,
+    // group: group.value,
     community: openCommunityInfo.name,
-    name: sigTitle.value,
+    // name: sigTitle.value,
   };
   queryUserList(query as any).then((data) => {
     allSigs.value = data?.data || {};

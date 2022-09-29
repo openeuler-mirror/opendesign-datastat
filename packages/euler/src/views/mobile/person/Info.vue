@@ -85,18 +85,18 @@ const querySigInfoData = () => {
   };
   queryUserOwnertype(params).then((data) => {
     sigInfo.value = data?.data || {};
-    sigInfo.value.sort((a: any, b: any) =>
+    sigInfo.value?.sort((a: any, b: any) =>
       a['sig'].localeCompare(b['sig'], 'zh')
     );
-    sigInfo.value.forEach((item: any, index: any) => {
+    sigInfo.value?.forEach((item: any, index: any) => {
       if (item.sig === 'TC') {
-        sigInfo.value.unshift(sigInfo.value.splice(index, 1)[0]);
+        sigInfo.value?.unshift(sigInfo.value.splice(index, 1)[0]);
       }
     });
-    sigInfo.value.map((item: any) =>
+    sigInfo.value?.map((item: any) =>
       item.type.sort((a: any, b: any) => b.length - a.length)
     );
-    sigInfo.value.sort((a: any, b: any) =>
+    sigInfo.value?.sort((a: any, b: any) =>
       b['type'][0].localeCompare(a['type'][0], 'zh')
     );
   });

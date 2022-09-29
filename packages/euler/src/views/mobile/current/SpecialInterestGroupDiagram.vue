@@ -151,10 +151,11 @@ interface Form {
   score: number;
 }
 const goTo = (item: Form) => {
-  useStaff.dialogFormVisible = true;
-  useStaff.title = item.sig_names;
-  useStaff.sigRank = item.rank;
-  useStaff.sigContrubution = item.score;
+  // useStaff.dialogFormVisible = true;
+  // useStaff.title = item.sig_names;
+  // useStaff.sigRank = item.rank;
+  // useStaff.sigContrubution = item.score;
+  router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
 };
 </script>
 <style scoped lang="scss">

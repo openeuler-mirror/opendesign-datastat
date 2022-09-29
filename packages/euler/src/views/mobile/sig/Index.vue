@@ -85,7 +85,7 @@ onMounted(() => {
           ></template>
         </o-mobile-template>
       </swiper-slide>
-      <swiper-slide>
+      <!-- <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
           <template #header>
             {{ 'SIG ' + t('currentVitalityIndex') }}
@@ -106,7 +106,7 @@ onMounted(() => {
             ></mobile-historical-trend
           ></template>
         </o-mobile-template>
-      </swiper-slide>
+      </swiper-slide> -->
       <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
           <template #header>

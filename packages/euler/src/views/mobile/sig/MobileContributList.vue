@@ -157,10 +157,10 @@ const getcontributeValue = (item: any) => {
 const goToUser = (data: IObject) => {
   router.push({
     path: `/${useCommon.language}/mobile/user/${data}`,
-    query: {
-      group: 'sig',
-      organization: props.sig,
-    },
+    // query: {
+    //   group: 'sig',
+    //   organization: props.sig,
+    // },
   });
 };
 </script>

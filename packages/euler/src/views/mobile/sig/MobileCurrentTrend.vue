@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import OEchartPolar from 'shared/components/OEchartPolar.vue';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch ,onMounted} from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
@@ -117,6 +117,9 @@ const goData = () => {
   const routeData: any = router.resolve(`/${useCommon.language}/mobile/about`);
   window.open(routeData.href, '_self');
 };
+onMounted(() => {
+  querySorceData();
+})
 </script>
 <template>
   <div>
