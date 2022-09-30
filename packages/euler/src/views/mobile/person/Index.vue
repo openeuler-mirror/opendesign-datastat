@@ -16,7 +16,7 @@
           </template> -->
           <template #content>
             <info :user="sencondTitle"></info>
-           </template>
+          </template>
         </o-mobile-template>
       </swiper-slide>
       <swiper-slide>
@@ -51,7 +51,7 @@ import 'swiper/css/pagination';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
-import { querySigName,queryUserList } from 'shared/api';
+import { querySigName, queryUserList } from 'shared/api';
 import { useRoute, useRouter } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import ContributionDynamic from './ContributionDynamic.vue';
@@ -68,7 +68,7 @@ const sencondTitle = ref('');
 const sigTitle = ref('');
 sigTitle.value = route.query.organization as string;
 const group = ref('');
-group.value = route.query.group as string
+group.value = route.query.group as string;
 const useCommon = useCommonStore();
 useCommon.isBlackHeader = false;
 const modules = [Pagination];
@@ -77,7 +77,7 @@ const onSwiper = (swiper: any) => {
   swiperRef.value = swiper;
 };
 const onSlideChange = (swiper: any) => {
-  useCommon.sigNav = swiper.activeIndex;
+  useCommon.personNav = swiper.activeIndex;
   router.replace({
     query: {
       num: swiper.activeIndex,
@@ -86,12 +86,12 @@ const onSlideChange = (swiper: any) => {
 };
 // 监听导航跳转
 watch(
-  () => useCommon.sigNav,
+  () => useCommon.personNav,
   (index) => {
     swiperRef.value.slideTo(index);
   }
 );
-const allSigs = ref()
+const allSigs = ref();
 const drownData = ref([] as any[]);
 const getDrownData = () => {
   const query = {
@@ -113,7 +113,7 @@ const getDrownData = () => {
     }));
   });
 };
-getDrownData()
+getDrownData();
 </script>
 <style scoped lang="scss">
 .swiper {
