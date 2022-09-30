@@ -13,6 +13,7 @@ interface stateTypes {
   lang: string;
   time: string;
   allData: IObject;
+  personNav: number;
 }
 export const useCommonStore = defineStore('common', {
   state: (): stateTypes => ({
@@ -24,6 +25,7 @@ export const useCommonStore = defineStore('common', {
     moNav: 0,
     companyNav: 0,
     sigNav: 0,
+    personNav:0,
     // 语言
     lang: '',
     // 时间

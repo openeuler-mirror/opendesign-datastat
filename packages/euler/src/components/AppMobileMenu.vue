@@ -11,6 +11,7 @@ import {
   companyNavList,
   sigNavList,
   NavConfig,
+  personNavList
 } from '@/shared/mobile-menu.config';
 import { IObject } from 'shared/@types/interface';
 import { hasPermission } from 'shared/utils/login';
@@ -35,6 +36,8 @@ const getSwiperKey = (name: any) => {
     swiperKey.value = 'sigNav';
   } else if (name?.includes('company')) {
     swiperKey.value = 'companyNav';
+  } else if (name?.includes('user')) {
+    swiperKey.value = 'personNav';
   } else {
     swiperKey.value = 'moNav';
   }
@@ -52,6 +55,10 @@ const allSwiperConfig = ref({
   sigNav: {
     index: computed(() => useCommon.sigNav),
     list: sigNavList,
+  },
+  personNav: {
+    index: computed(() => useCommon.personNav),
+    list: personNavList,
   },
 } as IObject);
 
