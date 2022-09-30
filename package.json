@@ -13,7 +13,7 @@
     "build:harmony": "pnpm --filter harmony build",
     "build:lookeng": "pnpm --filter lookeng build",
     "build:mindspore": "pnpm --filter mindspore build",
-    "build": "pnpm build:euler && pnpm build:gauss && pnpm build:lookeng && pnpm build:mindspore"
+    "build": "pnpm build:euler && pnpm build:gauss && pnpm build:lookeng && pnpm build:mindspore && pnpm build:harmony"
   },
   "dependencies": {
     "@authing/native-js-ui-components": "^3.1.16",

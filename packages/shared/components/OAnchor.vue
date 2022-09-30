@@ -1,19 +1,19 @@
 <script setup lang="ts">
 // import OIcon from './OIcon.vue';
 // import scrollTop from '~icons/app/scroll-top';
-import { onMounted, onUnmounted, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { onMounted, onUnmounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const props = defineProps({
   // 产生滚动条的盒子ID， 默认为body
   id: {
     type: String,
-    default: '',
+    default: "",
   },
   data: {
     type: Array as () => string[],
     required: true,
-    default: () => ['companyContributor', 'userContributor'],
+    default: () => ["companyContributor", "userContributor"],
   },
   // 元素距离盒子顶部的校准值
   offsetValue: {
@@ -22,29 +22,27 @@ const props = defineProps({
   },
   top: {
     type: String,
-    default: '16rem',
+    default: "16rem",
   },
   right: {
     type: String,
-    default: '40px',
+    default: "40px",
   },
 });
 onMounted(() => {
   const body = props.id ? document.getElementById(props.id) : window;
-  body?.addEventListener('scroll', scroll);
+  body?.addEventListener("scroll", scroll);
 });
 
 onUnmounted(() => {
   const body = props.id ? document.getElementById(props.id) : window;
-  body?.removeEventListener('scroll', scroll);
+  body?.removeEventListener("scroll", scroll);
 });
 const { t } = useI18n();
 const scroll = () => {
   const body = document.getElementById(props.id);
   const scrollTop =
-    body?.scrollTop ||
-    document.documentElement.scrollTop ||
-    document.body.scrollTop;
+    body?.scrollTop || document.documentElement.scrollTop || document.body.scrollTop;
   const clientHeight =
     body?.clientHeight ||
     document.documentElement.clientHeight ||
@@ -66,10 +64,10 @@ const scroll = () => {
       pre = next.id;
     }
     return pre;
-  }, '');
+  }, "");
 };
-const selectId = ref('');
-selectId.value = props.data.slice(0, 1).shift() || '';
+const selectId = ref("");
+selectId.value = props.data.slice(0, 1).shift() || "";
 const selectAnchor = (id: string) => {
   const doc = document.getElementById(id);
   doc?.scrollIntoView();
@@ -83,8 +81,8 @@ const scrollToTop = () => {
 };
 const btnInfo = () => {
   window.open(
-    'https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0',
-    '_blank'
+    "https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0",
+    "_blank"
   );
 };
 </script>
@@ -124,7 +122,7 @@ const btnInfo = () => {
         {{ t(item) }}
       </div>
     </a>
-    <div class="box">
+    <!-- <div class="box">
       <div class="box-show" @click="btnInfo">
         <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
       </div>
@@ -133,6 +131,16 @@ const btnInfo = () => {
       <div class="box-show" @click="scrollToTop">
         <div class="title"><sapn>回顶</sapn><sapn>到部</sapn></div>
       </div>
+    </div> -->
+  </div>
+  <div class="box">
+    <div class="box-show" @click="btnInfo">
+      <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
+    </div>
+  </div>
+  <div class="box-down">
+    <div class="box-show" @click="scrollToTop">
+      <div class="title"><sapn>回顶</sapn><sapn>到部</sapn></div>
     </div>
   </div>
 </template>
@@ -196,12 +204,18 @@ const btnInfo = () => {
   background: #ffffff;
   box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
   margin-top: 400px;
-  background-image: url('../../euler/src/assets/edit.png');
+  background-image: url("../../euler/src/assets/edit.png");
   background-repeat: no-repeat;
   background-position: 50%;
   position: fixed;
   bottom: calc(20% + 52px);
-
+  right: 150px;
+  z-index: 99;
+  @media screen and (max-width: 1700px) {
+    right: 10px;
+    z-index: 99;
+    bottom: calc(30% + 52px);
+  }
   .box-show {
     display: none;
     width: 48px;
@@ -232,11 +246,18 @@ const btnInfo = () => {
   background: #ffffff;
   box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
   margin-top: 4px;
-  background-image: url('../../euler/src/assets/download.png');
+  background-image: url("../../euler/src/assets/download.png");
   background-repeat: no-repeat;
   background-position: 50%;
   position: fixed;
+  right: 150px;
+  z-index: 99;
   bottom: calc(20%);
+  @media screen and (max-width: 1700px) {
+    right: 10px;
+    z-index: 99;
+    bottom: calc(30%);
+  }
   .box-show {
     display: none;
     width: 48px;
@@ -263,12 +284,12 @@ const btnInfo = () => {
 .md-anchor {
   position: fixed;
   // right: calc(5%);
-  right: 5px;
+  right: 20px;
   max-width: 200px;
   z-index: 99;
-  // @media screen and (max-width: 1658px) {
-  //   display: none;
-  // }
+  @media screen and (max-width: 1700px) {
+    display: none;
+  }
 }
 .anchor-link {
   display: block;
