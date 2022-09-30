@@ -433,13 +433,13 @@ const goToUser = (data: IObject) => {
         </p>
       </div>
     </el-dialog> -->
-    <swiper-slide>
+    <!-- <swiper-slide>
       <o-mobile-template header="companyRelations">
         <template #content>
           <menber-and-group-relationship></menber-and-group-relationship>
         </template>
       </o-mobile-template>
-    </swiper-slide>
+    </swiper-slide> -->
     <swiper-slide>
       <o-mobile-template header="groupRelations">
         <template #content>
