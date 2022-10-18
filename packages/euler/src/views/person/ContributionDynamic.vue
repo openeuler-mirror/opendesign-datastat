@@ -292,7 +292,7 @@ getprlistData();
 const detailsData = ref();
 const totalCount = ref(0);
 
-const filterReallData = (val) => {
+const filterReallData = (val:any) => {
   if (param.value.contributeType === "comment") {
     // reallData.value = reallData.value.filter((item) => {
     //   return commentSelectBox.value.some((it) => {
