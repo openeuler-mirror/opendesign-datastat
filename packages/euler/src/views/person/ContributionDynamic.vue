@@ -1,60 +1,93 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { formType } from 'shared/@types/interface';
-import { IObject } from 'shared/@types/interface';
-import IconUser from '~icons/app/search';
-import OIcon from 'shared/components/OIcon.vue';
-import OFormRadio from '@/components/OFormRadio.vue';
-import { toThousands } from 'shared/utils/helper';
-import {
-  queryUserSigContribute,
-  queryUserContributeDetails,
-} from 'shared/api/index';
-import MainPR from '@/assets/MainPR.png';
-import CommonPR from '@/assets/CommonPR.png';
-import comment from '@/assets/comment.png';
-import noclick from '@/assets/noclick.png';
-import text from '@/assets/text.png';
-import { Search } from '@element-plus/icons-vue';
-import ONoDataImage from 'shared/components/ONoDataImage.vue';
-import { ElScrollbar } from 'element-plus';
+import { ref, onMounted, computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { formType } from "shared/@types/interface";
+import { IObject } from "shared/@types/interface";
+import IconUser from "~icons/app/search";
+import OIcon from "shared/components/OIcon.vue";
+import OFormRadio from "@/components/OFormRadio.vue";
+import { toThousands } from "shared/utils/helper";
+import { queryUserSigContribute, queryUserContributeDetails } from "shared/api/index";
+import MainPR from "@/assets/MainPR.png";
+import CommonPR from "@/assets/CommonPR.png";
+import comment from "@/assets/comment.png";
+import noclick from "@/assets/noclick.png";
+import text from "@/assets/text.png";
+import { Search } from "@element-plus/icons-vue";
+import ONoDataImage from "shared/components/ONoDataImage.vue";
+import { ElScrollbar } from "element-plus";
 const loading = ref(false);
 const { t } = useI18n();
 const props = defineProps({
   sig: {
     type: String,
     required: true,
-    default: '',
+    default: "",
   },
 });
-const selvalue = ref('');
+// 评论图表筛选
+const commentSelectBox = ref([
+  {
+    color: comment,
+    isSelected: true,
+    label: "General",
+    key: 0,
+    type: "command",
+  },
+  {
+    color: text,
+    isSelected: true,
+    label: "Order",
+    key: 1,
+    type: "normal",
+  },
+]);
+const selvalue = ref("");
 const pageSize = ref(10);
 const cursorValue = ref();
+// 搜索过滤
+const searchInput = ref("");
+const commentType = ref("");
+// 默认显示第1页
+const currentPage = ref(1);
 const param = ref({
   user: computed(() => props.sig),
-  community: 'openeuler',
-  contributeType: 'pr',
+  community: "openeuler",
+  contributeType: "pr",
   // pageSize: computed(() => value.value),
-  timeRange: 'all',
+  timeRange: "all",
+  page: computed(() => currentPage.value),
+  pageSize: computed(() => pageSize.value),
+  filter: computed(() => searchInput.value),
+  comment_type: computed(() => commentType.value),
 } as IObject);
 const selParam = () => {
-  if (selvalue.value !== 'all' && selvalue.value !== '') {
+  if (selvalue.value !== "all" && selvalue.value !== "") {
     param.value = {
       user: props.sig,
       sig: computed(() => selvalue.value),
-      community: 'openeuler',
+      community: "openeuler",
       contributeType: typeData.value,
       // pageSize: computed(() => value.value),
       timeRange: timeData.value,
+      // page: 1,
+      // pageSize: 10,
+      page: computed(() => currentPage.value),
+      pageSize: computed(() => pageSize.value),
+      filter: computed(() => searchInput.value),
+      comment_type: computed(() => commentType.value),
     };
   } else {
     param.value = {
       user: props.sig,
-      community: 'openeuler',
+      community: "openeuler",
       contributeType: typeData.value,
       // pageSize: computed(() => value.value),
       timeRange: timeData.value,
+      page: computed(() => currentPage.value),
+      pageSize: computed(() => pageSize.value),
+      filter: computed(() => searchInput.value),
+      comment_type: computed(() => commentType.value),
     };
   }
 };
@@ -62,24 +95,24 @@ const selParam = () => {
 const formOption = computed(() => {
   return [
     {
-      label: t('from.type'),
-      id: 'contributeType',
-      active: 'pr',
+      label: t("from.type"),
+      id: "contributeType",
+      active: "pr",
       list: [
-        { label: t('home.prs'), value: 'pr' },
-        { label: t('home.issues'), value: 'issue' },
-        { label: t('home.comments'), value: 'comment' },
+        { label: t("home.prs"), value: "pr" },
+        { label: t("home.issues"), value: "issue" },
+        { label: t("home.comments"), value: "comment" },
       ],
     },
     {
-      label: t('from.timeRange'),
-      id: 'timeRange',
-      active: 'all',
+      label: t("from.timeRange"),
+      id: "timeRange",
+      active: "all",
       list: [
-        { label: t('from.lastonemonth'), value: 'lastonemonth' },
-        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
-        { label: t('from.lastoneyear'), value: 'lastoneyear' },
-        { label: t('from.all'), value: 'all' },
+        { label: t("from.lastonemonth"), value: "lastonemonth" },
+        { label: t("from.lasthalfyear"), value: "lasthalfyear" },
+        { label: t("from.lastoneyear"), value: "lastoneyear" },
+        { label: t("from.all"), value: "all" },
       ],
     },
   ];
@@ -91,74 +124,113 @@ const getContributeInfo = (e: IObject) => {
   getDetailsData();
 };
 // 格式化统计周期文字
-const timeRangeText = ref('');
-const timeData = ref('');
+const timeRangeText = ref("");
+const timeData = ref("");
 const switchTime = () => {
   switch (param.value.timeRange) {
-    case 'lastonemonth':
-      timeRangeText.value = t('from.lastonemonth');
-      timeData.value = 'lastonemonth';
+    case "lastonemonth":
+      timeRangeText.value = t("from.lastonemonth");
+      timeData.value = "lastonemonth";
       break;
-    case 'lasthalfyear':
-      timeRangeText.value = t('from.lasthalfyear');
-      timeData.value = 'lasthalfyear';
+    case "lasthalfyear":
+      timeRangeText.value = t("from.lasthalfyear");
+      timeData.value = "lasthalfyear";
       break;
-    case 'lastoneyear':
-      timeRangeText.value = t('from.lastoneyear');
-      timeData.value = 'lastoneyear';
+    case "lastoneyear":
+      timeRangeText.value = t("from.lastoneyear");
+      timeData.value = "lastoneyear";
       break;
     default:
-      timeRangeText.value = t('from.all');
-      timeData.value = 'all';
+      timeRangeText.value = t("from.all");
+      timeData.value = "all";
       break;
   }
 };
 switchTime();
-const typeLable = ref('');
-const typeData = ref('');
+const typeLable = ref("");
+const typeData = ref("");
 const switchType = () => {
   switch (param.value.contributeType) {
-    case 'pr':
-      typeLable.value = t('home.prs');
-      typeData.value = 'pr';
+    case "pr":
+      typeLable.value = t("home.prs");
+      typeData.value = "pr";
       break;
-    case 'issue':
-      typeLable.value = t('home.issues');
-      typeData.value = 'issue';
+    case "issue":
+      typeLable.value = t("home.issues");
+      typeData.value = "issue";
       break;
-    case 'comment':
-      typeLable.value = t('home.comments');
-      typeData.value = 'comment';
+    case "comment":
+      typeLable.value = t("home.comments");
+      typeData.value = "comment";
       break;
   }
 };
 switchType();
-// 搜索过滤
-const searchInput = ref('');
+
+// 获取表格数据
+const getDetailsData = () => {
+  loading.value = true;
+  console.log('a',param.value);
+  queryUserContributeDetails(param.value)
+    .then((data) => {
+      const value = data?.data || [];
+      totalCount.value = value["total"];
+      detailsData.value = value["data"];
+      reallData.value = value["data"];
+      cursorValue.value = data?.cursor || "";
+      // if (
+      //   param.value.contributeType === "pr" ||
+      //   param.value.contributeType === "comment"
+      // ) {
+      //   filterReallData();
+      // }
+      loading.value = false;
+      // currentPage.value = 1;
+
+
+    })
+    .catch(() => (loading.value = false));
+};
+getDetailsData();
+
 // 搜索结果
 const reallData = ref([] as IObject[]);
-const querySearch = () => {
-  if (searchInput.value !== '') {
-    const newList = detailsData.value.filter(
-      (item: any) =>
-        item.info.toLowerCase().includes(searchInput.value) ||
-        item.repo.toLowerCase().includes(searchInput.value) ||
-        item.time
-          .split('T')
-          .slice(0, 1)
-          .toString()
-          .toLowerCase()
-          .includes(searchInput.value)
-    );
-    reallData.value = newList;
-    filterReallData();
-  } else {
+
+const querySearch = (val: any) => {
+  if (searchInput.value !== "") {
+    // const newList = detailsData.value.filter(
+    //   (item: any) =>
+    //     item.info.toLowerCase().includes(searchInput.value) ||
+    //     item.repo.toLowerCase().includes(searchInput.value) ||
+    //     item.time
+    //       .split("T")
+    //       .slice(0, 1)
+    //       .toString()
+    //       .toLowerCase()
+    //       .includes(searchInput.value)
+    // );
+    // param.value = {
+    //   user: computed(() => props.sig),
+    //   community: 'openeuler',
+    //   contributeType: typeData.value,
+    //   // pageSize: computed(() => value.value),
+    //   timeRange: timeData.value,
+    //   page: computed(() => currentPage.value),
+    //   pageSize: computed(() => pageSize.value),
+    //   filter: searchInput.value,
+    // };
+
     getDetailsData();
+    // reallData.value = newList;
+    // filterReallData(val);
+  } else {
+    filterReallData(val);
+    // getDetailsData();
   }
 };
 const clearSearchInput = () => {
   getDetailsData();
-  searchInput.value = '';
+  // searchInput.value = "";
 };
 watch(
   () => props.sig,
@@ -183,24 +255,24 @@ watch(
 const options = [
   {
     value: 10,
-    label: '10',
+    label: "10",
   },
   {
     value: 20,
-    label: '20',
+    label: "20",
   },
   {
     value: 50,
-    label: '50',
+    label: "50",
   },
 ];
 const selData = ref();
 const getprlistData = () => {
   const query = {
     user: props.sig,
-    timeRange: 'all',
-    community: 'openeuler',
-    contributeType: 'pr',
+    timeRange: "all",
+    community: "openeuler",
+    contributeType: "pr",
   };
   queryUserSigContribute(query).then((data) => {
     const value = data?.data || [];
@@ -220,92 +292,65 @@ getprlistData();
 const detailsData = ref();
 const totalCount = ref(0);
 
-const filterReallData = () => {
-  if (param.value.contributeType === 'comment') {
-    reallData.value = reallData.value.filter((item) => {
-      return commentSelectBox.value.some((it) => {
-        return it.isSelected && item.is_invalid_comment === it.key;
-      });
-    });
+const filterReallData = (val) => {
+  if (param.value.contributeType === "comment") {
+    // reallData.value = reallData.value.filter((item) => {
+    //   return commentSelectBox.value.some((it) => {
+    //     return it.isSelected && item.is_invalid_comment === it.key;
+    //   });
+    // });
+    commentType.value = val;
+    getDetailsData();
   } else {
-    reallData.value = reallData.value.filter((item) => {
-      return contributionSelectBox.value.some((it) => {
-        return it.isSelected && item.is_main_feature === it.key;
-      });
-    });
+    // reallData.value = reallData.value.filter((item) => {
+    //   return contributionSelectBox.value.some((it) => {
+    //     return it.isSelected && item.is_main_feature === it.key;
+    //   });
+    // });
+    // comment_type.value = 'normal';
+    // getDetailsData();
   }
 };
 
-const getDetailsData = () => {
-  loading.value = true;
-  queryUserContributeDetails(param.value)
-    .then((data) => {
-      const value = data?.data || [];
-      totalCount.value = data?.totalCount || 0;
-      detailsData.value = value[props.sig];
-      reallData.value = value[props.sig];
-      cursorValue.value = data?.cursor || '';
-      if (
-        param.value.contributeType === 'pr' ||
-        param.value.contributeType === 'comment'
-      ) {
-        filterReallData();
-      }
-      loading.value = false;
-      currentPage.value = 1;
-    })
-    .catch(() => (loading.value = false));
-};
-getDetailsData();
-
-// 默认显示第1页
-const currentPage = ref(1);
 // 显示第几页
 const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
+  getDetailsData();
 };
 
-// 图表筛选
+// 图表PR筛选
 const contributionSelectBox = ref([
   {
     color: MainPR,
     isSelected: true,
-    label: 'key',
+    label: "key",
     key: 1,
   },
   {
     color: CommonPR,
     isSelected: true,
-    label: 'general',
+    label: "general",
     key: 0,
   },
 ]);
-// 评论图表筛选
-const commentSelectBox = ref([
-  {
-    color: comment,
-    isSelected: true,
-    label: 'General',
-    key: 0,
-  },
-  {
-    color: text,
-    isSelected: true,
-    label: 'Order',
-    key: 1,
-  },
-]);
+
 const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
-  querySearch();
+
+  if (item.isSelected) {
+    commentType.value = "";
+    getDetailsData();
+  } else {
+    querySearch(item.type);
+  }
 };
 
 // first搜索过滤
 const firstsearchInput = ref();
 const firstreallData = ref([] as IObject[]);
 const firstquerySearch = () => {
-  if (firstsearchInput.value !== '') {
+  if (firstsearchInput.value !== "") {
     const newList = selData.value.filter((item: any) =>
       item.name.toLowerCase().includes(firstsearchInput.value)
     );
@@ -317,7 +362,7 @@ const firstquerySearch = () => {
 // 清除搜索
 const firstclearSearchInput = () => {
   // getDrownData();
-  searchInput.value = '';
+  searchInput.value = "";
   // getDrownData();
 };
 
@@ -330,7 +375,7 @@ const inputSlider = (value: number) => {
 <template>
   <div class="contributions-statistical">
     <div class="sel">
-      <div class="title">SIG {{ t('filtrate') }}</div>
+      <div class="title">SIG {{ t("filtrate") }}</div>
       <el-select
         v-model="selvalue"
         :placeholder="t('from.all')"
@@ -359,10 +404,7 @@ const inputSlider = (value: number) => {
       </el-select>
     </div>
     <div class="line"></div>
-    <o-form-radio
-      :option="formOption"
-      @get-contribute-info="getContributeInfo($event)"
-    >
+    <o-form-radio :option="formOption" @get-contribute-info="getContributeInfo($event)">
       <template #searchInput>
         <div class="searchInput">
           <el-input
@@ -376,9 +418,7 @@ const inputSlider = (value: number) => {
             @clear="clearSearchInput"
           >
             <template #prefix>
-              <o-icon class="search-icon"
-                ><icon-user></icon-user
-              ></o-icon> </template
+              <o-icon class="search-icon"><icon-user></icon-user></o-icon> </template
           ></el-input>
         </div>
       </template>
@@ -399,17 +439,11 @@ const inputSlider = (value: number) => {
         >
       </div>
     </div> -->
-    <div
-      v-if="param.contributeType === 'pr' && reallData?.length"
-      class="prType"
-    >
+    <div v-if="param.contributeType === 'pr' && reallData?.length" class="prType">
       <img :src="CommonPR" alt="" />
       <span class="sp">PR</span>
     </div>
-    <div
-      v-if="param.contributeType === 'issue' && reallData?.length"
-      class="prType"
-    >
+    <div v-if="param.contributeType === 'issue' && reallData?.length" class="prType">
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
     <div v-if="param.contributeType === 'comment'" class="prType">
@@ -429,25 +463,20 @@ const inputSlider = (value: number) => {
 
     <div v-if="reallData?.length" class="page">
       <span class="sp"
-        >{{ t('total') }}<span class="num">{{ toThousands(totalCount) }}</span
-        >{{ t('result') }}</span
+        >{{ t("total") }}<span class="num">{{ totalCount }}</span
+        >{{ t("result") }}</span
       >
       <span
-        >{{ t('display')
+        >{{ t("display")
         }}<span class="num">
-          <el-select
-            v-model="pageSize"
-            class="m-2"
-            placeholder="10"
-            size="small"
-          >
+          <el-select v-model="pageSize" class="m-2" placeholder="10" size="small">
             <el-option
               v-for="item in options"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             /> </el-select></span
-        >{{ t('bar') }}</span
+        >{{ t("bar") }}</span
       >
     </div>
   </div>
@@ -456,14 +485,12 @@ const inputSlider = (value: number) => {
       <li
         v-for="(item, index) in reallData.sort( (a:any, b:any)=> {
             return a.time < b.time ? 1 : -1;
-          })
-          ?.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-          "
+          })"
         :key="'com' + index"
         class="bar-content-item"
       >
         <div class="index">
-          {{ item.time.split('T').slice(0, 1).toString() }}
+          {{ item.time.split("T").slice(0, 1).toString() }}
         </div>
         <div class="infos">
           <div class="infos-img">
@@ -477,42 +504,29 @@ const inputSlider = (value: number) => {
               src="@/assets/CommonPR.png"
               alt=""
             />
+            <img v-if="param.contributeType === 'issue'" src="@/assets/!.png" alt="" />
             <img
-              v-if="param.contributeType === 'issue'"
-              src="@/assets/!.png"
-              alt=""
-            />
-            <img
-              v-if="
-                param.contributeType === 'comment' &&
-                item.is_invalid_comment === 1
-              "
+              v-if="param.contributeType === 'comment' && item.is_invalid_comment === 1"
               src="@/assets/text.png"
               alt=""
             />
             <img
-              v-if="
-                param.contributeType === 'comment' &&
-                item.is_invalid_comment === 0
-              "
+              v-if="param.contributeType === 'comment' && item.is_invalid_comment === 0"
               src="@/assets/comment.png"
               alt=""
             />
           </div>
           <div class="infos-text">
-            <span v-if="param.contributeType === 'comment'"
-              >{{ t('comment') }} </span
-            ><span v-else>{{ t('In') }}</span>
-            <a
-              class="index"
-              :href="`https://gitee.com/${item.repo}`"
-              target="_blank"
-              >{{ item.repo }}</a
+            <span v-if="param.contributeType === 'comment'">{{ t("comment") }} </span
+            ><span v-else>{{ t("In") }}</span>
+            <a class="index" :href="`https://gitee.com/${item.repo}`" target="_blank">{{
+              item.repo
+            }}</a
             ><span v-if="param.contributeType === 'pr'"
-              >{{ t('create') }} Pull Request</span
+              >{{ t("create") }} Pull Request</span
             ><span v-else-if="param.contributeType === 'issue'"
-              >{{ t('create') }} {{ t('task') }}</span
-            ><span v-else> {{ t('de') }} Pull Request</span>
+              >{{ t("create") }} {{ t("task") }}</span
+            ><span v-else> {{ t("de") }} Pull Request</span>
             <a :href="item.url" target="_blank" class="rigth-index"
               >!{{ item.no }} {{ item.info }}</a
             >
@@ -524,19 +538,19 @@ const inputSlider = (value: number) => {
   <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
     <el-pagination
-      v-show="reallData?.length / pageSize > 1"
+    v-show="totalCount / pageSize > 1"
       v-model:page-size="pageSize"
-      v-model:currentPage="currentPage"
+      :currentPage="currentPage"
       background
       layout="prev, pager, next,jumper"
-      :total="reallData?.length"
+      :total="totalCount"
       @current-change="handleCurrentChange"
     />
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import '@/shared/styles/style.scss';
+@import "@/shared/styles/style.scss";
 .searchInput {
   width: 100%;
   margin: 10px 0 20px;
