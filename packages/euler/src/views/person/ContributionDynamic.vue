@@ -26,6 +26,8 @@ const props = defineProps({
   },
 });
 // 评论图表筛选
+const infoFirst = ref(1);
+const infoSeconed = ref(1);
 const commentSelectBox = ref([
   {
     color: comment,
@@ -33,6 +35,7 @@ const commentSelectBox = ref([
     label: "General",
     key: 0,
     type: "command",
+    info: computed(() => infoFirst.value),
   },
   {
     color: text,
@@ -40,6 +43,7 @@ const commentSelectBox = ref([
     label: "Order",
     key: 1,
     type: "normal",
+    info: computed(() => infoSeconed.value),
   },
 ]);
 const selvalue = ref("");
@@ -170,7 +174,6 @@ switchType();
 // 获取表格数据
 const getDetailsData = () => {
   loading.value = true;
-  console.log('a',param.value);
   queryUserContributeDetails(param.value)
     .then((data) => {
       const value = data?.data || [];
@@ -186,8 +189,6 @@ const getDetailsData = () => {
       // }
       loading.value = false;
       // currentPage.value = 1;
-
-
     })
     .catch(() => (loading.value = false));
 };
@@ -292,14 +293,23 @@ getprlistData();
 const detailsData = ref();
 const totalCount = ref(0);
 
-const filterReallData = (val:any) => {
+const filterReallData = (val: any) => {
   if (param.value.contributeType === "comment") {
     // reallData.value = reallData.value.filter((item) => {
     //   return commentSelectBox.value.some((it) => {
     //     return it.isSelected && item.is_invalid_comment === it.key;
     //   });
     // });
-    commentType.value = val;
+    // commentType.value = val;
+    if (infoFirst.value === 1 && infoSeconed.value === 0) {
+      commentType.value = "normal";
+    } else if (infoFirst.value === 0 && infoSeconed.value === 1) {
+      commentType.value = "command";
+    } else if (infoFirst.value === 0 && infoSeconed.value === 0) {
+      commentType.value = "noneType";
+    } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
+      commentType.value = "all";
+    }
     getDetailsData();
   } else {
     // reallData.value = reallData.value.filter((item) => {
@@ -338,12 +348,34 @@ const contributionSelectBox = ref([
 const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
 
-  if (item.isSelected) {
-    commentType.value = "";
-    getDetailsData();
-  } else {
-    querySearch(item.type);
+  // if (item.isSelected) {
+  //   commentType.value = "";
+  //   getDetailsData();
+  // } else {
+  //   querySearch(item.type);
+  // }
+  if (item.isSelected && item.key === 0) {
+    infoFirst.value = 1;
+  } else if (!item.isSelected && item.key === 0) {
+    infoFirst.value = 0;
+  } else if (item.isSelected && item.key === 1) {
+    infoSeconed.value = 1;
+  } else if (!item.isSelected && item.key === 1) {
+    infoSeconed.value = 0;
   }
+  // console.log("a", infoFirst.value);
+  // console.log("b", infoSeconed.value);
+  if (infoFirst.value === 1 && infoSeconed.value === 0) {
+    commentType.value = "normal";
+  } else if (infoFirst.value === 0 && infoSeconed.value === 1) {
+    commentType.value = "command";
+  } else if (infoFirst.value === 0 && infoSeconed.value === 0) {
+    commentType.value = "noneType";
+  } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
+    commentType.value = "all";
+  }
+
+  getDetailsData();
 };
 
 // first搜索过滤
@@ -538,7 +570,7 @@ const inputSlider = (value: number) => {
   <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
     <el-pagination
-    v-show="totalCount / pageSize > 1"
+      v-show="totalCount / pageSize > 1"
       v-model:page-size="pageSize"
       :currentPage="currentPage"
       background

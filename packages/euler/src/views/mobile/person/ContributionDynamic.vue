@@ -149,14 +149,24 @@ const switchType = () => {
 };
 switchType();
 
-const filterReallData = (val:any) => {
+const filterReallData = (val: any) => {
   if (param.value.contributeType === "comment") {
     // reallData.value = reallData.value.filter((item) => {
     //   return commentSelectBox.value.some((it) => {
     //     return it.isSelected && item.is_invalid_comment === it.key;
     //   });
     // });
-    commentType.value = val;
+    // commentType.value = val;
+    if (infoFirst.value === 1 && infoSeconed.value === 0) {
+      commentType.value = "normal";
+    } else if (infoFirst.value === 0 && infoSeconed.value === 1) {
+      commentType.value = "command";
+    } else if (infoFirst.value === 0 && infoSeconed.value === 0) {
+      commentType.value = "noneType";
+    } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
+      commentType.value = "all";
+    }
+    getDet;
     getDetailsData();
   } else {
     // reallData.value = reallData.value.filter((item) => {
@@ -316,12 +326,40 @@ const contributionSelectBox = ref([
 const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
 
-  if (item.isSelected) {
-    commentType.value = "";
-    getDetailsData();
-  } else {
-    querySearch(item.type);
+  // if (item.isSelected) {
+  //   commentType.value = "";
+  //   getDetailsData();
+  // } else {
+  //   querySearch(item.type);
+  // }
+  // if (item.isSelected) {
+  //   commentType.value = "";
+  //   getDetailsData();
+  // } else {
+  //   querySearch(item.type);
+  // }
+  if (item.isSelected && item.key === 0) {
+    infoFirst.value = 1;
+  } else if (!item.isSelected && item.key === 0) {
+    infoFirst.value = 0;
+  } else if (item.isSelected && item.key === 1) {
+    infoSeconed.value = 1;
+  } else if (!item.isSelected && item.key === 1) {
+    infoSeconed.value = 0;
   }
+  // console.log("a", infoFirst.value);
+  // console.log("b", infoSeconed.value);
+  if (infoFirst.value === 1 && infoSeconed.value === 0) {
+    commentType.value = "normal";
+  } else if (infoFirst.value === 0 && infoSeconed.value === 1) {
+    commentType.value = "command";
+  } else if (infoFirst.value === 0 && infoSeconed.value === 0) {
+    commentType.value = "noneType";
+  } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
+    commentType.value = "all";
+  }
+
+  getDetailsData();
 };
 
 // first搜索过滤
@@ -345,6 +383,8 @@ const firstclearSearchInput = () => {
 };
 
 // 评论图表筛选
+const infoFirst = ref(1);
+const infoSeconed = ref(1);
 const commentSelectBox = ref([
   {
     color: comment,
@@ -352,6 +392,7 @@ const commentSelectBox = ref([
     label: "General",
     key: 0,
     type: "command",
+    info: computed(() => infoFirst.value),
   },
   {
     color: text,
@@ -359,6 +400,7 @@ const commentSelectBox = ref([
     label: "Order",
     key: 1,
     type: "normal",
+    info: computed(() => infoSeconed.value),
   },
 ]);
 </script>
@@ -411,7 +453,8 @@ const commentSelectBox = ref([
       </template>
     </mobile-o-form-radio>
   </div>
-  <div class="detail" v-if="reallData?.length">
+  <!-- <div class="detail" v-if="reallData?.length"> -->
+  <div class="detail">
     <!-- <div v-if="param.contributeType === 'pr'" class="prType">
       <div
         v-for="item in contributionSelectBox"
@@ -426,12 +469,12 @@ const commentSelectBox = ref([
         >
       </div>
     </div> -->
-    <div v-if="param.contributeType === 'pr'" class="prType">
+    <div v-if="param.contributeType === 'pr' && reallData?.length" class="prType">
       <img :src="CommonPR" alt="" />
       <!-- <span class="sp">{{ t('general') }} PR</span> -->
       <span class="sp">PR</span>
     </div>
-    <div v-if="param.contributeType === 'issue'" class="prType">
+    <div v-if="param.contributeType === 'issue'&& reallData?.length" class="prType">
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
     <div v-if="param.contributeType === 'comment'" class="prType">
@@ -443,7 +486,7 @@ const commentSelectBox = ref([
         @click="changeTage(item)"
       >
         <img :src="item.isSelected ? item.color : noclick" alt="" />
-        <span class="sp" :style="{ color: item.isSelected ? '' : '#CCCCCC' }">{{
+        <span class="sp" :style="{ color: item.isSelected && reallData?.length? '' : '#CCCCCC' }">{{
           t(item.label)
         }}</span>
       </div>
