@@ -166,7 +166,6 @@ const filterReallData = (val: any) => {
     } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
       commentType.value = "all";
     }
-    getDet;
     getDetailsData();
   } else {
     // reallData.value = reallData.value.filter((item) => {
