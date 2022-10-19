@@ -46,7 +46,7 @@
 </template>
 <script setup lang="ts">
 import { toRefs, ref, onMounted, watch } from 'vue';
-import { queryUserSigContribute } from 'shared/api';
+import { queryUserSigContribute,queryUserContributeDetails } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
 import { processing, toThousands } from 'shared/utils/helper';
 import { useI18n } from 'vue-i18n';
@@ -81,13 +81,26 @@ const getprlistData = () => {
     community: 'openeuler',
     contributeType: 'pr',
   };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    mergeRequest.value = getItemListData(value, 'contribute');
-    contributors.value = value.length
+  queryUserContributeDetails(query).then((data) => {
+    const value = data || [];
+    // mergeRequest.value = getItemListData(value, "contribute");
+    mergeRequest.value = value.totalCount;
   });
 };
 
+const siglistData = () => {
+  const query = {
+    user: user.value,
+    timeRange: time.value,
+    community: "openeuler",
+    contributeType: "pr",
+  };
+  queryUserSigContribute(query).then((data) => {
+    const value = data?.data || [];
+    // mergeRequest.value = getItemListData(value, "contribute");
+    contributors.value = value.length;
+  });
+};
 const getissuelistData = () => {
   const query = {
     user: user.value,
@@ -95,9 +108,10 @@ const getissuelistData = () => {
     community: 'openeuler',
     contributeType: 'issue',
   };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    issueData.value = getItemListData(value, 'contribute');
+  queryUserContributeDetails(query).then((data) => {
+    const value = data || [];
+    // issueData.value = getItemListData(value, "contribute");
+    issueData.value = value.totalCount;
   });
 };
 
@@ -108,9 +122,10 @@ const getcommentlistData = () => {
     community: 'openeuler',
     contributeType: 'comment',
   };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    comment.value = getItemListData(value, 'contribute');
+  queryUserContributeDetails(query).then((data) => {
+    const value = data || [];
+    // comment.value = getItemListData(value, 'contribute');
+    comment.value = value.totalCount;
   });
 };
 // const getcontributeListData = () => {
@@ -129,6 +144,7 @@ const getAllData = () => {
   getissuelistData();
   getcommentlistData();
   // getcontributeListData();
+  siglistData();
 };
 watch(
   () => user.value,

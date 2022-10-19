@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ t(timeTitle) }}{{ t('contribute') }}
+        {{ t(timeTitle) }}{{ t("contribute") }}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,32 +12,32 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-          {{ t(item.label) }}{{ t('contribute') }}</el-dropdown-item
+          {{ t(item.label) }}{{ t("contribute") }}</el-dropdown-item
         >
       </template>
     </el-dropdown>
   </div>
   <div class="left-first">
     <div class="left-first-child">
-      <span>{{ t('Mergerequest') }} PR</span>
+      <span>{{ t("Mergerequest") }} PR</span>
       <div class="left-first-child-data">
         {{ toThousands(mergeRequest) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="Needs & Problems Issue">{{ t('NeedsProblems') }} Issue</span>
+      <span title="Needs & Problems Issue">{{ t("NeedsProblems") }} Issue</span>
       <div class="left-first-child-data">
         {{ toThousands(issueData) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="123">{{ t('review') }} Comment</span>
+      <span title="123">{{ t("review") }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="Number of contributors">{{ t('SIGNumber') }}</span>
+      <span title="Number of contributors">{{ t("SIGNumber") }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>
@@ -45,17 +45,17 @@
   </div>
 </template>
 <script setup lang="ts">
-import { toRefs, ref, onMounted, watch } from 'vue';
-import { queryUserSigContribute } from 'shared/api';
-import { IObject } from 'shared/@types/interface';
-import { toThousands } from 'shared/utils/helper';
-import { useI18n } from 'vue-i18n';
+import { toRefs, ref, onMounted, watch } from "vue";
+import { queryUserSigContribute, queryUserContributeDetails } from "shared/api";
+import { IObject } from "shared/@types/interface";
+import { toThousands } from "shared/utils/helper";
+import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const props = defineProps({
   user: {
     type: String,
     required: true,
-    default: '',
+    default: "",
   },
 });
 const { user } = toRefs(props);
@@ -65,14 +65,14 @@ const comment = ref(0);
 const contributors = ref(0);
 const timeRange = [
   {
-    label: 'from.lastonemonth',
-    value: 'lastonemonth',
+    label: "from.lastonemonth",
+    value: "lastonemonth",
   },
-  { label: 'from.lasthalfyear', value: 'lasthalfyear' },
-  { label: 'from.lastoneyear', value: 'lastoneyear' },
-  { label: 'from.all', value: 'all' },
+  { label: "from.lasthalfyear", value: "lasthalfyear" },
+  { label: "from.lastoneyear", value: "lastoneyear" },
+  { label: "from.all", value: "all" },
 ];
-const time = ref('');
+const time = ref("");
 const getItemListData = (data: IObject[], template: string) => {
   return data.reduce((sum, e) => sum + Number(e[template]), 0);
 };
@@ -80,13 +80,26 @@ const getprlistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'pr',
+    community: "openeuler",
+    contributeType: "pr",
+  };
+  queryUserContributeDetails(query).then((data) => {
+    const value = data || [];
+    // mergeRequest.value = getItemListData(value, "contribute");
+    mergeRequest.value = value.totalCount;
+  });
+};
+const siglistData = () => {
+  const query = {
+    user: user.value,
+    timeRange: time.value,
+    community: "openeuler",
+    contributeType: "pr",
   };
   queryUserSigContribute(query).then((data) => {
     const value = data?.data || [];
-    mergeRequest.value = getItemListData(value, 'contribute');
-    contributors.value = value.length
+    // mergeRequest.value = getItemListData(value, "contribute");
+    contributors.value = value.length;
   });
 };
 
@@ -94,12 +107,13 @@ const getissuelistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'issue',
+    community: "openeuler",
+    contributeType: "issue",
   };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    issueData.value = getItemListData(value, 'contribute');
+  queryUserContributeDetails(query).then((data) => {
+    const value = data || [];
+    // issueData.value = getItemListData(value, "contribute");
+    issueData.value = value.totalCount;
   });
 };
 
@@ -107,12 +121,13 @@ const getcommentlistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'comment',
+    community: "openeuler",
+    contributeType: "comment",
   };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    comment.value = getItemListData(value, 'contribute');
+  queryUserContributeDetails(query).then((data) => {
+    const value = data || [];
+    // comment.value = getItemListData(value, 'contribute');
+    comment.value = value.totalCount;
   });
 };
 // const getcontributeListData = () => {
@@ -130,6 +145,7 @@ const getAllData = () => {
   getprlistData();
   getissuelistData();
   getcommentlistData();
+  siglistData();
   // getcontributeListData();
 };
 watch(
@@ -138,15 +154,15 @@ watch(
     getAllData();
   }
 );
-const timeTitle = ref('');
+const timeTitle = ref("");
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
   timeTitle.value = item.label;
   getAllData();
 };
 onMounted(() => {
-  time.value = 'all';
-  timeTitle.value = 'from.all' ;
+  time.value = "all";
+  timeTitle.value = "from.all";
   getAllData();
 });
 </script>
@@ -177,7 +193,7 @@ onMounted(() => {
   }
 }
 .btnc {
-  background-image: url('@/assets/linedown.png');
+  background-image: url("@/assets/linedown.png");
   width: 24px;
   height: 24px;
   margin-left: 8px;
