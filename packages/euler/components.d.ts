@@ -32,6 +32,7 @@ declare module '@vue/runtime-core' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
     LoadingArc: typeof import('./src/components/LoadingArc.vue')['default']
+    MobileTemplate: typeof import('./src/components/MobileTemplate.vue')['default']
     OFormRadio: typeof import('./src/components/OFormRadio.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
