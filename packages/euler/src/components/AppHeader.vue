@@ -21,7 +21,7 @@ import Bitmap from '@/assets/Bitmap.png';
 import chevronDown from '~icons/app/chevron-down';
 import { testIsPhone } from 'shared/utils/helper';
 import LoadingArc from './LoadingArc.vue';
-
+import {isTest} from 'shared/utils/helper'
 const { token } = getUserAuth();
 const { guardAuthClient, isLoggingIn } = useStoreData();
 let dialogVisible = ref(false);
@@ -113,7 +113,7 @@ watch(
 );
 const jumpToUserZone = () => {
   window.open(
-    'https://jldibemigdfj.authing.cn/u?app_id=62679eab0b22b146d2ea0a3a',
+    `https://openeuler-usercenter.test.osinfra.cn/${useCommon.language}/user`,
     '_blank'
   );
 };
@@ -174,7 +174,7 @@ const photoSrc = computed(() => {
         </el-dropdown>
       </div>
 
-      <!-- <div class="opt-user">
+      <div v-if="isTest()" class="opt-user">
         <loading-arc v-if="isLoggingIn"></loading-arc>
         <el-dropdown v-else-if="token">
           <div class="el-dropdown-link">
@@ -220,7 +220,7 @@ const photoSrc = computed(() => {
             >
           </span>
         </template>
-      </el-dialog> -->
+      </el-dialog>
     </div>
   </div>
   <div v-else class="app-header-mo">

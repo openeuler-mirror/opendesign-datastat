@@ -5,17 +5,18 @@ import { formType } from "shared/@types/interface";
 import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
 import OIcon from "shared/components/OIcon.vue";
-import MobileOFormRadio from "../sig/MobileOFormRadio.vue";
-import OMobilePagination from "shared/components/OMobilePagination.vue";
+import OFormRadio from "@/components/OFormRadio.vue";
 import { toThousands } from "shared/utils/helper";
 import { queryUserSigContribute, queryUserContributeDetails } from "shared/api/index";
-import ONoDataImage from "shared/components/ONoDataImage.vue";
-import MainPR from "@/assets/MainPR.png";
-import CommonPR from "@/assets/CommonPR.png";
+import MainPR from "@/assets/mainPR.png";
+import CommonPR from "@/assets/commonPR.png";
 import comment from "@/assets/comment.png";
 import noclick from "@/assets/noclick.png";
 import text from "@/assets/text.png";
 import { Search } from "@element-plus/icons-vue";
+import ONoDataImage from "shared/components/ONoDataImage.vue";
+import { ElScrollbar } from "element-plus";
+const loading = ref(false);
 const { t } = useI18n();
 const props = defineProps({
   sig: {
@@ -24,22 +25,43 @@ const props = defineProps({
     default: "",
   },
 });
+// 评论图表筛选
+const infoFirst = ref(1);
+const infoSeconed = ref(1);
+const commentSelectBox = ref([
+  {
+    color: comment,
+    isSelected: true,
+    label: "General",
+    key: 0,
+    type: "command",
+    info: computed(() => infoFirst.value),
+  },
+  {
+    color: text,
+    isSelected: true,
+    label: "Order",
+    key: 1,
+    type: "normal",
+    info: computed(() => infoSeconed.value),
+  },
+]);
 const selvalue = ref("");
-const value = ref(50);
+const pageSize = ref(10);
 const cursorValue = ref();
+// 搜索过滤
+const searchInput = ref("");
 const commentType = ref("");
 // 默认显示第1页
 const currentPage = ref(1);
-// 搜索过滤
-const searchInput = ref("");
 const param = ref({
   user: computed(() => props.sig),
-  community: "openeuler",
+  community: "opengauss",
   contributeType: "pr",
   // pageSize: computed(() => value.value),
-  timeRange: "lastonemonth",
+  timeRange: "all",
   page: computed(() => currentPage.value),
-  pageSize: 10,
+  pageSize: computed(() => pageSize.value),
   filter: computed(() => searchInput.value),
   comment_type: computed(() => commentType.value),
 } as IObject);
@@ -48,26 +70,26 @@ const selParam = () => {
     param.value = {
       user: props.sig,
       sig: computed(() => selvalue.value),
-      community: "openeuler",
+      community: "opengauss",
       contributeType: typeData.value,
       // pageSize: computed(() => value.value),
       timeRange: timeData.value,
-      // lastCursor: cursorValue.value,
+      // page: 1,
+      // pageSize: 10,
       page: computed(() => currentPage.value),
-      pageSize: 10,
+      pageSize: computed(() => pageSize.value),
       filter: computed(() => searchInput.value),
       comment_type: computed(() => commentType.value),
     };
   } else {
     param.value = {
       user: props.sig,
-      community: "openeuler",
+      community: "opengauss",
       contributeType: typeData.value,
       // pageSize: computed(() => value.value),
       timeRange: timeData.value,
-      // lastCursor: cursorValue.value,
       page: computed(() => currentPage.value),
-      pageSize: 10,
+      pageSize: computed(() => pageSize.value),
       filter: computed(() => searchInput.value),
       comment_type: computed(() => commentType.value),
     };
@@ -89,7 +111,7 @@ const formOption = computed(() => {
     {
       label: t("from.timeRange"),
       id: "timeRange",
-      active: "lastonemonth",
+      active: "all",
       list: [
         { label: t("from.lastonemonth"), value: "lastonemonth" },
         { label: t("from.lasthalfyear"), value: "lasthalfyear" },
@@ -149,6 +171,128 @@ const switchType = () => {
 };
 switchType();
 
+// 获取表格数据
+const getDetailsData = () => {
+  loading.value = true;
+  queryUserContributeDetails(param.value)
+    .then((data) => {
+      const value = data?.data || [];
+      totalCount.value = value["total"];
+      detailsData.value = value["data"];
+      reallData.value = value["data"];
+      cursorValue.value = data?.cursor || "";
+      // if (
+      //   param.value.contributeType === "pr" ||
+      //   param.value.contributeType === "comment"
+      // ) {
+      //   filterReallData();
+      // }
+      loading.value = false;
+      // currentPage.value = 1;
+    })
+    .catch(() => (loading.value = false));
+};
+getDetailsData();
+
+// 搜索结果
+const reallData = ref([] as IObject[]);
+
+const querySearch = (val: any) => {
+  if (searchInput.value !== "") {
+    // const newList = detailsData.value.filter(
+    //   (item: any) =>
+    //     item.info.toLowerCase().includes(searchInput.value) ||
+    //     item.repo.toLowerCase().includes(searchInput.value) ||
+    //     item.time
+    //       .split("T")
+    //       .slice(0, 1)
+    //       .toString()
+    //       .toLowerCase()
+    //       .includes(searchInput.value)
+    // );
+    // param.value = {
+    //   user: computed(() => props.sig),
+    //   community: 'opengauss',
+    //   contributeType: typeData.value,
+    //   // pageSize: computed(() => value.value),
+    //   timeRange: timeData.value,
+    //   page: computed(() => currentPage.value),
+    //   pageSize: computed(() => pageSize.value),
+    //   filter: searchInput.value,
+    // };
+
+    getDetailsData();
+    // reallData.value = newList;
+    // filterReallData(val);
+  } else {
+    filterReallData(val);
+    // getDetailsData();
+  }
+};
+const clearSearchInput = () => {
+  getDetailsData();
+  // searchInput.value = "";
+};
+watch(
+  () => props.sig,
+  () => {
+    getprlistData();
+    getDetailsData();
+  }
+);
+watch(
+  () => pageSize.value,
+  () => {
+    getDetailsData();
+  }
+);
+watch(
+  () => selvalue.value,
+  () => {
+    selParam();
+    getDetailsData();
+  }
+);
+const options = [
+  {
+    value: 10,
+    label: "10",
+  },
+  {
+    value: 20,
+    label: "20",
+  },
+  {
+    value: 50,
+    label: "50",
+  },
+];
+const selData = ref();
+const getprlistData = () => {
+  const query = {
+    user: props.sig,
+    timeRange: "all",
+    community: "opengauss",
+    contributeType: "pr",
+  };
+  queryUserSigContribute(query).then((data) => {
+    const value = data?.data || [];
+    const seldata: any = [];
+    value.map((item: any) => {
+      seldata.push({
+        name: item.sig_name,
+      });
+    });
+    selData.value = seldata.sort((a: { name: string }, b: { name: string }) =>
+      a.name.localeCompare(b.name)
+    );
+    firstreallData.value = selData.value;
+  });
+};
+getprlistData();
+const detailsData = ref();
+const totalCount = ref(0);
+
 const filterReallData = (val: any) => {
   if (param.value.contributeType === "comment") {
     // reallData.value = reallData.value.filter((item) => {
@@ -178,136 +322,14 @@ const filterReallData = (val: any) => {
   }
 };
 
-// 搜索结果
-const reallData = ref([] as IObject[]);
-const querySearch = (val: any) => {
-  if (searchInput.value !== "") {
-    // const newList = detailsData.value.filter(
-    //   (item: any) =>
-    //     item.info.toLowerCase().includes(searchInput.value) ||
-    //     item.repo.toLowerCase().includes(searchInput.value) ||
-    //     item.time
-    //       .split("T")
-    //       .slice(0, 1)
-    //       .toString()
-    //       .toLowerCase()
-    //       .includes(searchInput.value)
-    // );
-    // param.value = {
-    //   user: computed(() => props.sig),
-    //   community: 'openeuler',
-    //   contributeType: typeData.value,
-    //   // pageSize: computed(() => value.value),
-    //   timeRange: timeData.value,
-    //   page: computed(() => currentPage.value),
-    //   pageSize: computed(() => pageSize.value),
-    //   filter: searchInput.value,
-    // };
-
-    getDetailsData();
-    // reallData.value = newList;
-    // filterReallData(val);
-  } else {
-    filterReallData(val);
-    // getDetailsData();
-  }
-};
-const clearSearchInput = () => {
-  getDetailsData();
-  searchInput.value = "";
-};
-watch(
-  () => props.sig,
-  () => {
-    getprlistData();
-    getDetailsData();
-  }
-);
-watch(
-  () => value.value,
-  () => {
-    getDetailsData();
-  }
-);
-watch(
-  () => selvalue.value,
-  () => {
-    selParam();
-    getDetailsData();
-  }
-);
-// const options = [
-//   {
-//     value: '10',
-//     label: '10',
-//   },
-//   {
-//     value: '20',
-//     label: '20',
-//   },
-//   {
-//     value: '50',
-//     label: '50',
-//   },
-// ];
-// const istrue = ref(true);
-// const changeTage = () => {
-//   istrue.value = !istrue.value;
-// };
-const selData = ref();
-const getprlistData = () => {
-  const query = {
-    user: props.sig,
-    timeRange: "all",
-    community: "openeuler",
-    contributeType: "pr",
-  };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    const seldata: any = [];
-    value?.map((item: any) => {
-      seldata.push({
-        name: item.sig_name,
-      });
-    });
-    selData.value = seldata.sort((a: { name: string }, b: { name: string }) =>
-      a.name.localeCompare(b.name)
-    );
-    firstreallData.value = selData.value;
-  });
-};
-getprlistData();
-const detailsData = ref();
-const totalCount = ref(0);
-const loading = ref(false);
-const getDetailsData = () => {
-  loading.value = true;
-  queryUserContributeDetails(param.value)
-    .then((data) => {
-      const value = data?.data || [];
-      totalCount.value = value["total"];
-      detailsData.value = value["data"];
-      reallData.value = value["data"];
-      cursorValue.value = data?.cursor || "";
-      // if (
-      //   param.value.contributeType === 'pr' ||
-      //   param.value.contributeType === 'comment'
-      // ) {
-      //   filterReallData();
-      // }
-      loading.value = false;
-    })
-    .catch(() => (loading.value = false));
-};
-getDetailsData();
-
 // 显示第几页
 const handleCurrentChange = (val: number) => {
   // 改变默认的页数
   currentPage.value = val;
   getDetailsData();
 };
-// 图表筛选
+
+// 图表PR筛选
 const contributionSelectBox = ref([
   {
     color: MainPR,
@@ -322,15 +344,10 @@ const contributionSelectBox = ref([
     key: 0,
   },
 ]);
+
 const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
 
-  // if (item.isSelected) {
-  //   commentType.value = "";
-  //   getDetailsData();
-  // } else {
-  //   querySearch(item.type);
-  // }
   // if (item.isSelected) {
   //   commentType.value = "";
   //   getDetailsData();
@@ -381,34 +398,22 @@ const firstclearSearchInput = () => {
   // getDrownData();
 };
 
-// 评论图表筛选
-const infoFirst = ref(1);
-const infoSeconed = ref(1);
-const commentSelectBox = ref([
-  {
-    color: comment,
-    isSelected: true,
-    label: "General",
-    key: 0,
-    type: "command",
-    info: computed(() => infoFirst.value),
-  },
-  {
-    color: text,
-    isSelected: true,
-    label: "Order",
-    key: 1,
-    type: "normal",
-    info: computed(() => infoSeconed.value),
-  },
-]);
+const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
+const inputSlider = (value: number) => {
+  scrollbarRef.value?.setScrollTop(value);
+};
 </script>
 
 <template>
   <div class="contributions-statistical">
     <div class="sel">
-      <div class="title">SIG{{ t("filtrate") }}</div>
-      <el-select v-model="selvalue" :placeholder="t('from.all')" size="large">
+      <div class="title">SIG {{ t("filtrate") }}</div>
+      <el-select
+        v-model="selvalue"
+        :placeholder="t('from.all')"
+        size="large"
+        popper-class="remove-scrollbar"
+      >
         <el-input
           v-model="firstsearchInput"
           clearable
@@ -419,20 +424,19 @@ const commentSelectBox = ref([
           @input="firstquerySearch"
           @clear="firstclearSearchInput"
         />
-        <el-option :label="t('from.all')" value="all" />
-        <el-option
-          v-for="item in firstreallData"
-          :key="item.name"
-          :label="item.name"
-          :value="item.name"
-        />
+        <el-scrollbar class="Escrollbar">
+          <el-option :label="t('from.all')" value="all" />
+          <el-option
+            v-for="item in firstreallData"
+            :key="item.name"
+            :label="item.name"
+            :value="item.name"
+          />
+        </el-scrollbar>
       </el-select>
     </div>
     <div class="line"></div>
-    <mobile-o-form-radio
-      :option="formOption"
-      @get-contribute-info="getContributeInfo($event)"
-    >
+    <o-form-radio :option="formOption" @get-contribute-info="getContributeInfo($event)">
       <template #searchInput>
         <div class="searchInput">
           <el-input
@@ -450,9 +454,8 @@ const commentSelectBox = ref([
           ></el-input>
         </div>
       </template>
-    </mobile-o-form-radio>
+    </o-form-radio>
   </div>
-  <!-- <div class="detail" v-if="reallData?.length"> -->
   <div class="detail">
     <!-- <div v-if="param.contributeType === 'pr'" class="prType">
       <div
@@ -470,11 +473,10 @@ const commentSelectBox = ref([
     </div> -->
     <div v-if="param.contributeType === 'pr' && reallData?.length" class="prType">
       <img :src="CommonPR" alt="" />
-      <!-- <span class="sp">{{ t('general') }} PR</span> -->
       <span class="sp">PR</span>
     </div>
-    <div v-if="param.contributeType === 'issue'&& reallData?.length" class="prType">
-      <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
+    <div v-if="param.contributeType === 'issue' && reallData?.length" class="prType">
+      <img src="@/assets/issue.png" alt="" /> <span class="sp">Issue</span>
     </div>
     <div v-if="param.contributeType === 'comment'" class="prType">
       <div
@@ -485,10 +487,29 @@ const commentSelectBox = ref([
         @click="changeTage(item)"
       >
         <img :src="item.isSelected ? item.color : noclick" alt="" />
-        <span class="sp" :style="{ color: item.isSelected && reallData?.length? '' : '#CCCCCC' }">{{
+        <span class="sp" :style="{ color: item.isSelected ? '' : '#CCCCCC' }">{{
           t(item.label)
         }}</span>
       </div>
+    </div>
+
+    <div v-if="reallData?.length" class="page">
+      <span class="sp"
+        >{{ t("total") }}<span class="num">{{ totalCount }}</span
+        >{{ t("result") }}</span
+      >
+      <span
+        >{{ t("display")
+        }}<span class="num">
+          <el-select v-model="pageSize" class="m-2" placeholder="10" size="small">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            /> </el-select></span
+        >{{ t("bar") }}</span
+      >
     </div>
   </div>
   <div v-if="reallData?.length" v-loading="loading" class="bar-panel">
@@ -507,15 +528,15 @@ const commentSelectBox = ref([
           <div class="infos-img">
             <img
               v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
-              src="@/assets/MainPR.png"
+              src="@/assets/mainPR.png"
               alt=""
             />
             <img
               v-if="param.contributeType === 'pr' && item.is_main_feature === 0"
-              src="@/assets/CommonPR.png"
+              src="@/assets/commonPR.png"
               alt=""
             />
-            <img v-if="param.contributeType === 'issue'" src="@/assets/!.png" alt="" />
+            <img v-if="param.contributeType === 'issue'" src="@/assets/issue.png" alt="" />
             <img
               v-if="param.contributeType === 'comment' && item.is_invalid_comment === 1"
               src="@/assets/text.png"
@@ -548,10 +569,12 @@ const commentSelectBox = ref([
   </div>
   <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
-    <o-mobile-pagination
-      v-show="totalCount > 10"
-      :current-page="currentPage"
-      :page-size="10"
+    <el-pagination
+      v-show="totalCount / pageSize > 1"
+      v-model:page-size="pageSize"
+      :currentPage="currentPage"
+      background
+      layout="prev, pager, next,jumper"
       :total="totalCount"
       @current-change="handleCurrentChange"
     />
@@ -569,7 +592,7 @@ const commentSelectBox = ref([
   :deep(.el-autocomplete) {
     width: 100%;
     &.active .el-input__inner {
-      box-shadow: 0 0 0 1px #002fa7 inset;
+      box-shadow: 0 0 0 1px #7D32EA inset;
     }
   }
   :deep(.el-input__prefix) {
@@ -587,7 +610,7 @@ const commentSelectBox = ref([
     }
   }
   :deep(.el-input__inner:focus) {
-    box-shadow: 0 0 0 1px #002fa7 inset;
+    box-shadow: 0 0 0 1px #7D32EA inset;
   }
   :deep(.el-input__inner) {
     height: 56px;
@@ -595,8 +618,8 @@ const commentSelectBox = ref([
 }
 .bar-panel {
   position: relative;
-  // height: 100%;
-  // margin-bottom: 400px;
+  height: 100%;
+  padding-bottom: 12px;
 }
 .bar-content {
   position: relative;
@@ -605,9 +628,9 @@ const commentSelectBox = ref([
     margin: 16px 0;
     list-style: none;
     .infos {
-      font-size: 12px;
+      font-size: 14px;
       color: #000000;
-      line-height: 16px;
+      line-height: 22px;
       display: grid;
       grid-template-columns: 20px auto;
       &-img {
@@ -624,32 +647,32 @@ const commentSelectBox = ref([
       }
       .index {
         margin-right: 3px;
-        font-size: 12px;
-        color: #002fa7;
+        font-size: 14px;
+        color: #7D32EA;
         margin-left: 3px;
       }
       .rigth-index {
-        margin-left: 8px;
-        color: #002fa7;
+        margin-left: 3px;
+        color: #7D32EA;
       }
     }
   }
   .index {
     margin-bottom: 4px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
-    line-height: 16px;
+    line-height: 24px;
   }
 }
 .detail {
   display: flex;
   align-items: center;
   position: relative;
+  margin-top: 16px;
   .prType {
     display: flex;
     align-items: center;
     .color-box {
-      margin-right: 24px;
       display: flex;
       align-items: center;
       .sp {
@@ -662,24 +685,40 @@ const commentSelectBox = ref([
   .sp {
     // width: 69px;
     height: 18px;
-    font-size: 3px;
+    font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
     font-weight: 400;
     color: #555555;
     line-height: 18px;
-    margin-left: 2px;
-    margin-right: 4px;
+    margin-left: 5px;
+    margin-right: 24px;
+  }
+  .page {
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #555555;
+    line-height: 22px;
+    .num {
+      font-size: 16px;
+      font-family: Roboto-Medium, Roboto;
+      font-weight: 500;
+      color: #000000;
+      line-height: 24px;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
   }
 }
-
 .sel {
   margin-bottom: 14px;
-  // display: flex;
-  // align-items: center;
+  display: flex;
+  align-items: center;
   .title {
-    margin-bottom: 14px;
-    width: 122px;
-    font-size: 12px;
+    // width: 122px;
+    margin-right: 24px;
   }
 }
 .line {
@@ -687,6 +726,7 @@ const commentSelectBox = ref([
   margin-bottom: 18px;
 }
 .demo-pagination-block {
+  margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -697,15 +737,35 @@ const commentSelectBox = ref([
   .el-select .el-input__inner {
     width: 48px;
     height: 24px;
+    margin-right: 2px;
+    margin-left: 2px;
   }
 }
 .sel {
   .el-select .el-input__inner {
-    // width: 368px;
+    width: 368px;
     height: 32px;
   }
 }
 .el-select-dropdown__item {
   padding: 0 15px 0 15px;
 }
+
+// .remove-scrollbar {
+//   .el-scrollbar__wrap {
+//     overflow: visible; //超出部分不滚动，直接显示
+//   }
+//   .el-scrollbar__thumb {
+//     display: none; //去掉右侧滚动条
+//   }
+// }
+
+// .Escrollbar {
+//   .el-scrollbar__wrap {
+//     overflow: auto;
+//   }
+//   .el-scrollbar__thumb {
+//     display: inside;
+//   }
+// }
 </style>

@@ -1,37 +1,42 @@
 <script setup lang="ts">
-import { useCommonStore } from "@/stores/common";
-import OAnchor from "shared/components/OAnchor.vue";
-import OEchartGauge from "shared/components/OEchartGauge.vue";
-import HistoricalTrend from "./HistoricalTrend.vue";
-import CurrentTrend from "./CurrentTrend.vue";
-import { ref, onMounted, watch, computed } from "vue";
-import { useI18n } from "vue-i18n";
-import { useRoute, useRouter } from "vue-router";
-import TableList from "./TableList.vue";
-import ContributList from "./ContributList.vue";
-import { querySigRepos, querySigName, getSigScore, querySigInfo } from "shared/api";
-import { openCommunityInfo } from "@/api";
-import { IObject } from "shared/@types/interface";
-import { Search } from "@element-plus/icons-vue";
-import { ElScrollbar } from "element-plus";
-import AppFooter from "@/components/AppFooter.vue";
-import { hasPermission } from "shared/utils/login";
+import { useCommonStore } from '@/stores/common';
+import OGAnchor from 'shared/components/OGAnchor.vue';
+import OEchartGauge from 'shared/components/OEchartGauge.vue';
+import HistoricalTrend from './HistoricalTrend.vue';
+import CurrentTrend from './CurrentTrend.vue';
+import { ref, onMounted, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
+import TableList from './TableList.vue';
+import ContributList from './ContributList.vue';
+import {
+  querySigRepos,
+  querySigName,
+  getSigScore,
+  querySigInfo,
+} from 'shared/api';
+import { openCommunityInfo } from '@/api';
+import { IObject } from 'shared/@types/interface';
+import { Search } from '@element-plus/icons-vue';
+import { ElScrollbar } from 'element-plus';
+import AppFooter from '@/components/AppFooter.vue';
+import { hasPermission } from 'shared/utils/login';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
-const sencondTitle = ref("");
+const sencondTitle = ref('');
 const { t } = useI18n();
 const drownData = ref([] as any[]);
 // sencondTitle.value = route.params.name as string;
 const getDrownData = () => {
-  let community = "openeuler";
+  let community = 'opengauss';
 
   querySigName(community).then((data) => {
     const allSigs = data?.data || {};
-    allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
+    allSigs.opengauss.sort((a: any, b: any) => a.localeCompare(b));
     const findOne =
-      allSigs.openeuler.find((item: any) => item === route.params.name) ||
-      allSigs.openeuler[0];
+      allSigs.opengauss.find((item: any) => item === route.params.name) ||
+      allSigs.opengauss[0];
     sencondTitle.value = findOne;
     const firstKeys = Object.keys(allSigs);
     drownData.value = allSigs[firstKeys[0]];
@@ -41,14 +46,14 @@ const getDrownData = () => {
 };
 
 const anchorData = computed(() => {
-  return hasPermission("sigRead")
+  return hasPermission('sigRead')
     ? [
-        "currentVitalityIndex",
-        "historicalVitalityIndicators",
-        "companyContributor",
-        "userContributor",
+        'currentVitalityIndex',
+        'historicalVitalityIndicators',
+        'companyContributor',
+        'userContributor',
       ]
-    : ["userContributor"];
+    : [ 'userContributor'];
 });
 const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
@@ -57,8 +62,8 @@ const clickDrownItem = (item: string) => {
 const cubeData = ref([] as any[]);
 const getCubeData = () => {
   const query = {
-    timeRange: "lastonemonth",
-    community: "openeuler",
+    timeRange: 'lastonemonth',
+    community: 'opengauss',
     sig: sencondTitle.value,
   };
 
@@ -84,7 +89,7 @@ const querySorceData = () => {
   const params = {
     community: openCommunityInfo.name,
     sig: sencondTitle.value,
-    timeRange: "lastonemonth",
+    timeRange: 'lastonemonth',
   };
 
   getSigScore(params).then((data) => {
@@ -96,10 +101,10 @@ const goToTetail = () => {
   router.push(`/${useCommon.language}/detail`);
 };
 // 搜索过滤
-const searchInput = ref("");
+const searchInput = ref('');
 const reallData = ref([] as IObject[]);
 const querySearch = () => {
-  if (searchInput.value !== "") {
+  if (searchInput.value !== '') {
     const newList = drownData.value.filter((item: any) =>
       item.toLowerCase().includes(searchInput.value)
     );
@@ -111,14 +116,14 @@ const querySearch = () => {
 // 清除搜索
 const clearSearchInput = () => {
   getDrownData();
-  searchInput.value = "";
+  searchInput.value = '';
 };
 const clean = () => {
-  searchInput.value = "";
+  searchInput.value = '';
 };
 // 获取侧边栏明细
 const sigInfo = ref({
-  mailing_list: "",
+  mailing_list: '',
 } as IObject);
 const querySigInfoData = () => {
   const params = {
@@ -148,17 +153,22 @@ const showDropdown = (e: any) => {
 </script>
 <template>
   <div class="container">
-    <o-anchor :data="anchorData" top="11rem"></o-anchor>
+    <o-g-anchor :data="anchorData" top="11rem"></o-g-anchor>
     <div class="wrap">
       <div class="step">
-        <span class="step-one" @click="goToTetail()">{{ t("nav.contributors") }}</span>
+        <span class="step-one" @click="goToTetail()">{{
+          t('nav.contributors')
+        }}</span>
         <span> > {{ sencondTitle }}</span>
       </div>
       <div class="main">
         <div class="main-left">
           <div class="main-left-top">
             <div class="edropdown">
-              <el-dropdown placement="bottom-start" @visible-change="showDropdown">
+              <el-dropdown
+                placement="bottom-start"
+                @visible-change="showDropdown"
+              >
                 <div class="main-left-title">
                   {{ sencondTitle }}
                   <span class="btnc"></span>
@@ -192,33 +202,35 @@ const showDropdown = (e: any) => {
           </div>
           <div class="main-left-sp">
             <div class="slogan">
-              {{ sigInfo.description === "." ? "" : sigInfo.description }}
+              {{ sigInfo.description === '.' ? '' : sigInfo.description }}
             </div>
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
                 <a
-                  style="color: #002fa7"
+                  style="color: #7D32EA"
                   target="_blank"
                   :href="`https://gitee.com/${sencondTitle}`"
                 >
-                  {{ t("toHome") }}</a
+                  {{ t('toHome') }}</a
                 >
               </div>
             </div>
             <div class="first">
               <div class="email"></div>
               <div class="List">
-                <span>{{ t("MailingList") }}：</span>
+                <span>{{ t('MailingList') }}：</span>
                 <a
                   v-if="sigInfo.mailing_list"
-                  :href="`https://mailweb.openeuler.org/postorius/lists/${
+                  :href="`https://mailweb.opengauss.org/postorius/lists/${
                     sigInfo.mailing_list.split('@')[0]
                   }.${sigInfo.mailing_list.split('@')[1]}`"
                   class="item"
                   target="_blank"
                 >
-                  {{ sigInfo.mailing_list === "NA" ? "" : sigInfo.mailing_list }}
+                  {{
+                    sigInfo.mailing_list === 'NA' ? '' : sigInfo.mailing_list
+                  }}
                 </a>
               </div>
             </div>
@@ -241,18 +253,22 @@ const showDropdown = (e: any) => {
               <div class="Mentor"></div>
               <div class="List">
                 <span>Mentors：</span>
-                <span v-for="item in sigInfo.mentor" :key="item.value" class="item">
+                <span
+                  v-for="item in sigInfo.mentor"
+                  :key="item.value"
+                  class="item"
+                >
                   {{ item }}
                 </span>
                 <span v-if="!sigInfo.mentor" class="noitem">
-                  {{ t("noMentor") }}
+                  {{ t('noMentor') }}
                 </span>
               </div>
             </div>
             <div class="first">
               <div class="store"></div>
               <div class="List">
-                <span>{{ t("warehouse") }}：</span>
+                <span>{{ t('warehouse') }}：</span>
                 <div class="atlas">
                   <a
                     v-for="item in sigInfo.repos"
@@ -271,10 +287,10 @@ const showDropdown = (e: any) => {
         <div class="main-right">
           <div v-if="hasPermission('sigRead')" class="contributors-panel">
             <h3 id="currentVitalityIndex" class="title">
-              {{ sencondTitle + " " + t("currentVitalityIndex") }}
+              {{ sencondTitle + ' ' + t('currentVitalityIndex') }}
             </h3>
             <div class="rank">
-              <span>{{ t("communityRankings") }}</span>
+              <span>{{ t('communityRankings') }}</span>
               <span> # </span>
               <span class="rank-num">{{ sorceData.rank }} </span>
               <span>/ {{ drownData.length }}</span>
@@ -291,20 +307,20 @@ const showDropdown = (e: any) => {
           </div>
           <div v-if="hasPermission('sigRead')" class="contributors-panel">
             <h3 id="historicalVitalityIndicators" class="title">
-              {{ sencondTitle + " " + t("historicalVitalityIndicators") }}
+              {{ sencondTitle + ' ' + t('historicalVitalityIndicators') }}
             </h3>
             <historical-trend :sig="sencondTitle"></historical-trend>
           </div>
-          <div class="contributors-panel" v-if="hasPermission('sigRead')">
+          <!-- <div class="contributors-panel">
             <h3 id="companyContributor" class="title">
-              {{ sencondTitle + " " + t("companyContributor") }}
+              {{ sencondTitle + ' ' + t('companyContributor') }}
             </h3>
 
             <table-list :sig="sencondTitle" />
-          </div>
+          </div> -->
           <div class="contributors-panel-last">
             <h3 id="userContributor" class="title">
-              {{ sencondTitle + " " + t("userContributor") }}
+              {{ sencondTitle + ' ' + t('userContributor') }}
             </h3>
             <contribut-list :sig="sencondTitle"></contribut-list>
           </div>
@@ -354,7 +370,7 @@ const showDropdown = (e: any) => {
   padding: 40px 0;
   font-size: 12px;
   &-one {
-    color: #002fa7;
+    color: #7D32EA;
     cursor: pointer;
   }
   &-two {
@@ -368,7 +384,7 @@ const showDropdown = (e: any) => {
     padding-right: 24px;
     .edropdown {
       .btnc {
-        background-image: url("@/assets/down.png");
+        background-image: url('@/assets/down.png');
         width: 24px;
         height: 24px;
         position: absolute;
@@ -378,7 +394,7 @@ const showDropdown = (e: any) => {
     &-title {
       font-size: 24px;
       font-family: HarmonyOS_Sans_SC_Medium;
-      color: #002fa7;
+      color: #7D32EA;
       line-height: 32px;
       text-overflow: ellipsis;
       width: 350px;
@@ -399,7 +415,7 @@ const showDropdown = (e: any) => {
         position: relative;
         .toHome {
           padding-top: 3px;
-          color: #002fa7;
+          color: #7D32EA;
           cursor: pointer;
         }
         .List {
@@ -410,42 +426,42 @@ const showDropdown = (e: any) => {
             margin-top: 8px;
             font-size: 14px;
             font-family: HarmonyOS_Sans_SC_Medium;
-            color: #002fa7;
+            color: #7D32EA;
             line-height: 22px;
           }
         }
         .home {
-          background-image: url("@/assets/home-outlined.png");
+          background-image: url('@/assets/home-outlined.png');
           width: 24px;
           height: 24px;
           margin-right: 8px;
         }
         .email {
-          background-image: url("@/assets/email.png");
+          background-image: url('@/assets/email.png');
           width: 24px;
           height: 24px;
           margin-right: 8px;
         }
         .IRC {
-          background-image: url("@/assets/chat.png");
+          background-image: url('@/assets/chat.png');
           width: 24px;
           height: 24px;
           margin-right: 8px;
         }
         .Maintainer {
-          background-image: url("@/assets/use-square.png");
+          background-image: url('@/assets/use-square.png');
           width: 24px;
           height: 24px;
           margin-right: 8px;
         }
         .Mentor {
-          background-image: url("@/assets/user.png");
+          background-image: url('@/assets/user.png');
           width: 24px;
           height: 24px;
           margin-right: 8px;
         }
         .store {
-          background-image: url("@/assets/cube.png");
+          background-image: url('@/assets/cube.png');
           width: 24px;
           height: 24px;
           margin-right: 8px;
@@ -502,7 +518,7 @@ const showDropdown = (e: any) => {
     .box {
       width: 12px;
       height: 12px;
-      background: #002fa7;
+      background: #7D32EA;
       margin-right: 8px;
     }
   }
@@ -558,7 +574,7 @@ const showDropdown = (e: any) => {
   :deep(.el-autocomplete) {
     width: 100%;
     &.active .el-input__inner {
-      box-shadow: 0 0 0 1px #002fa7 inset;
+      box-shadow: 0 0 0 1px #7D32EA inset;
     }
   }
   :deep(.el-input__prefix) {
@@ -576,7 +592,7 @@ const showDropdown = (e: any) => {
     }
   }
   :deep(.el-input__inner:focus) {
-    box-shadow: 0 0 0 1px #002fa7 inset;
+    box-shadow: 0 0 0 1px #7D32EA inset;
   }
 }
 .noitem {

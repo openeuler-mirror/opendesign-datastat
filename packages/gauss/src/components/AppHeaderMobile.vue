@@ -11,124 +11,71 @@ import logoBlack from '@/assets/datastat-black.png';
 import logoBlackZh from '@/assets/datastat-zh-black.png';
 import communityLogoSmall from '@/assets/opengauss-small.png';
 import communityLogoSmallWhite from '@/assets/opengauss-small-white.png';
-import menuIcons from '~icons/app/menu';
-import xIcons from '~icons/app/x';
+import Bitmap from '@/assets/Bitmap.png';
 
+import AppMobileMenu from './AppMobileMenu.vue';
+import {
+  useStoreData,
+  showGuard,
+  logout,
+  getUserAuth,
+} from 'shared/utils/login';
+import LoadingArc from './LoadingArc.vue';
+
+const { token } = getUserAuth();
 const useCommon = useCommonStore();
-const { t, locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
-
-const navList = computed(() => {
-  return [
-    {
-      id: 'overview',
-      label: t('nav.overview'),
-      href: '/overview',
-    },
-    {
-      id: 'detail',
-      label: t('nav.contributors'),
-      href: '/detail',
-    },
-  ];
-});
-
-const drawer = ref(false);
-const menuIcon = ref('menu');
-const isblack = computed(() => (useCommon.swiperIndex < 2 ? true : false));
-const drawerBlack = computed(() => (isblack.value ? 'black' : ''));
-const navActive = ref('overview');
-watch(
-  () => {
-    return useCommon.swiperIndex;
-  },
-  (val) => {
-    navActive.value = val < 2 ? 'overview' : 'detail';
-  }
-);
-
-// 移动端菜单事件
-const changeMenu = () => {
-  if (!drawer.value) {
-    menuIcon.value = 'x';
-    drawer.value = true;
-  } else {
-    drawer.value = false;
-    menuIcon.value = 'menu';
-  }
-};
-// 关闭drawer
-const handleClose = () => {
-  changeMenu();
-};
-// mo导航事件
-
-const moNavClick = (id: string) => {
-  changeMenu();
-  setTimeout(() => {
-    if (id === 'overview') {
-      useCommon.moNav = 0;
-    } else {
-      useCommon.moNav = 2;
-    }
-  }, 200);
-};
+const { guardAuthClient, isLoggingIn } = useStoreData();
+let dialogVisible = ref(false);
+const { t } = useI18n();
+const isblack = computed(() => useCommon.isBlackHeader);
 
 const language = computed(() => (useCommon.language === 'zh' ? false : true));
-const languageRadio = ref(language.value);
-const chaneLanguage = () => {
-  let lang = languageRadio.value ? 'en' : 'zh';
-  localStorage.setItem('lang', lang);
-  locale.value = lang;
-  const { href } = window.location;
-  const newHref = href.split('/').slice(-1).toString();
-  useCommon.setLanguage(lang);
-  router.push(`/${lang}/${newHref}`);
-  webSiteTitle();
-  drawer.value = false;
-};
+
 const webSiteTitle = () => {
   document.title =
     useCommon.language === 'zh' ? 'openGauss 贡献看板' : 'openGauss DATASTAT';
 };
 webSiteTitle();
 
-const isAbout = ref(false);
+// 判断是否是主页面
+const isHome = ref(false);
 watch(
   () => {
     return route.path;
   },
   (path) => {
     const p = path.split('/').slice(-1).toString();
-    isAbout.value = p === 'about' ? true : false;
+    isHome.value = p === 'mobile' ? true : false;
   }
 );
-
 // 点击logo回首页
 const goMobileHome = () => {
-  if (isAbout.value) {
+  if (!isHome.value) {
     const lang = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
     router.push(lang);
-    locale.value = useCommon.language;
-    window.location.reload();
   }
   useCommon.moNav = 0;
-  useCommon.swiperIndex = 0;
+  useCommon.isBlackHeader = true;
 };
+
+const photoSrc = computed(() => {
+  let { photo = '' } = getUserAuth();
+  if (photo?.includes('no_portrait.png')) {
+    photo = Bitmap;
+  }
+  if (guardAuthClient.value?.photo) {
+    return guardAuthClient.value.photo?.includes('no_portrait.png')
+      ? Bitmap
+      : guardAuthClient.value.photo;
+  }
+  return photo || Bitmap;
+});
 </script>
 
 <template>
-  <div
-    v-if="!isAbout"
-    class="menu-bar"
-    :class="{ white: isblack }"
-    @click="changeMenu"
-  >
-    <o-icon
-      ><menu-icons v-if="!drawer"></menu-icons><x-icons v-else></x-icons
-    ></o-icon>
-  </div>
+  <app-mobile-menu></app-mobile-menu>
   <div class="header-logo">
     <template v-if="isblack">
       <img
@@ -138,7 +85,7 @@ const goMobileHome = () => {
         @click="goMobileHome"
       />
       <span class="line"></span>
-      <a target="_blank" :href="openCommunityInfo.link"
+      <a :href="openCommunityInfo.link"
         ><img class="community-logo" :src="communityLogoSmallWhite"
       /></a>
     </template>
@@ -150,114 +97,84 @@ const goMobileHome = () => {
         @click="goMobileHome"
       />
       <span class="line" style="background: #000"></span>
-      <a target="_blank" :href="openCommunityInfo.link"
+      <a :href="openCommunityInfo.link"
         ><img class="community-logo" :src="communityLogoSmall"
       /></a>
     </template>
-  </div>
-  <el-drawer
-    v-model="drawer"
-    append-to-body
-    title=""
-    :modal-class="drawerBlack"
-    :size="'45%'"
-    :with-header="false"
-    direction="ltr"
-    :before-close="handleClose"
-  >
-    <div class="drawer-panel">
-      <div class="drawer-nav">
-        <a
-          v-for="item in navList"
-          :key="item.id"
-          class="link"
-          :class="{ active: navActive === item.id }"
-          href="javascript:;"
-          @click="moNavClick(item.id)"
-          >{{ item.label }}</a
-        >
-      </div>
-      <div class="action">
-        <el-switch
-          v-model="languageRadio"
-          size="large"
-          active-text="English"
-          inactive-text="中文"
-          active-color="#7D32EA"
-          @click="chaneLanguage"
-        />
-      </div>
+    <!-- <div class="opt-user">
+      <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
+      <el-dropdown v-else-if="token">
+        <div class="el-dropdown-link">
+          <img
+            :src="photoSrc"
+            :alt="guardAuthClient.nickname || 'LogOut'"
+            class="img"
+          />
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="dialogVisible = true">{{
+              t('logout')
+            }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+      <img
+        v-else
+        src="@/assets/nologin.png"
+        alt="LogIn"
+        class="img"
+        style="background-color: #fff"
+        @click="showGuard(openCommunityInfo.name)"
+      />
     </div>
-  </el-drawer>
+    <el-dialog v-model="dialogVisible" :title="t('pleaseConfirm')" width="80%">
+      <p style="word-break: break-word">
+        {{ t('titleConfirm') }}
+      </p>
+      <template #footer>
+        <div style="display: flex; justify-content: center">
+          <el-button @click="dialogVisible = false">{{
+            t('Cancel')
+          }}</el-button>
+          <el-button
+            type="primary"
+            @click="
+              dialogVisible = false;
+              logout(openCommunityInfo.name);
+            "
+            >{{ t('Confirm') }}</el-button
+          >
+        </div>
+      </template>
+    </el-dialog> -->
+  </div>
 </template>
 
-<style lang="scss">
-.el-overlay {
-  top: 48px !important;
-  height: calc(100% - 48px) !important;
-  width: 100%;
-  &.black {
-    background-color: rgba(255, 255, 255, 0.5) !important;
-    .el-drawer {
-      background: #191e27;
-      &__body {
-        .drawer-nav {
-          .link {
-            color: #fff;
-          }
-          .active {
-            color: #fff;
-            background: #000;
-            &::after {
-              display: block;
-            }
-          }
-        }
-      }
-    }
+<style lang="scss" scoped>
+.opt-user {
+  position: absolute;
+  right: 1rem;
+  top: 12px;
+  font-size: 12px;
+  .img {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    cursor: pointer;
   }
-  .el-drawer {
-    background: #f5f6f8;
-    &__body {
-      padding: 0;
-      overflow: hidden;
-      .drawer-panel {
-        position: relative;
-        height: 100%;
-        .action {
-          position: absolute;
-          bottom: 20px;
-          left: 16px;
-        }
-      }
-      .drawer-nav {
-        .link {
-          display: block;
-          line-height: 48px;
-          padding: 0 16px;
-          color: #000;
-          font-size: 12px;
-          position: relative;
-          &::after {
-            width: 36px;
-            height: 2px;
-            background: #7d32ea;
-            position: absolute;
-            bottom: 0;
-            left: 16px;
-            content: '';
-            display: none;
-          }
-        }
-        .active {
-          color: #000;
-          background: #fff;
-          &::after {
-            display: block;
-          }
-        }
-      }
-    }
+  .phone-login {
+    line-height: 1.5rem;
+    padding: 0 0.5rem;
+    text-align: center;
+    color: #000;
+    border: 1px solid #000;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .black {
+    color: #fff;
+    border: 1px solid #fff;
   }
 }
 </style>

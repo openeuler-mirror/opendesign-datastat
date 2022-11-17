@@ -21,7 +21,7 @@ import {
   getUserAuth,
 } from 'shared/utils/login';
 import LoadingArc from './LoadingArc.vue';
-
+import {isTest} from 'shared/utils/helper'
 const { token } = getUserAuth();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -101,7 +101,7 @@ const photoSrc = computed(() => {
         ><img class="community-logo" :src="communityLogoSmall"
       /></a>
     </template>
-    <!-- <div class="opt-user">
+    <div v-if="isTest()" class="opt-user">
       <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
       <el-dropdown v-else-if="token">
         <div class="el-dropdown-link">
@@ -147,7 +147,7 @@ const photoSrc = computed(() => {
           >
         </div>
       </template>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 

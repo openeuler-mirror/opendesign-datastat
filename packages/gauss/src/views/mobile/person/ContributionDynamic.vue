@@ -34,7 +34,7 @@ const currentPage = ref(1);
 const searchInput = ref("");
 const param = ref({
   user: computed(() => props.sig),
-  community: "openeuler",
+  community: "opengauss",
   contributeType: "pr",
   // pageSize: computed(() => value.value),
   timeRange: "lastonemonth",
@@ -48,7 +48,7 @@ const selParam = () => {
     param.value = {
       user: props.sig,
       sig: computed(() => selvalue.value),
-      community: "openeuler",
+      community: "opengauss",
       contributeType: typeData.value,
       // pageSize: computed(() => value.value),
       timeRange: timeData.value,
@@ -61,7 +61,7 @@ const selParam = () => {
   } else {
     param.value = {
       user: props.sig,
-      community: "openeuler",
+      community: "opengauss",
       contributeType: typeData.value,
       // pageSize: computed(() => value.value),
       timeRange: timeData.value,
@@ -195,7 +195,7 @@ const querySearch = (val: any) => {
     // );
     // param.value = {
     //   user: computed(() => props.sig),
-    //   community: 'openeuler',
+    //   community: 'opengauss',
     //   contributeType: typeData.value,
     //   // pageSize: computed(() => value.value),
     //   timeRange: timeData.value,
@@ -259,7 +259,7 @@ const getprlistData = () => {
   const query = {
     user: props.sig,
     timeRange: "all",
-    community: "openeuler",
+    community: "opengauss",
     contributeType: "pr",
   };
   queryUserSigContribute(query).then((data) => {
@@ -463,7 +463,7 @@ const commentSelectBox = ref([
         @click="changeTage(item)"
       >
         <img :src="item.color" alt="" />
-        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }"
+        <span class="sp" :style="{ color: item.isSelected ? '#7D32EA' : '' }"
           >{{ t(item.label) }} PR</span
         >
       </div>
@@ -474,7 +474,7 @@ const commentSelectBox = ref([
       <span class="sp">PR</span>
     </div>
     <div v-if="param.contributeType === 'issue'&& reallData?.length" class="prType">
-      <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
+      <img src="@/assets/issue.png" alt="" /> <span class="sp">Issue</span>
     </div>
     <div v-if="param.contributeType === 'comment'" class="prType">
       <div
@@ -515,7 +515,7 @@ const commentSelectBox = ref([
               src="@/assets/CommonPR.png"
               alt=""
             />
-            <img v-if="param.contributeType === 'issue'" src="@/assets/!.png" alt="" />
+            <img v-if="param.contributeType === 'issue'" src="@/assets/issue.png" alt="" />
             <img
               v-if="param.contributeType === 'comment' && item.is_invalid_comment === 1"
               src="@/assets/text.png"
@@ -569,7 +569,7 @@ const commentSelectBox = ref([
   :deep(.el-autocomplete) {
     width: 100%;
     &.active .el-input__inner {
-      box-shadow: 0 0 0 1px #002fa7 inset;
+      box-shadow: 0 0 0 1px #7D32EA inset;
     }
   }
   :deep(.el-input__prefix) {
@@ -587,7 +587,7 @@ const commentSelectBox = ref([
     }
   }
   :deep(.el-input__inner:focus) {
-    box-shadow: 0 0 0 1px #002fa7 inset;
+    box-shadow: 0 0 0 1px #7D32EA inset;
   }
   :deep(.el-input__inner) {
     height: 56px;
@@ -625,12 +625,12 @@ const commentSelectBox = ref([
       .index {
         margin-right: 3px;
         font-size: 12px;
-        color: #002fa7;
+        color: #7D32EA;
         margin-left: 3px;
       }
       .rigth-index {
         margin-left: 8px;
-        color: #002fa7;
+        color: #7D32EA;
       }
     }
   }

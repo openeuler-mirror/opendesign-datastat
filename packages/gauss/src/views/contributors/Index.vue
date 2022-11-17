@@ -1,57 +1,58 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
-import { usePersonalStore } from '@/stores/personal';
-import OBanner from 'shared/components/OBanner.vue';
-import TheProgress from '@/components/TheProgress.vue';
-import AppFooter from '@/components/AppFooter.vue';
-import FormSearch from './FormSearch.vue';
-import TheForm from '@/components/TheForm.vue';
-import TheBar from '../../components/TheBar.vue';
-import useScroll from 'shared/hooks/useScroll';
-import { useCommonStore } from '@/stores/common';
-import { useCompanyStore } from '@/stores/company';
-
-import titleBg from '@/assets/title-bg.png';
-import chevronsUp from '~icons/app/chevrons-up';
-
+import { onMounted, ref, computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import { usePersonalStore } from "@/stores/personal";
+import OBanner from "shared/components/OBanner.vue";
+import TheProgress from "@/components/TheProgress.vue";
+import AppFooter from "@/components/AppFooter.vue";
+import FormSearch from "./FormSearch.vue";
+import TheForm from "@/components/TheForm.vue";
+import TheBar from "../../components/TheBar.vue";
+import useScroll from "shared/hooks/useScroll";
+import { useCommonStore } from "@/stores/common";
+import { useCompanyStore } from "@/stores/company";
+import { IObject } from "shared/@types/interface";
+import titleBg from "@/assets/title-bg.png";
+import chevronsUp from "~icons/app/chevrons-up";
+import AuthorityManagement from "./AuthorityManagement.vue";
+import OGAnchor from 'shared/components/OGAnchor.vue';
 const useCommon = useCommonStore();
 const useCompany = useCompanyStore();
 const { t, locale } = useI18n();
 const usePersonal = usePersonalStore();
 const router = useRouter();
 
-locale.value = localStorage.getItem('lang') || 'zh';
+locale.value = localStorage.getItem("lang") || "zh";
 
 const formOption = computed(() => {
   return [
     {
-      label: t('from.type'),
-      id: 'contributeType',
-      active: 'pr',
+      label: t("from.type"),
+      id: "contributeType",
+      active: "pr",
       list: [
-        { label: t('home.prs'), value: 'PR' },
-        { label: t('home.issues'), value: 'Issue' },
-        { label: t('home.comments'), value: 'Comment' },
+        { label: t("home.prs"), value: "PR" },
+        { label: t("home.issues"), value: "Issue" },
+        { label: t("home.comments"), value: "Comment" },
       ],
     },
     {
-      label: t('from.timeRange'),
-      id: 'timeRange',
-      active: 'mother',
+      label: t("from.timeRange"),
+      id: "timeRange",
+      active: "mother",
       list: [
-        { label: t('from.lastonemonth'), value: 'lastonemonth' },
-        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
-        { label: t('from.lastoneyear'), value: 'lastoneyear' },
-        { label: t('from.all'), value: 'all' },
+        { label: t("from.lastonemonth"), value: "lastonemonth" },
+        { label: t("from.lasthalfyear"), value: "lasthalfyear" },
+        { label: t("from.lastoneyear"), value: "lastoneyear" },
+        { label: t("from.all"), value: "all" },
       ],
     },
   ];
 });
 
 // theform组件调用
-const componentName = 'personal';
+const componentName = "personal";
 const loading = ref(true);
 
 const getContributeInfo = () => {
@@ -67,17 +68,17 @@ onMounted(() => {
 const hightRanking = computed(() => usePersonal.hightRanking);
 const lowRanking = computed(() => usePersonal.lowRanking);
 
-const contributeType = ref('');
+const contributeType = ref("");
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
-    case 'PR':
-      contributeType.value = t('home.prs');
+    case "PR":
+      contributeType.value = t("home.prs");
       break;
-    case 'Issue':
-      contributeType.value = t('home.issues');
+    case "Issue":
+      contributeType.value = t("home.issues");
       break;
-    case 'Comment':
-      contributeType.value = t('home.comments');
+    case "Comment":
+      contributeType.value = t("home.comments");
       break;
   }
 };
@@ -98,17 +99,26 @@ const searchStsate = (item: boolean) => {
   search404.value = item;
 };
 
-const { isScrollUp } = useScroll('up');
+const { isScrollUp } = useScroll("up");
 watch(
   () => isScrollUp.value,
   () => {
     if (isScrollUp.value && useCommon.selectScroll) {
-      const lang =
-        useCommon.language === 'zh' ? '/zh/overview' : '/en/overview';
+      const lang = useCommon.language === "zh" ? "/zh/overview" : "/en/overview";
       router.push(lang);
     }
   }
 );
+// 跳转个人详情
+const goToUser = (data: IObject) => {
+  const routeData: any = router.resolve({
+    path: `/${useCommon.language}/user/${data}`,
+  });
+  window.open(routeData.href, "_blank");
+};
+const anchorData = computed(() => {
+  return ["companyContributor","userContributor","groupActive"];
+});
 </script>
 
 <template>
@@ -116,26 +126,24 @@ watch(
     <o-banner :style="{ backgroundImage: 'url(' + titleBg + ')' }">
       <div class="banner-title">
         <o-icon class="icon"><chevrons-up></chevrons-up></o-icon>
-        <h3 class="title">{{ t('backVitality') }}</h3>
+        <h3 class="title">{{ t("backVitality") }}</h3>
       </div>
     </o-banner>
     <div class="area">
+      <o-g-anchor :data="anchorData" top="18rem"></o-g-anchor>
       <div class="wrap">
         <div class="contributors-panel">
-          <h3 class="title">{{ t('companyContributor') }}</h3>
+          <h3 class="title" id="companyContributor">{{ t("companyContributor") }}</h3>
           <form-search @search-state="searchStsate" />
-          <div
-            v-if="search404 || useCompany.companyData.length === 0"
-            class="search404"
-          >
+          <div v-if="search404 || useCompany.companyData.length === 0" class="search404">
             <img class="cover" src="@/assets/404.png" alt="404" />
-            <p class="text">{{ t('searchTips') }}</p>
+            <p class="text">{{ t("searchTips") }}</p>
           </div>
           <the-bar v-else></the-bar>
         </div>
 
         <div class="contributors-panel">
-          <h3 class="title">{{ t('userContributor') }}</h3>
+          <h3 class="title" id="userContributor">{{ t("userContributor") }}</h3>
           <the-form
             :option="formOption"
             :component-name="componentName"
@@ -149,11 +157,7 @@ watch(
           >
             <div class="ranking-list-item">
               <p class="caption">Top 1-10</p>
-              <el-table
-                v-loading="loading"
-                :data="hightRanking"
-                style="width: 100%"
-              >
+              <el-table v-loading="loading" :data="hightRanking" style="width: 100%">
                 <el-table-column
                   type="index"
                   align="center"
@@ -166,7 +170,19 @@ watch(
                   label="Gitee ID"
                   show-overflow-tooltip
                   width="180"
-                />
+                  ><template #default="scope">
+                    <div>
+                      <span
+                        :style="{
+                          cursor: 'pointer',
+                          color: '#7D32EA',
+                        }"
+                        @click="goToUser(scope.row.gitee_id)"
+                        >{{ scope.row.gitee_id }}</span
+                      >
+                    </div>
+                  </template></el-table-column
+                >
                 <el-table-column
                   align="left"
                   class-name="type-label"
@@ -183,11 +199,7 @@ watch(
             </div>
             <div v-if="lowRanking.length > 0" class="ranking-list-item">
               <p class="caption">Top 11-20</p>
-              <el-table
-                v-loading="loading"
-                :data="lowRanking"
-                style="width: 100%"
-              >
+              <el-table v-loading="loading" :data="lowRanking" style="width: 100%">
                 <el-table-column
                   type="index"
                   :index="indexMethod"
@@ -201,7 +213,19 @@ watch(
                   show-overflow-tooltip
                   label="Gitee ID"
                   width="180"
-                />
+                  ><template #default="scope">
+                    <div>
+                      <span
+                        :style="{
+                          cursor: 'pointer',
+                          color: '#7D32EA',
+                        }"
+                        @click="goToUser(scope.row.gitee_id)"
+                        >{{ scope.row.gitee_id }}</span
+                      >
+                    </div>
+                  </template></el-table-column
+                >
                 <el-table-column
                   align="left"
                   class-name="type-label"
@@ -219,9 +243,10 @@ watch(
           </div>
           <div v-else class="search404">
             <img class="cover" src="@/assets/404.png" alt="404" />
-            <p class="text">{{ t('searchTips') }}</p>
+            <p class="text">{{ t("searchTips") }}</p>
           </div>
         </div>
+        <authority-management></authority-management>
       </div>
 
       <footer>
@@ -232,7 +257,7 @@ watch(
 </template>
 
 <style lang="scss" scoped>
-@import '@/shared/styles/style.scss';
+@import "@/shared/styles/style.scss";
 .container {
   background: #000;
 }
