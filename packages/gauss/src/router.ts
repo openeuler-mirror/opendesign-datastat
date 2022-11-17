@@ -49,6 +49,95 @@ export const routes = [
       localStorage.setItem('lang', 'zh');
     },
   },
+  {
+    path: '/zh/mobile/about',
+    name: 'zh_mobile_about',
+    component: () => {
+      return import('@/views/about/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/user/:name',
+    name: 'zh_user',
+    component: () => {
+      return import('@/views/person/index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/user',
+    name: 'zh_all_user',
+    component: () => {
+      return import('@/views/person/index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/sig/:name',
+    name: 'zh_sig',
+    component: () => {
+      return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/sig',
+    name: 'zh_all_sig',
+    component: () => {
+      return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/mobile/user/:name',
+    name: 'zh_mobile_user',
+    component: () => {
+      return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/mobile/user',
+    name: 'zh_mobile_all_user',
+    component: () => {
+      return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  }, {
+    path: '/zh/mobile/sig/:name',
+    name: 'zh_mobile_sig',
+    component: () => {
+      return import('@/views/mobile/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
+  {
+    path: '/zh/mobile/sig',
+    name: 'zh_mobile_all_sig',
+    component: () => {
+      return import('@/views/mobile/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'zh');
+    },
+  },
   // en
   {
     path: '/en',
@@ -96,34 +185,96 @@ export const routes = [
       localStorage.setItem('lang', 'en');
     },
   },
-  // {
-  //   path: '/overview',
-  //   name: 'overview',
-  //   component: () => {
-  //     return import('@/views/overview/Index.vue');
-  //   },
-  // },
-  // {
-  //   path: '/detail',
-  //   name: 'detail',
-  //   component: () => {
-  //     return import('@/views/contributors/Index.vue');
-  //   },
-  // },
-  // {
-  //   path: '/mobile',
-  //   name: 'mobile',
-  //   component: () => {
-  //     return import('@/views/mobile/Index.vue');
-  //   },
-  // },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   component: () => {
-  //     return import('@/views/about/Index.vue');
-  //   },
-  // },
+  {
+    path: '/en/sig/:name',
+    name: 'en_sig',
+    component: () => {
+      return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/sig',
+    name: 'en_all_sig',
+    component: () => {
+      return import('@/views/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/user/:name',
+    name: 'en_user',
+    component: () => {
+      return import('@/views/person/index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/user',
+    name: 'en_all_user',
+    component: () => {
+      return import('@/views/person/index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/sig/:name',
+    name: 'en_mobile_sig',
+    component: () => {
+      return import('@/views/mobile/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/sig',
+    name: 'en_mobile_all_sig',
+    component: () => {
+      return import('@/views/mobile/sig/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/about',
+    name: 'en_mobile_about',
+    component: () => {
+      return import('@/views/about/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/user/:name',
+    name: 'en_mobile_user',
+    component: () => {
+      return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
+  {
+    path: '/en/mobile/user',
+    name: 'en_mobile_all_user',
+    component: () => {
+      return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: () => {
+      localStorage.setItem('lang', 'en');
+    },
+  },
 ];
 
 export const router = createRouter({

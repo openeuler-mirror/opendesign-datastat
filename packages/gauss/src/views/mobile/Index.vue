@@ -12,17 +12,18 @@ import { usePersonalStore } from '@/stores/personal';
 import { useCommonStore } from '@/stores/common';
 import TheForm from '@/components/TheForm.vue';
 import { formatNumber, toThousands } from 'shared/utils/helper';
-
+import SpecialInterestGroupDiagram from "./current/SpecialInterestGroupDiagram.vue";
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/opengauss.png';
 import bg_mo from '@/assets/bg_mo.png';
-
+import { useRoute, useRouter } from "vue-router";
+import MobileTemplate from "@/components/MobileTemplate.vue";
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
 const { t, locale } = useI18n();
-
+const router = useRouter();
 locale.value = localStorage.getItem('lang') || 'zh';
 
 const swiperRef: any = ref(null);
@@ -157,6 +158,10 @@ const backtop = () => {
 };
 const backtop1 = () => {
   slideRef1.value.scrollTop = 0;
+};
+// 跳转个人详情
+const goToUser = (data: IObject) => {
+  router.push(`/${useCommon.language}/mobile/user/${data}`)
 };
 </script>
 <template>
@@ -304,7 +309,19 @@ const backtop1 = () => {
               label="Gitee ID"
               show-overflow-tooltip
               width="110"
-            />
+              ><template #default="scope">
+                <div>
+                  <span
+                    :style="{
+                      cursor: 'pointer',
+                      color: '#7D32EA',
+                    }"
+                    @click="goToUser(scope.row.gitee_id)"
+                    >{{ scope.row.gitee_id }}</span
+                  >
+                </div>
+              </template></el-table-column
+            >
             <el-table-column :label="contributeType">
               <template #default="scope">
                 <div class="box">
@@ -327,6 +344,13 @@ const backtop1 = () => {
           </div>
         </div>
       </div>
+    </swiper-slide>
+    <swiper-slide>
+      <mobile-template header="groupActive">
+        <template #content>
+          <special-interest-group-diagram></special-interest-group-diagram>
+        </template>
+      </mobile-template>
     </swiper-slide>
     <swiper-slide class="slide-page3">
       <div class="slide-panel foot-panel">

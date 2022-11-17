@@ -13,6 +13,10 @@ interface stateTypes {
   allData: IObject;
   selectScroll: boolean;
   reposData: IObject;
+  companyNav: number;
+  sigNav: number;
+  isBlackHeader: boolean;
+  personNav: number;
 }
 export const useCommonStore = defineStore('common', {
   state: (): stateTypes => ({
@@ -30,6 +34,10 @@ export const useCommonStore = defineStore('common', {
     selectScroll: true,
     // 仓库列表
     reposData: [],
+    isBlackHeader: true,
+    companyNav: 0,
+    sigNav: 0,
+    personNav:0,
   }),
   actions: {
     setLanguage(language: string) {

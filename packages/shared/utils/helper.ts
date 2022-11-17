@@ -182,3 +182,14 @@ export const processing = (data: IObject) => {
 export const testIsPhone = () => {
   return /Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent);
 };
+
+/**
+ * 判断是否是测试环境
+ */
+export const isTest = () => {
+  if (window.location.href.includes('test')) {
+    return true;
+  } else {
+    return false;
+  }
+};
