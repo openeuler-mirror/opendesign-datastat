@@ -10,7 +10,7 @@ Vue 3 + TypeScript + Vite + Scss + Vue Router + Pinia + Axios
 
 ## 安装教程
 
-1. 推荐使用[pnpm](https://pnpm.io/installation)安装，当前你也可以使用 npm、yarn
+1. 推荐使用[pnpm](https://pnpm.io/installation)安装，当然你也可以使用 npm、yarn
 2. 安装依赖 `pnpm install`
 3. 运行项目 `pnpm dev`
 
