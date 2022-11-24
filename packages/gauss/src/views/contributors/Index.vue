@@ -72,13 +72,13 @@ const contributeType = ref("");
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
     case "PR":
-      contributeType.value = t("home.prs");
+      contributeType.value = "home.prs";
       break;
     case "Issue":
-      contributeType.value = t("home.issues");
+      contributeType.value = "home.issues";
       break;
     case "Comment":
-      contributeType.value = t("home.comments");
+      contributeType.value = "home.comments";
       break;
   }
 };
@@ -186,7 +186,7 @@ const anchorData = computed(() => {
                 <el-table-column
                   align="left"
                   class-name="type-label"
-                  :label="contributeType"
+                  :label="t(contributeType)"
                 >
                   <template #default="scope">
                     <div class="box">
@@ -229,7 +229,7 @@ const anchorData = computed(() => {
                 <el-table-column
                   align="left"
                   class-name="type-label"
-                  :label="contributeType"
+                  :label="t(contributeType)"
                 >
                   <template #default="scope">
                     <div class="box">

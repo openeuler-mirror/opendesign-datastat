@@ -19,6 +19,7 @@ import communityLogo from '@/assets/opengauss.png';
 import bg_mo from '@/assets/bg_mo.png';
 import { useRoute, useRouter } from "vue-router";
 import MobileTemplate from "@/components/MobileTemplate.vue";
+import { IObject } from "shared/@types/interface";
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();

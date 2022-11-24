@@ -59,7 +59,7 @@ watch(
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
-                <a style="color: #7D32EA" :href="`https://gitee.com/${sig}`">
+                <a style="color: #7D32EA" :href="`https://gitee.com/opengauss/tc/tree/master/sigs/${sig}`">
                   {{ t('toHome') }}</a
                 >
               </div>

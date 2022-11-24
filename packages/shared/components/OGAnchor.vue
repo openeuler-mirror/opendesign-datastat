@@ -206,7 +206,7 @@ const btnInfo = () => {
   background: #ffffff;
   box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
   margin-top: 400px;
-  background-image: url("../../euler/src/assets/edit.png");
+  background-image: url("../../gauss/src/assets/edit.png");
   background-repeat: no-repeat;
   background-position: 50%;
   position: fixed;
@@ -248,7 +248,7 @@ const btnInfo = () => {
   background: #ffffff;
   box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
   margin-top: 4px;
-  background-image: url("../../euler/src/assets/download.png");
+  background-image: url("../../gauss/src/assets/download.png");
   background-repeat: no-repeat;
   background-position: 50%;
   position: fixed;
