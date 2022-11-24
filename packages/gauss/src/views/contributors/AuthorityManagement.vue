@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isTest()">
     <div class="contributors-panel list">
       <h3 id="groupActive" class="title">
         {{ t('groupActive') }}
@@ -137,6 +137,7 @@ import { useCommonStore } from '@/stores/common';
 import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
 import { hasPermission } from 'shared/utils/login';
+import {isTest} from 'shared/utils/helper'
 const { t } = useI18n();
 const router = useRouter();
 const useCommon = useCommonStore();
