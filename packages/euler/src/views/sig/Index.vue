@@ -146,7 +146,7 @@ const showDropdown = (e: any) => {
   }
 };
 // 计算 gitee 上 sig 仓库的名字(sig 主页)
-const sigHomeRepo = computed(() => sencondTitle.value.replace(/^sig-/i,''));
+// const sigHomeRepo = computed(() => sencondTitle.value.replace(/^sig-/i,''));
 </script>
 <template>
   <div class="container">
@@ -202,7 +202,7 @@ const sigHomeRepo = computed(() => sencondTitle.value.replace(/^sig-/i,''));
                 <a
                   style="color: #002fa7"
                   target="_blank"
-                  :href="`https://gitee.com/openeuler/${sigHomeRepo}`"
+                  :href="`https://gitee.com/openeuler/community/tree/master/sig/${sencondTitle}`"
                 >
                   {{ t("toHome") }}</a
                 >
