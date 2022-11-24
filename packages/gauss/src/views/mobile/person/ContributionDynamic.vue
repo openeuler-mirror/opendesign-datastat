@@ -507,12 +507,12 @@ const commentSelectBox = ref([
           <div class="infos-img">
             <img
               v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
-              src="@/assets/MainPR.png"
+              src="@/assets/mainPR.png"
               alt=""
             />
             <img
               v-if="param.contributeType === 'pr' && item.is_main_feature === 0"
-              src="@/assets/CommonPR.png"
+              src="@/assets/commonPR.png"
               alt=""
             />
             <img v-if="param.contributeType === 'issue'" src="@/assets/issue.png" alt="" />
