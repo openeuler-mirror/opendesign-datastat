@@ -17,6 +17,7 @@ import titleBg from "@/assets/title-bg.png";
 import chevronsUp from "~icons/app/chevrons-up";
 import AuthorityManagement from "./AuthorityManagement.vue";
 import OGAnchor from "shared/components/OGAnchor.vue";
+import { isTest } from "shared/utils/helper";
 const useCommon = useCommonStore();
 const useCompany = useCompanyStore();
 const { t, locale } = useI18n();
@@ -116,11 +117,12 @@ const goToUser = (data: IObject) => {
   });
   window.open(routeData.href, "_blank");
 };
-// const anchorData = computed(() => {
-//   return ["companyContributor","userContributor","groupActive"];
-// });
 const anchorData = computed(() => {
-  return ["companyContributor", "userContributor"];
+  if (isTest()) {
+    return ["companyContributor", "userContributor", "groupActive"];
+  } else {
+    return ["companyContributor", "userContributor"];
+  }
 });
 </script>
 
@@ -145,7 +147,7 @@ const anchorData = computed(() => {
           <the-bar v-else></the-bar>
         </div>
 
-        <div class="contributors-panel">
+        <div class="contributors-panel" v-if="isTest()">
           <h3 class="title" id="userContributor">{{ t("userContributor") }}</h3>
           <the-form
             :option="formOption"
@@ -158,7 +160,7 @@ const anchorData = computed(() => {
             class="ranking-list"
             :class="{ db: lowRanking.length !== 0 }"
           >
-            <!-- <div class="ranking-list-item">
+            <div class="ranking-list-item">
               <p class="caption">Top 1-10</p>
               <el-table v-loading="loading" :data="hightRanking" style="width: 100%">
                 <el-table-column
@@ -242,7 +244,26 @@ const anchorData = computed(() => {
                   </template>
                 </el-table-column>
               </el-table>
-            </div> -->
+            </div>
+          </div>
+          <div v-else class="search404">
+            <img class="cover" src="@/assets/404.png" alt="404" />
+            <p class="text">{{ t("searchTips") }}</p>
+          </div>
+        </div>
+        <div class="contributors-panel" v-else>
+          <h3 class="title" id="userContributor">{{ t("userContributor") }}</h3>
+          <the-form
+            :option="formOption"
+            :component-name="componentName"
+            @get-contribute-info="getContributeInfo"
+          ></the-form>
+
+          <div
+            v-if="hightRanking.length > 0"
+            class="ranking-list"
+            :class="{ db: lowRanking.length !== 0 }"
+          >
             <div class="ranking-list-item">
               <p class="caption">Top 1-10</p>
               <el-table v-loading="loading" :data="hightRanking" style="width: 100%">
