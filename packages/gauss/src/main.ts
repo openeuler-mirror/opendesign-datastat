@@ -1,6 +1,6 @@
 import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
-import '@/shared/ele-reset.ts';
+// import '@/shared/ele-reset.ts';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';

@@ -210,7 +210,7 @@ const showDropdown = (e: any) => {
                 <a
                   style="color: #7D32EA"
                   target="_blank"
-                  :href="`https://gitee.com/${sencondTitle}`"
+                  :href="`https://gitee.com/opengauss/tc/tree/master/sigs/${sencondTitle}`"
                 >
                   {{ t('toHome') }}</a
                 >

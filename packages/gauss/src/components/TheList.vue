@@ -3,7 +3,12 @@
     <el-row>
       <div v-for="value in getInnovationValue()" :key="value.feature">
         <div class="start-menu menu-item">
-          <span class="start-menu-span">{{ value.feature }}</span>
+          <span v-if="useCommon.language === 'zh'" class="start-menu-span">{{
+            value.feature
+          }}</span>
+          <span v-if="useCommon.language === 'en'" class="start-menu-span-en">{{
+            value.en_feature
+          }}</span>
         </div>
         <el-col>
           <div
@@ -27,42 +32,6 @@
         </el-col>
       </div>
     </el-row>
-    <!-- <div class="Community">{{ t('governanceAndOperation') }}</div>
-    <el-row>
-      <div v-for="value in getCommunityValue()" :key="value.feature">
-        <div
-          class="start-menu menu-item"
-          :style="({
-                '--diaphaneity': (20 + Number((Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
-                    value.arry.length) * 100) / 100).toFixed(2)) * 80) / 100,
-
-              } as any)"
-        >
-          <span class="start-menu-span">{{ value.feature }}</span>
-        </div>
-        <el-col>
-          <div
-            v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
-              (a.sig_names + '').localeCompare(b.sig_names + '')
-            )"
-            :key="ind"
-          >
-            <div
-              class="detail-menu menu-item"
-              :style="({
-                '--diaphaneity': (20 + Number(val.score) * 80) / 100,
-                '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
-              } as any)"
-              @click="goTo(val)"
-            >
-              <span class="detail-menu-span" @click="goTo(val)">
-                {{ val.sig_names }}</span
-              >
-            </div>
-          </div>
-        </el-col>
-      </div></el-row
-    > -->
   </div>
 </template>
 <script setup lang="ts">
@@ -94,6 +63,7 @@ const getList = () => {
         } else if (next.feature !== "") {
           pre.push({
             feature: next.feature,
+            en_feature: next.en_feature,
             arry: [next],
             group: next.group,
           });
@@ -107,11 +77,6 @@ const getList = () => {
 const getInnovationValue = () => {
   return listArry.value.filter((item) => {
     return item.group === null;
-  });
-};
-const getCommunityValue = () => {
-  return listArry.value.filter((item) => {
-    return item.group === "社区治理运营";
   });
 };
 getList();
@@ -161,6 +126,11 @@ const goTo = (item: any) => {
   margin-right: 10px;
   font-family: HarmonyOS_Sans_SC;
   line-height: 24px;
+}
+.start-menu-span-en {
+  width: 160px;
+  text-align: center;
+  word-wrap: break-word;
 }
 .detail-menu {
   height: 48px;

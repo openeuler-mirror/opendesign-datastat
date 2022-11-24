@@ -28,12 +28,19 @@ export default defineConfig({
       },
     }),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver({ importStyle: 'sass' })],
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver({ importStyle: 'sass' })],
     }),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/shared/styles/element-plus/index.scss" as *;`,
+      },
+    },
+  },
   server: {
     proxy: {
       '/query': {
