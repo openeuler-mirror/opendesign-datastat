@@ -1,0 +1,15 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #002fa7,
+    ),
+    'primary-light-9': (
+      'base': #F7F8FA,
+    )
+  ),
+  $text-color:(
+    'regular': #002fa7,
+
+  ),
+  $border-radius:('base': 0px,)
+);

@@ -1,6 +1,6 @@
 <template>
   <div class="main-menu">
-    <div class="Innovation">{{ t('repositoryTechnology') }}</div>
+    <div class="Innovation">{{ t("repositoryTechnology") }}</div>
     <el-row>
       <div v-for="value in getInnovationValue()" :key="value.feature">
         <div
@@ -11,7 +11,12 @@
 
               } as any)"
         >
-          <span class="start-menu-span">{{ value.feature }}</span>
+          <span v-if="useCommon.language === 'zh'" class="start-menu-span">{{
+            value.feature
+          }}</span>
+          <span v-if="useCommon.language === 'en'" class="start-menu-span-en">{{
+            value.en_feature
+          }}</span>
         </div>
         <!-- <el-tooltip
           :key="value.feature"
@@ -134,7 +139,7 @@
         </el-col>
       </div>
     </el-row>
-    <div class="Community">{{ t('governanceAndOperation') }}</div>
+    <div class="Community">{{ t("governanceAndOperation") }}</div>
     <el-row>
       <div v-for="value in getCommunityValue()" :key="value.feature">
         <div
@@ -145,7 +150,12 @@
 
               } as any)"
         >
-          <span class="start-menu-span">{{ value.feature }}</span>
+          <span v-if="useCommon.language === 'zh'" class="start-menu-span">{{
+            value.feature
+          }}</span>
+          <span v-if="useCommon.language === 'en'" class="start-menu-span-en">{{
+            value.en_feature
+          }}</span>
         </div>
         <!-- <el-tooltip
           :key="value.feature"
@@ -271,23 +281,23 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { Right } from '@element-plus/icons-vue';
-import { useCommonStore } from '@/stores/common';
-import { querySigScoreAll } from 'shared/api';
-import { useI18n } from 'vue-i18n';
-import { IObject } from 'shared/@types/interface';
-import { hasPermission } from 'shared/utils/login';
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { Right } from "@element-plus/icons-vue";
+import { useCommonStore } from "@/stores/common";
+import { querySigScoreAll } from "shared/api";
+import { useI18n } from "vue-i18n";
+import { IObject } from "shared/@types/interface";
+import { hasPermission } from "shared/utils/login";
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
 const listData = ref([]);
-const listArry = ref([{ feature: '', arry: [] }] as IObject[]);
+const listArry = ref([{ feature: "", arry: [] }] as IObject[]);
 const getList = () => {
   const query = {
-    community: 'openeuler',
+    community: "openeuler",
   };
   querySigScoreAll(query).then((data) => {
     listData.value = data?.data || [];
@@ -296,35 +306,34 @@ const getList = () => {
         const findOne: any = pre.find((it: any) => it.feature === next.feature);
         if (findOne) {
           findOne.arry.push(next);
-        } else if (next.feature !== '') {
+        } else if (next.feature !== "") {
           pre.push({
             feature: next.feature,
+            en_feature: next.en_feature,
             arry: [next],
             group: next.group,
           });
         }
         return pre;
       }, [])
-      .sort((a: any, b: any) => b['arry'].length - a['arry'].length);
+      .sort((a: any, b: any) => b["arry"].length - a["arry"].length);
     listArry.value = arry;
   });
 };
 const getInnovationValue = () => {
   return listArry.value.filter((item) => {
-    return item.group === '代码仓管理/技术创新';
+    return item.group === "代码仓管理/技术创新";
   });
 };
 const getCommunityValue = () => {
   return listArry.value.filter((item) => {
-    return item.group === '社区治理运营';
+    return item.group === "社区治理运营";
   });
 };
 getList();
 const goTo = (item: any) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/sig/${item.sig_names}`
-  );
-  window.open(routeData.href, '_blank');
+  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item.sig_names}`);
+  window.open(routeData.href, "_blank");
 };
 </script>
 <style scoped lang="scss">
@@ -368,6 +377,12 @@ const goTo = (item: any) => {
   font-family: HarmonyOS_Sans_SC;
   line-height: 24px;
 }
+.start-menu-span-en {
+  width: 160px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
 .detail-menu {
   height: 48px;
   display: flex;
