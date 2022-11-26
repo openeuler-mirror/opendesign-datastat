@@ -103,7 +103,7 @@ const goTo = (item: any) => {
 
 @media screen and (min-width: 1430px) {
   .menu-item {
-    width: 180px;
+    width: 138px;
     font-size: 16px;
   }
 }
