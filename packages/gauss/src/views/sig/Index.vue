@@ -249,7 +249,7 @@ const showDropdown = (e: any) => {
                 </a>
               </div>
             </div>
-            <div class="first">
+            <!-- <div class="first">
               <div class="Mentor"></div>
               <div class="List">
                 <span>Mentors：</span>
@@ -264,7 +264,7 @@ const showDropdown = (e: any) => {
                   {{ t('noMentor') }}
                 </span>
               </div>
-            </div>
+            </div> -->
             <div class="first">
               <div class="store"></div>
               <div class="List">
@@ -274,7 +274,7 @@ const showDropdown = (e: any) => {
                     v-for="item in sigInfo.repos"
                     :key="item"
                     class="item"
-                    :href="`https://gitee.com/${item}`"
+                    :href="`https://gitee.com/opengauss/${item}`"
                     target="_blank"
                   >
                     ./{{ item }}

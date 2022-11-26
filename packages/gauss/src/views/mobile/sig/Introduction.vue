@@ -93,7 +93,7 @@ watch(
                 </a>
               </div>
             </div>
-            <div class="first">
+            <!-- <div class="first">
               <div class="Mentor"></div>
               <div class="List">
                 <span>Mentors：</span>
@@ -108,7 +108,7 @@ watch(
                   {{ t('noMentor') }}
                 </span>
               </div>
-            </div>
+            </div> -->
             <div class="first">
               <div class="store"></div>
               <div class="List">
@@ -118,7 +118,7 @@ watch(
                     v-for="item in sigInfo.repos"
                     :key="item"
                     class="item"
-                    :href="`https://gitee.com/${item}`"
+                    :href="`https://gitee.com/opengauss/${item}`"
                   >
                     ./{{ item }}
                   </a>

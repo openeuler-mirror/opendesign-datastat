@@ -12,7 +12,7 @@ const LOGIN_KEYS = {
 function setCookie(cname: string, cvalue: string, exdays: number) {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  const expires = `expires=${d.toUTCString()};path=/`;
+  const expires = `expires=${d.toUTCString()};path=/;domain=.test.osinfra.cn`;
   document.cookie = `${cname}=${cvalue}; ${expires}`;
 }
 function getCookie(cname: string) {
@@ -156,15 +156,17 @@ const scopeConfig = {
   scope: 'openid profile username',
 };
 export function showGuard(community: string) {
-  const client = createClient(community);
-  // 构造 OIDC 授权登录 URL
-  const url = client.buildAuthorizeUrl(scopeConfig);
-  // 如果需要获取 Refresh token，请在 scope 中加入 offline_access 项
-  const url2 = client.buildAuthorizeUrl({
-    scope: 'openid profile offline_access',
-  });
-  const { loginIframeSrc } = useStoreData();
-  loginIframeSrc.value = url;
+  // const client = createClient(community);
+  // // 构造 OIDC 授权登录 URL
+  // const url = client.buildAuthorizeUrl(scopeConfig);
+  // // 如果需要获取 Refresh token，请在 scope 中加入 offline_access 项
+  // const url2 = client.buildAuthorizeUrl({
+  //   scope: 'openid profile offline_access',
+  // });
+  // const { loginIframeSrc } = useStoreData();
+  // loginIframeSrc.value = url;
+  const origin = 'https://openeuler-usercenter.test.osinfra.cn/login';
+  location.href = `${origin}?redirect_uri=${location.href}`;
 }
 
 // token失效跳转首页

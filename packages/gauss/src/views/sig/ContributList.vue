@@ -220,10 +220,10 @@ const goToUser = (data: IObject) => {
         >
       </div>
     </div>
-    <div class="leader">
+    <!-- <div class="leader">
       <div class="leader-box">Leader</div>
       <span>SIG Leader</span>
-    </div>
+    </div> -->
     <div v-if="reallData?.length" class="ranking-list">
       <div class="ranking-list-item">
         <p class="caption"></p>

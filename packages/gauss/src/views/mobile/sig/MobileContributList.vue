@@ -189,10 +189,10 @@ const goToUser = (data: IObject) => {
         <span>{{ value.label }}</span>
       </div>
     </div>
-    <div class="leader">
+    <!-- <div class="leader">
       <div class="leader-box">Leader</div>
       <span>SIG Leader</span>
-    </div>
+    </div> -->
     <div class="ranking-table">
       <el-table
         v-loading="loading"
