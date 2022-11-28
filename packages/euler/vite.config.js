@@ -46,7 +46,7 @@ export default defineConfig({
         target: 'https://omapi.osinfra.cn/',
         changeOrigin: true,
       },
-      '/authing': {
+      '/oneid': {
         target: 'https://omapi.osinfra.cn/',
         changeOrigin: true,
       },
