@@ -1,27 +1,22 @@
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useCommonStore } from '@/stores/common';
-import { openCommunityInfo } from '@/api/index';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { useCommonStore } from "@/stores/common";
+import { openCommunityInfo } from "@/api/index";
+import { useRoute, useRouter } from "vue-router";
 
-import logoWhite from '@/assets/datastat.png';
-import logoWhiteZh from '@/assets/datastat-zh-mo.png';
-import logoBlack from '@/assets/datastat-black.png';
-import logoBlackZh from '@/assets/datastat-zh-black.png';
-import communityLogoSmall from '@/assets/openeuler-small.png';
-import communityLogoSmallWhite from '@/assets/openeuler-small-white.png';
-import Bitmap from '@/assets/Bitmap.png';
+import logoWhite from "@/assets/datastat.png";
+import logoWhiteZh from "@/assets/datastat-zh-mo.png";
+import logoBlack from "@/assets/datastat-black.png";
+import logoBlackZh from "@/assets/datastat-zh-black.png";
+import communityLogoSmall from "@/assets/openeuler-small.png";
+import communityLogoSmallWhite from "@/assets/openeuler-small-white.png";
+import Bitmap from "@/assets/Bitmap.png";
 
-import AppMobileMenu from './AppMobileMenu.vue';
-import {
-  useStoreData,
-  showGuard,
-  logout,
-  getUserAuth,
-} from 'shared/utils/login';
-import LoadingArc from './LoadingArc.vue';
-import {isTest} from 'shared/utils/helper'
+import AppMobileMenu from "./AppMobileMenu.vue";
+import { useStoreData, showGuard, logout, getUserAuth } from "shared/utils/login";
+import LoadingArc from "./LoadingArc.vue";
+import { isTest } from "shared/utils/helper";
 const { token } = getUserAuth();
 const useCommon = useCommonStore();
 const route = useRoute();
@@ -31,11 +26,11 @@ let dialogVisible = ref(false);
 const { t } = useI18n();
 const isblack = computed(() => useCommon.isBlackHeader);
 
-const language = computed(() => (useCommon.language === 'zh' ? false : true));
+const language = computed(() => (useCommon.language === "zh" ? false : true));
 
 const webSiteTitle = () => {
   document.title =
-    useCommon.language === 'zh' ? 'openEuler 贡献看板' : 'openEuler DATASTAT';
+    useCommon.language === "zh" ? "openEuler 贡献看板" : "openEuler DATASTAT";
 };
 webSiteTitle();
 
@@ -46,14 +41,14 @@ watch(
     return route.path;
   },
   (path) => {
-    const p = path.split('/').slice(-1).toString();
-    isHome.value = p === 'mobile' ? true : false;
+    const p = path.split("/").slice(-1).toString();
+    isHome.value = p === "mobile" ? true : false;
   }
 );
 // 点击logo回首页
 const goMobileHome = () => {
   if (!isHome.value) {
-    const lang = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
+    const lang = useCommon.language === "zh" ? "/zh/mobile" : "/en/mobile";
     router.push(lang);
   }
   useCommon.moNav = 0;
@@ -61,14 +56,15 @@ const goMobileHome = () => {
 };
 
 const photoSrc = computed(() => {
-  let { photo = '' } = getUserAuth();
-  if (photo?.includes('no_portrait.png')) {
+  let { photo = "" } = getUserAuth();
+  if (photo?.includes("no_portrait.png")) {
     photo = Bitmap;
   }
   if (guardAuthClient.value?.photo) {
-    return guardAuthClient.value.photo?.includes('no_portrait.png')
+    return guardAuthClient.value.photo?.includes("no_portrait.png")
       ? Bitmap
-      : guardAuthClient.value.photo;
+      : // : guardAuthClient.value.photo;
+        Bitmap;
   }
   return photo || Bitmap;
 });
@@ -105,16 +101,12 @@ const photoSrc = computed(() => {
       <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
       <el-dropdown v-else-if="token">
         <div class="el-dropdown-link">
-          <img
-            :src="photoSrc"
-            :alt="guardAuthClient.nickname || 'LogOut'"
-            class="img"
-          />
+          <img :src="photoSrc" :alt="guardAuthClient.nickname || 'LogOut'" class="img" />
         </div>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="dialogVisible = true">{{
-              t('logout')
+              t("logout")
             }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -130,20 +122,18 @@ const photoSrc = computed(() => {
     </div>
     <el-dialog v-model="dialogVisible" :title="t('pleaseConfirm')" width="80%">
       <p style="word-break: break-word">
-        {{ t('titleConfirm') }}
+        {{ t("titleConfirm") }}
       </p>
       <template #footer>
         <div style="display: flex; justify-content: center">
-          <el-button @click="dialogVisible = false">{{
-            t('Cancel')
-          }}</el-button>
+          <el-button @click="dialogVisible = false">{{ t("Cancel") }}</el-button>
           <el-button
             type="primary"
             @click="
               dialogVisible = false;
               logout(openCommunityInfo.name);
             "
-            >{{ t('Confirm') }}</el-button
+            >{{ t("Confirm") }}</el-button
           >
         </div>
       </template>
