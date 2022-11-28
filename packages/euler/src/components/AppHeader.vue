@@ -107,7 +107,7 @@ watch(
 );
 const jumpToUserZone = () => {
   window.open(
-    `https://openeuler-usercenter.test.osinfra.cn/${useCommon.language}/user`,
+    `https://openeuler-usercenter.test.osinfra.cn/${useCommon.language}/profile`,
     "_blank"
   );
 };
