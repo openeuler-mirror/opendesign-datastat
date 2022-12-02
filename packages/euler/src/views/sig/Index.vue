@@ -4,7 +4,7 @@ import OAnchor from "shared/components/OAnchor.vue";
 import OEchartGauge from "shared/components/OEchartGauge.vue";
 import HistoricalTrend from "./HistoricalTrend.vue";
 import CurrentTrend from "./CurrentTrend.vue";
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, watch, computed, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import TableList from "./TableList.vue";
@@ -16,6 +16,7 @@ import { Search } from "@element-plus/icons-vue";
 import { ElScrollbar } from "element-plus";
 import AppFooter from "@/components/AppFooter.vue";
 import { hasPermission } from "shared/utils/login";
+import VisualIndex from "./VisualIndex.vue";
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -72,7 +73,9 @@ const getllData = () => {
   clean();
   querySearch();
   querySigInfoData();
-  querySorceData();
+
+  // querySorceData();
+
   // getCubeData();
 };
 onMounted(() => {
@@ -86,9 +89,12 @@ const querySorceData = () => {
     sig: sencondTitle.value,
     timeRange: "lastonemonth",
   };
-
-  getSigScore(params).then((data) => {
-    sorceData.value = data.data.pop();
+  nextTick(() => {
+    if (hasPermission("sigRead")) {
+      getSigScore(params).then((data) => {
+        sorceData.value = data.data.pop();
+      });
+    }
   });
 };
 // 跳转首页
@@ -271,26 +277,14 @@ const showDropdown = (e: any) => {
           </div>
         </div>
         <div class="main-right">
-          <div v-if="hasPermission('sigRead')" class="contributors-panel">
-            <h3 id="currentVitalityIndex" class="title">
-              {{ sencondTitle + " " + t("currentVitalityIndex") }}
-            </h3>
-            <div class="rank">
-              <span>{{ t("communityRankings") }}</span>
-              <span> # </span>
-              <span class="rank-num">{{ sorceData.rank }} </span>
-              <span>/ {{ drownData.length }}</span>
-            </div>
-            <div class="img">
-              <o-echart-gauge
-                id="combinedActivity"
-                :name="t('combinedActivity')"
-                :value="sorceData.score"
-                width="280px"
-              ></o-echart-gauge>
-              <current-trend :sig="sencondTitle"></current-trend>
-            </div>
+          <div v-if="hasPermission('sigRead')" >
+            <visual-index
+              :sencondTitle="sencondTitle"
+              :drownData="drownData"
+            ></visual-index>
+            <!-- <current-trend :sig="sencondTitle"></current-trend> -->
           </div>
+
           <div v-if="hasPermission('sigRead')" class="contributors-panel">
             <h3 id="historicalVitalityIndicators" class="title">
               {{ sencondTitle + " " + t("historicalVitalityIndicators") }}

@@ -57,16 +57,16 @@ const goMobileHome = () => {
 
 const photoSrc = computed(() => {
   let { photo = "" } = getUserAuth();
-  if (photo?.includes("no_portrait.png")) {
-    photo = Bitmap;
-  }
-  if (guardAuthClient.value?.photo) {
-    return guardAuthClient.value.photo?.includes("no_portrait.png")
-      ? Bitmap
-      : // : guardAuthClient.value.photo;
-        Bitmap;
-  }
-  return photo || Bitmap;
+  // if (photo?.includes("no_portrait.png")) {
+  //   photo = Bitmap;
+  // }
+  // if (guardAuthClient.value?.photo) {
+  //   return guardAuthClient.value.photo?.includes("no_portrait.png")
+  //     ? Bitmap
+  //     : // : guardAuthClient.value.photo;
+  //       Bitmap;
+  // }
+  return guardAuthClient.value.photo || photo;
 });
 </script>
 
@@ -101,7 +101,12 @@ const photoSrc = computed(() => {
       <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
       <el-dropdown v-else-if="token">
         <div class="el-dropdown-link">
-          <img :src="photoSrc" :alt="guardAuthClient.nickname || 'LogOut'" class="img" />
+          <!-- <img :src="photoSrc" :alt="guardAuthClient.nickname || 'LogOut'" class="img" /> -->
+          <el-avatar
+            :src="photoSrc"
+            :alt="guardAuthClient.nickname || 'LogOut'"
+            class="img"
+          />
         </div>
         <template #dropdown>
           <el-dropdown-menu>

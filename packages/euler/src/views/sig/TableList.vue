@@ -212,6 +212,7 @@ watch(
   }
 );
 
+onMounted(()=>getMemberData())
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
   if (hasPermission('sigRead')) {

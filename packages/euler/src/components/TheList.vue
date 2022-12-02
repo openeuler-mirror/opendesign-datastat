@@ -77,6 +77,7 @@
                 '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
               } as any)"
               @click="goTo(val)"
+              :title="val.sig_names"
             >
               <span class="detail-menu-span" @click="goTo(val)">
                 {{ val.sig_names }}</span
@@ -216,6 +217,7 @@
                 '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
               } as any)"
               @click="goTo(val)"
+              :title="val.sig_names"
             >
               <span class="detail-menu-span" @click="goTo(val)">
                 {{ val.sig_names }}</span

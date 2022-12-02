@@ -23,6 +23,7 @@
                 '--color': '#FFFFFF',
               } as any)"
               @click="goTo(val)"
+              :title="val.sig_names"
             >
               <span class="detail-menu-span" @click="goTo(val)">
                 {{ val.sig_names }}</span
@@ -139,7 +140,7 @@ const goTo = (item: any) => {
   align-items: center;
   margin-bottom: 10px;
   // background-color: rgba(0, 47, 167, var(--diaphaneity));
-  background: #7D32EA;
+  background: #7d32ea;
   font-size: 14px;
   font-family: HarmonyOS_Sans_SC;
   line-height: 22px;

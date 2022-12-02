@@ -83,7 +83,7 @@ const scrollToTop = () => {
 };
 const btnInfo = () => {
   window.open(
-    "https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0",
+    "https://gitee.com/opengauss/infra/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0",
     "_blank"
   );
 };

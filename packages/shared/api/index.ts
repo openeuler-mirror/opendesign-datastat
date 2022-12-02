@@ -5,7 +5,7 @@ import type { AxiosResponse } from '../plugins/axios';
  * 获取授权的相关回调链接
  */
 export function queryCourse(params: object) {
-  const url = '/authing/user/permission';
+  const url = '/oneid/user/permission';
   return request
     .get(url, { params, global: true })
     .then((res: AxiosResponse) => res.data);
@@ -14,7 +14,7 @@ export function queryCourse(params: object) {
  * 获取授权token链接
  */
 export function queryToken(params: object) {
-  const url = '/authing/token/apply';
+  const url = '/oneid/token/apply';
   return request
     .get(url, { params, global: true })
     .then((res: AxiosResponse) => res.data);
@@ -23,7 +23,7 @@ export function queryToken(params: object) {
  * 获取idtoken用于退出
  */
 export function queryIDToken() {
-  const url = '/authing/logout';
+  const url = '/oneid/logout';
   return request.get(url).then((res: AxiosResponse) => res.data);
 }
 /**

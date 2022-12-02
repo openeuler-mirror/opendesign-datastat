@@ -174,7 +174,7 @@ export function tokenFailIndicateLogin() {
   saveUserAuth();
   const { guardAuthClient } = useStoreData();
   guardAuthClient.value = {};
-  // goToHome();
+  goToHome();
 }
 
 /**
