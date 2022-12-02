@@ -569,7 +569,7 @@ const inputSlider = (value: number) => {
   </div>
   <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
-    <el-pagination
+    <!-- <el-pagination
       v-show="totalCount / pageSize > 1"
       v-model:page-size="pageSize"
       :currentPage="currentPage"
@@ -577,7 +577,18 @@ const inputSlider = (value: number) => {
       layout="prev, pager, next,jumper"
       :total="totalCount"
       @current-change="handleCurrentChange"
-    />
+    /> -->
+    <el-pagination
+        class="o-pagination"
+        v-show="totalCount / pageSize > 1"
+        :currentPage="currentPage"
+        v-model:page-size="pageSize"
+        background
+        layout="prev, pager, next,slot, jumper"
+        :total="totalCount"
+        @current-change="handleCurrentChange"
+        ><span>{{ currentPage }}/{{Math.ceil(totalCount/pageSize)}}</span></el-pagination
+      >
   </div>
 </template>
 
@@ -768,4 +779,131 @@ const inputSlider = (value: number) => {
 //     display: inside;
 //   }
 // }
+</style>
+<style lang="scss">
+.o-pagination {
+  --o-pagination-font-color: #000000;
+  --o-pagination-font-color_active: #7d32ea;
+  --o-pagination-bg-color: #e5e5e5;
+  --o-pagination-bg-color_hover: var(--o-color-brand5);
+  --o-pagination-bg-color_selected: var(--o-color-brand5);
+  --o-pagination-number-border-color_active: var(--o-color-brand1);
+
+  &.el-pagination {
+    justify-content: center;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+    .el-pagination__sizes {
+      margin: 0 var(--o-spacing-h8) 0 0;
+    }
+    .el-input {
+      --el-input-bg-color: var(--o-pagination-bg-color);
+      --el-input-text-color: var(--o-pagination-font-color);
+    }
+    .el-input__wrapper {
+      border-radius: 0px;
+      box-shadow: none;
+      height: 36px;
+    }
+    .el-pagination__editor {
+      justify-content: center !important;
+    }
+    .el-select {
+      --el-select-border-color-hover: none;
+      --el-select-input-focus-border-color: none;
+      & .el-input .el-select__caret {
+        color: var(--o-pagination-font-color);
+      }
+    }
+    .el-select-dropdown__wrap {
+      background-color: #000 !important;
+    }
+    .el-pager li {
+      color: var(--o-pagination-font-color);
+      background: var(--o-pagination-bg-color);
+      border-radius: 0px;
+      line-height: 36px;
+      height: 36px;
+      width: 36px;
+      &:hover {
+        color: #ffffff !important;
+        background-color: var(--o-pagination-font-color_active);
+      }
+    }
+    .el-pager li.is-active.number {
+      background: var(--o-pagination-font-color_active);
+      color: #ffffff !important;
+      font-weight: 400;
+      font-size: 14px;
+    }
+    .btn-next,
+    .btn-prev {
+      width: 36px;
+      height: 36px;
+      color: var(--o-pagination-font-color);
+      border-radius: 0px;
+      background: var(--o-pagination-bg-color);
+    }
+    .btn-prev:disabled {
+      background: #e5e5e5;
+    }
+    .btn-next {
+      margin-right: 16px !important;
+    }
+    .btn-next:disabled {
+      background: #e5e5e5;
+    }
+
+    .el-pagination__jump {
+      height: 36px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      color: #999999;
+      border-radius: 0px;
+      margin-left: 24px;
+      .el-input__wrapper {
+        flex-grow: 0.273;
+      }
+    }
+  }
+}
+.o-pagination-popper {
+  box-shadow: var(--o-shadow-l3);
+  &.el-popper {
+    box-shadow: none !important;
+    --el-popper-border-radius: none;
+    border: none;
+    .el-popper__arrow {
+      display: none;
+    }
+
+    .el-select-dropdown__item {
+      color: var(--o-color-text1);
+
+      &:hover {
+        color: var(--o-color-brand1);
+        background: var(--o-color-bg1);
+      }
+    }
+    .hover {
+      color: var(--o-color-brand1);
+      background: var(--o-color-bg1);
+    }
+
+    .el-select-dropdown__item.selected {
+      background-color: var(--o-color-bg1);
+    }
+
+    .el-select-dropdown__item.selected {
+      font-weight: normal;
+      color: var(--o-color-brand1);
+    }
+
+    .el-select-dropdown__wrap {
+      background-color: var(--o-color-bg2);
+    }
+  }
+}
 </style>
