@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ t(timeTitle) }}{{ t("contribute") }}
+        {{ t(timeTitle) }}{{t('zhcontribut')}}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,7 +12,7 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-          {{ t(item.label) }}{{ t("contribute") }}</el-dropdown-item
+          {{ t(item.label)}}{{t('zhcontribut')}}</el-dropdown-item
         >
       </template>
     </el-dropdown>
@@ -31,13 +31,13 @@
       </div>
     </div>
     <div class="left-first-child">
-      <span title="123">{{ t("review") }} Comment</span>
+      <span>{{ t("review") }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="Number of contributors">{{ t("SIGNumber") }}</span>
+      <span>{{ t("SIGNumber") }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>

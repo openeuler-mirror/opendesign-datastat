@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ timeTitle }}
+        {{ t(timeTitle) }}{{ t("zhcontribut") }}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,7 +12,7 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-          {{ item.label }}</el-dropdown-item
+        {{ t(item.label) }}{{ t("zhcontribut") }}</el-dropdown-item
         >
       </template>
     </el-dropdown>
@@ -31,13 +31,13 @@
       </div>
     </div>
     <div class="left-first-child">
-      <span title="123">{{ t('review') }} Comment</span>
+      <span >{{ t('review') }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="Number of contributors">{{ t('SIGNumber') }}</span>
+      <span >{{ t('SIGNumber') }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>
@@ -65,10 +65,10 @@ const issueData = ref(0);
 const comment = ref(0);
 const contributors = ref(0);
 const timeRange = [
-  { label: t('from.lastonemonth') + t('contribute'), value: 'lastonemonth' },
-  { label: t('from.lasthalfyear') + t('contribute'), value: 'lasthalfyear' },
-  { label: t('from.lastoneyear') + t('contribute'), value: 'lastoneyear' },
-  { label: t('from.all') + t('contribute'), value: 'all' },
+  { label: "from.lastonemonth", value: "lastonemonth" },
+  { label: "from.lasthalfyear", value: "lasthalfyear" },
+  { label: "from.lastoneyear", value: "lastoneyear" },
+  { label: "from.all", value: "all" },
 ];
 const time = ref('');
 const getItemListData = (data: IObject[], template: string) => {
@@ -167,7 +167,7 @@ const clickDrownItem = (item: IObject) => {
 };
 onMounted(() => {
   time.value = 'all';
-  timeTitle.value = t('from.all') + t('contribute');
+  timeTitle.value = "from.all";
   // getAllData();
 });
 </script>

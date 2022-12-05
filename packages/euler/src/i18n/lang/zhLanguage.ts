@@ -139,6 +139,9 @@ export default {
   titleConfirm:'您确定要退出吗? 退出后，页面会自动刷新',
   pleaseConfirm:'请确认',
   General:'常规评论',
-  Order:'命令型评论'
+  Order:'命令型评论',
+  Goto:'前往',
+  page:'页',
+  zhcontribut:'贡献'
 
 };
