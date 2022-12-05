@@ -118,11 +118,7 @@ const goToUser = (data: IObject) => {
   window.open(routeData.href, "_blank");
 };
 const anchorData = computed(() => {
-  if (isTest()) {
-    return ["companyContributor", "userContributor", "groupActive"];
-  } else {
-    return ["companyContributor", "userContributor"];
-  }
+  return ["companyContributor", "userContributor", "groupActive"];
 });
 </script>
 
