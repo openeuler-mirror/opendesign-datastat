@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ timeTitle }}
+        {{ t(timeTitle) }}{{ t("zhcontribut") }}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,32 +12,32 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-          {{ item.label }}</el-dropdown-item
+          {{ t(item.label) }}{{ t("zhcontribut") }}</el-dropdown-item
         >
       </template>
     </el-dropdown>
   </div>
   <div class="left-first">
     <div class="left-first-child">
-      <span>{{ t('Mergerequest') }} PR</span>
+      <span>{{ t("Mergerequest") }} PR</span>
       <div class="left-first-child-data">
         {{ toThousands(mergeRequest) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="Needs & Problems Issue">{{ t('NeedsProblems') }} Issue</span>
+      <span title="Needs & Problems Issue">{{ t("NeedsProblems") }} Issue</span>
       <div class="left-first-child-data">
         {{ toThousands(issueData) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="123">{{ t('review') }} Comment</span>
+      <span>{{ t("review") }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="Number of contributors">{{ t('SIGNumber') }}</span>
+      <span>{{ t("SIGNumber") }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>
@@ -45,18 +45,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { toRefs, ref, onMounted, watch } from 'vue';
-import { queryUserSigContribute,queryUserContributeDetails } from 'shared/api';
-import { IObject } from 'shared/@types/interface';
-import { processing, toThousands } from 'shared/utils/helper';
-import { useI18n } from 'vue-i18n';
+import { toRefs, ref, onMounted, watch } from "vue";
+import { queryUserSigContribute, queryUserContributeDetails } from "shared/api";
+import { IObject } from "shared/@types/interface";
+import { processing, toThousands } from "shared/utils/helper";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 const props = defineProps({
   user: {
     type: String,
     required: true,
-    default: '',
+    default: "",
   },
 });
 const { user } = toRefs(props);
@@ -65,12 +65,12 @@ const issueData = ref(0);
 const comment = ref(0);
 const contributors = ref(0);
 const timeRange = [
-  { label: t('from.lastonemonth') + t('contribute'), value: 'lastonemonth' },
-  { label: t('from.lasthalfyear') + t('contribute'), value: 'lasthalfyear' },
-  { label: t('from.lastoneyear') + t('contribute'), value: 'lastoneyear' },
-  { label: t('from.all') + t('contribute'), value: 'all' },
+  { label: "from.lastonemonth", value: "lastonemonth" },
+  { label: "from.lasthalfyear", value: "lasthalfyear" },
+  { label: "from.lastoneyear", value: "lastoneyear" },
+  { label: "from.all", value: "all" },
 ];
-const time = ref('');
+const time = ref("");
 const getItemListData = (data: IObject[], template: string) => {
   return data.reduce((sum, e) => sum + Number(e[template]), 0);
 };
@@ -78,8 +78,8 @@ const getprlistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'opengauss',
-    contributeType: 'pr',
+    community: "opengauss",
+    contributeType: "pr",
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
@@ -105,8 +105,8 @@ const getissuelistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'opengauss',
-    contributeType: 'issue',
+    community: "opengauss",
+    contributeType: "issue",
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
@@ -119,8 +119,8 @@ const getcommentlistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'opengauss',
-    contributeType: 'comment',
+    community: "opengauss",
+    contributeType: "comment",
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
@@ -159,15 +159,15 @@ watch(
 //     timeTitle.value = '全部';
 //   }
 // );
-const timeTitle = ref('');
+const timeTitle = ref("");
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
   timeTitle.value = item.label;
   getAllData();
 };
 onMounted(() => {
-  time.value = 'all';
-  timeTitle.value = t('from.all') + t('contribute');
+  time.value = "all";
+  timeTitle.value = "from.all";
   // getAllData();
 });
 </script>
@@ -198,7 +198,7 @@ onMounted(() => {
   }
 }
 .btnc {
-  background-image: url('@/assets/down.png');
+  background-image: url("@/assets/down.png");
   width: 24px;
   height: 24px;
   margin-left: 24px;

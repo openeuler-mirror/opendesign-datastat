@@ -323,10 +323,14 @@ const filterReallData = (val: any) => {
 };
 
 // 显示第几页
-const handleCurrentChange = (val: number) => {
+const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  currentPage.value = val;
-  getDetailsData();
+  if (val?.isTrusted) {
+  } else {
+    currentPage.value = val;
+    getDetailsData();
+  }
+
 };
 
 // 图表PR筛选
@@ -570,14 +574,25 @@ const inputSlider = (value: number) => {
   <div v-else><o-no-data-image></o-no-data-image></div>
   <div class="demo-pagination-block">
     <el-pagination
+      class="o-pagination"
       v-show="totalCount / pageSize > 1"
-      v-model:page-size="pageSize"
       :currentPage="currentPage"
+      v-model:page-size="pageSize"
       background
-      layout="prev, pager, next,jumper"
+      layout="prev, pager, next,slot, jumper"
       :total="totalCount"
       @current-change="handleCurrentChange"
-    />
+      ><span>{{ currentPage }}/{{ Math.ceil(totalCount / pageSize) }}</span
+      ><span
+        class="el-pagination__jump"
+        style="cursor: pointer"
+        @click="handleCurrentChange"
+        >{{ t("Goto") }}</span
+      ></el-pagination
+    >
+    <span v-if="totalCount / pageSize > 1" class="pageSpan">{{
+      t("page")
+    }}</span>
   </div>
 </template>
 
@@ -731,6 +746,18 @@ const inputSlider = (value: number) => {
   justify-content: center;
   align-items: center;
 }
+.pageSpan{
+  height: 36px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #999999;
+  border-radius: 0px;
+  margin-left: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
 <style lang="scss">
 .num {
@@ -768,4 +795,97 @@ const inputSlider = (value: number) => {
 //     display: inside;
 //   }
 // }
+</style>
+<style lang="scss">
+.o-pagination {
+  --o-pagination-font-color: #000000;
+  --o-pagination-font-color_active: #002fa7;
+  --o-pagination-bg-color: #e5e5e5;
+  --o-pagination-bg-color_hover: var(--o-color-brand5);
+  --o-pagination-bg-color_selected: var(--o-color-brand5);
+  --o-pagination-number-border-color_active: var(--o-color-brand1);
+
+  &.el-pagination {
+    justify-content: center;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+    padding: 2px 0px;
+    .el-pagination__sizes {
+      margin: 0 0 0 0;
+    }
+    .el-input {
+      --el-input-bg-color: var(--o-pagination-bg-color);
+      --el-input-text-color: var(--o-pagination-font-color);
+    }
+    .el-input__wrapper {
+      border-radius: 0px;
+      box-shadow: none;
+      height: 36px;
+    }
+    .el-pagination__editor {
+      justify-content: center !important;
+      margin: 0 8px !important;
+      min-width: 56px !important;
+    }
+    .el-select {
+      --el-select-border-color-hover: none;
+      --el-select-input-focus-border-color: none;
+      & .el-input .el-select__caret {
+        color: var(--o-pagination-font-color);
+      }
+    }
+    .el-select-dropdown__wrap {
+      background-color: #000 !important;
+    }
+    .el-pager li {
+      color: var(--o-pagination-font-color);
+      background: var(--o-pagination-bg-color);
+      border-radius: 0px;
+      line-height: 36px;
+      height: 36px;
+      width: 36px;
+      &:hover {
+        color: #ffffff !important;
+        background-color: var(--o-pagination-font-color_active);
+      }
+    }
+    .el-pager li.is-active.number {
+      background: var(--o-pagination-font-color_active);
+      color: #ffffff !important;
+      font-weight: 400;
+      font-size: 14px;
+    }
+    .btn-next,
+    .btn-prev {
+      width: 36px;
+      height: 36px;
+      color: var(--o-pagination-font-color);
+      border-radius: 0px;
+      background: var(--o-pagination-bg-color);
+    }
+    .btn-prev:disabled {
+      background: #e5e5e5;
+    }
+    .btn-next {
+      margin-right: 16px !important;
+    }
+    .btn-next:disabled {
+      background: #e5e5e5;
+    }
+
+    .el-pagination__jump {
+      height: 36px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      color: #999999;
+      border-radius: 0px;
+      margin-left: 6px;
+      .el-input__wrapper {
+        flex-grow: 0.273;
+      }
+    }
+  }
+}
 </style>

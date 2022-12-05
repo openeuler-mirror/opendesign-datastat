@@ -135,9 +135,12 @@ onMounted(() => {
 // 默认显示第1页
 const currentPage = ref(1);
 // 显示第几页
-const handleCurrentChange = (val: number) => {
+const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  currentPage.value = val;
+  if (val?.isTrusted) {
+  } else {
+    currentPage.value = val;
+  }
 };
 // 搜索过滤
 
@@ -298,8 +301,17 @@ const goToUser = (data: IObject) => {
         layout="prev, pager, next,slot, jumper"
         :total="reallData.length"
         @current-change="handleCurrentChange"
-        ><span>{{ currentPage }}/{{Math.ceil(reallData.length/10)}}</span></el-pagination
-      >
+        ><span>{{ currentPage }}/{{ Math.ceil(reallData.length / 10) }}</span
+        ><span
+          class="el-pagination__jump"
+          style="cursor: pointer"
+          @click="handleCurrentChange"
+          >{{ t("Goto") }}</span
+        >
+      </el-pagination>
+      <span v-if="reallData.length > 10" class="el-pagination el-pagination__jump">{{
+        t("page")
+      }}</span>
     </div>
   </div>
 </template>
@@ -469,6 +481,18 @@ const goToUser = (data: IObject) => {
     height: 56px;
   }
 }
+.el-pagination__jump {
+  height: 36px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #999999;
+  border-radius: 0px;
+  margin-left: 0px;
+  .el-input__wrapper {
+    flex-grow: 0.273;
+  }
+}
 </style>
 <style lang="scss">
 .o-pagination {
@@ -484,8 +508,9 @@ const goToUser = (data: IObject) => {
     @media screen and (max-width: 768px) {
       display: none;
     }
+    padding: 2px 0px;
     .el-pagination__sizes {
-      margin: 0 var(--o-spacing-h8) 0 0;
+      margin: 0 0 0 0;
     }
     .el-input {
       --el-input-bg-color: var(--o-pagination-bg-color);
@@ -498,6 +523,8 @@ const goToUser = (data: IObject) => {
     }
     .el-pagination__editor {
       justify-content: center !important;
+      margin: 0 8px !important;
+      min-width: 56px !important;
     }
     .el-select {
       --el-select-border-color-hover: none;
@@ -552,47 +579,10 @@ const goToUser = (data: IObject) => {
       line-height: 22px;
       color: #999999;
       border-radius: 0px;
-      margin-left: 24px;
+      margin-left: 6px;
       .el-input__wrapper {
         flex-grow: 0.273;
       }
-    }
-  }
-}
-.o-pagination-popper {
-  box-shadow: var(--o-shadow-l3);
-  &.el-popper {
-    box-shadow: none !important;
-    --el-popper-border-radius: none;
-    border: none;
-    .el-popper__arrow {
-      display: none;
-    }
-
-    .el-select-dropdown__item {
-      color: var(--o-color-text1);
-
-      &:hover {
-        color: var(--o-color-brand1);
-        background: var(--o-color-bg1);
-      }
-    }
-    .hover {
-      color: var(--o-color-brand1);
-      background: var(--o-color-bg1);
-    }
-
-    .el-select-dropdown__item.selected {
-      background-color: var(--o-color-bg1);
-    }
-
-    .el-select-dropdown__item.selected {
-      font-weight: normal;
-      color: var(--o-color-brand1);
-    }
-
-    .el-select-dropdown__wrap {
-      background-color: var(--o-color-bg2);
     }
   }
 }

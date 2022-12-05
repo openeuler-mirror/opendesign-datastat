@@ -323,10 +323,14 @@ const filterReallData = (val: any) => {
 };
 
 // 显示第几页
-const handleCurrentChange = (val: number) => {
+const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  currentPage.value = val;
-  getDetailsData();
+  if (val?.isTrusted) {
+  } else {
+    currentPage.value = val;
+    getDetailsData();
+  }
+
 };
 
 // 图表PR筛选
@@ -536,7 +540,11 @@ const inputSlider = (value: number) => {
               src="@/assets/commonPR.png"
               alt=""
             />
-            <img v-if="param.contributeType === 'issue'" src="@/assets/issue.png" alt="" />
+            <img
+              v-if="param.contributeType === 'issue'"
+              src="@/assets/issue.png"
+              alt=""
+            />
             <img
               v-if="param.contributeType === 'comment' && item.is_invalid_comment === 1"
               src="@/assets/text.png"
@@ -579,16 +587,25 @@ const inputSlider = (value: number) => {
       @current-change="handleCurrentChange"
     /> -->
     <el-pagination
-        class="o-pagination"
-        v-show="totalCount / pageSize > 1"
-        :currentPage="currentPage"
-        v-model:page-size="pageSize"
-        background
-        layout="prev, pager, next,slot, jumper"
-        :total="totalCount"
-        @current-change="handleCurrentChange"
-        ><span>{{ currentPage }}/{{Math.ceil(totalCount/pageSize)}}</span></el-pagination
-      >
+      class="o-pagination"
+      v-show="totalCount / pageSize > 1"
+      :currentPage="currentPage"
+      v-model:page-size="pageSize"
+      background
+      layout="prev, pager, next,slot, jumper"
+      :total="totalCount"
+      @current-change="handleCurrentChange"
+      ><span>{{ currentPage }}/{{ Math.ceil(totalCount / pageSize) }}</span
+      ><span
+        class="el-pagination__jump"
+        style="cursor: pointer"
+        @click="handleCurrentChange"
+        >{{ t("Goto") }}</span
+      ></el-pagination
+    >
+    <span v-if="totalCount / pageSize > 1" class="pageSpan">{{
+      t("page")
+    }}</span>
   </div>
 </template>
 
@@ -603,7 +620,7 @@ const inputSlider = (value: number) => {
   :deep(.el-autocomplete) {
     width: 100%;
     &.active .el-input__inner {
-      box-shadow: 0 0 0 1px #7D32EA inset;
+      box-shadow: 0 0 0 1px #7d32ea inset;
     }
   }
   :deep(.el-input__prefix) {
@@ -621,7 +638,7 @@ const inputSlider = (value: number) => {
     }
   }
   :deep(.el-input__inner:focus) {
-    box-shadow: 0 0 0 1px #7D32EA inset;
+    box-shadow: 0 0 0 1px #7d32ea inset;
   }
   :deep(.el-input__inner) {
     height: 56px;
@@ -659,12 +676,12 @@ const inputSlider = (value: number) => {
       .index {
         margin-right: 3px;
         font-size: 14px;
-        color: #7D32EA;
+        color: #7d32ea;
         margin-left: 3px;
       }
       .rigth-index {
         margin-left: 3px;
-        color: #7D32EA;
+        color: #7d32ea;
       }
     }
   }
@@ -742,6 +759,18 @@ const inputSlider = (value: number) => {
   justify-content: center;
   align-items: center;
 }
+.pageSpan{
+  height: 36px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  color: #999999;
+  border-radius: 0px;
+  margin-left: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
 <style lang="scss">
 .num {
@@ -761,24 +790,6 @@ const inputSlider = (value: number) => {
 .el-select-dropdown__item {
   padding: 0 15px 0 15px;
 }
-
-// .remove-scrollbar {
-//   .el-scrollbar__wrap {
-//     overflow: visible; //超出部分不滚动，直接显示
-//   }
-//   .el-scrollbar__thumb {
-//     display: none; //去掉右侧滚动条
-//   }
-// }
-
-// .Escrollbar {
-//   .el-scrollbar__wrap {
-//     overflow: auto;
-//   }
-//   .el-scrollbar__thumb {
-//     display: inside;
-//   }
-// }
 </style>
 <style lang="scss">
 .o-pagination {
@@ -794,8 +805,9 @@ const inputSlider = (value: number) => {
     @media screen and (max-width: 768px) {
       display: none;
     }
+    padding: 2px 0px;
     .el-pagination__sizes {
-      margin: 0 var(--o-spacing-h8) 0 0;
+      margin: 0 0 0 0;
     }
     .el-input {
       --el-input-bg-color: var(--o-pagination-bg-color);
@@ -808,6 +820,8 @@ const inputSlider = (value: number) => {
     }
     .el-pagination__editor {
       justify-content: center !important;
+      margin: 0 8px !important;
+      min-width: 56px !important;
     }
     .el-select {
       --el-select-border-color-hover: none;
@@ -862,47 +876,10 @@ const inputSlider = (value: number) => {
       line-height: 22px;
       color: #999999;
       border-radius: 0px;
-      margin-left: 24px;
+      margin-left: 6px;
       .el-input__wrapper {
         flex-grow: 0.273;
       }
-    }
-  }
-}
-.o-pagination-popper {
-  box-shadow: var(--o-shadow-l3);
-  &.el-popper {
-    box-shadow: none !important;
-    --el-popper-border-radius: none;
-    border: none;
-    .el-popper__arrow {
-      display: none;
-    }
-
-    .el-select-dropdown__item {
-      color: var(--o-color-text1);
-
-      &:hover {
-        color: var(--o-color-brand1);
-        background: var(--o-color-bg1);
-      }
-    }
-    .hover {
-      color: var(--o-color-brand1);
-      background: var(--o-color-bg1);
-    }
-
-    .el-select-dropdown__item.selected {
-      background-color: var(--o-color-bg1);
-    }
-
-    .el-select-dropdown__item.selected {
-      font-weight: normal;
-      color: var(--o-color-brand1);
-    }
-
-    .el-select-dropdown__wrap {
-      background-color: var(--o-color-bg2);
     }
   }
 }
