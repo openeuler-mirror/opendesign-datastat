@@ -147,7 +147,7 @@ const anchorData = computed(() => {
           <the-bar v-else></the-bar>
         </div>
 
-        <div class="contributors-panel" v-if="isTest()">
+        <div class="contributors-panel">
           <h3 class="title" id="userContributor">{{ t("userContributor") }}</h3>
           <the-form
             :option="formOption"
@@ -228,96 +228,6 @@ const anchorData = computed(() => {
                         @click="goToUser(scope.row.gitee_id)"
                         >{{ scope.row.gitee_id }}</span
                       >
-                    </div>
-                  </template></el-table-column
-                >
-                <el-table-column
-                  align="left"
-                  class-name="type-label"
-                  :label="t(contributeType)"
-                >
-                  <template #default="scope">
-                    <div class="box">
-                      <span class="num">{{ scope.row.contribute }}</span>
-                      <the-progress :item="scope.row.contribute"></the-progress>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
-          <div v-else class="search404">
-            <img class="cover" src="@/assets/404.png" alt="404" />
-            <p class="text">{{ t("searchTips") }}</p>
-          </div>
-        </div>
-        <div class="contributors-panel" v-else>
-          <h3 class="title" id="userContributor">{{ t("userContributor") }}</h3>
-          <the-form
-            :option="formOption"
-            :component-name="componentName"
-            @get-contribute-info="getContributeInfo"
-          ></the-form>
-
-          <div
-            v-if="hightRanking.length > 0"
-            class="ranking-list"
-            :class="{ db: lowRanking.length !== 0 }"
-          >
-            <div class="ranking-list-item">
-              <p class="caption">Top 1-10</p>
-              <el-table v-loading="loading" :data="hightRanking" style="width: 100%">
-                <el-table-column
-                  type="index"
-                  align="center"
-                  :label="t('ranking')"
-                  width="100"
-                />
-                <el-table-column
-                  prop="gitee_id"
-                  align="left"
-                  label="Gitee ID"
-                  show-overflow-tooltip
-                  width="180"
-                  ><template #default="scope">
-                    <div>
-                      <span>{{ scope.row.gitee_id }}</span>
-                    </div>
-                  </template></el-table-column
-                >
-                <el-table-column
-                  align="left"
-                  class-name="type-label"
-                  :label="t(contributeType)"
-                >
-                  <template #default="scope">
-                    <div class="box">
-                      <span class="num">{{ scope.row.contribute }}</span>
-                      <the-progress :item="scope.row.contribute"></the-progress>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
-            <div v-if="lowRanking.length > 0" class="ranking-list-item">
-              <p class="caption">Top 11-20</p>
-              <el-table v-loading="loading" :data="lowRanking" style="width: 100%">
-                <el-table-column
-                  type="index"
-                  :index="indexMethod"
-                  align="center"
-                  :label="t('ranking')"
-                  width="100"
-                />
-                <el-table-column
-                  prop="gitee_id"
-                  align="left"
-                  show-overflow-tooltip
-                  label="Gitee ID"
-                  width="180"
-                  ><template #default="scope">
-                    <div>
-                      <span>{{ scope.row.gitee_id }}</span>
                     </div>
                   </template></el-table-column
                 >

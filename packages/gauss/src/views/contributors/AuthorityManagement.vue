@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isTest()">
+  <div>
     <div class="contributors-panel list">
       <h3 id="groupActive" class="title">
         {{ t('groupActive') }}
