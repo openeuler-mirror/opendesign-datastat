@@ -11,7 +11,6 @@ import { testIsPhone } from './helper';
 import { AuthenticationClient } from 'authing-js-sdk';
 const LOGIN_KEYS = {
   USER_TOKEN: '_U_T_',
-  USER_INFO: '_U_I_',
 };
 
 function setCookie(cname: string, cvalue: string, exdays: number) {
@@ -36,26 +35,22 @@ function deleteCookie(cname: string) {
 }
 
 // 存储用户id及token，用于下次登录
-export function saveUserAuth(code = '', photo = '') {
+export function saveUserAuth(code = '') {
   if (!code) {
     deleteCookie(LOGIN_KEYS.USER_TOKEN);
-    deleteCookie(LOGIN_KEYS.USER_INFO);
   } else {
     setCookie(LOGIN_KEYS.USER_TOKEN, code, 1);
-    setCookie(LOGIN_KEYS.USER_INFO, photo, 1);
   }
 }
 
 // 获取用户id及token
 export function getUserAuth() {
   const token = getCookie(LOGIN_KEYS.USER_TOKEN) || '';
-  const photo = getCookie(LOGIN_KEYS.USER_INFO) || '';
   if (!token) {
     saveUserAuth();
   }
   return {
     token,
-    photo,
   };
 }
 const redirectUri = `${location.origin}/`;
@@ -98,7 +93,7 @@ export function getCodeByUrl(community: string) {
       .then((res) => {
         const { data = {} } = res;
         const { token = '', photo = '' } = data;
-        saveUserAuth(token, photo);
+        saveUserAuth(token);
         deleteUrlCode(query);
         const newUrl = `${location.origin}`;
         window.parent.window.location.href = newUrl;
@@ -203,12 +198,9 @@ export function refreshInfo(community: string) {
     queryCourse({ community }).then((res) => {
       const { data } = res;
       const { guardAuthClient } = useStoreData();
-      if (
-        !guardAuthClient.value.photo &&
-        Object.prototype.toString.call(data) === '[object Object]'
-      ) {
+      if (Object.prototype.toString.call(data) === '[object Object]') {
         guardAuthClient.value = data;
-        saveUserAuth(token, data.photo);
+        saveUserAuth(token);
       }
     });
     queryPermissions({ community }).then((res) => {

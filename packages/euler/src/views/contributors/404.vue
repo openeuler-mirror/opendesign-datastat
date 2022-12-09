@@ -1,6 +1,11 @@
 <template>
   <div class="_404">
-    <img src="@/assets/404.png" />
+    <div class="imgs">
+      <div class="png"></div>
+      <div class="title">
+        <h2>404 Not Found</h2>
+      </div>
+    </div>
   </div>
   <AppFooter />
 </template>
@@ -13,16 +18,19 @@ import AppFooter from '@/components/AppFooter.vue';
   height: 80vh;
   margin: 5rem auto 0 auto;
   background: white;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-._404 img {
-  width: 20rem;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.title {
+  text-align: center;
+  margin-top: 10px;
+}
+.png {
+  background-image: url("@/assets/404.png");
+  background-repeat: no-repeat;
+  background-size: 300px 300px;
+  width: 300px;
+  height: 300px;
 }
 </style>

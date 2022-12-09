@@ -112,19 +112,18 @@ const jumpToUserZone = () => {
   );
 };
 
-const photoSrc = computed(() => {
-  let { photo = "" } = getUserAuth();
-  // if (photo?.includes("no_portrait.png")) {
-  //   photo = Bitmap;
-  // }
-  // if (guardAuthClient.value?.photo) {
-  //   return guardAuthClient.value.photo?.includes("no_portrait.png")
-  //     ? Bitmap
-  //     : // : guardAuthClient.value.photo;
-  //       Bitmap;
-  // }
-  return guardAuthClient.value.photo || photo;
-});
+// const photoSrc = computed(() => {
+//   // if (photo?.includes("no_portrait.png")) {
+//   //   photo = Bitmap;
+//   // }
+//   // if (guardAuthClient.value?.photo) {
+//   //   return guardAuthClient.value.photo?.includes("no_portrait.png")
+//   //     ? Bitmap
+//   //     : // : guardAuthClient.value.photo;
+//   //       Bitmap;
+//   // }
+//   return guardAuthClient.value.photo;
+// });
 </script>
 
 <template>
@@ -166,12 +165,13 @@ const photoSrc = computed(() => {
       </div>
 
       <!-- <div v-if="isTest()" class="opt-user">  -->
-        <div class="opt-user">
+      <div class="opt-user">
         <loading-arc v-if="isLoggingIn"></loading-arc>
         <el-dropdown v-else-if="token">
           <div class="el-dropdown-link">
             <el-avatar
-              :src="photoSrc"
+              v-if="guardAuthClient?.photo"
+              :src="guardAuthClient?.photo"
               :alt="guardAuthClient.nickname || 'LogOut'"
               class="img"
             />
