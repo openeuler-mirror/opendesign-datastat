@@ -7,6 +7,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { IObject } from "../@types/interface";
 import { hasPermission, hasPermissions } from "../utils/login";
+import { isTest } from "utils/helper";
 const props = defineProps({
   data: {
     type: Object,
@@ -88,7 +89,7 @@ function id(node: IObject): string {
   return `${node.parent ? `${id(node.parent)}.` : ""}${node.data.name}`;
 }
 const getTextColor = (d: IObject) => {
-  if (d?.parent?.data?.name === "company" && hasPermission("companyread_all")) {
+  if (d?.parent?.data?.name === "company" && hasPermission("companyread_all") && isTest()) {
     return colorCompany;
   } else if (d?.parent?.data?.name === "company" && !hasPermission("companyread_all")) {
     return nocolor;
@@ -116,7 +117,7 @@ const getTipsHtml = (d: IObject) => {
   const jump = () => {
     router.push("/${localStorage.lang}/company/${d.data.name}");
   };
-  if (d?.parent?.data?.name === "company" && hasPermission("companyread_all")) {
+  if (d?.parent?.data?.name === "company" && hasPermission("companyread_all") && isTest()) {
     return `<div>${t("company")}</div>
             <div style="padding: 8px 0">
               <span style="font-size: 16px" class="mark">${d.data.name}</span>
@@ -177,7 +178,7 @@ const chart = () => {
     .attr("fill", (d: IObject) => getTextColor(d))
     .attr("text-anchor", (d) => (d.x < Math.PI ? "start" : "end"))
     .attr("transform", (d) => (d.x >= Math.PI ? "rotate(180)" : null))
-    .attr("cursor", (d: IObject) => (hasPermission("companyread_all") ? "pointer" : "auto"))
+    .attr("cursor", (d: IObject) => (hasPermission("companyread_all") && isTest() ? "pointer" : "auto"))
     .text((d: IObject) => d.data.name)
     .each(function (d: IObject) {
       d.text = this;
@@ -204,7 +205,7 @@ const chart = () => {
     if (isPhone) {
       return;
     }
-    if (d?.parent?.data?.name === "company" && hasPermission("companyread_all")) {
+    if (d?.parent?.data?.name === "company" && hasPermission("companyread_all") && isTest()) {
       window.open(
         `${window?.location?.origin}/${localStorage?.lang}/company/${d.data.key}`,
         "_blank"

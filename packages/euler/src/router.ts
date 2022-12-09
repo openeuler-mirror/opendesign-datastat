@@ -478,7 +478,9 @@ router.beforeEach((to) => {
   const commonStore = useCommonStore();
   if (!to.fullPath.includes('en')) {
     commonStore.lang = 'zh';
+    localStorage.setItem('lang', 'zh');
   } else {
     commonStore.lang = 'en';
+    localStorage.setItem('lang', 'en');
   }
 });
