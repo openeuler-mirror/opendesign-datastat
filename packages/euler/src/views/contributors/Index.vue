@@ -17,6 +17,7 @@ import chevronsUp from '~icons/app/chevrons-up';
 import AuthorityManagement from './AuthorityManagement.vue';
 import { hasPermission } from 'shared/utils/login';
 import { IObject } from 'shared/@types/interface';
+import { isTest } from 'shared/utils/helper';
 const { t, locale } = useI18n();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -100,7 +101,7 @@ watch(
   }
 );
 const anchorData = computed(() => {
-  return hasPermission('sigRead')
+  return hasPermission('SIGread')
     ? [
         'companyContributor',
         'userContributor',
@@ -161,7 +162,7 @@ const goToUser = (data: IObject) => {
             <p class="text">{{ t('searchTips') }}</p>
           </div>
           <the-bar v-else></the-bar>
-          <div v-if="hasPermission('sigRead')" class="goToCompany">
+          <div v-if="(hasPermission('companyread_all') && isTest())" class="goToCompany">
             <span class="title" @click="goToCompany">{{
               t('viewOrganizationDetail')
             }}</span
@@ -279,7 +280,7 @@ const goToUser = (data: IObject) => {
           </div>
         </div>
         <!-- <authority-management
-          v-if="hasPermission('sigRead')"
+          v-if="hasPermission('SIGread')"
         ></authority-management> -->
         <authority-management></authority-management>
       </div>

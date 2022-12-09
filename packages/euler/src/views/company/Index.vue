@@ -1,59 +1,49 @@
 <script setup lang="ts">
-import { useCommonStore } from '@/stores/common';
-import { IObject } from 'shared/@types/interface';
-import OAnchor from 'shared/components/OAnchor.vue';
-import { onMounted, ref, watch, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
-import {
-  sigsProcessing,
-  treeProcessing,
-  processing,
-} from 'shared/utils/helper';
-import {
-  queryCompanySigDetails,
-  queryCompanyUsers,
-  queryCompanySigs,
-} from 'shared/api';
-import OEchartCircularPile from 'shared/components/OEchartCircularPile.vue';
-import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
-import TheForm from '@/components/TheForm.vue';
-import TheProgress from '@/components/TheProgress.vue';
-import { useStaffStore } from '@/stores/staff';
-import OFormRadio from '@/components/OFormRadio.vue';
-import { Search } from '@element-plus/icons-vue';
-import IconUser from '~icons/app/search';
-import OIcon from 'shared/components/OIcon.vue';
-import { useRouter } from 'vue-router';
-import ONoDataImage from 'shared/components/ONoDataImage.vue';
-import { ElScrollbar } from 'element-plus';
-import { number } from 'echarts';
-import TableList from './TableList.vue';
-import DataShow from './DataShow.vue';
+import { useCommonStore } from "@/stores/common";
+import { IObject } from "shared/@types/interface";
+import OAnchor from "shared/components/OAnchor.vue";
+import { onMounted, ref, watch, computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
+import { sigsProcessing, treeProcessing, processing } from "shared/utils/helper";
+import { queryCompanySigDetails, queryCompanyUsers, queryCompanySigs } from "shared/api";
+import OEchartCircularPile from "shared/components/OEchartCircularPile.vue";
+import OEchartTreemap from "shared/components/OEchartTreemap.vue";
+import TheForm from "@/components/TheForm.vue";
+import TheProgress from "@/components/TheProgress.vue";
+import { useStaffStore } from "@/stores/staff";
+import OFormRadio from "@/components/OFormRadio.vue";
+import { Search } from "@element-plus/icons-vue";
+import IconUser from "~icons/app/search";
+import OIcon from "shared/components/OIcon.vue";
+import { useRouter } from "vue-router";
+import ONoDataImage from "shared/components/ONoDataImage.vue";
+import { ElScrollbar } from "element-plus";
+import { number } from "echarts";
+import TableList from "./TableList.vue";
+import DataShow from "./DataShow.vue";
 const router = useRouter();
 const useStaff = useStaffStore();
 const useCommon = useCommonStore();
 const route = useRoute();
-const sencondTitle = ref('');
-const sencondTitleValue = ref('');
+const sencondTitle = ref("");
+const sencondTitleValue = ref("");
 const { t } = useI18n();
 const allcompany = ref([]);
 const getSencondTitle = (value?: string) => {
   const query = {
-    timeRange: 'lastoneyear',
-    community: 'openeuler',
+    timeRange: "lastoneyear",
+    community: "openeuler",
   };
   queryCompanySigs(query).then((data) => {
     allcompany.value = data?.data || [];
-    allcompany.value.sort((a: any, b: any) =>
-      a.company_cn.localeCompare(b.company_cn)
-    );
+    allcompany.value.sort((a: any, b: any) => a.company_cn.localeCompare(b.company_cn));
     const name = value || route.params.name;
     const findOne: IObject =
       allcompany.value.find(
         (item: IObject) => item.company_cn === name || item.company_en === name
       ) || allcompany.value[0];
-    const key = useCommon.language === 'zh' ? 'company_cn' : 'company_en';
+    const key = useCommon.language === "zh" ? "company_cn" : "company_en";
     sencondTitle.value = (findOne && findOne[key]) || name;
     sencondTitleValue.value = findOne.company_cn || name;
     getallData();
@@ -74,20 +64,20 @@ const sumPrMerged = ref(0);
 const getoechartTreeValue = () => {
   const query = {
     company: sencondTitleValue.value,
-    timeRange: 'all',
-    community: 'openeuler',
+    timeRange: "all",
+    community: "openeuler",
   };
   queryCompanyUsers(query).then((data) => {
     const Data = processing(data?.data || []);
-    oechartData.value.D0 = Data.sigData['0'];
-    oechartData.value.D1 = Data.sigData['1'];
-    oechartData.value.D2 = Data.sigData['2'];
+    oechartData.value.D0 = Data.sigData["0"];
+    oechartData.value.D1 = Data.sigData["1"];
+    oechartData.value.D2 = Data.sigData["2"];
   });
 };
 const param = ref({
   company: computed(() => sencondTitleValue.value),
-  timeRange: 'all',
-  community: 'openeuler',
+  timeRange: "all",
+  community: "openeuler",
 });
 const getTreeSearchValue = () => {
   queryCompanySigDetails(param.value).then((data) => {
@@ -95,16 +85,16 @@ const getTreeSearchValue = () => {
     const firstTree: any = [];
     const secondTree: any = [];
     treeData.value.sigs.map((item: IObject) => {
-      if (item.group !== 'null') {
+      if (item.group !== "null") {
         firstTree.push({
-          key: '',
+          key: "",
           label: item.sig,
           value: item.D0,
           group: item.group,
         });
 
         secondTree.push({
-          key: '',
+          key: "",
           label: item.sig,
           value: item.PR_Merged,
           group: item.group,
@@ -114,29 +104,29 @@ const getTreeSearchValue = () => {
     oechartTreeValue.value = firstTree;
     oechartSecondTreeValue.value = secondTree;
     sumPrMerged.value = eval(
-      secondTree.map((item: any) => (item.value += item.value)).join('+')
+      secondTree.map((item: any) => (item.value += item.value)).join("+")
     );
     const colorArr = [
-      '#002FA7',
-      '#FEB32A',
-      '#4AAEAD',
-      '#FC756C',
-      '#A4DAFF',
-      '#6236FF',
-      '#3165F3',
-      '#00BB85',
-      '#F9762D',
-      '#7400A5',
-      '#1B7FCA',
-      '#00685A',
-      '#AC481C',
+      "#002FA7",
+      "#FEB32A",
+      "#4AAEAD",
+      "#FC756C",
+      "#A4DAFF",
+      "#6236FF",
+      "#3165F3",
+      "#00BB85",
+      "#F9762D",
+      "#7400A5",
+      "#1B7FCA",
+      "#00685A",
+      "#AC481C",
     ];
     oechartTreeGroup.value = oechartTreeValue.value
       .reduce((pre, next) => {
         const findone = pre.find((item: any) => item.group === next.group);
         if (findone) {
           findone.num += next.value;
-        } else if (next.group !== '') {
+        } else if (next.group !== "") {
           pre.push({
             group: next.group,
             num: next.value,
@@ -155,21 +145,19 @@ const getTreeSearchValue = () => {
 const drownData = ref([] as IObject[]);
 const getDrownData = () => {
   drownData.value = allcompany.value.map((item: IObject) => {
-    const key = useCommon.language === 'zh' ? 'company_cn' : 'company_en';
+    const key = useCommon.language === "zh" ? "company_cn" : "company_en";
     return {
       value: item.company_cn,
       label: item[key],
     };
   });
-  reallData.value = drownData.value.sort((a, b) =>
-    a.value.localeCompare(b.value)
-  );
+  reallData.value = drownData.value.sort((a, b) => a.value.localeCompare(b.value));
 };
 const getSigsData = () => {
   const query = {
     company: sencondTitleValue.value,
-    timeRange: 'all',
-    community: 'openeuler',
+    timeRange: "all",
+    community: "openeuler",
   };
   queryCompanySigDetails(query).then((data) => {
     sigsData.value = sigsProcessing(data?.data || []);
@@ -203,24 +191,24 @@ onMounted(() => {
 const lastformOption = computed(() => {
   return [
     {
-      label: t('from.type'),
-      id: 'contributeType',
-      active: 'pr',
+      label: t("from.type"),
+      id: "contributeType",
+      active: "pr",
       list: [
-        { label: t('home.prs'), value: 'pr' },
-        { label: t('home.issues'), value: 'issue' },
-        { label: t('home.comments'), value: 'comment' },
+        { label: t("home.prs"), value: "pr" },
+        { label: t("home.issues"), value: "issue" },
+        { label: t("home.comments"), value: "comment" },
       ],
     },
     {
-      label: t('from.timeRange'),
-      id: 'timeRange',
-      active: 'all',
+      label: t("from.timeRange"),
+      id: "timeRange",
+      active: "all",
       list: [
-        { label: t('from.lastonemonth'), value: 'lastonemonth' },
-        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
-        { label: t('from.lastoneyear'), value: 'lastoneyear' },
-        { label: t('from.all'), value: 'all' },
+        { label: t("from.lastonemonth"), value: "lastonemonth" },
+        { label: t("from.lasthalfyear"), value: "lasthalfyear" },
+        { label: t("from.lastoneyear"), value: "lastoneyear" },
+        { label: t("from.all"), value: "all" },
       ],
     },
   ];
@@ -228,20 +216,20 @@ const lastformOption = computed(() => {
 const firstformOption = computed(() => {
   return [
     {
-      label: t('from.timeRange'),
-      id: 'timeRange',
-      active: 'all',
+      label: t("from.timeRange"),
+      id: "timeRange",
+      active: "all",
       list: [
-        { label: t('from.lastonemonth'), value: 'lastonemonth' },
-        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
-        { label: t('from.lastoneyear'), value: 'lastoneyear' },
-        { label: t('from.all'), value: 'all' },
+        { label: t("from.lastonemonth"), value: "lastonemonth" },
+        { label: t("from.lasthalfyear"), value: "lasthalfyear" },
+        { label: t("from.lastoneyear"), value: "lastoneyear" },
+        { label: t("from.all"), value: "all" },
       ],
     },
   ];
 });
 // theform组件调用
-const componentName = 'staff';
+const componentName = "staff";
 const loading = ref(true);
 const getContributeInfo = () => {
   useStaff.getStaffData(sencondTitleValue.value);
@@ -251,17 +239,17 @@ const getTreeContributeInfo = (e?: IObject) => {
   param.value.timeRange = e?.active;
   getTreeSearchValue();
 };
-const typeLable = ref('');
+const typeLable = ref("");
 const switchType = () => {
   switch (useStaff.staffForm.contributeType) {
-    case 'pr':
-      typeLable.value = 'home.prs';
+    case "pr":
+      typeLable.value = "home.prs";
       break;
-    case 'issue':
-      typeLable.value = 'home.issues';
+    case "issue":
+      typeLable.value = "home.issues";
       break;
-    case 'comment':
-      typeLable.value = 'home.comments';
+    case "comment":
+      typeLable.value = "home.comments";
       break;
   }
 };
@@ -282,18 +270,21 @@ const tableData = computed(() =>
 // 默认显示第1页
 const currentPage = ref(1);
 // 显示第几页
-const handleCurrentChange = (val: number) => {
+const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  currentPage.value = val;
+  if (val?.isTrusted) {
+  } else {
+    currentPage.value = val;
+  }
 };
-const anchorData = ['ecological', 'SIGContribution', 'staffContributor'];
+const anchorData = ["ecological", "SIGContribution", "staffContributor"];
 
 // 搜索过滤
-const searchInput = ref('');
+const searchInput = ref("");
 const reallData = ref([] as IObject[]);
 
 const querySearch = () => {
-  if (searchInput.value !== '') {
+  if (searchInput.value !== "") {
     const newList = drownData.value.filter((item: any) =>
       item.label.toLowerCase().includes(searchInput.value)
     );
@@ -305,17 +296,17 @@ const querySearch = () => {
 // 清除搜索
 const clearSearchInput = () => {
   getDrownData();
-  searchInput.value = '';
+  searchInput.value = "";
 };
 const clean = () => {
-  searchInput.value = '';
+  searchInput.value = "";
 };
 // 贡献表搜索
 const reallListData = ref([] as IObject[]);
 
-const searchListInput = ref('');
+const searchListInput = ref("");
 const queryListSearch = () => {
-  if (searchListInput.value !== '') {
+  if (searchListInput.value !== "") {
     const newList = tableData.value.filter((item: any) =>
       item.gitee_id.toLowerCase().includes(searchListInput.value)
     );
@@ -326,7 +317,7 @@ const queryListSearch = () => {
 };
 const clearListSearchInput = () => {
   reallListData.value = tableData.value;
-  searchListInput.value = '';
+  searchListInput.value = "";
 };
 watch(
   () => tableData.value,
@@ -337,7 +328,7 @@ watch(
 );
 const goTo = (item: any) => {
   const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
-  window.open(routeData.href, '_blank');
+  window.open(routeData.href, "_blank");
 };
 const goToHome = () => {
   router.push(`/${useCommon.language}/detail`);
@@ -366,7 +357,7 @@ const goToUser = (data: IObject) => {
     //   organization: sencondTitle.value,
     // },
   });
-  window.open(routeData.href, '_blank');
+  window.open(routeData.href, "_blank");
 };
 </script>
 <template>
@@ -374,19 +365,14 @@ const goToUser = (data: IObject) => {
     <o-anchor top="11rem" :data="anchorData" :offset-value="400"></o-anchor>
     <div class="wrap">
       <div class="step">
-        <span class="step-one" @click="goToHome()">{{
-          t('nav.contributors')
-        }}</span>
+        <span class="step-one" @click="goToHome()">{{ t("nav.contributors") }}</span>
         <span> > {{ sencondTitle }}</span>
       </div>
       <div class="main">
         <div class="main-left">
           <div class="main-left-top">
             <div class="edropdown">
-              <el-dropdown
-                placement="bottom-start"
-                @visible-change="showDropdown"
-              >
+              <el-dropdown placement="bottom-start" @visible-change="showDropdown">
                 <div :title="sencondTitle" class="main-left-title">
                   {{ sencondTitle }}
                   <span class="btnc"></span>
@@ -424,17 +410,13 @@ const goToUser = (data: IObject) => {
           <data-show :company="sencondTitle"></data-show>
           <div class="circularPile">
             <div class="circularPile-sp">
-              {{ t('Contributordistribution') }}
+              {{ t("Contributordistribution") }}
             </div>
             <div
-              v-if="
-                oechartData.D0 === 0 &&
-                oechartData.D1 === 0 &&
-                oechartData.D2 === 0
-              "
+              v-if="oechartData.D0 === 0 && oechartData.D1 === 0 && oechartData.D2 === 0"
               class="nosp"
             >
-              {{ t('noContributor') }}
+              {{ t("noContributor") }}
             </div>
             <div v-else class="sp">
               <o-echart-circular-pile
@@ -449,7 +431,7 @@ const goToUser = (data: IObject) => {
         <div class="main-right">
           <div class="Treemap">
             <h3 id="ecological" class="topstafftitle">
-              {{ `${sencondTitle} ${t('ecological')}` }}
+              {{ `${sencondTitle} ${t("ecological")}` }}
             </h3>
             <div class="theFirstForm">
               <o-form-radio
@@ -459,19 +441,12 @@ const goToUser = (data: IObject) => {
               </o-form-radio>
             </div>
             <div class="color-box">
-              <div
-                v-for="item in oechartTreeGroup"
-                :key="item.key"
-                class="blue-box"
-              >
-                <div
-                  class="box"
-                  :style="{ 'background-color': item.color }"
-                ></div>
+              <div v-for="item in oechartTreeGroup" :key="item.key" class="blue-box">
+                <div class="box" :style="{ 'background-color': item.color }"></div>
                 {{ item.label }}
               </div>
             </div>
-            <div class="firstsmalltitle">{{ t('Numbercontributors') }}</div>
+            <div class="firstsmalltitle">{{ t("Numbercontributors") }}</div>
             <div v-if="treeData.sigs?.length" class="firstTreemap">
               <o-echart-treemap
                 id="firstTreemap"
@@ -481,11 +456,8 @@ const goToUser = (data: IObject) => {
               ></o-echart-treemap>
             </div>
             <div v-else><o-no-data-image></o-no-data-image></div>
-            <div class="smalltitle">{{ t('Commitcontribution') }}</div>
-            <div
-              v-if="sumPrMerged !== 0 && treeData.sigs?.length"
-              class="secondTreemap"
-            >
+            <div class="smalltitle">{{ t("Commitcontribution") }}</div>
+            <div v-if="sumPrMerged !== 0 && treeData.sigs?.length" class="secondTreemap">
               <o-echart-treemap
                 id="secondTreemap"
                 :value="(oechartSecondTreeValue as any)"
@@ -497,14 +469,14 @@ const goToUser = (data: IObject) => {
           </div>
           <div class="contributors-panel">
             <h3 id="SIGContribution" class="sigContribution">
-              {{ sencondTitle + ' ' + t('SIGContribution') }}
+              {{ sencondTitle + " " + t("SIGContribution") }}
             </h3>
 
             <table-list :company="sencondTitle" />
           </div>
           <div class="lastcontributors-panel">
             <h3 id="staffContributor" class="stafftitle">
-              {{ `${sencondTitle} ${t('staffContributor')}` }}
+              {{ `${sencondTitle} ${t("staffContributor")}` }}
             </h3>
             <div class="theSecondForm">
               <the-form
@@ -534,7 +506,7 @@ const goToUser = (data: IObject) => {
             <div class="edcolor-box">
               <div class="blue-box">
                 <div class="box">TC</div>
-                {{ t('Committee') }}
+                {{ t("Committee") }}
               </div>
               <div class="yellow-box">
                 <div class="box">Maintainer</div>
@@ -551,12 +523,7 @@ const goToUser = (data: IObject) => {
                 <p class="caption"></p>
                 <el-table
                   v-loading="loading"
-                  :data="
-                    reallListData.slice(
-                      (currentPage - 1) * 10,
-                      currentPage * 10
-                    )
-                  "
+                  :data="reallListData.slice((currentPage - 1) * 10, currentPage * 10)"
                   style="width: 100%"
                 >
                   <el-table-column
@@ -580,8 +547,7 @@ const goToUser = (data: IObject) => {
                             }"
                             @click="goToUser(scope.row.gitee_id)"
                             >{{ scope.row.gitee_id }}</span
-                          ><span v-if="scope.row.is_TC_owner" class="TCbox"
-                            >TC</span
+                          ><span v-if="scope.row.is_TC_owner" class="TCbox">TC</span
                           ><span
                             v-if="scope.row.usertype === 'committers'"
                             class="usertypecolorbox"
@@ -620,7 +586,7 @@ const goToUser = (data: IObject) => {
                 </el-table>
               </div>
             </div>
-            <div class="demo-pagination-block">
+            <!-- <div class="demo-pagination-block">
               <el-pagination
                 v-show="reallListData.length > 10"
                 :current-page="currentPage"
@@ -631,20 +597,42 @@ const goToUser = (data: IObject) => {
                 @current-change="handleCurrentChange"
               >
               </el-pagination>
+            </div> -->
+            <div class="demo-pagination-block">
+              <el-pagination
+                class="o-pagination"
+                v-show="reallListData.length > 10"
+                :current-page="currentPage"
+                :page-size="10"
+                background
+                layout="prev, pager, next,slot, jumper"
+                :total="reallListData.length"
+                @current-change="handleCurrentChange"
+                ><span>{{ currentPage }}/{{ Math.ceil(reallListData.length / 10) }}</span
+                ><span
+                  class="el-pagination__jump"
+                  style="cursor: pointer"
+                  @click="handleCurrentChange"
+                  >{{ t("Goto") }}</span
+                >
+              </el-pagination>
+              <span
+                v-if="reallListData.length > 10"
+                class="el-pagination el-pagination__jump"
+                >{{ t("page") }}</span
+              >
             </div>
           </div>
         </div>
       </div>
-
     </div>
     <footer>
-    <app-footer></app-footer>
-  </footer>
+      <app-footer></app-footer>
+    </footer>
   </div>
-
 </template>
 <style lang="scss" scoped>
-@import '@/shared/styles/style.scss';
+@import "@/shared/styles/style.scss";
 .container {
   margin-top: 80px;
   min-height: 900px;
@@ -996,7 +984,7 @@ const goToUser = (data: IObject) => {
   }
 }
 .btnc {
-  background-image: url('@/assets/down.png');
+  background-image: url("@/assets/down.png");
   width: 24px;
   height: 24px;
   position: absolute;
@@ -1024,5 +1012,98 @@ const goToUser = (data: IObject) => {
 }
 .dropdownItem {
   color: #b461f6;
+}
+</style>
+<style lang="scss">
+.o-pagination {
+  --o-pagination-font-color: #000000;
+  --o-pagination-font-color_active: #002fa7;
+  --o-pagination-bg-color: #e5e5e5;
+  --o-pagination-bg-color_hover: var(--o-color-brand5);
+  --o-pagination-bg-color_selected: var(--o-color-brand5);
+  --o-pagination-number-border-color_active: var(--o-color-brand1);
+
+  &.el-pagination {
+    justify-content: center;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+    padding: 2px 0px;
+    .el-pagination__sizes {
+      margin: 0 0 0 0;
+    }
+    .el-input {
+      --el-input-bg-color: var(--o-pagination-bg-color);
+      --el-input-text-color: var(--o-pagination-font-color);
+    }
+    .el-input__wrapper {
+      border-radius: 0px;
+      box-shadow: none;
+      height: 36px;
+    }
+    .el-pagination__editor {
+      justify-content: center !important;
+      margin: 0 8px !important;
+      min-width: 56px !important;
+    }
+    .el-select {
+      --el-select-border-color-hover: none;
+      --el-select-input-focus-border-color: none;
+      & .el-input .el-select__caret {
+        color: var(--o-pagination-font-color);
+      }
+    }
+    .el-select-dropdown__wrap {
+      background-color: #000 !important;
+    }
+    .el-pager li {
+      color: var(--o-pagination-font-color);
+      background: var(--o-pagination-bg-color);
+      border-radius: 0px;
+      line-height: 36px;
+      height: 36px;
+      width: 36px;
+      &:hover {
+        color: #ffffff !important;
+        background-color: var(--o-pagination-font-color_active);
+      }
+    }
+    .el-pager li.is-active.number {
+      background: var(--o-pagination-font-color_active);
+      color: #ffffff !important;
+      font-weight: 400;
+      font-size: 14px;
+    }
+    .btn-next,
+    .btn-prev {
+      width: 36px;
+      height: 36px;
+      color: var(--o-pagination-font-color);
+      border-radius: 0px;
+      background: var(--o-pagination-bg-color);
+    }
+    .btn-prev:disabled {
+      background: #e5e5e5;
+    }
+    .btn-next {
+      margin-right: 16px !important;
+    }
+    .btn-next:disabled {
+      background: #e5e5e5;
+    }
+
+    .el-pagination__jump {
+      height: 36px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      color: #999999;
+      border-radius: 0px;
+      margin-left: 6px;
+      .el-input__wrapper {
+        flex-grow: 0.273;
+      }
+    }
+  }
 }
 </style>

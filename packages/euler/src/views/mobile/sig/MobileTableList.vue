@@ -14,6 +14,7 @@ import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import MobileOFormRadio from './MobileOFormRadio.vue';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
+import { isTest } from 'shared/utils/helper';
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();
@@ -172,10 +173,12 @@ watch(
 
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/mobile/company/${data.company_cn}`
-  );
-  window.open(routeData.href, '_self');
+  if (isTest()) {
+    const routeData: any = router.resolve(
+      `/${useCommon.language}/mobile/company/${data.company_cn}`
+    );
+    window.open(routeData.href, '_self');
+  }
 };
 </script>
 

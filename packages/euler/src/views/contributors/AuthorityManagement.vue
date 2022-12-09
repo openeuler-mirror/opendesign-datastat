@@ -21,7 +21,7 @@
         />
       </div>
     </div>
-    <div class="contributors-panel"  v-if="hasPermission('sigRead')">
+    <div class="contributors-panel"  v-if="hasPermission('SIGread')">
       <h3 id="companyRelations" class="title">
         {{ t('companyRelations') }}
       </h3>

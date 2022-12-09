@@ -117,7 +117,7 @@ const chaneLanguage = () => {
 };
 const showItem = (test: boolean): boolean => {
   if (test) {
-    return hasPermission('sigRead');
+    return hasPermission('SIGread');
   }
   return true;
 };

@@ -1,5 +1,10 @@
 import { IObject } from '../@types/interface';
-import { queryCourse, queryToken, queryIDToken } from '../api/index';
+import {
+  queryCourse,
+  queryToken,
+  queryIDToken,
+  queryPermissions,
+} from '../api/index';
 import { useCounter } from '../stores/counter';
 import { storeToRefs } from 'pinia';
 import { testIsPhone } from './helper';
@@ -206,13 +211,37 @@ export function refreshInfo(community: string) {
         saveUserAuth(token, data.photo);
       }
     });
+    queryPermissions({ community }).then((res) => {
+      const { data } = res;
+      const { guardData } = useStoreData();
+      if (
+        !guardData.value.username &&
+        Object.prototype.toString.call(data) === '[object Object]'
+      ) {
+        guardData.value = data;
+      }
+    });
   }
 }
 
+// export function hasPermission(per: string) {
+//   const { guardAuthClient } = useStoreData();
+//   if (Array.isArray(guardAuthClient?.value?.permissions)) {
+//     return guardAuthClient.value.permissions.includes(per);
+//   }
+//   return false;
+// }
 export function hasPermission(per: string) {
-  const { guardAuthClient } = useStoreData();
-  if (Array.isArray(guardAuthClient?.value?.permissions)) {
-    return guardAuthClient.value.permissions.includes(per);
+  const { guardData } = useStoreData();
+  if (Array.isArray(guardData?.value?.permissions)) {
+    return guardData.value.permissions.includes(per);
+  }
+  return false;
+}
+export function hasPermissions(per: string) {
+  const { guardData } = useStoreData();
+  if (Array.isArray(guardData?.value?.companyList)) {
+    return guardData.value.companyList.includes(per);
   }
   return false;
 }
