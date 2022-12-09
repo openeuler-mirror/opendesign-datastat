@@ -7,7 +7,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { IObject } from "../@types/interface";
 import { hasPermission, hasPermissions } from "../utils/login";
-import { isTest } from "utils/helper";
+import { isTest } from "../utils/helper";
 const props = defineProps({
   data: {
     type: Object,
