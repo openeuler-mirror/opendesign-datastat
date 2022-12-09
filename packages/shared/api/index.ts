@@ -11,6 +11,15 @@ export function queryCourse(params: object) {
     .then((res: AxiosResponse) => res.data);
 }
 /**
+ * 获取授权信息
+ */
+ export function queryPermissions(params: object) {
+  const url = '/oneid/user/permissions';
+  return request
+    .get(url, { params, global: true })
+    .then((res: AxiosResponse) => res.data);
+}
+/**
  * 获取授权token链接
  */
 export function queryToken(params: object) {

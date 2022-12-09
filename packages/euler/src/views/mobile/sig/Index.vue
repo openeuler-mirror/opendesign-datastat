@@ -85,7 +85,7 @@ onMounted(() => {
           ></template>
         </o-mobile-template>
       </swiper-slide>
-      <swiper-slide v-if="hasPermission('sigRead')" >
+      <swiper-slide v-if="hasPermission('SIGread')" >
         <o-mobile-template padding-top="0.75rem">
           <template #header>
             {{ 'SIG ' + t('currentVitalityIndex') }}
@@ -95,7 +95,7 @@ onMounted(() => {
           </template>
         </o-mobile-template>
       </swiper-slide>
-      <swiper-slide v-if="hasPermission('sigRead')" >
+      <swiper-slide v-if="hasPermission('SIGread')" >
         <o-mobile-template padding-top="0.75rem">
           <template #header>
             {{ 'SIG ' + t('historicalVitalityIndicators') }}
@@ -107,7 +107,7 @@ onMounted(() => {
           ></template>
         </o-mobile-template>
       </swiper-slide>
-      <swiper-slide v-if="hasPermission('sigRead')" >
+      <swiper-slide v-if="hasPermission('SIGread')" >
         <o-mobile-template padding-top="0.75rem">
           <template #header>
             {{ 'SIG ' + t('companyContributor') }}

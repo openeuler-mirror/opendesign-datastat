@@ -15,6 +15,7 @@ import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
 import { hasPermission } from 'shared/utils/login';
+import { isTest } from 'shared/utils/helper'
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();
@@ -215,7 +216,7 @@ watch(
 onMounted(()=>getMemberData())
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  if (hasPermission('sigRead')) {
+  if (hasPermission('SIGread') && isTest()) {
     const routeData: any = router.resolve(
       `/${useCommon.language}/company/${data.company_cn}`
     );
@@ -292,8 +293,9 @@ const goToCompany = (data: IObject) => {
                 : item.company_en
             "
             :style="{
-              cursor: hasPermission('sigRead') ? 'pointer' : 'auto',
-              color: hasPermission('sigRead') ? '#002FA7' : '#555555',
+              cursor: hasPermission('SIGread') && isTest() ? 'pointer' : 'auto',
+              color:
+                hasPermission('SIGread') && isTest() ? '#002FA7' : '#555555',
             }"
             @click="goToCompany(item)"
             >{{

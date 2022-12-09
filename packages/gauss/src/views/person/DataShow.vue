@@ -19,25 +19,25 @@
   </div>
   <div class="left-first">
     <div class="left-first-child">
-      <span>{{ t("Mergerequest") }} PR</span>
+      <span :title="`${t('Mergerequest')} PR`">{{ t("Mergerequest") }} PR</span>
       <div class="left-first-child-data">
         {{ toThousands(mergeRequest) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span title="Needs & Problems Issue">{{ t("NeedsProblems") }} Issue</span>
+      <span :title="`${t('NeedsProblems')} Issue`">{{ t("NeedsProblems") }} Issue</span>
       <div class="left-first-child-data">
         {{ toThousands(issueData) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span>{{ t("review") }} Comment</span>
+      <span :title="`${t('review')} Comment`">{{ t("review") }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span>{{ t("SIGNumber") }}</span>
+      <span :title="`${t('SIGNumber')}`">{{ t("SIGNumber") }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>

@@ -7,5 +7,6 @@ export const useCounter = defineStore('counter', () => {
   const guardAuthClient = ref({} as IObject);
   const isLoggingIn = ref(false);
   const loginIframeSrc = ref('');
-  return { guardAuthClient, isLoggingIn, loginIframeSrc };
+  const guardData = ref({} as IObject);
+  return { guardAuthClient, isLoggingIn, loginIframeSrc,guardData };
 });

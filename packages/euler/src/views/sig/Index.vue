@@ -42,7 +42,7 @@ const getDrownData = () => {
 };
 
 const anchorData = computed(() => {
-  return hasPermission("sigRead")
+  return hasPermission("SIGread")
     ? [
         "currentVitalityIndex",
         "historicalVitalityIndicators",
@@ -277,7 +277,7 @@ const showDropdown = (e: any) => {
           </div>
         </div>
         <div class="main-right">
-          <div v-if="hasPermission('sigRead')" >
+          <div v-if="hasPermission('SIGread')" >
             <visual-index
               :sencondTitle="sencondTitle"
               :drownData="drownData"
@@ -285,13 +285,13 @@ const showDropdown = (e: any) => {
             <!-- <current-trend :sig="sencondTitle"></current-trend> -->
           </div>
 
-          <div v-if="hasPermission('sigRead')" class="contributors-panel">
+          <div v-if="hasPermission('SIGread')" class="contributors-panel">
             <h3 id="historicalVitalityIndicators" class="title">
               {{ sencondTitle + " " + t("historicalVitalityIndicators") }}
             </h3>
             <historical-trend :sig="sencondTitle"></historical-trend>
           </div>
-          <div class="contributors-panel" v-if="hasPermission('sigRead')">
+          <div class="contributors-panel" v-if="hasPermission('SIGread')">
             <h3 id="companyContributor" class="title">
               {{ sencondTitle + " " + t("companyContributor") }}
             </h3>

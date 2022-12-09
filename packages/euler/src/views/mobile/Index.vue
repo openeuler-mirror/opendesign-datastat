@@ -295,8 +295,8 @@ const goToUser = (data: IObject) => {
                       : item.company_en
                   "
                   :style="{
-                    cursor: hasPermission('sigRead') ? 'pointer' : 'auto',
-                    color: hasPermission('sigRead') ? '#002FA7' : '#555555',
+                    cursor: hasPermission('SIGread') ? 'pointer' : 'auto',
+                    color: hasPermission('SIGread') ? '#002FA7' : '#555555',
                   }"
                   @click="goToCompany(item)"
                   >{{
