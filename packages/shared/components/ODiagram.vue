@@ -89,9 +89,9 @@ function id(node: IObject): string {
   return `${node.parent ? `${id(node.parent)}.` : ""}${node.data.name}`;
 }
 const getTextColor = (d: IObject) => {
-  if (d?.parent?.data?.name === "company" && hasPermission("companyread_all") && isTest()) {
+  if (d?.parent?.data?.name === "company"&& isTest()) {
     return colorCompany;
-  } else if (d?.parent?.data?.name === "company" && !hasPermission("companyread_all")) {
+  } else if (d?.parent?.data?.name === "company") {
     return nocolor;
   }
   return colorSig;
@@ -117,7 +117,7 @@ const getTipsHtml = (d: IObject) => {
   const jump = () => {
     router.push("/${localStorage.lang}/company/${d.data.name}");
   };
-  if (d?.parent?.data?.name === "company" && hasPermission("companyread_all") && isTest()) {
+  if (d?.parent?.data?.name === "company" && isTest()) {
     return `<div>${t("company")}</div>
             <div style="padding: 8px 0">
               <span style="font-size: 16px" class="mark">${d.data.name}</span>
@@ -133,7 +133,7 @@ const getTipsHtml = (d: IObject) => {
         '_blank'
       )"
             >${t("viewDetail")} <span style="color: #002fa7">→</span></div>`;
-  } else if (d?.parent?.data?.name === "company" && !hasPermission("companyread_all")) {
+  } else if (d?.parent?.data?.name === "company" ) {
     return `<div>${t("company")}</div>
             <div style="padding: 8px 0">
               <span style="font-size: 16px" class="mark">${d.data.name}</span>
@@ -178,7 +178,7 @@ const chart = () => {
     .attr("fill", (d: IObject) => getTextColor(d))
     .attr("text-anchor", (d) => (d.x < Math.PI ? "start" : "end"))
     .attr("transform", (d) => (d.x >= Math.PI ? "rotate(180)" : null))
-    .attr("cursor", (d: IObject) => (hasPermission("companyread_all") && isTest() ? "pointer" : "auto"))
+    .attr("cursor", (d: IObject) => ( isTest() ? "pointer" : "auto"))
     .text((d: IObject) => d.data.name)
     .each(function (d: IObject) {
       d.text = this;
@@ -205,7 +205,7 @@ const chart = () => {
     if (isPhone) {
       return;
     }
-    if (d?.parent?.data?.name === "company" && hasPermission("companyread_all") && isTest()) {
+    if (d?.parent?.data?.name === "company" && isTest()) {
       window.open(
         `${window?.location?.origin}/${localStorage?.lang}/company/${d.data.key}`,
         "_blank"
