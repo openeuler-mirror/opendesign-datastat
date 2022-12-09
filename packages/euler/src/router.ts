@@ -4,7 +4,10 @@ import { querySigInfo, queryUserList } from 'shared/api';
 import { isTest } from 'shared/utils/helper';
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
-
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404'
+  },
   {
     path: '/zh/overview',
     name: 'zh_overview',
@@ -102,7 +105,7 @@ export const routes = [
         community: 'openeuler',
       };
       queryUserList(params).then((data) => {
-        if (data.data.includes(name)) {
+        if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
           next();
         } else {
           next('/404');
@@ -115,6 +118,22 @@ export const routes = [
     name: 'zh_all_user',
     component: () => {
       return import('@/views/person/index.vue');
+    },
+    beforeEnter: (to: any, from: any, next: any) => {
+      const name = window.location.href.substring(
+        window.location.href.lastIndexOf('/') + 1,
+        window.location.href.length
+      );
+      const params = {
+        community: 'openeuler',
+      };
+      queryUserList(params).then((data) => {
+        if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
+          next();
+        } else {
+          next('/404');
+        }
+      });
     },
   },
   {
@@ -158,6 +177,23 @@ export const routes = [
     component: () => {
       return import('@/views/mobile/sig/Index.vue');
     },
+    beforeEnter: (to: any, from: any, next: any) => {
+      const name = window.location.href.substring(
+        window.location.href.lastIndexOf('/') + 1,
+        window.location.href.length
+      );
+      const params = {
+        community: 'openeuler',
+        sig: name,
+      };
+      querySigInfo(params).then((data) => {
+        if (data.data.length === 0) {
+          next('/404');
+        } else {
+          next();
+        }
+      });
+    },
   },
   {
     path: '/zh/mobile/sig',
@@ -185,6 +221,22 @@ export const routes = [
     name: 'zh_mobile_user',
     component: () => {
       return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: (to: any, from: any, next: any) => {
+      const name = window.location.href.substring(
+        window.location.href.lastIndexOf('/') + 1,
+        window.location.href.length
+      );
+      const params = {
+        community: 'openeuler',
+      };
+      queryUserList(params).then((data) => {
+        if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
+          next();
+        } else {
+          next('/404');
+        }
+      });
     },
   },
   {
@@ -249,6 +301,23 @@ export const routes = [
     component: () => {
       return import('@/views/sig/Index.vue');
     },
+    beforeEnter: (to: any, from: any, next: any) => {
+      const name = window.location.href.substring(
+        window.location.href.lastIndexOf('/') + 1,
+        window.location.href.length
+      );
+      const params = {
+        community: 'openeuler',
+        sig: name,
+      };
+      querySigInfo(params).then((data) => {
+        if (data.data.length === 0) {
+          next('/404');
+        } else {
+          next();
+        }
+      });
+    },
   },
   {
     path: '/en/sig',
@@ -262,6 +331,22 @@ export const routes = [
     name: 'en_user',
     component: () => {
       return import('@/views/person/index.vue');
+    },
+    beforeEnter: (to: any, from: any, next: any) => {
+      const name = window.location.href.substring(
+        window.location.href.lastIndexOf('/') + 1,
+        window.location.href.length
+      );
+      const params = {
+        community: 'openeuler',
+      };
+      queryUserList(params).then((data) => {
+        if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
+          next();
+        } else {
+          next('/404');
+        }
+      });
     },
   },
   {
@@ -312,6 +397,23 @@ export const routes = [
     component: () => {
       return import('@/views/mobile/sig/Index.vue');
     },
+    beforeEnter: (to: any, from: any, next: any) => {
+      const name = window.location.href.substring(
+        window.location.href.lastIndexOf('/') + 1,
+        window.location.href.length
+      );
+      const params = {
+        community: 'openeuler',
+        sig: name,
+      };
+      querySigInfo(params).then((data) => {
+        if (data.data.length === 0) {
+          next('/404');
+        } else {
+          next();
+        }
+      });
+    },
   },
   {
     path: '/en/mobile/sig',
@@ -339,6 +441,22 @@ export const routes = [
     name: 'en_mobile_user',
     component: () => {
       return import('@/views/mobile/person/Index.vue');
+    },
+    beforeEnter: (to: any, from: any, next: any) => {
+      const name = window.location.href.substring(
+        window.location.href.lastIndexOf('/') + 1,
+        window.location.href.length
+      );
+      const params = {
+        community: 'openeuler',
+      };
+      queryUserList(params).then((data) => {
+        if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
+          next();
+        } else {
+          next('/404');
+        }
+      });
     },
   },
   {

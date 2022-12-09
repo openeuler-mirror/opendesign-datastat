@@ -55,19 +55,18 @@ const goMobileHome = () => {
   useCommon.isBlackHeader = true;
 };
 
-const photoSrc = computed(() => {
-  let { photo = "" } = getUserAuth();
-  // if (photo?.includes("no_portrait.png")) {
-  //   photo = Bitmap;
-  // }
-  // if (guardAuthClient.value?.photo) {
-  //   return guardAuthClient.value.photo?.includes("no_portrait.png")
-  //     ? Bitmap
-  //     : // : guardAuthClient.value.photo;
-  //       Bitmap;
-  // }
-  return guardAuthClient.value.photo || photo;
-});
+// const photoSrc = computed(() => {
+//   // if (photo?.includes("no_portrait.png")) {
+//   //   photo = Bitmap;
+//   // }
+//   // if (guardAuthClient.value?.photo) {
+//   //   return guardAuthClient.value.photo?.includes("no_portrait.png")
+//   //     ? Bitmap
+//   //     : // : guardAuthClient.value.photo;
+//   //       Bitmap;
+//   // }
+//   return guardAuthClient.value.photo;
+// });
 </script>
 
 <template>
@@ -103,7 +102,8 @@ const photoSrc = computed(() => {
         <div class="el-dropdown-link">
           <!-- <img :src="photoSrc" :alt="guardAuthClient.nickname || 'LogOut'" class="img" /> -->
           <el-avatar
-            :src="photoSrc"
+            v-if="guardAuthClient?.photo"
+            :src="guardAuthClient?.photo"
             :alt="guardAuthClient.nickname || 'LogOut'"
             class="img"
           />

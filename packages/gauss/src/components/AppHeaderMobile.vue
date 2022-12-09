@@ -60,18 +60,18 @@ const goMobileHome = () => {
   useCommon.isBlackHeader = true;
 };
 
-const photoSrc = computed(() => {
-  let { photo = '' } = getUserAuth();
-  if (photo?.includes('no_portrait.png')) {
-    photo = Bitmap;
-  }
-  if (guardAuthClient.value?.photo) {
-    return guardAuthClient.value.photo?.includes('no_portrait.png')
-      ? Bitmap
-      : guardAuthClient.value.photo;
-  }
-  return photo || Bitmap;
-});
+// const photoSrc = computed(() => {
+//   let { photo = '' } = getUserAuth();
+//   if (photo?.includes('no_portrait.png')) {
+//     photo = Bitmap;
+//   }
+//   if (guardAuthClient.value?.photo) {
+//     return guardAuthClient.value.photo?.includes('no_portrait.png')
+//       ? Bitmap
+//       : guardAuthClient.value.photo;
+//   }
+//   return photo || Bitmap;
+// });
 </script>
 
 <template>
