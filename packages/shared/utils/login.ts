@@ -16,7 +16,7 @@ const LOGIN_KEYS = {
 function setCookie(cname: string, cvalue: string, exdays: number) {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  const expires = `expires=${d.toUTCString()};path=/;domain=.test.osinfra.cn`;
+  const expires = `expires=${d.toUTCString()};path=/;domain=.openeuler.org`;
   document.cookie = `${cname}=${cvalue}; ${expires}`;
 }
 function getCookie(cname: string) {
@@ -165,7 +165,7 @@ export function showGuard(community: string) {
   // });
   // const { loginIframeSrc } = useStoreData();
   // loginIframeSrc.value = url;
-  const origin = 'https://openeuler-usercenter.test.osinfra.cn/login';
+  const origin = 'https://id.openeuler.org/login';
   location.href = `${origin}?redirect_uri=${location.href}`;
 }
 
