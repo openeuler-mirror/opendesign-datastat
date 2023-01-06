@@ -96,7 +96,7 @@ const goMobileHome = () => {
         ><img class="community-logo" :src="communityLogoSmall"
       /></a>
     </template>
-    <div v-if="isTest()" class="opt-user">
+    <div  class="opt-user">
       <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
       <el-dropdown v-else-if="token">
         <div class="el-dropdown-link">
