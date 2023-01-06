@@ -1,3 +1,5 @@
+import 'shared/allow_sensor/sensorsdata.min.js';
+import '@/allow_sensor/sensors.js';
 import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
 // import '@/shared/ele-reset.ts';
