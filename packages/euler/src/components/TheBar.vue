@@ -74,7 +74,7 @@ const goToCompany = (data: IObject) => {
   if (
     hasPermissions(data.company_cn) || hasPermission('companyread_all') &&
     data.company_cn !== "个人贡献者" &&
-    data.company_en !== "independent" && isTest()
+    data.company_en !== "independent"
   ) {
     data;
     const routeData: any = router.resolve(
