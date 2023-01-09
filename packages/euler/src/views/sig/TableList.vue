@@ -211,8 +211,7 @@ onMounted(() => getMemberData());
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
   if (
-    (hasPermission('companyread_all') || hasPermissions(data.company_cn)) &&
-    isTest()
+    (hasPermission('companyread_all') || hasPermissions(data.company_cn))
   ) {
     const routeData: any = router.resolve(
       `/${useCommon.language}/company/${data.company_cn}`
@@ -283,13 +282,11 @@ const goToCompany = (data: IObject) => {
             "
             :style="{
               cursor:
-                (hasPermission('companyread_all') || hasPermissions(item.company_cn)) &&
-                isTest()
+                (hasPermission('companyread_all') || hasPermissions(item.company_cn))
                   ? 'pointer'
                   : 'auto',
               color:
-                (hasPermission('companyread_all') || hasPermissions(item.company_cn)) &&
-                isTest()
+                (hasPermission('companyread_all') || hasPermissions(item.company_cn))
                   ? '#002FA7'
                   : '#555555',
             }"

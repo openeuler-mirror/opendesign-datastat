@@ -122,11 +122,11 @@ const goToCompany = (data: IObject) => {
             "
             :style="{
               cursor:
-                hasPermissions(item.company_cn) || hasPermission('companyread_all') && isTest()
+                hasPermissions(item.company_cn) || hasPermission('companyread_all')
                   ? 'pointer'
                   : 'auto',
               color:
-                hasPermissions(item.company_cn) || hasPermission('companyread_all') && isTest()
+                hasPermissions(item.company_cn) || hasPermission('companyread_all')
                   ? '#002FA7'
                   : '#555555',
             }"
