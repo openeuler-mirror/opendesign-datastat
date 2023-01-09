@@ -13,10 +13,10 @@ const LOGIN_KEYS = {
   USER_TOKEN: '_U_T_',
 };
 
-function setCookie(cname: string, cvalue: string, exdays: number) {
-  const d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  const expires = `expires=${d.toUTCString()};path=/;domain=.openeuler.org`;
+function setCookie(cname: string, cvalue: string, isDelete?: boolean) {
+  const deleteStr = isDelete ? 'max-age=0; ' : '';
+  const domain = import.meta.env.VITE_COOKIE_DOMAIN;
+  const expires = `${deleteStr}path=/; domain=${domain}`;
   document.cookie = `${cname}=${cvalue}; ${expires}`;
 }
 function getCookie(cname: string) {
@@ -31,7 +31,7 @@ function getCookie(cname: string) {
   return '';
 }
 function deleteCookie(cname: string) {
-  setCookie(cname, 'null', -1);
+  setCookie(cname, 'null', true);
 }
 
 // 存储用户id及token，用于下次登录
@@ -39,7 +39,7 @@ export function saveUserAuth(code = '') {
   if (!code) {
     deleteCookie(LOGIN_KEYS.USER_TOKEN);
   } else {
-    setCookie(LOGIN_KEYS.USER_TOKEN, code, 1);
+    setCookie(LOGIN_KEYS.USER_TOKEN, code);
   }
 }
 
@@ -165,8 +165,9 @@ export function showGuard(community: string) {
   // });
   // const { loginIframeSrc } = useStoreData();
   // loginIframeSrc.value = url;
-  const origin = 'https://id.openeuler.org/login';
-  location.href = `${origin}?redirect_uri=${location.href}`;
+  const origin = import.meta.env.VITE_LOGIN_ORIGIN;
+  const lang = window.localStorage.getItem('lang');
+  location.href = `${origin}/login?redirect_uri=${location.href}&lang=${lang}`;
 }
 
 // token失效跳转首页
