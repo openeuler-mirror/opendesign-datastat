@@ -60,9 +60,14 @@ export const companyNavList: NavConfig[] = [
     index: 1,
   },
   {
+    id: 'SIGContribution',
+    i18n: 'SIGContribution',
+    index: 2,
+  },
+  {
     id: 'staffContributor',
     i18n: 'staffContributor',
-    index: 2,
+    index: 3,
   },
 ];
 export const sigNavList: NavConfig[] = [
