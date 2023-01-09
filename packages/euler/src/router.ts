@@ -30,13 +30,13 @@ export const routes = [
     component: () => {
       return import('@/views/company/Index.vue');
     },
-    beforeEnter: (to: any, from: any, next: any) => {
-      if (isTest()) {
-        next();
-      }else {
-        next('/404');
-      }
-    },
+    // beforeEnter: (to: any, from: any, next: any) => {
+    //   if (isTest()) {
+    //     next();
+    //   }else {
+    //     next('/404');
+    //   }
+    // },
   },
   {
     path: '/zh/company',
@@ -44,13 +44,13 @@ export const routes = [
     component: () => {
       return import('@/views/company/Index.vue');
     },
-    beforeEnter: (to: any, from: any, next: any) => {
-      if (isTest()) {
-        next();
-      }else {
-        next('/404');
-      }
-    },
+    // beforeEnter: (to: any, from: any, next: any) => {
+    //   if (isTest()) {
+    //     next();
+    //   }else {
+    //     next('/404');
+    //   }
+    // },
   },
   {
     path: '/404',
@@ -273,13 +273,13 @@ export const routes = [
     component: () => {
       return import('@/views/company/Index.vue');
     },
-    beforeEnter: (to: any, from: any, next: any) => {
-      if (isTest()) {
-        next();
-      }else {
-        next('/404');
-      }
-    },
+    // beforeEnter: (to: any, from: any, next: any) => {
+    //   if (isTest()) {
+    //     next();
+    //   }else {
+    //     next('/404');
+    //   }
+    // },
   },
   {
     path: '/en/company',
@@ -287,13 +287,13 @@ export const routes = [
     component: () => {
       return import('@/views/company/Index.vue');
     },
-    beforeEnter: (to: any, from: any, next: any) => {
-      if (isTest()) {
-        next();
-      }else {
-        next('/404');
-      }
-    },
+    // beforeEnter: (to: any, from: any, next: any) => {
+    //   if (isTest()) {
+    //     next();
+    //   }else {
+    //     next('/404');
+    //   }
+    // },
   },
   {
     path: '/en/sig/:name',
