@@ -106,10 +106,8 @@ watch(
   }
 );
 const jumpToUserZone = () => {
-  window.open(
-    `https://id.openeuler.org/${useCommon.language}/profile`,
-    "_blank"
-  );
+  const origin = import.meta.env.VITE_LOGIN_ORIGIN;
+  window.open(`${origin}/${useCommon.language}/profile`, '_black');
 };
 
 // const photoSrc = computed(() => {
