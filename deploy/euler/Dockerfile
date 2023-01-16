@@ -11,7 +11,7 @@ RUN pnpm build:euler
 FROM nginx:1.20.0
 
 
-COPY --from=Builder /home/openeuler-datastat/web/dist/euler /usr/share/nginx/html/
+COPY --from=Builder /home/openeuler-datastat/web/dist/openeuler /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
 COPY ./deploy/euler/nginx.conf /etc/nginx/nginx.conf
 
