@@ -11,7 +11,7 @@ RUN pnpm build:gauss
 FROM nginx:1.20.0
 
 
-COPY --from=Builder /home/opengauss-datastat/web/dist/gauss /usr/share/nginx/html/
+COPY --from=Builder /home/opengauss-datastat/web/dist/opengauss /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
 COPY ./deploy/gauss/nginx.conf /etc/nginx/nginx.conf
 

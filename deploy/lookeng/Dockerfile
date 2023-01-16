@@ -10,7 +10,7 @@ RUN pnpm build
 
 FROM nginx:1.20.0
 
-COPY --from=Builder /home/openlookeng-datastat/web/dist/lookeng /usr/share/nginx/html/
+COPY --from=Builder /home/openlookeng-datastat/web/dist/openlookeng /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
 COPY ./deploy/lookeng/nginx.conf /etc/nginx/nginx.conf
 
