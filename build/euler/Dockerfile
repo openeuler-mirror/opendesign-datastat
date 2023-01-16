@@ -13,7 +13,7 @@ FROM nginx:1.20.0
 
 COPY --from=Builder /home/openeuler-datastat/web/dist/euler /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
-# COPY ./deploy/euler/nginx.conf /etc/nginx/nginx.conf
+COPY ./deploy/euler/nginx.conf /etc/nginx/nginx.conf
 
 ENV RUN_USER nginx
 ENV RUN_GROUP nginx

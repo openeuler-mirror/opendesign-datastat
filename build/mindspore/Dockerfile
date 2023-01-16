@@ -13,7 +13,7 @@ FROM nginx:1.20.0
 
 COPY --from=Builder /home/mindspore-datastat/web/dist/mindspore /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
-# COPY ./deploy/mindspore/nginx.conf /etc/nginx/nginx.conf
+COPY ./deploy/mindspore/nginx.conf /etc/nginx/nginx.conf
 
 
 ENV RUN_USER nginx
