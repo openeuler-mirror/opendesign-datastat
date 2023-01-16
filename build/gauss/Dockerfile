@@ -13,7 +13,7 @@ FROM nginx:1.20.0
 
 COPY --from=Builder /home/opengauss-datastat/web/dist/gauss /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
-# COPY ./deploy/gauss/nginx.conf /etc/nginx/nginx.conf
+COPY ./deploy/gauss/nginx.conf /etc/nginx/nginx.conf
 
 ENV RUN_USER nginx
 ENV RUN_GROUP nginx
