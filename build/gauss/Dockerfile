@@ -1,0 +1,22 @@
+FROM gplane/pnpm as Builder
+
+RUN mkdir -p /home/opengauss-datastat/web
+WORKDIR /home/opengauss-datastat/web
+COPY . /home/opengauss-datastat/web
+
+RUN pnpm install
+
+RUN pnpm build:gauss
+
+FROM nginx:1.20.0
+
+
+COPY --from=Builder /home/opengauss-datastat/web/dist/gauss /usr/share/nginx/html/
+RUN chmod -R 755 /usr/share/nginx/html
+# COPY ./deploy/gauss/nginx.conf /etc/nginx/nginx.conf
+
+ENV RUN_USER nginx
+ENV RUN_GROUP nginx
+EXPOSE 8080
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
