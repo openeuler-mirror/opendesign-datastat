@@ -6,7 +6,7 @@ COPY . /home/openlookeng-datastat/web
 
 RUN pnpm install
 
-RUN pnpm build
+RUN pnpm build:lookeng
 
 FROM nginx:1.20.0
 
