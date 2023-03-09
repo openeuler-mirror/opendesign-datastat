@@ -1,10 +1,5 @@
 import { IObject } from '../@types/interface';
-import {
-  queryCourse,
-  queryToken,
-  queryIDToken,
-  queryPermissions,
-} from '../api/index';
+import { queryCourse, queryToken, queryPermissions } from '../api/index';
 import { useCounter } from '../stores/counter';
 import { storeToRefs } from 'pinia';
 import { testIsPhone } from './helper';
@@ -57,17 +52,9 @@ const redirectUri = `${location.origin}/`;
 
 // 退出登录
 export function logout(community: string) {
-  queryIDToken().then((res) => {
-    const idToken = res.data.id_token;
-    const client1 = createClient(community);
-    const logoutUrl = client1.buildLogoutUrl({
-      expert: true,
-      redirectUri,
-      idToken,
-    });
-    saveUserAuth();
-    location.href = logoutUrl;
-  });
+  location.href = `${import.meta.env.VITE_LOGIN_ORIGIN}/logout?redirect_uri=${
+    window?.location?.origin
+  }`;
 }
 
 // 跳转首页
@@ -201,7 +188,6 @@ export function refreshInfo(community: string) {
       const { guardAuthClient } = useStoreData();
       if (Object.prototype.toString.call(data) === '[object Object]') {
         guardAuthClient.value = data;
-        saveUserAuth(token);
       }
     });
     queryPermissions({ community }).then((res) => {
