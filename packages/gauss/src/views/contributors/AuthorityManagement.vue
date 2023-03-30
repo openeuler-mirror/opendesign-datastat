@@ -203,7 +203,7 @@ const getList = () => {
       });
   });
 };
-getList();
+// getList();
 // 小组关系列表
 const groupData = ref([]);
 const number = ref(0);
@@ -219,7 +219,7 @@ const getGroup = () => {
     );
   });
 };
-getGroup();
+// getGroup();
 
 const lowSig = computed(() =>
   groupData.value.slice(number.value, groupData.value.length)
