@@ -128,6 +128,8 @@ onMounted(() => {
       color: #fff;
       line-height: 84px;
       font-weight: 400;
+      font-style: normal;
+
     }
     .community-info {
       text-align: left;
