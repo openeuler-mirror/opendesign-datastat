@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
 import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
-
+import { queryCompanyContribute } from 'shared/api/index';
 import TheForm from '@/components/TheForm.vue';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
@@ -38,6 +38,45 @@ const formOption = computed(() => {
         { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
         { label: t('from.lastoneyear'), value: 'lastoneyear' },
         { label: t('from.all'), value: 'all' },
+      ],
+    },
+    {
+      label: t('from.displayRange'),
+      id: 'displayRange',
+      list: [
+        { label: 'Top10', value: '10' },
+        { label: 'Top20', value: '20' },
+        { label: t('from.all'), value: 'all' },
+      ],
+    },
+  ];
+});
+const formOptionSwitch = computed(() => {
+  return [
+    {
+      label: t('from.type'),
+      id: 'contributeType',
+      active: 'pr',
+      list: [
+        { label: t('home.prs'), value: 'pr' },
+        { label: t('from.LOC'), value: 'cloc' },
+      ],
+    },
+    {
+      label: t('from.timeRange'),
+      id: 'version',
+      list: [
+        { label: 'openEuler 22.03 LTS SP1', value: 'openEuler-22.03-LTS-SP1' },
+        { label: 'openEuler 22.09', value: 'openEuler-22.09' },
+        { label: 'openEuler 22.03 LTS', value: 'openEuler-22.03-LTS' },
+        { label: 'openEuler 20.03 LTS SP3', value: 'openEuler-20.03-LTS-SP3' },
+        { label: 'openEuler 21.09', value: 'openEuler-21.09' },
+        { label: 'openEuler 20.03 LTS SP2', value: 'openEuler-20.03-LTS-SP2' },
+        { label: 'openEuler 21.03', value: 'openEuler-21.03' },
+        { label: 'openEuler 20.03 LTS SP1', value: 'openEuler-20.03-LTS-SP1' },
+        { label: 'openEuler 20.09', value: 'openEuler-20.09' },
+        { label: 'openEuler 20.03 LTS', value: 'openEuler-20.03-LTS' },
+        // { label: t('from.all'), value: 'all' },
       ],
     },
     {
@@ -126,16 +165,42 @@ const getContributeInfo = (item: IObject) => {
   }
 };
 
-onMounted(() => {
-  useCompany.getCompanyData();
-});
+// onMounted(() => {
+//   useCompany.getCompanyData();
+// });
 const isMobile: boolean = testIsPhone();
+const formOptionAll = ref<any>([]);
+const getConfig = (val: any) => {
+  if (val) {
+    formOptionAll.value.value = formOptionSwitch;
+    useCompany.companyForm.contributeType = 'pr';
+    useCompany.companyForm.version = 'openEuler-22.03-LTS-SP1';
+    useCompany.companyForm.displayRange = '10';
+    useCompany.getCompanyData();
+  } else {
+    formOptionAll.value.value = formOption;
+    useCompany.companyForm.contributeType = 'pr';
+    useCompany.companyForm.timeRange = 'lastonemonth';
+    useCompany.companyForm.displayRange = '10';
+    useCompany.getCompanyData();
+  }
+};
+watch(
+  () => useCompany.switchValue,
+  () => getConfig(useCompany.switchValue),
+  { immediate: true }
+);
 </script>
 
 <template>
   <div class="contributions-statistical">
+    <div class="switch">
+      <span class="switchTitile">{{ t('from.version') }}</span
+      ><el-switch v-model="useCompany.switchValue" />
+    </div>
+
     <the-form
-      :option="formOption"
+      :option="formOptionAll.value"
       :component-name="componentName"
       @get-contribute-info="getContributeInfo"
     >
@@ -205,6 +270,16 @@ const isMobile: boolean = testIsPhone();
 .inputHeight {
   :deep(.el-input__inner) {
     height: 2rem;
+  }
+}
+.switch {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #dfe1e8;
+  margin-bottom: 12px;
+  .switchTitile {
+    padding-right: 24px;
+    line-height: 28px;
+    font-size: 14px;
   }
 }
 </style>

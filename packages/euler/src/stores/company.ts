@@ -15,6 +15,7 @@ interface layoutStateTypes {
   total: number;
   companyMaxNum: number;
   companyForm: IObject;
+  switchValue: boolean;
 }
 
 export const useCompanyStore = defineStore('company', {
@@ -31,21 +32,32 @@ export const useCompanyStore = defineStore('company', {
     // 获取最大值
     companyMaxNum: 0,
     // 筛选参数
+    switchValue: false,
     companyForm: {
       contributeType: 'pr',
       timeRange: 'lastonemonth',
       displayRange: '10',
+      version: 'openEuler-22.03-LTS-SP1',
     },
   }),
   actions: {
     async getCompanyData() {
-      const params = {
-        community: openCommunityInfo.name,
-        contributeType: this.companyForm.contributeType,
-        timeRange: this.companyForm.timeRange,
-      };
+      const params = ref();
+      if (this.switchValue) {
+        params.value = {
+          community: openCommunityInfo.name,
+          contributeType: this.companyForm.contributeType,
+          version: this.companyForm.version,
+        };
+      } else {
+        params.value = {
+          community: openCommunityInfo.name,
+          contributeType: this.companyForm.contributeType,
+          timeRange: this.companyForm.timeRange,
+        };
+      }
       try {
-        const res = await queryCompanyContribute(params);
+        const res = await queryCompanyContribute(params.value);
         if (res.code === 200) {
           const { data } = res;
           const userList = data.sort(sortExp('contribute', false));
