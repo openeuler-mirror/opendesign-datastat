@@ -175,12 +175,14 @@ const getConfig = (val: any) => {
     formOptionAll.value.value = formOptionSwitch;
     useCompany.companyForm.contributeType = 'pr';
     useCompany.companyForm.version = 'openEuler-22.03-LTS-SP1';
+    useCompany.companyForm.timeRange = '';
     useCompany.companyForm.displayRange = '10';
     useCompany.getCompanyData();
   } else {
     formOptionAll.value.value = formOption;
     useCompany.companyForm.contributeType = 'pr';
     useCompany.companyForm.timeRange = 'lastonemonth';
+    useCompany.companyForm.version = '';
     useCompany.companyForm.displayRange = '10';
     useCompany.getCompanyData();
   }

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
-import { useCompanyStore } from "@/stores/company";
-import { useCommonStore } from "@/stores/common";
-import { formatNumber } from "shared/utils/helper";
-import { IObject } from "shared/@types/interface";
-import { useRouter } from "vue-router";
-import { hasPermission, hasPermissions } from "shared/utils/login";
-import { isTest } from 'shared/utils/helper'
+import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useCompanyStore } from '@/stores/company';
+import { useCommonStore } from '@/stores/common';
+import { formatNumber } from 'shared/utils/helper';
+import { IObject } from 'shared/@types/interface';
+import { useRouter } from 'vue-router';
+import { hasPermission, hasPermissions } from 'shared/utils/login';
+import { isTest } from 'shared/utils/helper';
 const router = useRouter();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
@@ -19,42 +19,87 @@ const progressFormat = (item: number) => {
 };
 
 // 格式化统计周期文字
-const timeRangeText = ref("");
+const timeRangeText = ref('');
 const switchTime = () => {
-  switch (useCompany.companyForm.timeRange) {
-    case "lastonemonth":
-      timeRangeText.value = t("from.lastonemonth");
-      break;
-    case "lasthalfyear":
-      timeRangeText.value = t("from.lasthalfyear");
-      break;
-    case "lastoneyear":
-      timeRangeText.value = t("from.lastoneyear");
-      break;
-    default:
-      timeRangeText.value = t("from.all");
-      break;
+  if (useCompany.switchValue) {
+    switch (useCompany.companyForm.version) {
+      case 'openEuler-22.03-LTS-SP1':
+        timeRangeText.value = 'openEuler 22.03 LTS SP1';
+        break;
+      case 'openEuler-22.09':
+        timeRangeText.value = 'openEuler 22.09';
+        break;
+      case 'openEuler-22.03-LTS':
+        timeRangeText.value = 'openEuler 22.03 LTS';
+        break;
+      case 'openEuler-20.03-LTS-SP3':
+        timeRangeText.value = 'openEuler 20.03 LTS SP3';
+        break;
+      case 'openEuler-21.09':
+        timeRangeText.value = 'openEuler 21.09';
+        break;
+      case 'openEuler-20.03-LTS-SP2':
+        timeRangeText.value = 'openEuler 20.03 LTS SP2';
+        break;
+      case 'openEuler-21.03':
+        timeRangeText.value = 'openEuler 21.03';
+        break;
+      case 'openEuler-20.03-LTS-SP1':
+        timeRangeText.value = 'openEuler 20.03 LTS SP1';
+        break;
+      case 'openEuler-20.09':
+        timeRangeText.value = 'openEuler 20.09';
+        break;
+      case 'openEuler-20.03-LTS':
+        timeRangeText.value = 'openEuler 20.03 LTS';
+        break;
+    }
+  } else {
+    switch (useCompany.companyForm.timeRange) {
+      case 'lastonemonth':
+        timeRangeText.value = t('from.lastonemonth');
+        break;
+      case 'lasthalfyear':
+        timeRangeText.value = t('from.lasthalfyear');
+        break;
+      case 'lastoneyear':
+        timeRangeText.value = t('from.lastoneyear');
+        break;
+      case 'openEuler-22.03-LTS-SP1':
+        timeRangeText.value = 'openEuler 22.03 LTS SP1';
+        break;
+      default:
+        timeRangeText.value = t('from.all');
+        break;
+    }
   }
 };
 switchTime();
 watch(
-  () => [useCompany.companyForm.timeRange, useCommon.language],
+  () => [
+    useCompany.companyForm.timeRange,
+    useCommon.language,
+    useCompany.companyForm.version,
+  ],
   () => {
     switchTime();
   }
 );
 
-const typeLable = ref("");
+const typeLable = ref('');
 const switchType = () => {
   switch (useCompany.companyForm.contributeType) {
-    case "pr":
-      typeLable.value = t("home.prs");
+    case 'pr':
+      typeLable.value = t('home.prs');
       break;
-    case "issue":
-      typeLable.value = t("home.issues");
+    case 'issue':
+      typeLable.value = t('home.issues');
       break;
-    case "comment":
-      typeLable.value = t("home.comments");
+    case 'comment':
+      typeLable.value = t('home.comments');
+      break;
+    case 'cloc':
+      typeLable.value = t('from.LOC');
       break;
   }
 };
@@ -72,15 +117,16 @@ const showAfter = 200;
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
   if (
-    hasPermissions(data.company_cn) || hasPermission('companyread_all') &&
-    data.company_cn !== "个人贡献者" &&
-    data.company_en !== "independent"
+    hasPermissions(data.company_cn) ||
+    (hasPermission('companyread_all') &&
+      data.company_cn !== '个人贡献者' &&
+      data.company_en !== 'independent')
   ) {
     data;
     const routeData: any = router.resolve(
       `/${useCommon.language}/company/${data.company_cn}`
     );
-    window.open(routeData.href, "_blank");
+    window.open(routeData.href, '_blank');
   } else {
   }
 };
@@ -97,15 +143,18 @@ const goToCompany = (data: IObject) => {
         <p class="infos">
           <span class="index">{{ item.index }}</span>
           <span
-            v-if="item.company_cn === '个人贡献者' || item.company_en === 'independent'"
+            v-if="
+              item.company_cn === '个人贡献者' ||
+              item.company_en === 'independent'
+            "
             class="name"
             :style="{
               color: '#555555',
             }"
             >{{
-              useCommon.language === "zh"
+              useCommon.language === 'zh'
                 ? item.company_cn
-                : item.company_en === ""
+                : item.company_en === ''
                 ? item.company_cn
                 : item.company_en
             }}</span
@@ -122,19 +171,21 @@ const goToCompany = (data: IObject) => {
             "
             :style="{
               cursor:
-                hasPermissions(item.company_cn) || hasPermission('companyread_all')
+                hasPermissions(item.company_cn) ||
+                hasPermission('companyread_all')
                   ? 'pointer'
                   : 'auto',
               color:
-                hasPermissions(item.company_cn) || hasPermission('companyread_all')
+                hasPermissions(item.company_cn) ||
+                hasPermission('companyread_all')
                   ? '#002FA7'
                   : '#555555',
             }"
             @click="goToCompany(item)"
             >{{
-              useCommon.language === "zh"
+              useCommon.language === 'zh'
                 ? item.company_cn
-                : item.company_en === ""
+                : item.company_en === ''
                 ? item.company_cn
                 : item.company_en
             }}</span
@@ -150,7 +201,7 @@ const goToCompany = (data: IObject) => {
         >
           <template #content>
             <div class="lable">
-              {{ timeRangeText }} <span class="text">{{ t("de") }}</span>
+              {{ timeRangeText }} <span class="text">{{ t('de') }}</span>
               {{ typeLable }}
             </div>
             <div class="info">
@@ -158,9 +209,9 @@ const goToCompany = (data: IObject) => {
                 <span class="index">{{ item.index }}</span>
 
                 {{
-                  useCommon.language === "zh"
+                  useCommon.language === 'zh'
                     ? item.company_cn
-                    : item.company_en === ""
+                    : item.company_en === ''
                     ? item.company_cn
                     : item.company_en
                 }}
@@ -231,7 +282,7 @@ const goToCompany = (data: IObject) => {
         width: 1px;
         border-left: 1px dashed #ccc;
         bottom: 20px;
-        content: "";
+        content: '';
       }
       &:last-child {
         &::after {
