@@ -32,7 +32,7 @@ export const useCompanyStore = defineStore('company', {
     // 获取最大值
     companyMaxNum: 0,
     // 筛选参数
-    switchValue: false,
+    switchValue: true,
     companyForm: {
       contributeType: 'pr',
       timeRange: 'lastonemonth',
