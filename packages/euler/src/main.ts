@@ -10,7 +10,6 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import { router } from './router';
 import OIcon from 'shared/components/OIcon.vue';
-import './before.ts';
 import zhLang from 'element-plus/lib/locale/lang/zh-cn'; // 引入官方的中文国际化
 import locale from './assets/locale/cn'; // 引入自己的
 import ElementPlus from 'element-plus';
