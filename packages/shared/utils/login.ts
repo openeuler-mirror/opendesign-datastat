@@ -1,9 +1,7 @@
-import { IObject } from '../@types/interface';
-import { queryCourse, queryToken, queryPermissions } from '../api/index';
+import { queryCourse, queryPermissions } from '../api/index';
 import { useCounter } from '../stores/counter';
 import { storeToRefs } from 'pinia';
 import { testIsPhone } from './helper';
-import { AuthenticationClient } from 'authing-js-sdk';
 const LOGIN_KEYS = {
   USER_TOKEN: '_U_T_',
 };
@@ -48,7 +46,6 @@ export function getUserAuth() {
     token,
   };
 }
-const redirectUri = `${location.origin}/`;
 
 // 退出登录
 export function logout(community: string) {
@@ -66,92 +63,7 @@ export function goToHome() {
     window.location.href = `/${lang}/mobile`;
   }
 }
-
-export function getCodeByUrl(community: string) {
-  const query = getUrlParam();
-  if (query.code && query.state) {
-    const param = {
-      code: query.code,
-      permission: 'sigRead',
-      community,
-      redirect: redirectUri,
-    };
-    queryToken(param)
-      .then((res) => {
-        const { data = {} } = res;
-        const { token = '', photo = '' } = data;
-        saveUserAuth(token);
-        deleteUrlCode(query);
-        const newUrl = `${location.origin}`;
-        window.parent.window.location.href = newUrl;
-      })
-      .catch(() => {
-        const newUrl = `${location.origin}`;
-        window.parent.window.location.href = newUrl;
-      });
-  }
-}
-// 删除url上的code
-function deleteUrlCode(query: IObject) {
-  const arr = Object.entries(query);
-  let url = location.origin + location.pathname;
-  if (arr.length > 2) {
-    const _arr = arr.filter((item) => !['code', 'state'].includes(item[0]));
-    const search = _arr.reduce((pre, next) => {
-      pre += `${next[0]}=${next[1]}`;
-      return pre;
-    }, '?');
-    url += search;
-  }
-  history.replaceState(null, '', url);
-}
-
-function getUrlParam(url = window.location.search) {
-  const param = {} as IObject;
-  const arr = url.split('?');
-  if (arr[1]) {
-    const _arr = arr[1].split('&') || [];
-    _arr.forEach((item) => {
-      const it = item.split('=');
-      if (it.length === 2) {
-        const obj = {
-          [it[0]]: it[1],
-        };
-        Object.assign(param, obj);
-      }
-    });
-  }
-  return param;
-}
-
-function createClient(community: string) {
-  const obj: IObject = {
-    openeuler: {
-      // appId: '62845f26b7dbf20f7890c0ad',
-      appId: '62679eab0b22b146d2ea0a3a',
-      appHost: 'https://datastat.authing.cn',
-      redirectUri,
-    },
-  };
-  if (obj[community]) {
-    return new AuthenticationClient(obj[community]);
-  }
-  return new AuthenticationClient(obj.openeuler);
-}
-// scope配置，设置登录后用户返回信息
-const scopeConfig = {
-  scope: 'openid profile username',
-};
 export function showGuard(community: string) {
-  // const client = createClient(community);
-  // // 构造 OIDC 授权登录 URL
-  // const url = client.buildAuthorizeUrl(scopeConfig);
-  // // 如果需要获取 Refresh token，请在 scope 中加入 offline_access 项
-  // const url2 = client.buildAuthorizeUrl({
-  //   scope: 'openid profile offline_access',
-  // });
-  // const { loginIframeSrc } = useStoreData();
-  // loginIframeSrc.value = url;
   const origin = import.meta.env.VITE_LOGIN_ORIGIN;
   const lang = window.localStorage.getItem('lang');
   location.href = `${origin}/login?redirect_uri=${location.href}&lang=${lang}`;

@@ -1,5 +1,6 @@
 import { request } from '../plugins/axios';
 import type { AxiosResponse } from '../plugins/axios';
+import { ElMessage } from 'element-plus';
 
 /**
  * 获取授权的相关回调链接
@@ -8,32 +9,34 @@ export function queryCourse(params: object) {
   const url = '/oneid/user/permission';
   return request
     .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data);
+    .then((res: AxiosResponse) => res.data)
+    .catch((err) => {
+      const message = err?.response?.data?.message || '';
+      if (message && message !== 'token expires') {
+        ElMessage({
+          type: 'error',
+          message: err.message,
+        });
+      }
+    });;
 }
 /**
  * 获取授权信息
  */
- export function queryPermissions(params: object) {
+export function queryPermissions(params: object) {
   const url = '/oneid/user/permissions';
   return request
     .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data);
-}
-/**
- * 获取授权token链接
- */
-export function queryToken(params: object) {
-  const url = '/oneid/token/apply';
-  return request
-    .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data);
-}
-/**
- * 获取idtoken用于退出
- */
-export function queryIDToken() {
-  const url = '/oneid/logout';
-  return request.get(url).then((res: AxiosResponse) => res.data);
+    .then((res: AxiosResponse) => res.data)
+    .catch((err) => {
+      const message = err?.response?.data?.message || '';
+      if (message && message !== 'token expires') {
+        ElMessage({
+          type: 'error',
+          message: err.message,
+        });
+      }
+    });;
 }
 /**
  * 获取指定sig活跃度及排名
