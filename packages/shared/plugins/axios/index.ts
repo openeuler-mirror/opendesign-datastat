@@ -5,6 +5,7 @@ import handleResponse from './handleResponse';
 import handleError from './handleError';
 import setConfig from './setConfig';
 import { getUserAuth, tokenFailIndicateLogin } from '../../utils/login';
+import { ElMessage } from 'element-plus';
 
 interface RequestConfig<D = any> extends AxiosRequestConfig {
   data?: D;
@@ -96,6 +97,23 @@ const responseInterceptorId = request.interceptors.response.use(
 
       // 无效token跳转登录
       if (err.code === '401') {
+        const message = err?.response?.data?.message || '';
+        if (message && message === 'token expires') {
+          const lang = window.localStorage.getItem('lang');
+          const msg =
+            lang === 'zh'
+              ? '您的账号信息已过期，请重新登录'
+              : 'Your account information has expired, please log in again.';
+          ElMessage.error({
+            showClose: true,
+            message: msg,
+          });
+        } else {
+          ElMessage.error({
+            showClose: true,
+            message: err.message,
+          });
+        }
         tokenFailIndicateLogin();
       }
     }
