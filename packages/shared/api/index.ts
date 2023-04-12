@@ -1,6 +1,5 @@
 import { request } from '../plugins/axios';
 import type { AxiosResponse } from '../plugins/axios';
-import { ElMessage } from 'element-plus';
 
 /**
  * 获取授权的相关回调链接
@@ -9,16 +8,7 @@ export function queryCourse(params: object) {
   const url = '/oneid/user/permission';
   return request
     .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data)
-    .catch((err) => {
-      const message = err?.response?.data?.message || '';
-      if (message && message !== 'token expires') {
-        ElMessage({
-          type: 'error',
-          message: err.message,
-        });
-      }
-    });;
+    .then((res: AxiosResponse) => res.data);
 }
 /**
  * 获取授权信息
@@ -27,16 +17,7 @@ export function queryPermissions(params: object) {
   const url = '/oneid/user/permissions';
   return request
     .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data)
-    .catch((err) => {
-      const message = err?.response?.data?.message || '';
-      if (message && message !== 'token expires') {
-        ElMessage({
-          type: 'error',
-          message: err.message,
-        });
-      }
-    });;
+    .then((res: AxiosResponse) => res.data);
 }
 /**
  * 获取指定sig活跃度及排名

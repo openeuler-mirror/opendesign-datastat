@@ -14,6 +14,8 @@ import zhLang from 'element-plus/lib/locale/lang/zh-cn'; // 引入官方的中�
 import locale from './assets/locale/cn'; // 引入自己的
 import ElementPlus from 'element-plus';
 // import 'element-plus/dist/index.css';
+import 'element-plus/theme-chalk/el-message.css';
+import 'shared/styles/index.scss';
 
 // 国际化
 import i18n from './i18n';
