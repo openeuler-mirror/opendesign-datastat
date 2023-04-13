@@ -17,6 +17,21 @@ const language = computed(() => useCommon.language);
 
 // 组织贡献from
 const componentName = 'company';
+// 动态获取统计周期
+const statisticalNum = ref();
+const getStatistical = () => {
+  const param = {
+    community: 'openeuler',
+    contributeType: 'pr',
+    version: 'openEuler-22.03-LTS-SP1',
+  };
+  if (useCompany.switchValue) {
+    queryCompanyContribute(param).then((data: any) => {
+      statisticalNum.value = data.data;
+      console.log(statisticalNum.value);
+    });
+  }
+};
 const formOption = computed(() => {
   return [
     {
@@ -59,7 +74,7 @@ const formOptionSwitch = computed(() => {
       active: 'pr',
       list: [
         { label: t('home.prs'), value: 'pr' },
-        { label: t('from.LOC'), value: 'cloc' },
+        // { label: t('from.LOC'), value: 'cloc' },
       ],
     },
     {
@@ -76,7 +91,7 @@ const formOptionSwitch = computed(() => {
         { label: 'openEuler 20.03 LTS SP1', value: 'openEuler-20.03-LTS-SP1' },
         { label: 'openEuler 20.09', value: 'openEuler-20.09' },
         { label: 'openEuler 20.03 LTS', value: 'openEuler-20.03-LTS' },
-        // { label: t('from.all'), value: 'all' },
+        { label: t('from.all'), value: 'all' },
       ],
     },
     {
@@ -189,7 +204,7 @@ const getConfig = (val: any) => {
 };
 watch(
   () => useCompany.switchValue,
-  () => getConfig(useCompany.switchValue),
+  () => [getConfig(useCompany.switchValue), getStatistical()],
   { immediate: true }
 );
 </script>
