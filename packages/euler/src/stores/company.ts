@@ -5,7 +5,6 @@ import { sortExp } from 'shared/utils/helper';
 import { IObject, companyTypes } from 'shared/@types/interface';
 import { queryCompanyContribute } from 'shared/api/index';
 import { ceil } from 'lodash-es';
-
 interface layoutStateTypes {
   rawData: IObject;
   companyData: IObject;
@@ -16,6 +15,7 @@ interface layoutStateTypes {
   companyMaxNum: number;
   companyForm: IObject;
   switchValue: boolean;
+  defaultNum: any;
 }
 
 export const useCompanyStore = defineStore('company', {
@@ -33,11 +33,13 @@ export const useCompanyStore = defineStore('company', {
     companyMaxNum: 0,
     // 筛选参数
     switchValue: true,
+    // 默认选中值
+    defaultNum: '',
     companyForm: {
       contributeType: 'pr',
       timeRange: 'lastonemonth',
       displayRange: '10',
-      version: 'openEuler-22.03-LTS-SP1',
+      version: '',
     },
   }),
   actions: {

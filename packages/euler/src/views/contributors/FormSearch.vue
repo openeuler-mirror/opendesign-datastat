@@ -5,7 +5,7 @@ import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
 import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
-import { queryCompanyContribute } from 'shared/api/index';
+import { queryVersions } from 'shared/api/index';
 import TheForm from '@/components/TheForm.vue';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
@@ -18,18 +18,29 @@ const language = computed(() => useCommon.language);
 // 组织贡献from
 const componentName = 'company';
 // 动态获取统计周期
-const statisticalNum = ref();
+const statisticalNum = ref<any>([]);
 const getStatistical = () => {
   const param = {
     community: 'openeuler',
-    contributeType: 'pr',
-    version: 'openEuler-22.03-LTS-SP1',
   };
   if (useCompany.switchValue) {
-    queryCompanyContribute(param).then((data: any) => {
-      statisticalNum.value = data.data;
-      console.log(statisticalNum.value);
+    queryVersions(param).then((data) => {
+      const res = data.data;
+      res.map((item: any) => {
+        return statisticalNum.value.push({
+          label: item,
+          value: item,
+        });
+      });
+      // eslint-disable-next-line prefer-destructuring
+      useCompany.defaultNum = res[0];
+      statisticalNum.value.push({
+        label: computed(() => t('from.all')),
+        value: 'all',
+      });
     });
+  } else {
+    statisticalNum.value = [];
   }
 };
 const formOption = computed(() => {
@@ -80,19 +91,7 @@ const formOptionSwitch = computed(() => {
     {
       label: t('from.timeRange'),
       id: 'version',
-      list: [
-        { label: 'openEuler 22.03 LTS SP1', value: 'openEuler-22.03-LTS-SP1' },
-        { label: 'openEuler 22.09', value: 'openEuler-22.09' },
-        { label: 'openEuler 22.03 LTS', value: 'openEuler-22.03-LTS' },
-        { label: 'openEuler 20.03 LTS SP3', value: 'openEuler-20.03-LTS-SP3' },
-        { label: 'openEuler 21.09', value: 'openEuler-21.09' },
-        { label: 'openEuler 20.03 LTS SP2', value: 'openEuler-20.03-LTS-SP2' },
-        { label: 'openEuler 21.03', value: 'openEuler-21.03' },
-        { label: 'openEuler 20.03 LTS SP1', value: 'openEuler-20.03-LTS-SP1' },
-        { label: 'openEuler 20.09', value: 'openEuler-20.09' },
-        { label: 'openEuler 20.03 LTS', value: 'openEuler-20.03-LTS' },
-        { label: t('from.all'), value: 'all' },
-      ],
+      list: statisticalNum.value,
     },
     {
       label: t('from.displayRange'),
@@ -181,19 +180,38 @@ const getContributeInfo = (item: IObject) => {
 };
 
 // onMounted(() => {
-//   useCompany.getCompanyData();
+//   getStatistical();
 // });
 const isMobile: boolean = testIsPhone();
 const formOptionAll = ref<any>([]);
 const getConfig = (val: any) => {
+  const param = {
+    community: 'openeuler',
+  };
   if (val) {
-    formOptionAll.value.value = formOptionSwitch;
-    useCompany.companyForm.contributeType = 'pr';
-    useCompany.companyForm.version = 'openEuler-22.03-LTS-SP1';
-    useCompany.companyForm.timeRange = '';
-    useCompany.companyForm.displayRange = '10';
-    useCompany.getCompanyData();
+    queryVersions(param).then((data) => {
+      const res = data.data;
+      res.map((item: any) => {
+        return statisticalNum.value.push({
+          label: item,
+          value: item,
+        });
+      });
+      // eslint-disable-next-line prefer-destructuring
+      useCompany.defaultNum = res[0];
+      statisticalNum.value.push({
+        label: computed(() => t('from.all')),
+        value: 'all',
+      });
+      formOptionAll.value.value = formOptionSwitch;
+      useCompany.companyForm.contributeType = 'pr';
+      useCompany.companyForm.version = useCompany.defaultNum;
+      useCompany.companyForm.timeRange = '';
+      useCompany.companyForm.displayRange = '10';
+      useCompany.getCompanyData();
+    });
   } else {
+    statisticalNum.value = [];
     formOptionAll.value.value = formOption;
     useCompany.companyForm.contributeType = 'pr';
     useCompany.companyForm.timeRange = 'lastonemonth';
@@ -202,9 +220,10 @@ const getConfig = (val: any) => {
     useCompany.getCompanyData();
   }
 };
+
 watch(
   () => useCompany.switchValue,
-  () => [getConfig(useCompany.switchValue), getStatistical()],
+  () => getConfig(useCompany.switchValue),
   { immediate: true }
 );
 </script>
