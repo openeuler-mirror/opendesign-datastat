@@ -21,39 +21,8 @@ const progressFormat = (item: number) => {
 // 格式化统计周期文字
 const timeRangeText = ref('');
 const switchTime = () => {
-  if (useCompany.switchValue) {
-    switch (useCompany.companyForm.version) {
-      case 'openEuler-22.03-LTS-SP1':
-        timeRangeText.value = 'openEuler 22.03 LTS SP1';
-        break;
-      case 'openEuler-22.09':
-        timeRangeText.value = 'openEuler 22.09';
-        break;
-      case 'openEuler-22.03-LTS':
-        timeRangeText.value = 'openEuler 22.03 LTS';
-        break;
-      case 'openEuler-20.03-LTS-SP3':
-        timeRangeText.value = 'openEuler 20.03 LTS SP3';
-        break;
-      case 'openEuler-21.09':
-        timeRangeText.value = 'openEuler 21.09';
-        break;
-      case 'openEuler-20.03-LTS-SP2':
-        timeRangeText.value = 'openEuler 20.03 LTS SP2';
-        break;
-      case 'openEuler-21.03':
-        timeRangeText.value = 'openEuler 21.03';
-        break;
-      case 'openEuler-20.03-LTS-SP1':
-        timeRangeText.value = 'openEuler 20.03 LTS SP1';
-        break;
-      case 'openEuler-20.09':
-        timeRangeText.value = 'openEuler 20.09';
-        break;
-      case 'openEuler-20.03-LTS':
-        timeRangeText.value = 'openEuler 20.03 LTS';
-        break;
-    }
+  if (useCompany.switchValue && useCompany.companyForm.version !== 'all') {
+    timeRangeText.value = useCompany.companyForm.version;
   } else {
     switch (useCompany.companyForm.timeRange) {
       case 'lastonemonth':
