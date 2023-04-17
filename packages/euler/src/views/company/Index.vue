@@ -91,23 +91,23 @@ const param = ref({
 });
 const getTreeSearchValue = () => {
   queryCompanySigDetails(param.value).then((data) => {
-    treeData.value = treeProcessing(data?.data || []);
     const firstTree: any = [];
     const secondTree: any = [];
-    treeData.value.sigs.map((item: IObject) => {
-      if (item.group !== 'null') {
+    treeData.value = data?.data;
+    treeData.value.map((item: any) => {
+      if (item.feature !== 'null') {
         firstTree.push({
           key: '',
           label: item.sig,
-          value: item.D0,
-          group: item.group,
+          value: item.user,
+          group: item.feature,
         });
 
         secondTree.push({
           key: '',
           label: item.sig,
-          value: item.PR_Merged,
-          group: item.group,
+          value: item.contribute,
+          group: item.feature,
         });
       }
     });
@@ -140,7 +140,7 @@ const getTreeSearchValue = () => {
         const findone = pre.find((item: any) => item.group === next.group);
         if (findone) {
           findone.num += next.value;
-        } else if (next.group !== '') {
+        } else if (next.group !== '' && next.group) {
           pre.push({
             group: next.group,
             num: next.value,
@@ -193,7 +193,7 @@ watch(
 );
 const getallData = () => {
   getDrownData();
-  getSigsData();
+  // getSigsData();
   getoechartTreeValue();
   getContributeInfo();
   getTreeSearchValue();
@@ -479,7 +479,7 @@ const goToUser = (data: IObject) => {
               </div>
             </div>
             <div class="firstsmalltitle">{{ t('Numbercontributors') }}</div>
-            <div v-if="treeData.sigs?.length" class="firstTreemap">
+            <div v-if="treeData.length" class="firstTreemap">
               <o-echart-treemap
                 id="firstTreemap"
                 :value="(oechartTreeValue as any)"
@@ -489,10 +489,7 @@ const goToUser = (data: IObject) => {
             </div>
             <div v-else><o-no-data-image></o-no-data-image></div>
             <div class="smalltitle">{{ t('Commitcontribution') }}</div>
-            <div
-              v-if="sumPrMerged !== 0 && treeData.sigs?.length"
-              class="secondTreemap"
-            >
+            <div v-if="sumPrMerged !== 0" class="secondTreemap">
               <o-echart-treemap
                 id="secondTreemap"
                 :value="(oechartSecondTreeValue as any)"
