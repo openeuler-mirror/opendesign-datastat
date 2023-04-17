@@ -6,6 +6,7 @@ import { testIsPhone } from './helper';
 import { AuthenticationClient } from 'authing-js-sdk';
 const LOGIN_KEYS = {
   USER_TOKEN: '_U_T_',
+  USER_INFO: '_U_I_',
 };
 
 function setCookie(cname: string, cvalue: string, isDelete?: boolean) {
@@ -14,6 +15,34 @@ function setCookie(cname: string, cvalue: string, isDelete?: boolean) {
   const expires = `${deleteStr}path=/; domain=${domain}`;
   document.cookie = `${cname}=${cvalue}; ${expires}`;
 }
+const setSessionInfo = (data: any) => {
+  const { username, photo } = data || {};
+  if (username && photo) {
+    sessionStorage.setItem(
+      LOGIN_KEYS.USER_INFO,
+      JSON.stringify({ username, photo })
+    );
+  }
+};
+const getSessionInfo = () => {
+  let username = '';
+  let photo = '';
+  try {
+    const info = sessionStorage.getItem(LOGIN_KEYS.USER_INFO);
+    if (info) {
+      const obj = JSON.parse(info) || {};
+      username = obj.username || '';
+      photo = obj.photo || '';
+    }
+  } catch (error) {}
+  return {
+    username,
+    photo,
+  };
+};
+const removeSessionInfo = () => {
+  sessionStorage.removeItem(LOGIN_KEYS.USER_INFO);
+};
 function getCookie(cname: string) {
   const name = `${cname}=`;
   const ca = document.cookie.split(';');
@@ -186,8 +215,10 @@ export function refreshInfo(community: string) {
     queryCourse({ community }).then((res) => {
       const { data } = res;
       const { guardAuthClient } = useStoreData();
+      guardAuthClient.value = getSessionInfo();
       if (Object.prototype.toString.call(data) === '[object Object]') {
         guardAuthClient.value = data;
+        setSessionInfo(data);
       }
     });
     queryPermissions({ community }).then((res) => {
@@ -200,6 +231,8 @@ export function refreshInfo(community: string) {
         guardData.value = data;
       }
     });
+  } else {
+    removeSessionInfo();
   }
 }
 
