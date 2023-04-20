@@ -307,7 +307,7 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: end;
     align-items: center;
-    padding-right: 0px;
+    // padding-right: 0px;
     transition: all 0.3s ease-in-out;
     span {
       padding-right: 8px;
