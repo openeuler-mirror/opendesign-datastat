@@ -305,12 +305,12 @@ const goToCompany = (data: IObject) => {
     color: #fff;
     height: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: end; 
     align-items: center;
     // padding-right: 0px;
     transition: all 0.3s ease-in-out;
     span {
-      padding-right: 8px;
+      padding-right: 1rem;
     }
   }
   .val {
