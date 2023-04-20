@@ -242,7 +242,7 @@ const goToCompany = (data: IObject) => {
       font-size: 12px;
       position: relative;
       display: flex;
-      align-items: end;
+      align-items: flex-end;
       min-width: 8px;
       &::after {
         position: absolute;
@@ -305,7 +305,7 @@ const goToCompany = (data: IObject) => {
     color: #fff;
     height: 100%;
     display: flex;
-    justify-content: end; 
+    justify-content: flex-end;
     align-items: center;
     // padding-right: 0px;
     transition: all 0.3s ease-in-out;
