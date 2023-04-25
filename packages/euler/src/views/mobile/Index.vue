@@ -15,7 +15,11 @@ import { hasPermission, hasPermissions } from 'shared/utils/login';
 import TheForm from '@/components/TheForm.vue';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import MenberAndGroupRelationship from './current/MenberAndGroupRelationship.vue';
-import { formatNumber, toThousands } from 'shared/utils/helper';
+import {
+  formatNumber,
+  toThousands,
+  percentageTotal,
+} from 'shared/utils/helper';
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/openeuler.png';
@@ -336,10 +340,29 @@ const goToUser = (data: IObject) => {
                   <span v-if="progressFormat(item.contribute) > 80">
                     {{ toThousands(item.contribute) }}</span
                   >
+                  <span
+                    v-if="
+                      progressFormat(item.contribute) > 80 &&
+                      hasPermission('companyread_all')
+                    "
+                    >{{
+                      percentageTotal(item.contribute, useCompany.total)
+                    }}</span
+                  >
                 </div>
                 <span v-if="progressFormat(item.contribute) < 80" class="val">{{
                   toThousands(item.contribute)
                 }}</span>
+                <span
+                  v-if="
+                    progressFormat(item.contribute) < 80 &&
+                    hasPermission('companyread_all')
+                  "
+                  class="val"
+                  >{{
+                    percentageTotal(item.contribute, useCompany.total)
+                  }}</span
+                >
               </div>
             </li>
           </ul>
@@ -768,10 +791,13 @@ const goToUser = (data: IObject) => {
     color: #fff;
     height: 100%;
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
+    justify-content: flex-end;
     align-items: center;
-    padding-right: 8px;
     transition: all 0.3s ease-in;
+    span {
+      padding-right: 8px;
+    }
   }
   .val {
     color: #000;
