@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
-import { formatNumber } from 'shared/utils/helper';
+import { formatNumber, percentageTotal } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
 import { hasPermission, hasPermissions } from 'shared/utils/login';
@@ -187,9 +187,13 @@ const goToCompany = (data: IObject) => {
               </p>
               <span class="num"
                 >{{ item.contribute }}
-                <!-- <span class="percentage">{{
-                  percentage(item.contribute)
-                }}</span> -->
+                <span
+                  v-if="hasPermission('companyread_all')"
+                  class="percentage"
+                  >{{
+                    percentageTotal(item.contribute, useCompany.total)
+                  }}</span
+                >
               </span>
             </div>
           </template>
@@ -200,13 +204,28 @@ const goToCompany = (data: IObject) => {
                 width: progressFormat(item.contribute) + '%',
               }"
             >
-              <span v-if="progressFormat(item.contribute) > 80">{{
-                formatNumber(item.contribute)
-              }}</span>
+              <span v-if="progressFormat(item.contribute) > 80"
+                >{{ formatNumber(item.contribute) }}
+              </span>
+              <span
+                v-if="
+                  progressFormat(item.contribute) > 80 &&
+                  hasPermission('companyread_all')
+                "
+                >{{ percentageTotal(item.contribute, useCompany.total) }}</span
+              >
             </div>
-            <span v-if="progressFormat(item.contribute) < 80" class="val">{{
-              formatNumber(item.contribute)
-            }}</span>
+            <span v-if="progressFormat(item.contribute) < 80" class="val"
+              >{{ formatNumber(item.contribute) }}
+            </span>
+            <span
+              v-if="
+                progressFormat(item.contribute) < 80 &&
+                hasPermission('companyread_all')
+              "
+              class="val"
+              >{{ percentageTotal(item.contribute, useCompany.total) }}</span
+            >
           </div>
         </el-tooltip>
       </li>
