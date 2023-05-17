@@ -89,7 +89,7 @@ export default {
     privacyLink: 'https://opengauss.org/zh/privacyPolicy.html',
     legal: '法律声明',
     legalLink: 'https://opengauss.org/zh/legal.html',
-    copyright: '版权所有 © openGauss 2022 保留一切权利',
+    copyright: '版权所有 © openGauss 2023 保留一切权利',
   },
   about: {
     explain: '数据指标解释 ',

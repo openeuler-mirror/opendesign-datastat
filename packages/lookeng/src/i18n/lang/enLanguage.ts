@@ -38,7 +38,7 @@ export default {
     privacyLink: 'https://openlookeng.io/privacypolicy.html',
     legal: 'Legal Notice',
     legalLink: 'https://openlookeng.io/legalnotice.html',
-    copyright: 'Copyright © 2022 openEuler. All rights reserved.',
+    copyright: 'Copyright © 2023 openEuler. All rights reserved.',
   },
   about: {
     explain: 'Data Indicator Interpretation ',
