@@ -32,6 +32,7 @@ const onSwiper = (swiper: any) => {
   swiperRef.value = swiper;
 };
 const onSlideChange = (swiper: any) => {
+  useCommon.isBlackHeader = swiper.activeIndex < 2;
   useCommon.swiperIndex = swiper.activeIndex;
   useCommon.moNav = swiper.activeIndex;
 };
@@ -96,7 +97,7 @@ const searchStsate = (item: boolean) => {
 
 // footerinfo
 const modules = [Pagination];
-const isblack = computed(() => (useCommon.swiperIndex < 2 ? true : false));
+const isblack = computed(() => useCommon.isBlackHeader);
 
 const contributeType = ref('');
 const switchType = () => {
