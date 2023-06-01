@@ -8,7 +8,8 @@ const useScroll = (element: string) => {
   const isScrollUp = ref(false);
   const handleScroll = (e: any) => {
     if (e.target.closest('.el-select-dropdown')) return;
-    const sTop = document.body.scrollTop + document.documentElement.scrollTop;
+
+    const sTop = document.body.scrollTop + e.getBoundingClientRect().top;
     if (element === 'up') {
       if (sTop === 0) {
         if (e.wheelDelta || e.detail) {
