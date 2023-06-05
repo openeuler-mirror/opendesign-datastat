@@ -99,7 +99,7 @@ locale.value = localStorage.getItem('lang') || 'zh';
     width: 340px;
     text-align: center;
     .atom-pc {
-      width: 190px;
+      height: 48px;
     }
     .text {
       font-size: 12px;

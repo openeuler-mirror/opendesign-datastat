@@ -87,31 +87,8 @@ const btnInfo = () => {
 };
 </script>
 <template>
-  <!-- <o-icon class="icon" @click="scrollToTop"><scroll-top></scroll-top></o-icon> -->
-  <!-- <div
-      v-for="(item, index) in data"
-      :key="item"
-      class="line"
-      :class="index == 1 || index == 0 ? 'first-line' : ''"
-    >
-      <div class="item">
-        <div
-          class="circle"
-          :class="item === selectId ? 'selected-circle' : ''"
-        ></div>
-        <a :title="t(item)" class="label" @click="selectAnchor(item)">{{
-          t(item)
-        }}</a>
-      </div>
-    </div>
-    <div class="box">
-      <div class="box-show" @click="btnInfo">
-        <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
-      </div>
-    </div>
-  </div> -->
   <div class="md-anchor" :style="{ top }">
-    <a
+    <div
       v-for="(item, index) in data"
       :key="index"
       :href="`#${item}`"
@@ -121,17 +98,7 @@ const btnInfo = () => {
       <div class="anchor-link-inner" @click="selectAnchor(item)">
         {{ t(item) }}
       </div>
-    </a>
-    <!-- <div class="box">
-      <div class="box-show" @click="btnInfo">
-        <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
-      </div>
     </div>
-    <div class="box-down">
-      <div class="box-show" @click="scrollToTop">
-        <div class="title"><sapn>回顶</sapn><sapn>到部</sapn></div>
-      </div>
-    </div> -->
   </div>
   <div class="box">
     <div class="box-show" @click="btnInfo">
@@ -145,58 +112,6 @@ const btnInfo = () => {
   </div>
 </template>
 <style lang="scss" scoped>
-// @media screen and (max-width: 1700px) {
-//   .anchor {
-//     display: none;
-//   }
-// }
-// .anchor {
-//   position: fixed;
-//   width: 200px;
-//   .icon {
-//     font-size: 34px;
-//     cursor: pointer;
-//   }
-//   .line {
-//     border-left: 2px solid #bfbfbf;
-//     margin-left: 16px;
-//     position: relative;
-//     display: flex;
-//     height: 68px;
-//     .item {
-//       position: absolute;
-//       bottom: -3px;
-//       left: -7px;
-//       display: flex;
-
-//       align-items: flex-start;
-//       .circle {
-//         width: 12px;
-//         height: 12px;
-//         border: 2px solid #bfbfbf;
-//         border-radius: 50%;
-//         display: inline-block;
-//         background-color: #ffffff;
-//       }
-//       .selected-circle {
-//         border-color: #002fa7;
-//       }
-//       .label {
-//         font-size: 16px;
-//         color: #000;
-//         margin-left: 8px;
-//         // overflow: hidden;
-//         // white-space: nowrap;
-//         // text-overflow: ellipsis;
-//         max-width: 180px;
-//         cursor: pointer;
-//       }
-//     }
-//   }
-//   .first-line {
-//     height: 45px;
-//   }
-// }
 .box {
   // margin-left: 8px;
   height: 48px;

@@ -24,7 +24,7 @@ import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/openeuler.png';
 import bg_mo from '@/assets/bg_mo.png';
-import atomLogo from '@/assets/atom.png';
+import atomLogo from '@/assets/atom-logo.svg';
 import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.vue';
 import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialGroupRelationship.vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -717,7 +717,7 @@ const goToUser = (data: IObject) => {
         text-align: center;
         margin-bottom: 60px;
         img {
-          height: 40px;
+          height: 38px;
         }
         p {
           font-size: 12px;
