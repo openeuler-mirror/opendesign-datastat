@@ -113,7 +113,7 @@ const btnInfo = () => {
     </div>
   </div> -->
   <div class="md-anchor" :style="{ top }">
-    <a
+    <div
       v-for="(item, index) in data"
       :key="index"
       :href="`#${item}`"
@@ -123,17 +123,7 @@ const btnInfo = () => {
       <div class="anchor-link-inner" @click="selectAnchor(item)">
         {{ t(item) }}
       </div>
-    </a>
-    <!-- <div class="box">
-      <div class="box-show" @click="btnInfo">
-        <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
-      </div>
     </div>
-    <div class="box-down">
-      <div class="box-show" @click="scrollToTop">
-        <div class="title"><sapn>回顶</sapn><sapn>到部</sapn></div>
-      </div>
-    </div> -->
   </div>
   <div class="box" >
     <div class="box-show" @click="btnInfo">
