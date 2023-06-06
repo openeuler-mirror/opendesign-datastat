@@ -7,7 +7,7 @@ import { useCommonStore } from '@/stores/common';
 import logo from '@/assets/datastat.png';
 import logoZh from '@/assets/datastat-zh.png';
 import communityLogo from '@/assets/openeuler-logo.png';
-import atomLogo from '@/assets/atom-pc.png';
+import atomLogo from '@/assets/atom-pc.svg';
 
 const { t, locale } = useI18n();
 const useCommon = useCommonStore();
