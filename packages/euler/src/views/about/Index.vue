@@ -18,7 +18,7 @@ const dataList = [
       '参与了社区开源项目的开发者。包括在开源社区代码仓库参与如下贡献的开发者：star、watch、fork、issue提交、代码提交、评论等贡献',
   },
   {
-    label: '单位会员 Organization Member',
+    label: '单位成员 Organization Member',
     value: '包括签署了CLA的组织等',
   },
   {
@@ -137,9 +137,9 @@ const dataListEN = [
               target="_blank"
               rel="noopener noreferrer"
               >https://www.openeuler.org</a
-            >上关于其会员或其会员发布的相关信息（包括但不限于用户名称、公司名称、
-            联系人及联络信息，相关图片、视讯等）的信息均是由会员自行提供，
-            会员依法应对其提供的任何信息承担全部责任。 任何企业或个人认为<a
+            >上关于其成员或其成员发布的相关信息（包括但不限于用户名称、公司名称、
+            联系人及联络信息，相关图片、视讯等）的信息均是由成员自行提供，
+            成员依法应对其提供的任何信息承担全部责任。 任何企业或个人认为<a
               href="https://www.openeuler.org"
               target="_blank"
               rel="noopener noreferrer"
@@ -149,7 +149,7 @@ const dataListEN = [
               target="_blank"
               rel="noopener noreferrer"
               >https://www.openeuler.org</a
-            >会员发布的商品信息）可能涉嫌侵犯其合法权益，应该及时向openEuler社区<a
+            >成员发布的商品信息）可能涉嫌侵犯其合法权益，应该及时向openEuler社区<a
               href="mailto:contact@openeuler.sh"
               >contact@openeuler.sh</a
             >提出书面权利通知，并提供身份证明、权属证明、具体链接（URL）及详细侵权情况证明。
