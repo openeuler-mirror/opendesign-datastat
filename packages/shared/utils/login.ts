@@ -148,13 +148,6 @@ export function refreshInfo(community: string) {
   }
 }
 
-// export function hasPermission(per: string) {
-//   const { guardAuthClient } = useStoreData();
-//   if (Array.isArray(guardAuthClient?.value?.permissions)) {
-//     return guardAuthClient.value.permissions.includes(per);
-//   }
-//   return false;
-// }
 export function hasPermission(per: string) {
   const { guardData } = useStoreData();
   if (Array.isArray(guardData?.value?.permissions)) {

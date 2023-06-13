@@ -51,9 +51,6 @@ export const useCommonStore = defineStore('common', {
         const res = await queryAll('opengauss');
         if (res.code === 200) {
           this.allData = res.data;
-          // if (res.update_at) {
-          //   [this.time] = res.update_at.split('T');
-          // }
           this.time = getNowFormatDate();
         }
       } catch (error) {

@@ -55,18 +55,6 @@ const goMobileHome = () => {
   useCommon.isBlackHeader = true;
 };
 
-// const photoSrc = computed(() => {
-//   // if (photo?.includes("no_portrait.png")) {
-//   //   photo = Bitmap;
-//   // }
-//   // if (guardAuthClient.value?.photo) {
-//   //   return guardAuthClient.value.photo?.includes("no_portrait.png")
-//   //     ? Bitmap
-//   //     : // : guardAuthClient.value.photo;
-//   //       Bitmap;
-//   // }
-//   return guardAuthClient.value.photo;
-// });
 </script>
 
 <template>

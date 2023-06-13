@@ -96,34 +96,6 @@ export const routes = [
       localStorage.setItem('lang', 'en');
     },
   },
-  // {
-  //   path: '/overview',
-  //   name: 'overview',
-  //   component: () => {
-  //     return import('@/views/overview/Index.vue');
-  //   },
-  // },
-  // {
-  //   path: '/detail',
-  //   name: 'detail',
-  //   component: () => {
-  //     return import('@/views/contributors/Index.vue');
-  //   },
-  // },
-  // {
-  //   path: '/mobile',
-  //   name: 'mobile',
-  //   component: () => {
-  //     return import('@/views/mobile/Index.vue');
-  //   },
-  // },
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   component: () => {
-  //     return import('@/views/about/Index.vue');
-  //   },
-  // },
 ];
 
 export const router = createRouter({
