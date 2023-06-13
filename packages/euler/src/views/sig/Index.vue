@@ -277,7 +277,7 @@ const showDropdown = (e: any) => {
           </div>
         </div>
         <div class="main-right">
-          <div v-if="hasPermission('SIGread')" >
+          <div v-if="hasPermission('SIGread')">
             <visual-index
               :sencondTitle="sencondTitle"
               :drownData="drownData"
@@ -362,6 +362,7 @@ const showDropdown = (e: any) => {
   grid-template-columns: 28% 72%;
   &-left {
     padding-right: 24px;
+
     .edropdown {
       .btnc {
         background-image: url("@/assets/down.png");

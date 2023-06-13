@@ -43,8 +43,6 @@ const pendingPool: Map<string, any> = new Map();
  */
 const requestInterceptorId = request.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // 存储请求信息
-    // request.config = Object.assign({}, config);
     // 定义取消请求
     config.cancelToken = new axios.CancelToken((cancelFn) => {
       if(!config.url) {
@@ -181,7 +179,6 @@ request.clearPendingPool = clearPendingPool;
 export {
   intactRequest,
   request,
-  // interface
   AxiosResponse,
   RequestConfig,
   RequestInstance,

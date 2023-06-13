@@ -111,19 +111,6 @@ const jumpToUserZone = () => {
     "_blank"
   );
 };
-
-// const photoSrc = computed(() => {
-//   let { photo = "" } = getUserAuth();
-//   if (photo?.includes("no_portrait.png")) {
-//     photo = Bitmap;
-//   }
-//   if (guardAuthClient.value?.photo) {
-//     return guardAuthClient.value.photo?.includes("no_portrait.png")
-//       ? Bitmap
-//       : guardAuthClient.value.photo;
-//   }
-//   return photo || Bitmap;
-// });
 </script>
 
 <template>

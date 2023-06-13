@@ -491,8 +491,6 @@ function initSensor() {
   });
 
   // 给category增加两个值
-  // sensors.appendProfile({catrgory: ['test_start_time', 'test_end_time']});
-  // sensors.appendProfile({catrgory: 'test_exist_time'});
   sensors.quick('autoTrack', window['sensorsCustomBuriedData']); //用于采集 $pageview 事件。\
 }
 function startSensor(num) {

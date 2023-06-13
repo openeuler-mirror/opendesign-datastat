@@ -2,7 +2,6 @@ import 'shared/allow_sensor/sensorsdata.min.js';
 import '@/allow_sensor/sensors.js';
 import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
-// import '@/shared/ele-reset.ts';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
@@ -11,7 +10,6 @@ import OIcon from 'shared/components/OIcon.vue';
 import zhLang from 'element-plus/lib/locale/lang/zh-cn'; // 引入官方的中文国际化
 import locale from './assets/locale/cn'; // 引入自己的
 import ElementPlus from 'element-plus';
-// import 'element-plus/dist/index.css';
 
 // 国际化
 import i18n from './i18n';
