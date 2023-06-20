@@ -8,7 +8,7 @@ RUN pnpm install
 
 RUN pnpm build:gauss
 
-FROM nginx:1.20.0
+FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.22.0-22.03-lts
 
 
 COPY --from=Builder /home/opengauss-datastat/web/dist/opengauss /usr/share/nginx/html/
