@@ -37,7 +37,7 @@ const switchTime = () => {
 };
 switchTime();
 watch(
-  () =>[ useCompany.companyForm.timeRange,useCommon.language],
+  () => [useCompany.companyForm.timeRange, useCommon.language],
   () => {
     switchTime();
   }
@@ -59,7 +59,7 @@ const switchType = () => {
 };
 switchType();
 watch(
-  () => [useCompany.companyForm.contributeType,useCommon.language],
+  () => [useCompany.companyForm.contributeType, useCommon.language],
   () => {
     switchType();
   }
@@ -75,12 +75,10 @@ const goToCompany = (data: IObject) => {
     data.company_cn !== '个人贡献者' &&
     data.company_en !== 'independent'
   ) {
-    data;
     const routeData: any = router.resolve(
       `/${useCommon.language}/company/${data.company_cn}`
     );
     window.open(routeData.href, '_blank');
-  } else {
   }
 };
 </script>
@@ -161,11 +159,8 @@ const goToCompany = (data: IObject) => {
                     : item.company_en
                 }}
               </p>
-              <span class="num"
-                >{{ item.contribute }}
-                <!-- <span class="percentage">{{
-                  percentage(item.contribute)
-                }}</span> -->
+              <span class="num">
+                {{ item.contribute }}
               </span>
             </div>
           </template>
@@ -264,7 +259,6 @@ const goToCompany = (data: IObject) => {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        // cursor: pointer;
       }
     }
   }

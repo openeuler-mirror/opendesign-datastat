@@ -11,7 +11,6 @@ import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import { useCommonStore } from '@/stores/common';
 import { useRouter } from 'vue-router';
-import { hasPermission } from 'shared/utils/login';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
 const router = useRouter();
 const useCommon = useCommonStore();
@@ -136,8 +135,7 @@ const currentPage = ref(1);
 // 显示第几页
 const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  if (val?.isTrusted) {
-  } else {
+  if (!val?.isTrusted) {
     currentPage.value = val;
   }
 };
@@ -168,10 +166,6 @@ const getcontributeValue = (item: any) => {
 const goToUser = (data: IObject) => {
   const routeData: any = router.resolve({
     path: `/${useCommon.language}/user/${data}`,
-    // query: {
-    //   group: 'sig',
-    //   organization: props.sig,
-    // },
   });
   window.open(routeData.href, '_blank');
 };
@@ -303,8 +297,8 @@ const goToUser = (data: IObject) => {
     <div v-else><o-no-data-image></o-no-data-image></div>
     <div class="demo-pagination-block">
       <el-pagination
-        class="o-pagination"
         v-show="reallData.length > 10"
+        class="o-pagination"
         :current-page="currentPage"
         :page-size="10"
         background
@@ -316,24 +310,22 @@ const goToUser = (data: IObject) => {
           class="el-pagination__jump"
           style="cursor: pointer"
           @click="handleCurrentChange"
-          >{{ t("Goto") }}</span
+          >{{ t('Goto') }}</span
         >
       </el-pagination>
-      <span v-if="reallData.length > 10" class="el-pagination el-pagination__jump">{{
-        t("page")
-      }}</span>
+      <span
+        v-if="reallData.length > 10"
+        class="el-pagination el-pagination__jump"
+        >{{ t('page') }}</span
+      >
     </div>
   </div>
 </template>
 <style scoped lang="scss">
 @import '@/shared/styles/style.scss';
-// .theSecondForm {
-//   // padding-right: 24px;
-// }
 .ranking-list {
   display: grid;
   grid-template-columns: 100%;
-  // padding-right: 24px;
   :deep(.el-scrollbar__bar.is-horizontal) {
     height: 0px;
   }
@@ -433,7 +425,6 @@ const goToUser = (data: IObject) => {
 .usertypecolorbox {
   width: 12px;
   height: 12px;
-  // background: linear-gradient(var(--color));
   background: var(--color);
   border-radius: 50%;
   margin-right: 8px;

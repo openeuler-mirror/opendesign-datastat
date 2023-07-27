@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
-import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
 import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
@@ -16,9 +14,7 @@ import { useRouter } from 'vue-router';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
 const router = useRouter();
 const { t } = useI18n();
-const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
-const language = computed(() => useCommon.language);
 const props = defineProps({
   user: {
     type: String,
@@ -155,7 +151,6 @@ const querySearch = () => {
       item.sig_name.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
-    // filterReallData();
   } else {
     getMemberData();
   }
@@ -285,7 +280,7 @@ const goToCompany = (data: IObject) => {
       </div>
     </div>
   </div>
-   <div v-else><o-no-data-image></o-no-data-image></div>
+  <div v-else><o-no-data-image></o-no-data-image></div>
 </template>
 
 <style lang="scss" scoped>
@@ -433,7 +428,6 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
-    // min-width: 280px;
     .index {
       color: #9097a3;
     }

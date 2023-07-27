@@ -7,11 +7,9 @@ body{background: #F5F6F8;}
 
 .el-radio {
   border-radius: 0;
-  // margin-right: 12px;
   margin-right: 1px;
   border: 1px solid transparent;
   height: 28px;
-  // padding: 0 12px;
   padding:3px;
   :deep(.el-radio__label) {
     color: #555;

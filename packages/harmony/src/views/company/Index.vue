@@ -10,7 +10,7 @@ import {
   sigsProcessing,
   treeProcessing,
   processing,
-  toThousands
+  toThousands,
 } from 'shared/utils/helper';
 import {
   queryCompanySigDetails,
@@ -43,7 +43,9 @@ const getSencondTitle = (value?: string) => {
   const community = 'openeuler';
   queryCompanyName(community).then((data) => {
     allcompany.value = data?.data.openeuler || [];
-    allcompany.value.sort((a:any, b:any) => a.company_cn.localeCompare(b.company_cn));
+    allcompany.value.sort((a: any, b: any) =>
+      a.company_cn.localeCompare(b.company_cn)
+    );
     const name = value || route.params.name;
     const findOne: IObject =
       allcompany.value.find(
@@ -96,7 +98,7 @@ const getTreeSearchValue = () => {
     treeData.value = treeProcessing(data?.data || []);
     const firstTree: any = [];
     const secondTree: any = [];
-    treeData.value.sigs.map((item: IObject) => {
+    treeData.value.sigs.forEach((item: IObject) => {
       if (item.group !== 'null') {
         firstTree.push({
           key: '',
@@ -115,9 +117,9 @@ const getTreeSearchValue = () => {
     });
     oechartTreeValue.value = firstTree;
     oechartSecondTreeValue.value = secondTree;
-    sumPrMerged.value = eval(
-      secondTree.map((item: any) => (item.value += item.value)).join('+')
-    );
+    sumPrMerged.value = secondTree
+      .map((item: any) => (item.value += item.value))
+      .join('+');
     const colorArr = [
       '#002FA7',
       '#FEB32A',
@@ -392,7 +394,7 @@ const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
 };
-const showDropdown = (e:any) => {
+const showDropdown = (e: any) => {
   if (e) {
     let number = 0;
     reallData.value.forEach((item: any, index) => {
@@ -461,23 +463,31 @@ const showDropdown = (e:any) => {
           <div class="left-first">
             <div class="left-first-child">
               <span>{{ t('Mergerequest') }} PR</span>
-              <div class="left-first-child-data">{{ toThousands(mergeRequest) }}</div>
+              <div class="left-first-child-data">
+                {{ toThousands(mergeRequest) }}
+              </div>
             </div>
             <div class="left-first-child">
               <span title="Needs & Problems Issue"
                 >{{ t('NeedsProblems') }} Issue</span
               >
-              <div class="left-first-child-data">{{ toThousands(issueData)}}</div>
+              <div class="left-first-child-data">
+                {{ toThousands(issueData) }}
+              </div>
             </div>
             <div class="left-first-child">
               <span title="123">{{ t('review') }} Comment</span>
-              <div class="left-first-child-data">{{ toThousands(comment) }}</div>
+              <div class="left-first-child-data">
+                {{ toThousands(comment) }}
+              </div>
             </div>
             <div class="left-first-child">
               <span title="Number of contributors">{{
                 t('Numbercontributors')
               }}</span>
-              <div class="left-first-child-data">{{toThousands (contributors) }}</div>
+              <div class="left-first-child-data">
+                {{ toThousands(contributors) }}
+              </div>
             </div>
           </div>
 

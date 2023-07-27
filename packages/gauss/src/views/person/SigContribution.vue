@@ -155,7 +155,6 @@ const querySearch = () => {
       item.sig_name.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
-    // filterReallData();
   } else {
     getMemberData();
   }
@@ -285,7 +284,7 @@ const goToCompany = (data: IObject) => {
       </div>
     </div>
   </div>
-   <div v-else><o-no-data-image></o-no-data-image></div>
+  <div v-else><o-no-data-image></o-no-data-image></div>
 </template>
 
 <style lang="scss" scoped>
@@ -433,7 +432,6 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
-    // min-width: 280px;
     .index {
       color: #9097a3;
     }

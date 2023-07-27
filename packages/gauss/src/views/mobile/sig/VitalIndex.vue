@@ -95,7 +95,6 @@ const reallData = ref([] as IObject[]);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    //   align-items: center;
   }
 }
 .container {
@@ -104,8 +103,6 @@ const reallData = ref([] as IObject[]);
 }
 .main {
   display: flex;
-  // justify-content: center;
-  // align-items: center;
 }
 .rank {
   font-size: 12px;

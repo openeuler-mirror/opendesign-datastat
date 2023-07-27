@@ -96,14 +96,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
-import { useStaffStore } from '@/stores/staff';
-const useStaff = useStaffStore();
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
@@ -151,10 +149,6 @@ interface Form {
   score: number;
 }
 const goTo = (item: Form) => {
-  // useStaff.dialogFormVisible = true;
-  // useStaff.title = item.sig_names;
-  // useStaff.sigRank = item.rank;
-  // useStaff.sigContrubution = item.score;
   router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
 };
 </script>
@@ -227,7 +221,7 @@ const goTo = (item: Form) => {
 }
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // 宽度平均分成四等份
+  grid-template-columns: repeat(4, 1fr);
   /* 声明行间距和列间距 */
   grid-gap: 8px;
   margin-bottom: 16px;

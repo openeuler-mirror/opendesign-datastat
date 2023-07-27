@@ -157,10 +157,6 @@ const getcontributeValue = (item: any) => {
 const goToUser = (data: IObject) => {
   router.push({
     path: `/${useCommon.language}/mobile/user/${data}`,
-    // query: {
-    //   group: 'sig',
-    //   organization: props.sig,
-    // },
   });
 };
 </script>
@@ -189,10 +185,6 @@ const goToUser = (data: IObject) => {
         <span>{{ value.label }}</span>
       </div>
     </div>
-    <!-- <div class="leader">
-      <div class="leader-box">Leader</div>
-      <span>SIG Leader</span>
-    </div> -->
     <div class="ranking-table">
       <el-table
         v-loading="loading"
@@ -287,7 +279,6 @@ const goToUser = (data: IObject) => {
     display: flex;
     align-items: center;
     .num {
-      // width: 100px;
       text-align: left;
       color: #7D32EA;
     }
@@ -327,7 +318,6 @@ const goToUser = (data: IObject) => {
 .usertypecolorbox {
   width: 12px;
   height: 12px;
-  // background: linear-gradient(var(--color));
   background: var(--color);
   border-radius: 50%;
   margin-right: 8px;

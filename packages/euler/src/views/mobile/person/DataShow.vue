@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ t(timeTitle) }}{{ t("zhcontribut") }}
+        {{ t(timeTitle) }}{{ t('zhcontribut') }}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,7 +12,7 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-        {{ t(item.label) }}{{ t("zhcontribut") }}</el-dropdown-item
+          {{ t(item.label) }}{{ t('zhcontribut') }}</el-dropdown-item
         >
       </template>
     </el-dropdown>
@@ -31,13 +31,13 @@
       </div>
     </div>
     <div class="left-first-child">
-      <span >{{ t('review') }} Comment</span>
+      <span>{{ t('review') }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span >{{ t('SIGNumber') }}</span>
+      <span>{{ t('SIGNumber') }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>
@@ -46,9 +46,9 @@
 </template>
 <script setup lang="ts">
 import { toRefs, ref, onMounted, watch } from 'vue';
-import { queryUserSigContribute,queryUserContributeDetails } from 'shared/api';
+import { queryUserSigContribute, queryUserContributeDetails } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
-import { processing, toThousands } from 'shared/utils/helper';
+import { toThousands } from 'shared/utils/helper';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -65,10 +65,10 @@ const issueData = ref(0);
 const comment = ref(0);
 const contributors = ref(0);
 const timeRange = [
-  { label: "from.lastonemonth", value: "lastonemonth" },
-  { label: "from.lasthalfyear", value: "lasthalfyear" },
-  { label: "from.lastoneyear", value: "lastoneyear" },
-  { label: "from.all", value: "all" },
+  { label: 'from.lastonemonth', value: 'lastonemonth' },
+  { label: 'from.lasthalfyear', value: 'lasthalfyear' },
+  { label: 'from.lastoneyear', value: 'lastoneyear' },
+  { label: 'from.all', value: 'all' },
 ];
 const time = ref('');
 const getItemListData = (data: IObject[], template: string) => {
@@ -83,7 +83,6 @@ const getprlistData = () => {
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
-    // mergeRequest.value = getItemListData(value, "contribute");
     mergeRequest.value = value.totalCount;
   });
 };
@@ -92,12 +91,11 @@ const siglistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: "openeuler",
-    contributeType: "pr",
+    community: 'openeuler',
+    contributeType: 'pr',
   };
   queryUserSigContribute(query).then((data) => {
     const value = data?.data || [];
-    // mergeRequest.value = getItemListData(value, "contribute");
     contributors.value = value.length;
   });
 };
@@ -110,7 +108,6 @@ const getissuelistData = () => {
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
-    // issueData.value = getItemListData(value, "contribute");
     issueData.value = value.totalCount;
   });
 };
@@ -124,26 +121,13 @@ const getcommentlistData = () => {
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
-    // comment.value = getItemListData(value, 'contribute');
     comment.value = value.totalCount;
   });
 };
-// const getcontributeListData = () => {
-//   const query = {
-//     company: company.value,
-//     timeRange: time.value,
-//     community: 'openeuler',
-//   };
-//   queryCompanyUsers(query).then((data) => {
-//     const Data = processing(data?.data || []);
-//     contributors.value = Data.sigData['0'];
-//   });
-// };
 const getAllData = () => {
   getprlistData();
   getissuelistData();
   getcommentlistData();
-  // getcontributeListData();
   siglistData();
 };
 watch(
@@ -152,13 +136,6 @@ watch(
     getAllData();
   }
 );
-// watch(
-//   () => company.value,
-//   () => {
-//     time.value = 'all';
-//     timeTitle.value = '全部';
-//   }
-// );
 const timeTitle = ref('');
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
@@ -167,8 +144,7 @@ const clickDrownItem = (item: IObject) => {
 };
 onMounted(() => {
   time.value = 'all';
-  timeTitle.value = "from.all";
-  // getAllData();
+  timeTitle.value = 'from.all';
 });
 </script>
 <style scoped lang="scss">
@@ -205,7 +181,6 @@ onMounted(() => {
 }
 .main-left-title {
   display: flex;
-  // width: 160px;
   height: 24px;
   font-size: 16px;
   font-family: PingFangSC-Medium, PingFang SC;

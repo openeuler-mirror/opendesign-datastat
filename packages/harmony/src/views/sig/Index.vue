@@ -67,8 +67,6 @@ const getllData = () => {
 };
 onMounted(() => {
   getllData();
-
-
 });
 // 获取活力指数
 const sorceData = ref({} as IObject);

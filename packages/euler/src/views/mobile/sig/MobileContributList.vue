@@ -157,10 +157,6 @@ const getcontributeValue = (item: any) => {
 const goToUser = (data: IObject) => {
   router.push({
     path: `/${useCommon.language}/mobile/user/${data}`,
-    // query: {
-    //   group: 'sig',
-    //   organization: props.sig,
-    // },
   });
 };
 </script>
@@ -287,7 +283,6 @@ const goToUser = (data: IObject) => {
     display: flex;
     align-items: center;
     .num {
-      // width: 100px;
       text-align: left;
       color: #002fa7;
     }
@@ -327,7 +322,6 @@ const goToUser = (data: IObject) => {
 .usertypecolorbox {
   width: 12px;
   height: 12px;
-  // background: linear-gradient(var(--color));
   background: var(--color);
   border-radius: 50%;
   margin-right: 8px;

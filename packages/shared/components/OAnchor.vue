@@ -1,19 +1,17 @@
 <script setup lang="ts">
-// import OIcon from './OIcon.vue';
-// import scrollTop from '~icons/app/scroll-top';
-import { onMounted, onUnmounted, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { onMounted, onUnmounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps({
   // 产生滚动条的盒子ID， 默认为body
   id: {
     type: String,
-    default: "",
+    default: '',
   },
   data: {
     type: Array as () => string[],
     required: true,
-    default: () => ["companyContributor", "userContributor"],
+    default: () => ['companyContributor', 'userContributor'],
   },
   // 元素距离盒子顶部的校准值
   offsetValue: {
@@ -22,27 +20,29 @@ const props = defineProps({
   },
   top: {
     type: String,
-    default: "16rem",
+    default: '16rem',
   },
   right: {
     type: String,
-    default: "40px",
+    default: '40px',
   },
 });
 onMounted(() => {
   const body = props.id ? document.getElementById(props.id) : window;
-  body?.addEventListener("scroll", scroll);
+  body?.addEventListener('scroll', scroll);
 });
 
 onUnmounted(() => {
   const body = props.id ? document.getElementById(props.id) : window;
-  body?.removeEventListener("scroll", scroll);
+  body?.removeEventListener('scroll', scroll);
 });
 const { t } = useI18n();
 const scroll = () => {
   const body = document.getElementById(props.id);
   const scrollTop =
-    body?.scrollTop || document.documentElement.scrollTop || document.body.scrollTop;
+    body?.scrollTop ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop;
   const clientHeight =
     body?.clientHeight ||
     document.documentElement.clientHeight ||
@@ -64,10 +64,10 @@ const scroll = () => {
       pre = next.id;
     }
     return pre;
-  }, "");
+  }, '');
 };
-const selectId = ref("");
-selectId.value = props.data.slice(0, 1).shift() || "";
+const selectId = ref('');
+selectId.value = props.data.slice(0, 1).shift() || '';
 const selectAnchor = (id: string) => {
   const doc = document.getElementById(id);
   doc?.scrollIntoView();
@@ -81,8 +81,8 @@ const scrollToTop = () => {
 };
 const btnInfo = () => {
   window.open(
-    "https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0",
-    "_blank"
+    'https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0',
+    '_blank'
   );
 };
 </script>
@@ -113,13 +113,12 @@ const btnInfo = () => {
 </template>
 <style lang="scss" scoped>
 .box {
-  // margin-left: 8px;
   height: 48px;
   width: 48px;
   background: #ffffff;
   box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
   margin-top: 400px;
-  background-image: url("../../euler/src/assets/edit.png");
+  background-image: url('../../euler/src/assets/edit.png');
   background-repeat: no-repeat;
   background-position: 50%;
   position: fixed;
@@ -155,13 +154,12 @@ const btnInfo = () => {
   }
 }
 .box-down {
-  // margin-left: 8px;
   height: 48px;
   width: 48px;
   background: #ffffff;
   box-shadow: 0px 1px 5px 0px rgba(45, 47, 51, 0.1);
   margin-top: 4px;
-  background-image: url("../../euler/src/assets/download.png");
+  background-image: url('../../euler/src/assets/download.png');
   background-repeat: no-repeat;
   background-position: 50%;
   position: fixed;
@@ -198,7 +196,6 @@ const btnInfo = () => {
 }
 .md-anchor {
   position: fixed;
-  // right: calc(5%);
   right: 20px;
   max-width: 200px;
   z-index: 99;

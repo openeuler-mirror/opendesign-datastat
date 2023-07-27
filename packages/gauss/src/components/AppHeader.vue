@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useCommonStore } from "@/stores/common";
-import { openCommunityInfo } from "@/api/index";
-import { useI18n } from "vue-i18n";
-import ONav from "shared/components/ONav.vue";
-import { useRouter, useRoute } from "vue-router";
-import AppHeaderMobile from "./AppHeaderMobile.vue";
-import { IObject } from "shared/@types/interface";
-import { showGuard, logout, useStoreData, getUserAuth } from "shared/utils/login";
+import { ref, computed, watch } from 'vue';
+import { useCommonStore } from '@/stores/common';
+import { openCommunityInfo } from '@/api/index';
+import { useI18n } from 'vue-i18n';
+import ONav from 'shared/components/ONav.vue';
+import { useRouter, useRoute } from 'vue-router';
+import AppHeaderMobile from './AppHeaderMobile.vue';
+import { IObject } from 'shared/@types/interface';
+import {
+  showGuard,
+  logout,
+  useStoreData,
+  getUserAuth,
+} from 'shared/utils/login';
 
-import logoWhite from "@/assets/datastat.png";
-import logoWhiteZh from "@/assets/datastat-zh.png";
-import communityLogoWhite from "@/assets/opengauss-logo.png";
-import Bitmap from "@/assets/Bitmap.png";
-import chevronDown from "~icons/app/chevron-down";
-import { testIsPhone } from "shared/utils/helper";
-import LoadingArc from "./LoadingArc.vue";
+import logoWhite from '@/assets/datastat.png';
+import logoWhiteZh from '@/assets/datastat-zh.png';
+import communityLogoWhite from '@/assets/opengauss-logo.png';
+import Bitmap from '@/assets/Bitmap.png';
+import chevronDown from '~icons/app/chevron-down';
+import { testIsPhone } from 'shared/utils/helper';
+import LoadingArc from './LoadingArc.vue';
 
 const { token } = getUserAuth();
 const { guardAuthClient, isLoggingIn } = useStoreData();
@@ -28,16 +33,16 @@ const { t, locale } = useI18n();
 const navList = computed(() => {
   return [
     {
-      id: "overview",
-      label: t("nav.overview"),
-      zh: "zh_overview",
-      en: "en_overview",
+      id: 'overview',
+      label: t('nav.overview'),
+      zh: 'zh_overview',
+      en: 'en_overview',
     },
     {
-      id: "detail",
-      label: t("nav.contributors"),
-      zh: "zh_detail",
-      en: "en_detail",
+      id: 'detail',
+      label: t('nav.contributors'),
+      zh: 'zh_detail',
+      en: 'en_detail',
     },
   ];
 });
@@ -50,7 +55,7 @@ const isMobile = () => {
   const device = ref(true);
   if (testIsPhone()) {
     device.value = false;
-    const lang = language.value === "zh" ? "/zh/mobile" : "/en/mobile";
+    const lang = language.value === 'zh' ? '/zh/mobile' : '/en/mobile';
     if (!window.location.pathname.includes(lang)) {
       router.push(lang);
     }
@@ -61,23 +66,23 @@ isMobile();
 
 // 选择语言;
 const options = ref([
-  { value: "zh", label: "中文" },
-  { value: "en", label: "English" },
+  { value: 'zh', label: '中文' },
+  { value: 'en', label: 'English' },
 ]);
-const langAttr = ref<string>("中文");
+const langAttr = ref<string>('中文');
 // 选择语言
 const handleCommand = (command: IObject): void => {
   langAttr.value = command.label;
-  localStorage.setItem("lang", command.value);
+  localStorage.setItem('lang', command.value);
   locale.value = command.value;
   const { pathname } = window.location;
-  const newHref = pathname.split("/");
+  const newHref = pathname.split('/');
   newHref[1] = command.value;
   useCommon.setLanguage(command.value);
-  router.push(newHref.join("/"));
+  router.push(newHref.join('/'));
 };
 const goHome = () => {
-  const lang = language.value === "zh" ? "/zh/overview" : "/en/overview";
+  const lang = language.value === 'zh' ? '/zh/overview' : '/en/overview';
   router.push(lang);
 };
 
@@ -91,7 +96,8 @@ watch(
   }
 );
 const webSiteTitle = () => {
-  document.title = language.value === "zh" ? "openGauss 贡献看板" : "openGauss DATASTAT";
+  document.title =
+    language.value === 'zh' ? 'openGauss 贡献看板' : 'openGauss DATASTAT';
 };
 webSiteTitle();
 
@@ -101,14 +107,14 @@ watch(
     return route.path;
   },
   (path) => {
-    const p = path.split("/").slice(-1).toString();
-    isAbout.value = p === "about" ? true : false;
+    const p = path.split('/').slice(-1).toString();
+    isAbout.value = p === 'about' ? true : false;
   }
 );
 const jumpToUserZone = () => {
   window.open(
-    "https://jldibemigdfj.authing.cn/u?app_id=62679eab0b22b146d2ea0a3a",
-    "_blank"
+    'https://jldibemigdfj.authing.cn/u?app_id=62679eab0b22b146d2ea0a3a',
+    '_blank'
   );
 };
 </script>
@@ -126,7 +132,11 @@ const jumpToUserZone = () => {
         <span class="line"></span>
         <a
           target="_blank"
-          :href="language == 'zh' ? openCommunityInfo.link : openCommunityInfo.link_en"
+          :href="
+            language == 'zh'
+              ? openCommunityInfo.link
+              : openCommunityInfo.link_en
+          "
           ><img class="community-logo" :src="communityLogoWhite"
         /></a>
       </div>
@@ -134,7 +144,7 @@ const jumpToUserZone = () => {
       <div class="language">
         <el-dropdown popper-class="language-change" @command="handleCommand">
           <span class="el-dropdown-link">
-            {{ language == "zh" ? "中文" : "English" }}</span
+            {{ language == 'zh' ? '中文' : 'English' }}</span
           >
           <o-icon><chevron-down></chevron-down></o-icon>
           <template #dropdown>
@@ -150,54 +160,6 @@ const jumpToUserZone = () => {
           </template>
         </el-dropdown>
       </div>
-
-      <!-- <div class="opt-user">
-        <loading-arc v-if="isLoggingIn"></loading-arc>
-        <el-dropdown v-else-if="token">
-          <div class="el-dropdown-link">
-            <img
-              :src="photoSrc"
-              :alt="guardAuthClient.nickname || 'LogOut'"
-              class="img"
-            />
-          </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="jumpToUserZone()">{{
-                t('personalCenter')
-              }}</el-dropdown-item>
-              <el-dropdown-item @click="dialogVisible = true">{{
-                t('logout')
-              }}</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-        <div v-else class="login" @click="showGuard(openCommunityInfo.name)">
-          {{ t('login') }}
-        </div>
-      </div>
-      <el-dialog
-        v-model="dialogVisible"
-        :title="t('pleaseConfirm')"
-        width="30%"
-      >
-        <span>{{ t('titleConfirm') }}</span>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">{{
-              t('Cancel')
-            }}</el-button>
-            <el-button
-              type="primary"
-              @click="
-                dialogVisible = false;
-                logout(openCommunityInfo.name);
-              "
-              >{{ t('Confirm') }}</el-button
-            >
-          </span>
-        </template>
-      </el-dialog> -->
     </div>
   </div>
   <div v-else class="app-header-mo">

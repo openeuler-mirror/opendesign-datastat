@@ -1,6 +1,6 @@
 <template>
   <div class="main-menu">
-    <div class="Innovation">{{ t("repositoryTechnology") }}</div>
+    <div class="Innovation">{{ t('repositoryTechnology') }}</div>
     <el-row>
       <div v-for="value in getInnovationValue()" :key="value.feature">
         <div
@@ -18,51 +18,6 @@
             value.en_feature
           }}</span>
         </div>
-        <!-- <el-tooltip
-          :key="value.feature"
-          placement="bottom-end"
-          effect="light"
-          :show-after="showAfter"
-          class:bar-tooltip
-          :show-arrow="false"
-        >
-          <div
-            class="start-menu menu-item"
-            :style="({
-                '--diaphaneity': (20 + Number((Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
-                    value.arry.length) * 100) / 100).toFixed(2)) * 80) / 100,
-
-              } as any)"
-          >
-            <span class="start-menu-span">{{ value.feature }}</span>
-          </div>
-          <template #content>
-            <div class="titlelable">{{ value.feature }}</div>
-            <div class="info">
-              <p>
-                <span class="index">{{ t('numberofsigs') }}</span>
-                <span class="titlenumberIndex"> {{ value.arry.length }}</span>
-              </p>
-            </div>
-            <div class="info">
-              <p>
-                <span v-if="value.arry.length" class="index">{{
-                  t('averageActiveness')
-                }}</span>
-                <span v-else class="index">{{
-                  t('averageActiveness') + ' 0'
-                }}</span>
-                <span class="titlenumberIndex">
-                  {{
-                  (Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
-                    value.arry.length) * 100) / 100).toFixed(2)
-
-                  }}</span
-                >
-              </p>
-            </div>
-          </template>
-        </el-tooltip> -->
         <el-col>
           <div
             v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
@@ -76,71 +31,18 @@
                 '--diaphaneity': (20 + Number(val.score) * 80) / 100,
                 '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
               } as any)"
-              @click="goTo(val)"
               :title="val.sig_names"
+              @click="goTo(val)"
             >
               <span class="detail-menu-span" @click="goTo(val)">
                 {{ val.sig_names }}</span
               >
             </div>
           </div>
-          <!-- <el-tooltip
-            v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
-              (a.sig_names + '').localeCompare(b.sig_names + '')
-            )"
-            :key="ind"
-            placement="bottom-end"
-            effect="light"
-            :show-after="showAfter"
-            class:bar-tooltip
-            :show-arrow="false"
-          >
-            <div
-              class="detail-menu menu-item"
-              :style="({
-                '--diaphaneity': (20 + Number(val.score) * 80) / 100,
-                '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
-              } as any)"
-              @click="goTo(val)"
-            >
-              <span class="detail-menu-span" @click="goTo(val)">
-                {{ val.sig_names }}</span
-              >
-            </div>
-            <template #content>
-              <div class="lable">
-                {{ val.sig_names }}
-              </div>
-              <div class="info">
-                <p>
-                  <span class="index">{{ t('ranking') }}</span>
-                  <span class="numberIndex"> #{{ val.rank }}</span>
-                </p>
-              </div>
-              <div class="info" v-if="hasPermission('sigRead')">
-                <p>
-                  <span class="index">{{ t('active') }}</span>
-                  <span class="numberIndex">
-                    {{ (Math.round(val.score * 100) / 100).toFixed(2) }}</span
-                  >
-                </p>
-              </div>
-              <div class="info">
-                <div style="cursor: pointer" @click="goTo(val)">
-                  {{ t('viewDetail') }}
-                </div>
-                <div>
-                  <el-icon :size="16" class="right-btn" @click="goTo(val)">
-                    <right class="app-text-btn" />
-                  </el-icon>
-                </div>
-              </div>
-            </template>
-          </el-tooltip> -->
         </el-col>
       </div>
     </el-row>
-    <div class="Community">{{ t("governanceAndOperation") }}</div>
+    <div class="Community">{{ t('governanceAndOperation') }}</div>
     <el-row>
       <div v-for="value in getCommunityValue()" :key="value.feature">
         <div
@@ -158,51 +60,6 @@
             value.en_feature
           }}</span>
         </div>
-        <!-- <el-tooltip
-          :key="value.feature"
-          placement="bottom-end"
-          effect="light"
-          :show-after="showAfter"
-          class:bar-tooltip
-          :show-arrow="false"
-        >
-          <div
-            class="start-menu menu-item"
-            :style="({
-                '--diaphaneity': (20 + Number((Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
-                    value.arry.length) * 100) / 100).toFixed(2)) * 80) / 100,
-
-              } as any)"
-          >
-            <span class="start-menu-span">{{ value.feature }}</span>
-          </div>
-          <template #content>
-            <div class="titlelable">{{ value.feature }}</div>
-            <div class="info">
-              <p>
-                <span class="index">{{ t('numberofsigs') }}</span>
-                <span class="titlenumberIndex"> {{ value.arry.length }}</span>
-              </p>
-            </div>
-            <div class="info">
-              <p>
-                <span v-if="value.arry.length" class="index">{{
-                  t('averageActiveness')
-                }}</span>
-                <span v-else class="index">{{
-                  t('averageActiveness') + ' 0'
-                }}</span>
-                <span class="titlenumberIndex">
-                  {{
-                  (Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
-                    value.arry.length) * 100) / 100).toFixed(2)
-
-                  }}</span
-                >
-              </p>
-            </div>
-          </template>
-        </el-tooltip> -->
         <el-col>
           <div
             v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
@@ -216,90 +73,34 @@
                 '--diaphaneity': (20 + Number(val.score) * 80) / 100,
                 '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
               } as any)"
-              @click="goTo(val)"
               :title="val.sig_names"
+              @click="goTo(val)"
             >
               <span class="detail-menu-span" @click="goTo(val)">
                 {{ val.sig_names }}</span
               >
             </div>
           </div>
-          <!-- <el-tooltip
-            v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
-              (a.sig_names + '').localeCompare(b.sig_names + '')
-            )"
-            :key="ind"
-            placement="bottom-end"
-            effect="light"
-            :show-after="showAfter"
-            class:bar-tooltip
-            :show-arrow="false"
-          >
-            <div
-              class="detail-menu menu-item"
-              :style="({
-                '--diaphaneity': (20 + Number(val.score) * 80) / 100,
-                '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
-              } as any)"
-              @click="goTo(val)"
-            >
-              <span class="detail-menu-span" @click="goTo(val)">
-                {{ val.sig_names }}</span
-              >
-            </div>
-            <template #content>
-              <div class="lable">
-                {{ val.sig_names }}
-              </div>
-              <div class="info">
-                <p>
-                  <span class="index">{{ t('ranking') }}</span>
-                  <span class="numberIndex"> #{{ val.rank }}</span>
-                </p>
-              </div>
-              <div class="info" v-if="hasPermission('sigRead')">
-                <p>
-                  <span class="index">{{ t('active') }}</span>
-                  <span class="numberIndex">
-                    {{ (Math.round(val.score * 100) / 100).toFixed(2) }}</span
-                  >
-                </p>
-              </div>
-              <div class="info">
-                <div style="cursor: pointer" @click="goTo(val)">
-                  {{ t('viewDetail') }}
-                </div>
-                <div>
-                  <el-icon :size="16" class="right-btn" @click="goTo(val)">
-                    <right class="app-text-btn" />
-                  </el-icon>
-                </div>
-              </div>
-            </template>
-          </el-tooltip> -->
         </el-col>
       </div></el-row
     >
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import { Right } from "@element-plus/icons-vue";
-import { useCommonStore } from "@/stores/common";
-import { querySigScoreAll } from "shared/api";
-import { useI18n } from "vue-i18n";
-import { IObject } from "shared/@types/interface";
-import { hasPermission } from "shared/utils/login";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useCommonStore } from '@/stores/common';
+import { querySigScoreAll } from 'shared/api';
+import { useI18n } from 'vue-i18n';
+import { IObject } from 'shared/@types/interface';
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
-const showAfter = 200;
 const listData = ref([]);
-const listArry = ref([{ feature: "", arry: [] }] as IObject[]);
+const listArry = ref([{ feature: '', arry: [] }] as IObject[]);
 const getList = () => {
   const query = {
-    community: "openeuler",
+    community: 'openeuler',
   };
   querySigScoreAll(query).then((data) => {
     listData.value = data?.data || [];
@@ -308,7 +109,7 @@ const getList = () => {
         const findOne: any = pre.find((it: any) => it.feature === next.feature);
         if (findOne) {
           findOne.arry.push(next);
-        } else if (next.feature !== "") {
+        } else if (next.feature !== '') {
           pre.push({
             feature: next.feature,
             en_feature: next.en_feature,
@@ -318,24 +119,26 @@ const getList = () => {
         }
         return pre;
       }, [])
-      .sort((a: any, b: any) => b["arry"].length - a["arry"].length);
+      .sort((a: any, b: any) => b['arry'].length - a['arry'].length);
     listArry.value = arry;
   });
 };
 const getInnovationValue = () => {
   return listArry.value.filter((item) => {
-    return item.group === "代码仓管理/技术创新";
+    return item.group === '代码仓管理/技术创新';
   });
 };
 const getCommunityValue = () => {
   return listArry.value.filter((item) => {
-    return item.group === "社区治理运营";
+    return item.group === '社区治理运营';
   });
 };
 getList();
 const goTo = (item: any) => {
-  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item.sig_names}`);
-  window.open(routeData.href, "_blank");
+  const routeData: any = router.resolve(
+    `/${useCommon.language}/sig/${item.sig_names}`
+  );
+  window.open(routeData.href, '_blank');
 };
 </script>
 <style scoped lang="scss">

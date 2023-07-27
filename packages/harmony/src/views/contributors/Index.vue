@@ -136,9 +136,14 @@ const goToCompany = () => {
             <p class="text">{{ t('searchTips') }}</p>
           </div>
           <the-bar v-else></the-bar>
-          <div  class="goToCompany">
+          <div class="goToCompany">
             <span class="title" @click="goToCompany">查看单位会员贡献详情</span
-            ><img src="@/assets/right.png" alt="" @click="goToCompany" style="cursor:pointer"/>
+            ><img
+              src="@/assets/right.png"
+              alt=""
+              style="cursor: pointer"
+              @click="goToCompany"
+            />
           </div>
         </div>
         <div class="contributors-panel">

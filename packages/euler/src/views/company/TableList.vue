@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
 import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
@@ -156,7 +155,6 @@ const querySearch = () => {
       item.sig_name.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
-    // filterReallData();
   } else {
     getMemberData();
   }
@@ -435,7 +433,6 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
-    // min-width: 280px;
     .index {
       color: #9097a3;
     }

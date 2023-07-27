@@ -92,7 +92,9 @@ const chaneLanguage = () => {
 };
 const webSiteTitle = () => {
   document.title =
-    useCommon.language === 'zh' ? 'OpenHarmony 贡献看板' : 'OpenHarmony DATASTAT';
+    useCommon.language === 'zh'
+      ? 'OpenHarmony 贡献看板'
+      : 'OpenHarmony DATASTAT';
 };
 webSiteTitle();
 
@@ -101,7 +103,6 @@ const isAbout = ref(false);
 watch(
   () => {
     return route.path;
-    webSiteTitle();
   },
   (path) => {
     const p = path.split('/').slice(-1).toString();
@@ -141,7 +142,8 @@ const goMobileHome = () => {
       />
       <span class="line"></span>
       <a target="_blank" :href="openCommunityInfo.link"
-        ><p class="community-name">OpenHarmony</p></a>
+        ><p class="community-name">OpenHarmony</p></a
+      >
     </template>
     <template v-else>
       <img
@@ -152,7 +154,8 @@ const goMobileHome = () => {
       />
       <span class="line" style="background: #000"></span>
       <a target="_blank" :href="openCommunityInfo.link"
-        ><p class="community-PageName">OpenHarmony</p></a>
+        ><p class="community-PageName">OpenHarmony</p></a
+      >
     </template>
   </div>
   <el-drawer
@@ -195,19 +198,19 @@ const goMobileHome = () => {
 :deep(.el-switch) {
   color: #999;
 }
-  .community-name{
-   font-size: 20px;
-   color: #ffffff;
-   height: 24px;
-   line-height: 20px;
-   font-weight: 600;
+.community-name {
+  font-size: 20px;
+  color: #ffffff;
+  height: 24px;
+  line-height: 20px;
+  font-weight: 600;
 }
-.community-PageName{
-   font-size: 20px;
-   color: #000;
-   height: 24px;
-   line-height: 20px;
-   font-weight: 650;
+.community-PageName {
+  font-size: 20px;
+  color: #000;
+  height: 24px;
+  line-height: 20px;
+  font-weight: 650;
 }
 .el-overlay {
   top: 48px !important;

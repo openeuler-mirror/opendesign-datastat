@@ -15,7 +15,6 @@ import { formatNumber, toThousands } from 'shared/utils/helper';
 
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
-// import communityLogo from '@/assets/openeuler.png';
 import bg_mo from '@/assets/bg_mo.png';
 import atomLogo from '@/assets/atom.png';
 
@@ -354,12 +353,12 @@ const backtop1 = () => {
   </swiper>
 </template>
 <style lang="scss" scoped>
-.community-PageName{
-   font-size: 28px;
-   color: #000;
-   height: 32px;
-   line-height: 28px;
-   font-weight: 600;
+.community-PageName {
+  font-size: 28px;
+  color: #000;
+  height: 32px;
+  line-height: 28px;
+  font-weight: 600;
 }
 .swiper {
   height: 100vh;

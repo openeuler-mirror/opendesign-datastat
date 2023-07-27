@@ -129,7 +129,6 @@ onMounted(() => {
       line-height: 84px;
       font-weight: 400;
       font-style: normal;
-
     }
     .community-info {
       text-align: left;
@@ -172,13 +171,11 @@ onMounted(() => {
       font-size: 16px;
       color: #fff;
       line-height: 24px;
-      // opacity: 0.6;
       font-weight: 100;
     }
     .icon {
       animation: chevronsDown 2s infinite;
       display: inline-block;
-      // opacity: 0.6;
     }
   }
 }

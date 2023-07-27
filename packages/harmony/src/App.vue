@@ -8,7 +8,6 @@ setStoreData(openCommunityInfo.name);
 
 <template>
   <header><app-header></app-header></header>
-  <!-- <router-view></router-view> -->
   <router-view v-slot="{ Component, route }">
     <transition :name="route.meta.transition">
       <component :is="Component" />

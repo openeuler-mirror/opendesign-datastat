@@ -61,7 +61,6 @@ locale.value = localStorage.getItem('lang') || 'zh';
 
 <style lang="scss" scoped>
 .footer {
-  // margin-top: 64px;
   height: 200px;
   padding: 60px 24px;
   display: grid;

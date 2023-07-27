@@ -12,14 +12,14 @@ import { usePersonalStore } from '@/stores/personal';
 import { useCommonStore } from '@/stores/common';
 import TheForm from '@/components/TheForm.vue';
 import { formatNumber, toThousands } from 'shared/utils/helper';
-import SpecialInterestGroupDiagram from "./current/SpecialInterestGroupDiagram.vue";
+import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.vue';
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/opengauss.png';
 import bg_mo from '@/assets/bg_mo.png';
-import { useRoute, useRouter } from "vue-router";
-import MobileTemplate from "@/components/MobileTemplate.vue";
-import { IObject } from "shared/@types/interface";
+import { useRoute, useRouter } from 'vue-router';
+import MobileTemplate from '@/components/MobileTemplate.vue';
+import { IObject } from 'shared/@types/interface';
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -163,7 +163,7 @@ const backtop1 = () => {
 };
 // 跳转个人详情
 const goToUser = (data: IObject) => {
-  router.push(`/${useCommon.language}/mobile/user/${data}`)
+  router.push(`/${useCommon.language}/mobile/user/${data}`);
 };
 </script>
 <template>

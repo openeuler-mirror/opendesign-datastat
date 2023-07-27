@@ -1,13 +1,5 @@
 <template>
   <div ref="slideRef" class="main-menu">
-    <!-- <div class="activation">
-      <span class="sp">{{ t('active') }}</span>
-      <p class="spp">0</p>
-      <span class="liveness"></span>
-      <p class="spp">1</p>
-    </div>
-    <div class="Innovation">{{ t('repositoryTechnology') }}</div> -->
-
     <div v-for="value in getInnovationValue()" :key="value.feature">
       <div
         :key="value.feature"
@@ -49,68 +41,33 @@
               } as any)"
             @click="goTo(val)"
           >
-            <span class="detail-menu-span" @click="goTo(val)"> {{ val.sig_names }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- <div class="Community">{{ t('governanceAndOperation') }}</div>
-    <div v-for="value in getCommunityValue()" :key="value.feature">
-      <div :key="value.feature">
-        <div
-          class="start-menu menu-item"
-          :style="({
-                '--diaphaneity': (20 + Number((Math.round((value.arry.reduce((sum = 0, obj:any) => (sum += obj.score), 0)/
-                    value.arry.length) * 100) / 100).toFixed(2)) * 80) / 100,
-
-              } as any)"
-        >
-          <span class="start-menu-span">{{ value.feature }}</span>
-        </div>
-      </div>
-
-      <div class="wrapper">
-        <div
-          v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
-              (a.sig_names + '').localeCompare(b.sig_names + '')
-            )"
-          :key="ind"
-        >
-          <div
-            class="detail-menu menu-item"
-            :style="({
-                '--diaphaneity': (20 + Number(val.score) * 80) / 100,
-                '--color': Number(val.score) < 0.5 ? '#555555' : '#FFFFFF',
-              } as any)"
-            @click="goTo(val)"
-          >
             <span class="detail-menu-span" @click="goTo(val)">
               {{ val.sig_names }}</span
             >
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import { useCommonStore } from "@/stores/common";
-import { querySigScoreAll } from "shared/api";
-import { useI18n } from "vue-i18n";
-import { IObject } from "shared/@types/interface";
-import { useStaffStore } from "@/stores/staff";
+import { nextTick, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useCommonStore } from '@/stores/common';
+import { querySigScoreAll } from 'shared/api';
+import { useI18n } from 'vue-i18n';
+import { IObject } from 'shared/@types/interface';
+import { useStaffStore } from '@/stores/staff';
 const useStaff = useStaffStore();
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
 const listData = ref([]);
-const listArry = ref([{ feature: "", arry: [] }] as IObject[]);
+const listArry = ref([{ feature: '', arry: [] }] as IObject[]);
 const getList = () => {
   const query = {
-    community: "opengauss",
+    community: 'opengauss',
   };
   querySigScoreAll(query).then((data) => {
     listData.value = data?.data || [];
@@ -119,7 +76,7 @@ const getList = () => {
         const findOne: any = pre.find((it: any) => it.feature === next.feature);
         if (findOne) {
           findOne.arry.push(next);
-        } else if (next.feature !== "") {
+        } else if (next.feature !== '') {
           pre.push({
             feature: next.feature,
             arry: [next],
@@ -128,7 +85,7 @@ const getList = () => {
         }
         return pre;
       }, [])
-      .sort((a: any, b: any) => b["arry"].length - a["arry"].length);
+      .sort((a: any, b: any) => b['arry'].length - a['arry'].length);
     listArry.value = arry;
   });
 };
@@ -139,7 +96,7 @@ const getInnovationValue = () => {
 };
 const getCommunityValue = () => {
   return listArry.value.filter((item) => {
-    return item.group === "社区治理运营";
+    return item.group === '社区治理运营';
   });
 };
 getList();
@@ -149,10 +106,6 @@ interface Form {
   score: number;
 }
 const goTo = (item: Form) => {
-  // useStaff.dialogFormVisible = true;
-  // useStaff.title = item.sig_names;
-  // useStaff.sigRank = item.rank;
-  // useStaff.sigContrubution = item.score;
   router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
 };
 </script>
@@ -186,7 +139,6 @@ const goTo = (item: Form) => {
   height: 40px;
   width: auto;
   background: #ffffff;
-  // border: 2px solid rgba(0, 47, 167, var(--diaphaneity));
   border: 2px solid #7d32ea;
   margin-bottom: 10px;
   display: flex;
@@ -205,8 +157,7 @@ const goTo = (item: Form) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  // background-color: rgba(0, 47, 167, var(--diaphaneity));
-  background: #7D32EA;
+  background: #7d32ea;
   font-size: 8px;
   font-family: HarmonyOS_Sans_SC;
   line-height: 16px;
@@ -227,7 +178,7 @@ const goTo = (item: Form) => {
 }
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // 宽度平均分成四等份
+  grid-template-columns: repeat(4, 1fr);
   /* 声明行间距和列间距 */
   grid-gap: 8px;
   margin-bottom: 16px;

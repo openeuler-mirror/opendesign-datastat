@@ -1,10 +1,10 @@
 <template>
   <div class="contributors-panel">
     <h3 id="currentVitalityIndex" class="title">
-      {{ props.sencondTitle + " " + t("currentVitalityIndex") }}
+      {{ props.sencondTitle + ' ' + t('currentVitalityIndex') }}
     </h3>
     <div class="rank">
-      <span>{{ t("communityRankings") }}</span>
+      <span>{{ t('communityRankings') }}</span>
       <span> # </span>
       <span class="rank-num">{{ sorceData.rank }} </span>
       <span>/ {{ props.drownData?.length }}</span>
@@ -21,13 +21,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from "vue";
-import { getSigScore } from "shared/api";
-import { IObject } from "shared/@types/interface";
-import { useI18n } from "vue-i18n";
-import { openCommunityInfo } from "@/api";
-import OEchartGauge from "shared/components/OEchartGauge.vue";
-import CurrentTrend from "./CurrentTrend.vue";
+import { ref, watch, onMounted, computed } from 'vue';
+import { getSigScore } from 'shared/api';
+import { IObject } from 'shared/@types/interface';
+import { useI18n } from 'vue-i18n';
+import { openCommunityInfo } from '@/api';
+import OEchartGauge from 'shared/components/OEchartGauge.vue';
+import CurrentTrend from './CurrentTrend.vue';
 const { t } = useI18n();
 // 获取活力指数
 const props = defineProps({
@@ -48,7 +48,7 @@ const querySorceData = () => {
     sorceData.value = data.data.pop();
   });
 };
-querySorceData()
+querySorceData();
 onMounted(() => querySorceData);
 watch(
   () => props.sencondTitle,

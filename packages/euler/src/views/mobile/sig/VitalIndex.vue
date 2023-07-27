@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import OEchartGauge from 'shared/components/OEchartGauge.vue';
 import MobileCurrentTrend from './MobileCurrentTrend.vue';
-import { ref, onMounted, toRefs, watch, computed } from 'vue';
+import { ref, onMounted, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { querySigRepos, querySigName, getSigScore } from 'shared/api';
+import { querySigName, getSigScore } from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 const route = useRoute();
@@ -95,7 +95,6 @@ const reallData = ref([] as IObject[]);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    //   align-items: center;
   }
 }
 .container {
@@ -104,8 +103,6 @@ const reallData = ref([] as IObject[]);
 }
 .main {
   display: flex;
-  // justify-content: center;
-  // align-items: center;
 }
 .rank {
   font-size: 12px;
