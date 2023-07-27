@@ -85,9 +85,10 @@ const line = d3
 const tree = d3.cluster().size([2 * Math.PI, radius - 100]);
 function bilink(root: HierarchyNode<unknown>) {
   const map = new Map(root.leaves().map((d: IObject) => [id(d), d]));
-  for (const d of root.leaves() as any)
-    (d.incoming = []),
-      (d.outgoing = d.data.imports.map((i: string) => [d, map.get(i)]));
+  for (const d of root.leaves() as any) {
+    d.incoming = [];
+    d.outgoing = d.data.imports.map((i: string) => [d, map.get(i)]);
+  }
   for (const d of root.leaves() as any)
     for (const o of d.outgoing) o[1].incoming.push(o);
   root.sort((a: any, b: any) => {
@@ -128,9 +129,6 @@ const tooltip = d3
   .on('mouseover', keepTip)
   .on('mouseout', clearTip);
 const getTipsHtml = (d: IObject) => {
-  const jump = () => {
-    router.push('/${localStorage.lang}/company/${d.data.name}');
-  };
   if (d?.parent?.data?.name === 'company' && hasPermission('companyread_all')) {
     return `<div>${t('company')}</div>
             <div style="padding: 8px 0">
