@@ -61,8 +61,6 @@ watch(
     switchType();
   }
 );
-
-// el-tooltip showAfter
 const showAfter = 200;
 </script>
 

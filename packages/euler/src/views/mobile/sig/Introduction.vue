@@ -39,7 +39,6 @@ const querySigInfoData = () => {
 };
 const getllData = () => {
   querySigInfoData();
-  // getCubeData();
 };
 watch(
   () => props.sig,
@@ -59,7 +58,10 @@ watch(
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
-                <a style="color: #002fa7" :href="`https://gitee.com/openeuler/community/tree/master/sig/${sig}`">
+                <a
+                  style="color: #002fa7"
+                  :href="`https://gitee.com/openeuler/community/tree/master/sig/${sig}`"
+                >
                   {{ t('toHome') }}</a
                 >
               </div>
@@ -137,8 +139,6 @@ watch(
   min-height: 900px;
 }
 .main {
-  //   display: grid;
-  //   grid-template-columns: 28% 72%;
   &-left {
     &-sp {
       display: flex;
@@ -200,7 +200,6 @@ watch(
           background-image: url('@/assets/cube.png');
           width: 24px;
           height: 24px;
-          //   margin-right: 8px;
         }
       }
       .slogan {
@@ -211,7 +210,6 @@ watch(
   }
 }
 .atlas {
-  // width: 350px;
   display: flex;
   flex-direction: column;
 }

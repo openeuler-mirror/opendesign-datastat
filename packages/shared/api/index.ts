@@ -239,7 +239,7 @@ export function queryUserList(params: object) {
 /**
  *版本信息
  */
- export function queryVersions(params: object) {
+export function queryVersions(params: object) {
   const url = '/query/versions';
   return request
     .get(url, { params, global: true })

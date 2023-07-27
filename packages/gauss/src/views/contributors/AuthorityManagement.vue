@@ -4,12 +4,6 @@
       <h3 id="groupActive" class="title">
         {{ t('groupActive') }}
       </h3>
-      <!-- <div class="activation">
-        <span class="sp">{{ t('active') }}</span>
-        <p class="spp">0</p>
-        <span class="liveness"></span>
-        <p class="spp">1</p>
-      </div> -->
       <the-list></the-list>
       <div class="goToAllSig">
         <span class="title" @click="goToAllSig">{{ t('viewSIGDetail') }}</span
@@ -21,7 +15,7 @@
         />
       </div>
     </div>
-    <div class="contributors-panel"  v-if="hasPermission('sigRead')">
+    <div v-if="hasPermission('sigRead')" class="contributors-panel">
       <h3 id="companyRelations" class="title">
         {{ t('companyRelations') }}
       </h3>
@@ -35,96 +29,6 @@
         <o-diagram :data="diagramData"></o-diagram>
       </div>
     </div>
-    <!-- <div class="contributors-panel">
-      <h3 id="groupRelations" class="title">{{ t('groupRelations') }}</h3>
-      <div class="note-caption">{{ t('Note') }}</div>
-      <div class="ranking-list">
-        <div class="ranking-list-item">
-          <el-table :data="hightSig" style="width: 100%">
-            <el-table-column align="left" width="200" show-overflow-tooltip>
-              <template #header>
-                <span class="list-title"> {{ t('Committee') }} </span>
-              </template>
-              <template #default="scope">
-                <div class="group-father">
-                  <span class="group-name">{{ scope.row.name }}</span>
-                  <a
-                    :href="`http://gitee.com/${scope.row.user}`"
-                    target="_blank"
-                    class="group-email"
-                    >@{{ scope.row.user }}</a
-                  >
-                </div>
-              </template></el-table-column
-            >
-            <el-table-column align="left">
-              <template #header
-                ><div class="getheader">
-                  {{ t('interestGroup') }}
-                </div>
-              </template>
-              <template #default="scope">
-                <div class="Sgroup">
-                  <span
-                    v-for="(value, index) in scope.row.sigs"
-                    :key="index"
-                    class="group-email"
-                    @click="goToSig(value)"
-                    >{{ value
-                    }}{{ index < scope.row.sigs.length - 1 ? ',' : '' }}
-                  </span>
-                </div>
-              </template></el-table-column
-            >
-          </el-table>
-        </div>
-        <div class="ranking-list-item">
-          <el-table
-            :data="lowSig"
-            style="
-               {
-                width: 100%;
-              }
-            "
-          >
-            <el-table-column align="left" width="200" show-overflow-tooltip>
-              <template #header>
-                <span class="list-title"> {{ t('Committee') }} </span>
-              </template>
-              <template #default="scope">
-                <div class="group-father">
-                  <span class="group-name">{{ scope.row.name }}</span>
-                  <a
-                    :href="`http://gitee.com/${scope.row.user}`"
-                    target="_blank"
-                    class="group-email"
-                    >@{{ scope.row.user }}</a
-                  >
-                </div>
-              </template></el-table-column
-            >
-            <el-table-column align="left">
-              <template #header
-                ><div class="getheader">
-                  {{ t('interestGroup') }}
-                </div> </template
-              ><template #default="scope">
-                <div class="Sgroup">
-                  <span
-                    v-for="(value, index) in scope.row.sigs"
-                    :key="index"
-                    class="group-email"
-                    @click="goToSig(value)"
-                    >{{ value
-                    }}{{ index < scope.row.sigs.length - 1 ? ',' : '' }}
-                  </span>
-                </div>
-              </template></el-table-column
-            >
-          </el-table>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 <script setup lang="ts">
@@ -137,7 +41,7 @@ import { useCommonStore } from '@/stores/common';
 import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
 import { hasPermission } from 'shared/utils/login';
-import {isTest} from 'shared/utils/helper'
+import { isTest } from 'shared/utils/helper';
 const { t } = useI18n();
 const router = useRouter();
 const useCommon = useCommonStore();
@@ -203,7 +107,6 @@ const getList = () => {
       });
   });
 };
-// getList();
 // 小组关系列表
 const groupData = ref([]);
 const number = ref(0);
@@ -246,7 +149,6 @@ const goToAllSig = () => {
   }
   .sp {
     display: inline-block;
-    // width: 36px;
     height: 16px;
     font-size: 12px;
     font-family: HarmonyOS_Sans_SC;
@@ -256,7 +158,6 @@ const goToAllSig = () => {
   }
   .spp {
     display: inline-block;
-    // width: 7px;
     height: 16px;
     font-size: 12px;
     font-family: HarmonyOS_Sans_SC;
@@ -359,7 +260,6 @@ const goToAllSig = () => {
   }
 }
 .group-name {
-  // width: 42px;
   height: 22px;
   font-size: 14px;
   font-family: HarmonyOS_Sans_SC;

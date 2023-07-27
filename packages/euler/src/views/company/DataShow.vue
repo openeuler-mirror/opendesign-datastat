@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ t(timeTitle) }}{{t('zhcontribut')}}
+        {{ t(timeTitle) }}{{ t('zhcontribut') }}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,32 +12,34 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-        {{ t(item.label)}}{{t('zhcontribut')}}</el-dropdown-item
+          {{ t(item.label) }}{{ t('zhcontribut') }}</el-dropdown-item
         >
       </template>
     </el-dropdown>
   </div>
   <div class="left-first">
     <div class="left-first-child">
-      <span :title="`${t('Mergerequest')} PR`">{{ t("Mergerequest") }} PR</span>
+      <span :title="`${t('Mergerequest')} PR`">{{ t('Mergerequest') }} PR</span>
       <div class="left-first-child-data">
         {{ toThousands(mergeRequest) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('NeedsProblems')} Issue`">{{ t("NeedsProblems") }} Issue</span>
+      <span :title="`${t('NeedsProblems')} Issue`"
+        >{{ t('NeedsProblems') }} Issue</span
+      >
       <div class="left-first-child-data">
         {{ toThousands(issueData) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('review')} Comment`">{{ t("review") }} Comment</span>
+      <span :title="`${t('review')} Comment`">{{ t('review') }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('SIGNumber')}`">{{ t("SIGNumber") }}</span>
+      <span :title="`${t('SIGNumber')}`">{{ t('SIGNumber') }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>
@@ -66,12 +68,12 @@ const comment = ref(0);
 const contributors = ref(0);
 const timeRange = [
   {
-    label: "from.lastonemonth",
-    value: "lastonemonth",
+    label: 'from.lastonemonth',
+    value: 'lastonemonth',
   },
-  { label: "from.lasthalfyear", value: "lasthalfyear" },
-  { label: "from.lastoneyear", value: "lastoneyear" },
-  { label: "from.all", value: "all" },
+  { label: 'from.lasthalfyear', value: 'lasthalfyear' },
+  { label: 'from.lastoneyear', value: 'lastoneyear' },
+  { label: 'from.all', value: 'all' },
 ];
 const time = ref('');
 const getItemListData = (data: IObject[], template: string) => {
@@ -138,13 +140,6 @@ watch(
     getAllData();
   }
 );
-// watch(
-//   () => company.value,
-//   () => {
-//     time.value = 'all';
-//     timeTitle.value = '全部';
-//   }
-// );
 const timeTitle = ref('');
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
@@ -153,7 +148,7 @@ const clickDrownItem = (item: IObject) => {
 };
 onMounted(() => {
   time.value = 'all';
-  timeTitle.value = "from.all";
+  timeTitle.value = 'from.all';
 });
 </script>
 <style scoped lang="scss">

@@ -4,7 +4,6 @@ import { IObject } from 'shared/@types/interface';
 import { onMounted, ref, watch, computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { treeProcessing } from 'shared/utils/helper';
 import { queryCompanySigDetails, queryCompanySigs } from 'shared/api';
 import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
 import OViewonpc from 'shared/components/OViewonpc.vue';
@@ -62,7 +61,7 @@ const getTreeSearchValue = () => {
     treeData.value = data?.data || [];
     const firstTree: any = [];
     const secondTree: any = [];
-    treeData.value.map((item: any) => {
+    treeData.value.forEach((item: any) => {
       if (item.feature !== 'null') {
         firstTree.push({
           key: '',
@@ -234,7 +233,6 @@ watch(
 @import '../sig/styles/style.scss';
 .container {
   margin-top: 40px;
-  //   min-height: 900px;
   margin-left: -40px;
 }
 

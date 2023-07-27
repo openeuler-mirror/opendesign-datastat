@@ -66,6 +66,5 @@ let form = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-// @import '@/shared/styles/style.scss';
 @import '@/views/mobile/sig/styles/style.scss';
 </style>

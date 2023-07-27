@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { usePersonalStore } from '@/stores/personal';
 import { useStaffStore } from '@/stores/staff';
 import { toRefs } from 'vue';
@@ -36,7 +35,6 @@ const props = defineProps({
 const { componentName, memberList, usertype } = toRefs(props);
 const usePersonal = usePersonalStore();
 const useStaff = useStaffStore();
-// const progressColor = ref('#002FA7');
 const progressColor = () => {
   if (componentName.value === 'member' && usertype.value === 'contributor') {
     return '#4AAEAD';

@@ -262,7 +262,6 @@ const goToCompany = (data: IObject) => {
         class="bar-content-item"
       >
         <p class="infos">
-          <!-- <span class="index">{{ item.index }}</span> -->
           <span
             v-if="
               item.company_cn === '个人贡献者' ||
@@ -319,7 +318,6 @@ const goToCompany = (data: IObject) => {
             </div>
             <div class="info">
               <p>
-                <!-- <span class="index">{{ item.index }}</span> -->
                 {{
                   useCommon.language === 'zh'
                     ? item.company_cn
@@ -514,7 +512,6 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
-    // min-width: 280px;
     .index {
       color: #9097a3;
     }

@@ -93,7 +93,7 @@ const querySigInfoData = () => {
         sigInfo.value?.unshift(sigInfo.value.splice(index, 1)[0]);
       }
     });
-    sigInfo.value?.map((item: any) =>
+    sigInfo.value?.forEach((item: any) =>
       item.type.sort((a: any, b: any) => b.length - a.length)
     );
     sigInfo.value?.sort((a: any, b: any) =>

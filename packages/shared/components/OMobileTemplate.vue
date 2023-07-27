@@ -16,7 +16,6 @@ const props = defineProps({
     default: '62px',
   },
 });
-
 </script>
 
 <template>

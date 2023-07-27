@@ -26,9 +26,7 @@ group.value = route.query.group as string;
 const allSigs = ref();
 const getDrownData = () => {
   const query = {
-    // group: group.value,
     community: openCommunityInfo.name,
-    // name: sigTitle.value,
   };
   queryUserList(query as any).then((data) => {
     allSigs.value = data?.data || {};
@@ -36,7 +34,6 @@ const getDrownData = () => {
     const findOne =
       allSigs.value.find((item: any) => item === route.params.organization) ||
       allSigs.value[0];
-    // sencondTitle.value = findOne;
     drownData.value = allSigs.value;
     reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
     getllData();
@@ -77,9 +74,7 @@ const querySearch = () => {
 };
 // 清除搜索
 const clearSearchInput = () => {
-  // getDrownData();
   searchInput.value = '';
-  // getDrownData();
 };
 const clean = () => {
   searchInput.value = '';
@@ -112,7 +107,6 @@ const querySigInfoData = () => {
   });
 };
 
-// querySigInfoData();
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
@@ -280,7 +274,6 @@ const goToSig = (data: IObject) => {
 .contributors-panel-last{
   padding: 24px;
   background: #fff;
-  // margin-bottom: 24px;
   .title {
     font-size: 16px;
     color: #000;

@@ -218,7 +218,6 @@ const goToCompany = (data: IObject) => {
         class="bar-content-item"
       >
         <p class="infos">
-          <!-- <span class="index">{{ item.index }}</span> -->
           <span
             v-if="
               item.company_cn === '个人贡献者' ||
@@ -286,7 +285,6 @@ const goToCompany = (data: IObject) => {
 @import './styles/style.scss';
 
 .searchInput {
-  // padding-left: 110px;
   width: 100%;
   margin: 16px 0 16px;
   .search-icon {
@@ -356,13 +354,9 @@ const goToCompany = (data: IObject) => {
   }
 }
 .bar-content {
-  // position: relative;
-  // z-index: 2;
   &-item {
     margin: 16px 0;
     list-style: none;
-    // display: flex;
-    // justify-content: space-between;
     .infos {
       font-size: 12px;
       color: #000000;
@@ -370,7 +364,6 @@ const goToCompany = (data: IObject) => {
 
       display: flex;
       .index {
-        // width: 16px;
         margin-right: 8px;
         font-size: 12px;
         color: #9097a3;

@@ -11,9 +11,6 @@
     >
       <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
-          <!-- <template #header>
-            {{ 'SIG ' + t('historicalVitalityIndicators') }}
-          </template> -->
           <template #content>
             <info :user="sencondTitle"></info>
           </template>
@@ -64,7 +61,6 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const sencondTitle = ref('');
-// sencondTitle.value = route.params.name as string;
 const sigTitle = ref('');
 sigTitle.value = route.query.organization as string;
 const group = ref('');
@@ -95,9 +91,7 @@ const allSigs = ref();
 const drownData = ref([] as any[]);
 const getDrownData = () => {
   const query = {
-    // group: group.value,
     community: openCommunityInfo.name,
-    // name: sigTitle.value,
   };
   queryUserList(query as any).then((data) => {
     allSigs.value = data?.data || {};

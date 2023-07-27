@@ -12,10 +12,15 @@
       </div>
 
       <the-list></the-list>
-      <div  class="goToAllSig">
-            <span class="title" @click="goToAllSig">????????????</span
-            ><img src="@/assets/right.png" alt="" @click="goToAllSig" style="cursor:pointer"/>
-          </div>
+      <div class="goToAllSig">
+        <span class="title" @click="goToAllSig">????????????</span
+        ><img
+          src="@/assets/right.png"
+          alt=""
+          style="cursor: pointer"
+          @click="goToAllSig"
+        />
+      </div>
     </div>
     <div class="contributors-panel">
       <h3 id="companyRelations" class="title">
@@ -51,7 +56,6 @@
                     class="group-email"
                     >@{{ scope.row.user }}</a
                   >
-                  <!-- <span class="group-email">{{ scope.row.email }}</span> -->
                 </div>
               </template></el-table-column
             >
@@ -90,7 +94,6 @@
                     class="group-email"
                     >@{{ scope.row.user }}</a
                   >
-                  <!-- <span class="group-name">{{ scope.row.email }}</span> -->
                 </div>
               </template></el-table-column
             >
@@ -192,7 +195,6 @@ const getList = () => {
   });
 };
 getList();
-// ??????
 const groupData = ref([]);
 const number = ref(0);
 const getGroup = () => {

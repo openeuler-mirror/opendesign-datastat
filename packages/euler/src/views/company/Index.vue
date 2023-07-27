@@ -5,11 +5,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import { onMounted, ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import {
-  sigsProcessing,
-  treeProcessing,
-  processing,
-} from 'shared/utils/helper';
+import { sigsProcessing, processing } from 'shared/utils/helper';
 import {
   queryCompanySigDetails,
   queryCompanyUsers,
@@ -27,7 +23,6 @@ import OIcon from 'shared/components/OIcon.vue';
 import { useRouter } from 'vue-router';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
 import { ElScrollbar } from 'element-plus';
-import { number } from 'echarts';
 import TableList from './TableList.vue';
 import DataShow from './DataShow.vue';
 const router = useRouter();
@@ -94,7 +89,7 @@ const getTreeSearchValue = () => {
     const firstTree: any = [];
     const secondTree: any = [];
     treeData.value = data?.data;
-    treeData.value.map((item: any) => {
+    treeData.value.forEach((item: any) => {
       if (item.feature !== 'null') {
         firstTree.push({
           key: '',
@@ -113,9 +108,6 @@ const getTreeSearchValue = () => {
     });
     oechartTreeValue.value = firstTree;
     oechartSecondTreeValue.value = secondTree;
-    // sumPrMerged.value = eval(
-    //   secondTree.map((item: any) => (item.value += item.value)).join("+")
-    // );
     sumPrMerged.value = secondTree.reduce(
       (pre: any, next: any) => pre + next.value,
       0
@@ -288,8 +280,7 @@ const currentPage = ref(1);
 // 显示第几页
 const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  if (val?.isTrusted) {
-  } else {
+  if (!val?.isTrusted) {
     currentPage.value = val;
   }
 };
@@ -342,10 +333,6 @@ watch(
     currentPage.value = 1;
   }
 );
-const goTo = (item: any) => {
-  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
-  window.open(routeData.href, '_blank');
-};
 const goToHome = () => {
   router.push(`/${useCommon.language}/detail`);
 };
@@ -368,10 +355,6 @@ const showDropdown = (e: any) => {
 const goToUser = (data: IObject) => {
   const routeData: any = router.resolve({
     path: `/${useCommon.language}/user/${data}`,
-    // query: {
-    //   group: 'company',
-    //   organization: sencondTitle.value,
-    // },
   });
   window.open(routeData.href, '_blank');
 };
@@ -624,18 +607,6 @@ const goToUser = (data: IObject) => {
                 </el-table>
               </div>
             </div>
-            <!-- <div class="demo-pagination-block">
-              <el-pagination
-                v-show="reallListData.length > 10"
-                :current-page="currentPage"
-                background
-                :page-size="10"
-                layout="total, prev, pager, next, jumper"
-                :total="reallListData.length"
-                @current-change="handleCurrentChange"
-              >
-              </el-pagination>
-            </div> -->
             <div class="demo-pagination-block">
               <el-pagination
                 v-show="reallListData.length > 10"
@@ -759,7 +730,6 @@ const goToUser = (data: IObject) => {
   background-color: #ffffff;
 }
 .theFirstForm {
-  // padding-top: 10px;
   padding-left: 24px;
 }
 .theSecondForm {
@@ -788,7 +758,6 @@ const goToUser = (data: IObject) => {
     display: flex;
     align-items: left;
     .num {
-      // width: 200px;
       text-align: left;
       display: flex;
       align-items: center;
@@ -1035,7 +1004,6 @@ const goToUser = (data: IObject) => {
   padding-bottom: 24px;
   background: #fff;
   margin-top: 60px;
-  // margin-bottom: 60px;
   .title {
     font-size: 24px;
     color: #000;

@@ -37,7 +37,7 @@ export const useCommonStore = defineStore('common', {
     isBlackHeader: true,
     companyNav: 0,
     sigNav: 0,
-    personNav:0,
+    personNav: 0,
   }),
   actions: {
     setLanguage(language: string) {

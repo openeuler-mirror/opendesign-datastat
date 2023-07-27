@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
@@ -83,10 +83,7 @@ const formOptionSwitch = computed(() => {
       label: t('from.type'),
       id: 'contributeType',
       active: 'pr',
-      list: [
-        { label: t('home.prs'), value: 'pr' },
-        // { label: t('from.LOC'), value: 'cloc' },
-      ],
+      list: [{ label: t('home.prs'), value: 'pr' }],
     },
     {
       label: t('from.timeRange'),
@@ -179,9 +176,6 @@ const getContributeInfo = (item: IObject) => {
   }
 };
 
-// onMounted(() => {
-//   getStatistical();
-// });
 const isMobile: boolean = testIsPhone();
 const formOptionAll = ref<any>([]);
 const getConfig = (val: any) => {
