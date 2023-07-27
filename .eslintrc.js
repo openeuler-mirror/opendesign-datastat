@@ -5,7 +5,11 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  extends: ['plugin:vue/vue3-recommended', '@vue/typescript/recommended', '@vue/prettier'],
+  extends: [
+    'plugin:vue/vue3-recommended',
+    '@vue/typescript/recommended',
+    '@vue/prettier',
+  ],
   plugins: ['@typescript-eslint'],
   env: {
     browser: true,
@@ -21,6 +25,7 @@ module.exports = {
     'one-var-declaration-per-line': 'error',
     'no-multi-assign': 'error',
     'prefer-destructuring': 'error',
+    complexity: ['error', 20],
     eqeqeq: 'error',
     '@typescript-eslint/no-explicit-any': [
       'warn',

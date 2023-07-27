@@ -227,7 +227,10 @@ const MethodLibrary = (function () {
       let _mime = function (option, value) {
         let { mimeTypes } = VariableLibrary.navigator;
         for (let key in mimeTypes) {
-          if (mimeTypes[key][option] === value) {
+          if (
+            Object.prototype.hasOwnProperty.call(mimeTypes, key) &&
+            mimeTypes[key][option] === value
+          ) {
             return true;
           }
         }
@@ -255,9 +258,8 @@ const MethodLibrary = (function () {
         if (_mime('type', 'application/gameplugin')) {
           match['360SE'] = true;
         } else if (
-          VariableLibrary.navigator &&
-          typeof VariableLibrary.navigator['connection']['saveData'] ===
-            'undefined'
+          typeof VariableLibrary.navigator?.['connection']['saveData'] ===
+          'undefined'
         ) {
           match['360SE'] = true;
         } else {
@@ -267,18 +269,8 @@ const MethodLibrary = (function () {
       if (match['IE'] || match['Edge']) {
         let navigator_top = window.screenTop - window.screenY;
         switch (navigator_top) {
-          case 71: // 无收藏栏,贴边
-            break;
-          case 74: // 无收藏栏,非贴边
-            break;
-          case 99: // 有收藏栏,贴边
-            break;
           case 102: // 有收藏栏,非贴边
             match['360EE'] = true;
-            break;
-          case 75: // 无收藏栏,贴边
-            break;
-          case 105: // 有收藏栏,贴边
             break;
           case 104: // 有收藏栏,非贴边
             match['360SE'] = true;
@@ -517,7 +509,7 @@ function initSensor() {
     window['sensorsCustomBuriedData'][key] = value;
   };
   sensors.init({
-    server_url: 'https://omapi.osinfra.cn/query/track?community=openEuler',
+    server_url: import.meta.env.VITE_SENSOR_SERVER,
     use_client_time: true,
     // 调试时开启
     show_log: false,
