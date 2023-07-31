@@ -15,6 +15,7 @@ export const usePersonalStore = defineStore('personal', {
       contributeType: 'pr',
       timeRange: 'lastonemonth',
     } as Form,
+    checkedComment: [] as any,
   }),
   actions: {
     async getPersonalData() {
@@ -26,10 +27,32 @@ export const usePersonalStore = defineStore('personal', {
       try {
         const res = await queryUserContribute(params);
         if (res.code === 200) {
-          const { data } = res;
-          const userList = data.sort(sortExp('contribute', false));
-          this.personalData = userList.slice(0, 20);
-          this.personalMaxNum = userList[0].contribute;
+          if (this.personalForm.contributeType === 'comment') {
+            const { data } = res;
+            if (
+              JSON.stringify(this.checkedComment) ===
+              JSON.stringify(['General'])
+            ) {
+              const GeneralList = data.sort(sortExp('valid_comment', false));
+              this.personalData = GeneralList.slice(0, 20);
+              this.personalMaxNum = GeneralList[0].valid_comment;
+            } else if (
+              JSON.stringify(this.checkedComment) === JSON.stringify(['Order'])
+            ) {
+              const OrderList = data.sort(sortExp('invalid_comment', false));
+              this.personalData = OrderList.slice(0, 20);
+              this.personalMaxNum = OrderList[0].invalid_comment;
+            } else {
+              const List = data.sort(sortExp('contribute', false));
+              this.personalData = List.slice(0, 20);
+              this.personalMaxNum = List[0].contribute;
+            }
+          } else {
+            const { data } = res;
+            const userList = data.sort(sortExp('contribute', false));
+            this.personalData = userList.slice(0, 20);
+            this.personalMaxNum = userList[0].contribute;
+          }
         }
       } catch (error) {
         console.log(error);

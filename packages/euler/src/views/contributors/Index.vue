@@ -126,6 +126,31 @@ const goToUser = (data: IObject) => {
   });
   window.open(routeData.href, '_blank');
 };
+const checkedComment = ref(['General']);
+const commentValue = ['General', 'Order'];
+watch(
+  () => checkedComment.value,
+  () => {
+    usePersonal.checkedComment = checkedComment.value;
+    usePersonal.getPersonalData();
+  },
+  { immediate: true }
+);
+const contributeValue = (val: any) => {
+  if (
+    JSON.stringify(checkedComment.value) === JSON.stringify(['General']) &&
+    usePersonal.personalForm.contributeType === 'comment'
+  ) {
+    return val.valid_comment;
+  } else if (
+    JSON.stringify(checkedComment.value) === JSON.stringify(['Order']) &&
+    usePersonal.personalForm.contributeType === 'comment'
+  ) {
+    return val.invalid_comment;
+  } else {
+    return val.contribute;
+  }
+};
 </script>
 
 <template>
@@ -202,16 +227,27 @@ const goToUser = (data: IObject) => {
                     </div>
                   </template></el-table-column
                 >
-                <el-table-column
-                  align="left"
-                  class-name="type-label"
-                  :label="t(typeLable)"
-                >
+                <el-table-column class-name="type-label" :label="t(typeLable)">
+                  <template
+                    v-if="usePersonal.personalForm.contributeType === 'comment'"
+                    #header
+                  >
+                    <el-checkbox-group v-model="checkedComment" :min="1">
+                      <el-checkbox
+                        v-for="item in commentValue"
+                        :key="item"
+                        :label="item"
+                        >{{ t(item) }}</el-checkbox
+                      >
+                    </el-checkbox-group>
+                  </template>
                   <template #default="scope">
                     <div class="box">
-                      <span class="num">{{ scope.row.contribute }}</span>
+                      <span class="num">{{ contributeValue(scope.row) }}</span>
 
-                      <the-progress :item="scope.row.contribute"></the-progress>
+                      <the-progress
+                        :item="contributeValue(scope.row)"
+                      ></the-progress>
                     </div>
                   </template>
                 </el-table-column>
@@ -250,15 +286,27 @@ const goToUser = (data: IObject) => {
                     </div>
                   </template></el-table-column
                 >
-                <el-table-column
-                  align="left"
-                  class-name="type-label"
-                  :label="t(typeLable)"
-                >
+                <el-table-column class-name="type-label" :label="t(typeLable)">
+                  <template
+                    v-if="usePersonal.personalForm.contributeType === 'comment'"
+                    #header
+                  >
+                    <el-checkbox-group v-model="checkedComment" :min="1">
+                      <el-checkbox
+                        v-for="item in commentValue"
+                        :key="item"
+                        :label="item"
+                        >{{ t(item) }}</el-checkbox
+                      >
+                    </el-checkbox-group>
+                  </template>
                   <template #default="scope">
                     <div class="box">
-                      <span class="num">{{ scope.row.contribute }}</span>
-                      <the-progress :item="scope.row.contribute"></the-progress>
+                      <span class="num">{{ contributeValue(scope.row) }}</span>
+
+                      <the-progress
+                        :item="contributeValue(scope.row)"
+                      ></the-progress>
                     </div>
                   </template>
                 </el-table-column>
