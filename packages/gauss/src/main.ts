@@ -1,4 +1,4 @@
-import 'shared/allow_sensor/sensors.js';
+// import 'shared/allow_sensor/sensors.js';
 import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
 import { createApp } from 'vue';
