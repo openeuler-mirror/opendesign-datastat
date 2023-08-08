@@ -15,8 +15,11 @@ COPY --from=Builder /home/openeuler-datastat/web/dist/openeuler /usr/share/nginx
 RUN chmod -R 755 /usr/share/nginx/html
 COPY ./deploy/euler/nginx.conf /etc/nginx/nginx.conf
 
-ENV RUN_USER nginx
-ENV RUN_GROUP nginx
+RUN touch /var/run/nginx.pid \
+    && chown -R nginx:nginx /var/log/nginx \ 
+    && chown -R nginx:nginx /var/run/nginx.pid \ 
+    && chown -R nginx:nginx /etc/nginx
 EXPOSE 8080
+USER nginx
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
