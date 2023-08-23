@@ -15,6 +15,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import titleBg from '@/assets/title-bg.png';
 import chevronsUp from '~icons/app/chevrons-up';
 import AuthorityManagement from './AuthorityManagement.vue';
+import SoftwareContribute from './SoftwareContribute.vue';
 import { hasPermission } from 'shared/utils/login';
 import { IObject } from 'shared/@types/interface';
 const { t, locale } = useI18n();
@@ -186,6 +187,7 @@ const contributeValue = (val: any) => {
             />
           </div>
         </div>
+        <SoftwareContribute></SoftwareContribute>
         <div class="contributors-panel">
           <h3 id="userContributor" class="title">{{ t('userContributor') }}</h3>
           <the-form
