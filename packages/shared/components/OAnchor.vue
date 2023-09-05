@@ -11,7 +11,7 @@ const props = defineProps({
   data: {
     type: Array as () => string[],
     required: true,
-    default: () => ['companyContributor', 'userContributor'],
+    default: () => ['companyContributor', 'serviceShow'],
   },
   // 元素距离盒子顶部的校准值
   offsetValue: {

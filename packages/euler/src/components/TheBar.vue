@@ -69,6 +69,15 @@ const switchType = () => {
     case 'cloc':
       typeLable.value = t('from.LOC');
       break;
+    case 'issue_cve':
+      typeLable.value = t('home.cve');
+      break;
+    case 'issue_done':
+      typeLable.value = t('home.issuesClose');
+      break;
+    case 'feature':
+      typeLable.value = t('feature');
+      break;
   }
 };
 switchType();
@@ -213,12 +222,12 @@ const goToCompany = (data: IObject) => {
                 >{{ percentageTotal(item.contribute, useCompany.total) }}</span
               >
             </div>
-            <span v-if="progressFormat(item.contribute) < 80" class="val"
+            <span v-if="progressFormat(item.contribute) <= 80" class="val"
               >{{ formatNumber(item.contribute) }}
             </span>
             <span
               v-if="
-                progressFormat(item.contribute) < 80 &&
+                progressFormat(item.contribute) <= 80 &&
                 hasPermission('companyread_all')
               "
               class="val"
