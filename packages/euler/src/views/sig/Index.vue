@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import TableList from './TableList.vue';
 import ContributList from './ContributList.vue';
+import IssueList from './IssueList.vue';
 import {
   querySigRepos,
   querySigName,
@@ -46,12 +47,13 @@ const getDrownData = () => {
 const anchorData = computed(() => {
   return hasPermission('SIGread')
     ? [
+        'serviceShow',
         'currentVitalityIndex',
         'historicalVitalityIndicators',
         'companyContributor',
         'userContributor',
       ]
-    : ['userContributor'];
+    : ['serviceShow', 'userContributor'];
 });
 const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
@@ -284,6 +286,12 @@ const showDropdown = (e: any) => {
           </div>
         </div>
         <div class="main-right">
+          <div class="contributors-panel">
+            <h3 id="serviceShow" class="title">
+              {{ sencondTitle + ' ' + t('serviceShow') }}
+            </h3>
+            <issue-list :sig="sencondTitle"></issue-list>
+          </div>
           <div v-if="hasPermission('SIGread')">
             <visual-index
               :sencond-title="sencondTitle"
