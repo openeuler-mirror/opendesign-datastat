@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// import OIcon from './OIcon.vue';
+// import scrollTop from '~icons/app/scroll-top';
 import { onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -11,7 +13,7 @@ const props = defineProps({
   data: {
     type: Array as () => string[],
     required: true,
-    default: () => ['companyContributor', 'serviceShow'],
+    default: () => ['companyContributor', 'userContributor'],
   },
   // 元素距离盒子顶部的校准值
   offsetValue: {
@@ -30,6 +32,10 @@ const props = defineProps({
 onMounted(() => {
   const body = props.id ? document.getElementById(props.id) : window;
   body?.addEventListener('scroll', scroll);
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    intoView(hash);
+  }
 });
 
 onUnmounted(() => {
@@ -69,11 +75,19 @@ const scroll = () => {
 const selectId = ref('');
 selectId.value = props.data.slice(0, 1).shift() || '';
 const selectAnchor = (id: string) => {
-  const doc = document.getElementById(id);
-  doc?.scrollIntoView();
+  window.location.hash = id;
   setTimeout(() => {
     selectId.value = id;
+    const doc = document.getElementById(id);
+    doc?.scrollIntoView();
   }, 20);
+};
+const intoView = (id: string) => {
+  setTimeout(() => {
+    selectId.value = id;
+    const doc = document.getElementById(id);
+    doc?.scrollIntoView();
+  }, 500);
 };
 const scrollToTop = () => {
   const body = document.getElementById(props.id) || document.documentElement;
@@ -113,6 +127,7 @@ const btnInfo = () => {
 </template>
 <style lang="scss" scoped>
 .box {
+  // margin-left: 8px;
   height: 48px;
   width: 48px;
   background: #ffffff;
@@ -154,6 +169,7 @@ const btnInfo = () => {
   }
 }
 .box-down {
+  // margin-left: 8px;
   height: 48px;
   width: 48px;
   background: #ffffff;
@@ -196,6 +212,7 @@ const btnInfo = () => {
 }
 .md-anchor {
   position: fixed;
+  // right: calc(5%);
   right: 20px;
   max-width: 200px;
   z-index: 99;
