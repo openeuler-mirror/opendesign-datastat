@@ -1,55 +1,54 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from "vue";
-import { useI18n } from "vue-i18n";
-import { usePersonalStore } from "@/stores/personal";
-import { useCommonStore } from "@/stores/common";
-import { useRouter } from "vue-router";
-import OBanner from "shared/components/OBanner.vue";
-import TheProgress from "@/components/TheProgress.vue";
-import AppFooter from "@/components/AppFooter.vue";
-import FormSearch from "./FormSearch.vue";
-import TheForm from "@/components/TheForm.vue";
-import TheBar from "../../components/TheBar.vue";
-import useScroll from "shared/hooks/useScroll";
-import OAnchor from "shared/components/OAnchor.vue";
-import titleBg from "@/assets/title-bg.png";
-import chevronsUp from "~icons/app/chevrons-up";
-import AuthorityManagement from "./AuthorityManagement.vue";
-import { hasPermission } from "shared/utils/login";
-import { IObject } from "shared/@types/interface";
-import { isTest } from "shared/utils/helper";
+import { onMounted, ref, computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { usePersonalStore } from '@/stores/personal';
+import { useCommonStore } from '@/stores/common';
+import { useRouter } from 'vue-router';
+import OBanner from 'shared/components/OBanner.vue';
+import TheProgress from '@/components/TheProgress.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import FormSearch from './FormSearch.vue';
+import TheForm from '@/components/TheForm.vue';
+import TheBar from '../../components/TheBar.vue';
+import useScroll from 'shared/hooks/useScroll';
+import OAnchor from 'shared/components/OAnchor.vue';
+import titleBg from '@/assets/title-bg.png';
+import chevronsUp from '~icons/app/chevrons-up';
+import AuthorityManagement from './AuthorityManagement.vue';
+import { hasPermission } from 'shared/utils/login';
+import { IObject } from 'shared/@types/interface';
 const { t, locale } = useI18n();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
 const router = useRouter();
-locale.value = localStorage.getItem("lang") || "zh";
+locale.value = localStorage.getItem('lang') || 'zh';
 const formOption = computed(() => {
   return [
     {
-      label: t("from.type"),
-      id: "contributeType",
-      active: "pr",
+      label: t('from.type'),
+      id: 'contributeType',
+      active: 'pr',
       list: [
-        { label: t("home.prs"), value: "pr" },
-        { label: t("home.issues"), value: "issue" },
-        { label: t("home.comments"), value: "comment" },
+        { label: t('home.prs'), value: 'pr' },
+        { label: t('home.issues'), value: 'issue' },
+        { label: t('home.comments'), value: 'comment' },
       ],
     },
     {
-      label: t("from.timeRange"),
-      id: "timeRange",
-      active: "mother",
+      label: t('from.timeRange'),
+      id: 'timeRange',
+      active: 'mother',
       list: [
-        { label: t("from.lastonemonth"), value: "lastonemonth" },
-        { label: t("from.lasthalfyear"), value: "lasthalfyear" },
-        { label: t("from.lastoneyear"), value: "lastoneyear" },
-        { label: t("from.all"), value: "all" },
+        { label: t('from.lastonemonth'), value: 'lastonemonth' },
+        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
+        { label: t('from.lastoneyear'), value: 'lastoneyear' },
+        { label: t('from.all'), value: 'all' },
       ],
     },
   ];
 });
 // theform组件调用
-const componentName = "personal";
+const componentName = 'personal';
 const loading = ref(true);
 const getContributeInfo = () => {
   usePersonal.getPersonalData();
@@ -60,17 +59,17 @@ onMounted(() => {
 });
 const hightRanking = computed(() => usePersonal.hightRanking);
 const lowRanking = computed(() => usePersonal.lowRanking);
-const typeLable = ref("");
+const typeLable = ref('');
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
-    case "pr":
-      typeLable.value = "home.prs";
+    case 'pr':
+      typeLable.value = 'home.prs';
       break;
-    case "issue":
-      typeLable.value = "home.issues";
+    case 'issue':
+      typeLable.value = 'home.issues';
       break;
-    case "comment":
-      typeLable.value = "home.comments";
+    case 'comment':
+      typeLable.value = 'home.comments';
       break;
   }
 };
@@ -89,54 +88,68 @@ const search404 = ref(false);
 const searchStsate = (item: boolean) => {
   search404.value = item;
 };
-const { isScrollUp } = useScroll("up");
+const { isScrollUp } = useScroll('up');
 watch(
   () => isScrollUp.value,
   () => {
     if (isScrollUp.value) {
-      const lang = useCommon.language === "zh" ? "/zh/overview" : "/en/overview";
+      const lang =
+        useCommon.language === 'zh' ? '/zh/overview' : '/en/overview';
       router.push(lang);
     }
   }
 );
 const anchorData = computed(() => {
-  return hasPermission("SIGread")
+  return hasPermission('SIGread')
     ? [
-        "companyContributor",
-        "userContributor",
-        "groupActive",
-        "companyRelations",
-        "groupRelations",
+        'companyContributor',
+        'userContributor',
+        'groupActive',
+        'companyRelations',
+        'groupRelations',
       ]
     : [
-        "companyContributor",
-        "userContributor",
-        "groupActive",
-        // 'companyRelations',
-        "groupRelations",
+        'companyContributor',
+        'userContributor',
+        'groupActive',
+        'groupRelations',
       ];
 });
-// const anchorData = [
-//   'companyContributor',
-//   'userContributor',
-//   'groupActive',
-//   'companyRelations',
-//   'groupRelations',
-// ];
 const goToCompany = () => {
   const routeData: any = router.resolve(`/${useCommon.language}/company`);
-  window.open(routeData.href, "_blank");
+  window.open(routeData.href, '_blank');
 };
 // 跳转个人详情
 const goToUser = (data: IObject) => {
   const routeData: any = router.resolve({
     path: `/${useCommon.language}/user/${data}`,
-    // query: {
-    //   // group: 'sig',
-    //   // organization: props.sig,
-    // },
   });
-  window.open(routeData.href, "_blank");
+  window.open(routeData.href, '_blank');
+};
+const checkedComment = ref(['General']);
+const commentValue = ['General', 'Order'];
+watch(
+  () => checkedComment.value,
+  () => {
+    usePersonal.checkedComment = checkedComment.value;
+    usePersonal.getPersonalData();
+  },
+  { immediate: true }
+);
+const contributeValue = (val: any) => {
+  if (
+    JSON.stringify(checkedComment.value) === JSON.stringify(['General']) &&
+    usePersonal.personalForm.contributeType === 'comment'
+  ) {
+    return val.valid_comment;
+  } else if (
+    JSON.stringify(checkedComment.value) === JSON.stringify(['Order']) &&
+    usePersonal.personalForm.contributeType === 'comment'
+  ) {
+    return val.invalid_comment;
+  } else {
+    return val.contribute;
+  }
 };
 </script>
 
@@ -145,7 +158,7 @@ const goToUser = (data: IObject) => {
     <o-banner :style="{ backgroundImage: 'url(' + titleBg + ')' }">
       <div class="banner-title">
         <o-icon class="icon"><chevrons-up></chevrons-up></o-icon>
-        <h3 class="title">{{ t("backVitality") }}</h3>
+        <h3 class="title">{{ t('backVitality') }}</h3>
       </div>
     </o-banner>
     <div class="area">
@@ -153,17 +166,17 @@ const goToUser = (data: IObject) => {
       <div class="wrap">
         <div class="contributors-panel">
           <h3 id="companyContributor" class="title">
-            {{ t("companyContributor") }}
+            {{ t('companyContributor') }}
           </h3>
           <form-search @search-state="searchStsate" />
           <div v-if="search404" class="search404">
             <img class="cover" src="@/assets/404.png" alt="404" />
-            <p class="text">{{ t("searchTips") }}</p>
+            <p class="text">{{ t('searchTips') }}</p>
           </div>
           <the-bar v-else></the-bar>
           <div v-if="hasPermission('companyread_all')" class="goToCompany">
             <span class="title" @click="goToCompany">{{
-              t("viewOrganizationDetail")
+              t('viewOrganizationDetail')
             }}</span
             ><img
               src="@/assets/right.png"
@@ -174,7 +187,7 @@ const goToUser = (data: IObject) => {
           </div>
         </div>
         <div class="contributors-panel">
-          <h3 id="userContributor" class="title">{{ t("userContributor") }}</h3>
+          <h3 id="userContributor" class="title">{{ t('userContributor') }}</h3>
           <the-form
             :option="formOption"
             :component-name="componentName"
@@ -184,7 +197,11 @@ const goToUser = (data: IObject) => {
           <div class="ranking-list">
             <div class="ranking-list-item">
               <p class="caption">Top 1-10</p>
-              <el-table v-loading="loading" :data="hightRanking" style="width: 100%">
+              <el-table
+                v-loading="loading"
+                :data="hightRanking"
+                style="width: 100%"
+              >
                 <el-table-column
                   type="index"
                   align="center"
@@ -210,16 +227,27 @@ const goToUser = (data: IObject) => {
                     </div>
                   </template></el-table-column
                 >
-                <el-table-column
-                  align="left"
-                  class-name="type-label"
-                  :label="t(typeLable)"
-                >
+                <el-table-column class-name="type-label" :label="t(typeLable)">
+                  <template
+                    v-if="usePersonal.personalForm.contributeType === 'comment'"
+                    #header
+                  >
+                    <el-checkbox-group v-model="checkedComment" :min="1">
+                      <el-checkbox
+                        v-for="item in commentValue"
+                        :key="item"
+                        :label="item"
+                        >{{ t(item) }}</el-checkbox
+                      >
+                    </el-checkbox-group>
+                  </template>
                   <template #default="scope">
                     <div class="box">
-                      <span class="num">{{ scope.row.contribute }}</span>
+                      <span class="num">{{ contributeValue(scope.row) }}</span>
 
-                      <the-progress :item="scope.row.contribute"></the-progress>
+                      <the-progress
+                        :item="contributeValue(scope.row)"
+                      ></the-progress>
                     </div>
                   </template>
                 </el-table-column>
@@ -227,7 +255,11 @@ const goToUser = (data: IObject) => {
             </div>
             <div class="ranking-list-item">
               <p class="caption">Top 11-20</p>
-              <el-table v-loading="loading" :data="lowRanking" style="width: 100%">
+              <el-table
+                v-loading="loading"
+                :data="lowRanking"
+                style="width: 100%"
+              >
                 <el-table-column
                   type="index"
                   :index="indexMethod"
@@ -254,15 +286,27 @@ const goToUser = (data: IObject) => {
                     </div>
                   </template></el-table-column
                 >
-                <el-table-column
-                  align="left"
-                  class-name="type-label"
-                  :label="t(typeLable)"
-                >
+                <el-table-column class-name="type-label" :label="t(typeLable)">
+                  <template
+                    v-if="usePersonal.personalForm.contributeType === 'comment'"
+                    #header
+                  >
+                    <el-checkbox-group v-model="checkedComment" :min="1">
+                      <el-checkbox
+                        v-for="item in commentValue"
+                        :key="item"
+                        :label="item"
+                        >{{ t(item) }}</el-checkbox
+                      >
+                    </el-checkbox-group>
+                  </template>
                   <template #default="scope">
                     <div class="box">
-                      <span class="num">{{ scope.row.contribute }}</span>
-                      <the-progress :item="scope.row.contribute"></the-progress>
+                      <span class="num">{{ contributeValue(scope.row) }}</span>
+
+                      <the-progress
+                        :item="contributeValue(scope.row)"
+                      ></the-progress>
                     </div>
                   </template>
                 </el-table-column>
@@ -270,9 +314,6 @@ const goToUser = (data: IObject) => {
             </div>
           </div>
         </div>
-        <!-- <authority-management
-          v-if="hasPermission('SIGread')"
-        ></authority-management> -->
         <authority-management></authority-management>
       </div>
       <footer>
@@ -283,7 +324,7 @@ const goToUser = (data: IObject) => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/shared/styles/style.scss";
+@import '@/shared/styles/style.scss';
 .container {
   background: #000;
 }
