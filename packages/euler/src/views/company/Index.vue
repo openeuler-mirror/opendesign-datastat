@@ -319,16 +319,35 @@ const clean = () => {
 };
 // 贡献表搜索
 const reallListData = ref([] as IObject[]);
-
 const searchListInput = ref('');
+const filterReallData = () => {
+  const box = contributionSelectBox.value.filter((item) => {
+    if (item.isSelected) {
+      return item;
+    }
+  });
+  if (box.length) {
+    return (reallListData.value = reallListData.value.filter((item) => {
+      return box.some((it) => {
+        if (it.key === 'TC') {
+          return it.isSelected && item.is_TC_owner;
+        } else {
+          return it.isSelected && item.usertype === it.key;
+        }
+      });
+    }));
+  }
+};
 const queryListSearch = () => {
   if (searchListInput.value !== '') {
     const newList = tableData.value.filter((item: any) =>
       item.gitee_id.toLowerCase().includes(searchListInput.value)
     );
     reallListData.value = newList;
+    filterReallData();
   } else {
     reallListData.value = tableData.value;
+    filterReallData();
   }
 };
 const clearListSearchInput = () => {
@@ -374,6 +393,37 @@ const goToUser = (data: IObject) => {
     // },
   });
   window.open(routeData.href, '_blank');
+};
+
+// 新增员工筛选
+const contributionSelectBox = ref([
+  {
+    color: 'linear-gradient(45deg, #b461f6 0%, #7d32ea 100%)',
+    isSelected: false,
+    label: 'Committee',
+    key: 'TC',
+    name: 'TC',
+  },
+  {
+    color: 'linear-gradient(45deg, #005cd3 0%, #002fa7 100%)',
+    isSelected: false,
+    label: 'SIG Maintainer',
+    key: 'maintainers',
+    name: 'Maintainer',
+  },
+  {
+    color: 'linear-gradient(225deg, #feb32a 0%, #f6d365 100%)',
+    isSelected: false,
+    label: 'SIG Committer',
+    key: 'committers',
+    name: 'Committer',
+  },
+]);
+
+// 按颜色过滤
+const getcontributeValue = (item: any) => {
+  item.isSelected = !item.isSelected;
+  queryListSearch();
 };
 </script>
 <template>
@@ -536,17 +586,27 @@ const goToUser = (data: IObject) => {
               ></the-form>
             </div>
             <div class="edcolor-box">
-              <div class="blue-box">
-                <div class="box">TC</div>
-                {{ t('Committee') }}
-              </div>
-              <div class="yellow-box">
-                <div class="box">Maintainer</div>
-                SIG Maintainer
-              </div>
-              <div class="red-box">
-                <div class="box">Committer</div>
-                SIG Committer
+              <div
+                v-for="value in contributionSelectBox"
+                :key="value.label"
+                class="yellow-box"
+                style="cursor: pointer"
+                @click="getcontributeValue(value)"
+              >
+                <div
+                  class="box"
+                  :style="{
+                    background: value.isSelected ? value.color : '#cccccc',
+                  }"
+                >
+                  {{ value.name }}
+                </div>
+                <span
+                  :style="{
+                    color: value.isSelected ? '' : '#cccccc',
+                  }"
+                  >{{ t(value.label) }}</span
+                >
               </div>
             </div>
 
@@ -872,58 +932,16 @@ const goToUser = (data: IObject) => {
   display: flex;
   margin-left: 24px;
   padding-bottom: 20px;
-
-  .blue-box {
-    margin-right: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .box {
-      width: 32px;
-      height: 22px;
-      background: linear-gradient(45deg, #b461f6 0%, #7d32ea 100%);
-      border-radius: 2px;
-      font-size: 10px;
-      font-family: HarmonyOS_Sans_SC;
-      color: #ffffff;
-      line-height: 12px;
-      text-align: center;
-      margin-right: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
   .yellow-box {
     margin-right: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
     .box {
-      width: 73px;
+      // width: 73px;
+      padding: 0 8px;
       height: 22px;
       background: linear-gradient(45deg, #005cd3 0%, #002fa7 100%);
-      border-radius: 2px;
-      font-size: 10px;
-      font-family: HarmonyOS_Sans_SC;
-      color: #ffffff;
-      line-height: 12px;
-      text-align: center;
-      margin-right: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  }
-  .red-box {
-    margin-right: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .box {
-      width: 72px;
-      height: 22px;
-      background: linear-gradient(225deg, #feb32a 0%, #f6d365 100%);
       border-radius: 2px;
       font-size: 10px;
       font-family: HarmonyOS_Sans_SC;
