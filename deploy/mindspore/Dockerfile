@@ -8,7 +8,7 @@ RUN pnpm install
 
 RUN pnpm build:mindspore
 
-FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.22.0-22.03-lts
+FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.24.0-22.03-lts-sp1 as NginxBuilder
 
 
 COPY --from=Builder /home/mindspore-datastat/web/dist/mindspore /usr/share/nginx/html/
