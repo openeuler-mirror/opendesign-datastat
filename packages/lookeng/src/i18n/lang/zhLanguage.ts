@@ -36,7 +36,7 @@ export default {
     privacyLink: 'https://openlookeng.io/zh-cn/privacypolicy.html',
     legal: '法律声明',
     legalLink: 'https://openlookeng.io/zh-cn/legalnotice.html',
-    copyright: '版权所有 © 2023 openLooKeng 保留一切权利',
+    copyright: '版权所有 © 2024 openLooKeng 保留一切权利',
   },
   about: {
     explain: '数据指标解释 ',

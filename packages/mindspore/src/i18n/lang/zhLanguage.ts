@@ -37,7 +37,7 @@ export default {
     privacyLink: 'https://www.mindspore.cn/privacy',
     legal: '法律声明',
     legalLink: 'https://www.mindspore.cn/legal',
-    copyright: '版权所有©MindSpore 2023粤A2-20044005号',
+    copyright: '版权所有©MindSpore 2024粤A2-20044005号',
   },
   about: {
     explain: '数据指标解释 ',
