@@ -2,7 +2,7 @@ import 'shared/allow_sensor/sensorsdata.min.js';
 import '@/allow_sensor/sensors.js';
 import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
-import '@authing/native-js-ui-components/lib/index.min.css';
+// import '@authing/native-js-ui-components/lib/index.min.css';
 import '@/views/mobile/sig/styles/style.scss';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';

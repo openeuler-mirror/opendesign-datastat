@@ -16,7 +16,6 @@
     "build": "pnpm build:euler && pnpm build:gauss && pnpm build:lookeng && pnpm build:mindspore && pnpm build:harmony"
   },
   "dependencies": {
-    "@authing/native-js-ui-components": "^3.1.16",
     "@element-plus/icons-vue": "^2.0.4",
     "@types/d3": "^7.4.0",
     "axios": "^0.26.0",
