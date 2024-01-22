@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ t(timeTitle) }}{{t('zhcontribut')}}
+        {{ t(timeTitle) }}{{ t('zhcontribut') }}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,32 +12,34 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-        {{ t(item.label)}}{{t('zhcontribut')}}</el-dropdown-item
+          {{ t(item.label) }}{{ t('zhcontribut') }}</el-dropdown-item
         >
       </template>
     </el-dropdown>
   </div>
   <div class="left-first">
     <div class="left-first-child">
-      <span :title="`${t('Mergerequest')} PR`">{{ t("Mergerequest") }} PR</span>
+      <span :title="`${t('Mergerequest')} PR`">{{ t('Mergerequest') }} PR</span>
       <div class="left-first-child-data">
         {{ toThousands(mergeRequest) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('NeedsProblems')} Issue`">{{ t("NeedsProblems") }} Issue</span>
+      <span :title="`${t('NeedsProblems')} Issue`"
+        >{{ t('NeedsProblems') }} Issue</span
+      >
       <div class="left-first-child-data">
         {{ toThousands(issueData) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('review')} Comment`">{{ t("review") }} Comment</span>
+      <span :title="`${t('review')} Comment`">{{ t('review') }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('SIGNumber')}`">{{ t("SIGNumber") }}</span>
+      <span :title="`${t('SIGNumber')}`">{{ t('SIGNumber') }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>
@@ -46,9 +48,9 @@
 </template>
 <script setup lang="ts">
 import { toRefs, ref, onMounted, watch } from 'vue';
-import { queryCompanyUserContribute, queryCompanyUsers } from 'shared/api';
+import { queryCompanyUserContribute, queryCompanySigDetails } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
-import { processing, toThousands } from 'shared/utils/helper';
+import { toThousands } from 'shared/utils/helper';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -66,12 +68,12 @@ const comment = ref(0);
 const contributors = ref(0);
 const timeRange = [
   {
-    label: "from.lastonemonth",
-    value: "lastonemonth",
+    label: 'from.lastonemonth',
+    value: 'lastonemonth',
   },
-  { label: "from.lasthalfyear", value: "lasthalfyear" },
-  { label: "from.lastoneyear", value: "lastoneyear" },
-  { label: "from.all", value: "all" },
+  { label: 'from.lasthalfyear', value: 'lasthalfyear' },
+  { label: 'from.lastoneyear', value: 'lastoneyear' },
+  { label: 'from.all', value: 'all' },
 ];
 const time = ref('');
 const getItemListData = (data: IObject[], template: string) => {
@@ -121,9 +123,8 @@ const getcontributeListData = () => {
     timeRange: time.value,
     community: 'openeuler',
   };
-  queryCompanyUsers(query).then((data) => {
-    const Data = processing(data?.data || []);
-    contributors.value = Data.sigData['0'];
+  queryCompanySigDetails(query).then((data) => {
+    contributors.value = data?.data.length;
   });
 };
 const getAllData = () => {
@@ -153,7 +154,7 @@ const clickDrownItem = (item: IObject) => {
 };
 onMounted(() => {
   time.value = 'all';
-  timeTitle.value = "from.all";
+  timeTitle.value = 'from.all';
 });
 </script>
 <style scoped lang="scss">
