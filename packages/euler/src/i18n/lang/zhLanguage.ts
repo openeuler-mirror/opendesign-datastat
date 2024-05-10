@@ -14,6 +14,7 @@ export default {
     comments: '评审 Comment',
     sigs: '特别兴趣小组 SIG',
     repos: '代码仓库 Repository',
+    isv: '兼容性认证 ISV',
   },
   from: {
     type: '度量指标',
