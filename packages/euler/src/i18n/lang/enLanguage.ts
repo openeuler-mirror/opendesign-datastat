@@ -14,6 +14,7 @@ export default {
     comments: 'Comment',
     sigs: 'SIG',
     repos: 'Repository',
+    isv: 'ISV',
   },
   from: {
     type: 'Metric',

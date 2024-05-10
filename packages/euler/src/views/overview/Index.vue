@@ -77,6 +77,10 @@ onMounted(() => {
             <p class="title">{{ t('home.repos') }}</p>
             <p class="num">{{ toThousands(useCommon.allData.repos) }}</p>
           </div>
+          <div class="community-info">
+            <p class="title">{{ t('home.isv') }}</p>
+            <p class="num">{{ toThousands(useCommon.allData.isv) }}</p>
+          </div>
         </div>
       </div>
 
