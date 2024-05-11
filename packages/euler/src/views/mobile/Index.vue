@@ -262,6 +262,10 @@ const goToUser = (data: IObject) => {
           {{ t('home.repos')
           }}<span class="num">{{ toThousands(useCommon.allData.repos) }}</span>
         </p>
+        <p class="overview-page2-item">
+          {{ t('home.isv')
+          }}<span class="num">{{ toThousands(useCommon.allData.isv) }}</span>
+        </p>
       </div>
       <p class="time">{{ useCommon.time }}</p>
     </swiper-slide>
