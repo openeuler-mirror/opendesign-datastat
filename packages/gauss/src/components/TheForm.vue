@@ -75,6 +75,7 @@ const repoSelectState = (flag: boolean) => {
         @change="repoSelectChange"
       >
         <el-option :label="t('from.all')" value=""></el-option>
+        <el-option :label="t('from.repository')" value="coreRepo"></el-option>
         <el-option
           v-for="item in useCommon.reposData"
           :key="item"
