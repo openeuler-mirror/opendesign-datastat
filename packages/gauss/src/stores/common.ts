@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { queryAll, queryRepos } from 'shared/api/index';
+import { queryAll, queryCoreRepos } from 'shared/api/index';
 import { IObject } from 'shared/@types/interface';
 import { getNowFormatDate } from 'shared/utils/helper';
 
@@ -60,7 +60,7 @@ export const useCommonStore = defineStore('common', {
     // 获取仓库列表
     async getReposData() {
       try {
-        const res = await queryRepos('opengauss');
+        const res = await queryCoreRepos('opengauss');
         if (res.code === 200) {
           this.reposData = res.data;
         }
