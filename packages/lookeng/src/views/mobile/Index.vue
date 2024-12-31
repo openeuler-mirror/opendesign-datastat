@@ -9,7 +9,11 @@ import { openCommunityInfo } from '@/api/index';
 import { usePersonalStore } from '@/stores/personal';
 import { useCommonStore } from '@/stores/common';
 import TheForm from '@/components/TheForm.vue';
-import { formatNumber, toThousands } from 'shared/utils/helper';
+import {
+  formatNumber,
+  getYearByOffset,
+  toThousands,
+} from 'shared/utils/helper';
 
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
@@ -260,8 +264,14 @@ const backtop = () => {
           }}</a>
         </div>
         <div class="foot-item-cy">
-          <p class="mail">{{ openCommunityInfo.email }}</p>
-          <p class="cy">{{ t('footer.copyright') }}</p>
+          <p class="mail">
+            <a :href="`mailto:${openCommunityInfo.email}`">{{
+              openCommunityInfo.email
+            }}</a>
+          </p>
+          <p class="cy">
+            {{ t('footer.copyright', { year: getYearByOffset() }) }}
+          </p>
         </div>
       </div>
     </swiper-slide>
@@ -416,6 +426,9 @@ $color: #00685a;
         p {
           font-size: 12px;
           color: #555;
+          a {
+            color: inherit;
+          }
         }
         .cy {
           color: #999;

@@ -11,15 +11,19 @@ import { useCompanyStore } from '@/stores/company';
 import { usePersonalStore } from '@/stores/personal';
 import { useCommonStore } from '@/stores/common';
 import TheForm from '@/components/TheForm.vue';
-import { formatNumber, toThousands } from 'shared/utils/helper';
-import SpecialInterestGroupDiagram from "./current/SpecialInterestGroupDiagram.vue";
+import {
+  formatNumber,
+  getYearByOffset,
+  toThousands,
+} from 'shared/utils/helper';
+import SpecialInterestGroupDiagram from './current/SpecialInterestGroupDiagram.vue';
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/opengauss.png';
 import bg_mo from '@/assets/bg_mo.png';
-import { useRoute, useRouter } from "vue-router";
-import MobileTemplate from "@/components/MobileTemplate.vue";
-import { IObject } from "shared/@types/interface";
+import { useRoute, useRouter } from 'vue-router';
+import MobileTemplate from '@/components/MobileTemplate.vue';
+import { IObject } from 'shared/@types/interface';
 const useCompany = useCompanyStore();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -163,7 +167,7 @@ const backtop1 = () => {
 };
 // 跳转个人详情
 const goToUser = (data: IObject) => {
-  router.push(`/${useCommon.language}/mobile/user/${data}`)
+  router.push(`/${useCommon.language}/mobile/user/${data}`);
 };
 </script>
 <template>
@@ -374,8 +378,14 @@ const goToUser = (data: IObject) => {
           }}</a>
         </div>
         <div class="foot-item-cy">
-          <p class="mail">{{ openCommunityInfo.email }}</p>
-          <p class="copyright">{{ t('footer.copyright') }}</p>
+          <p class="mail">
+            <a :href="`mailto:${openCommunityInfo.email}`" target="_blank">{{
+              openCommunityInfo.email
+            }}</a>
+          </p>
+          <p class="copyright">
+            {{ t('footer.copyright', { year: getYearByOffset() }) }}
+          </p>
         </div>
       </div>
     </swiper-slide>
@@ -538,6 +548,9 @@ $color: #7d32ea;
         p {
           font-size: 12px;
           color: #555;
+          a {
+            color: inherit;
+          }
         }
         .cy {
           color: #999;

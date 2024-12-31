@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { openCommunityInfo } from '@/api/index';
 import { useI18n } from 'vue-i18n';
 import { useCommonStore } from '@/stores/common';
+import { getYearByOffset } from 'shared/utils/helper';
 
 import logo from '@/assets/datastat.png';
 import logoZh from '@/assets/datastat-zh.png';
@@ -30,8 +31,15 @@ locale.value = localStorage.getItem('lang') || 'zh';
           ><img class="community-logo" :src="communityLogo"
         /></a>
       </div>
-      <div class="footer-email">{{ openCommunityInfo.email }}</div>
-      <p class="copyright">{{ t('footer.copyright') }}</p>
+      <a
+        class="footer-email"
+        target="_blank"
+        :href="`mailto:${openCommunityInfo.email}`"
+        >{{ openCommunityInfo.email }}</a
+      >
+      <p class="copyright">
+        {{ t('footer.copyright', { year: getYearByOffset() }) }}
+      </p>
     </div>
     <div class="footer-option">
       <img class="atom-pc" :src="atomLogo" alt="" />
@@ -84,6 +92,8 @@ locale.value = localStorage.getItem('lang') || 'zh';
     }
   }
   .footer-email {
+    display: block;
+    line-height: inherit;
     font-size: 12px;
     color: #fff;
     margin-top: 16px;

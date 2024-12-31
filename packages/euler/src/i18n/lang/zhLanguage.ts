@@ -92,7 +92,7 @@ export default {
     legal: '法律声明',
     legalLink: 'https://www.openeuler.org/zh/other/legal/',
     atom: 'openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目',
-    copyright: '版权所有 © 2024 openEuler 保留一切权利',
+    copyright: '版权所有 © {year} openEuler 保留一切权利',
   },
   about: {
     explain: '数据指标解释 ',

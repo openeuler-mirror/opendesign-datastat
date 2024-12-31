@@ -19,6 +19,7 @@ import {
   formatNumber,
   toThousands,
   percentageTotal,
+  getYearByOffset,
 } from 'shared/utils/helper';
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
@@ -517,8 +518,14 @@ const goToUser = (data: IObject) => {
           <a :href="t('footer.legalLink')">{{ t('footer.legal') }}</a>
         </div>
         <div class="foot-item-cy">
-          <p class="mail">{{ openCommunityInfo.email }}</p>
-          <p class="cy">{{ t('footer.copyright') }}</p>
+          <p class="mail">
+            <a :href="`mailto:${openCommunityInfo.email}`" target="_blank">{{
+              openCommunityInfo.email
+            }}</a>
+          </p>
+          <p class="cy">
+            {{ t('footer.copyright', { year: getYearByOffset() }) }}
+          </p>
         </div>
       </div>
     </swiper-slide>
@@ -711,6 +718,9 @@ const goToUser = (data: IObject) => {
         p {
           font-size: 12px;
           color: #555;
+          a {
+            color: inherit;
+          }
         }
         .cy {
           color: #999;
