@@ -7,7 +7,11 @@ import 'swiper/css/pagination';
 import { useI18n } from 'vue-i18n';
 import { openCommunityInfo } from '@/api/index';
 import { useCommonStore } from '@/stores/common';
-import { formatNumber, toThousands } from 'shared/utils/helper';
+import {
+  formatNumber,
+  getYearByOffset,
+  toThousands,
+} from 'shared/utils/helper';
 
 import logo from '@/assets/datastat-black.png';
 import communityLogo from '@/assets/mindspore.png';
@@ -116,8 +120,20 @@ onMounted(() => {
           }}</a>
         </div>
         <div class="foot-item-cy">
-          <p class="mail">{{ openCommunityInfo.email }}</p>
-          <p class="cy">{{ t('footer.copyright') }}</p>
+          <p class="mail">
+            <a :href="`mailto:${openCommunityInfo.email}`" target="_blank">
+              {{ openCommunityInfo.email }}
+            </a>
+          </p>
+          <p class="cy">
+            {{ t('footer.copyright', { year: getYearByOffset() }) }}
+            <a
+              :href="openCommunityInfo.copyrightNum"
+              target="_blank"
+              rel="noopener noreferrer"
+              >{{ t('footer.copyrightNum') }}</a
+            >
+          </p>
         </div>
       </div>
     </swiper-slide>
@@ -269,10 +285,16 @@ body {
         p {
           font-size: 12px;
           color: #555;
+          a {
+            color: inherit;
+          }
         }
         .cy {
           color: #999;
           margin-top: 8px;
+          a {
+            color: inherit;
+          }
         }
       }
       .atom-item {

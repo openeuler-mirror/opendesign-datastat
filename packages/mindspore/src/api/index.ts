@@ -7,4 +7,5 @@ export const openCommunityInfo = {
   link: 'https://www.mindspore.cn/',
   link_en: 'https://www.mindspore.cn/en',
   email: 'contact@mindspore.org',
+  copyrightNum: 'https://beian.miit.gov.cn/#/Integrated/index',
 };

@@ -7,6 +7,7 @@ import { useCommonStore } from '@/stores/common';
 import logo from '@/assets/datastat.png';
 import logoZh from '@/assets/datastat-zh.png';
 import communityLogo from '@/assets/mindspore-logo.png';
+import { getYearByOffset } from 'shared/utils/helper';
 const { t, locale } = useI18n();
 const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
@@ -24,8 +25,21 @@ locale.value = localStorage.getItem('lang') || 'zh';
           ><img class="community-logo" :src="communityLogo"
         /></a>
       </div>
-      <div class="footer-email">{{ openCommunityInfo.email }}</div>
-      <p class="copyright">{{ t('footer.copyright') }}</p>
+      <a
+        class="footer-email"
+        target="_blank"
+        :href="`mailto:${openCommunityInfo.email}`"
+        >{{ openCommunityInfo.email }}</a
+      >
+      <p class="copyright">
+        {{ t('footer.copyright', { year: getYearByOffset() }) }}
+        <a
+          :href="openCommunityInfo.copyrightNum"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{{ t('footer.copyrightNum') }}</a
+        >
+      </p>
     </div>
     <ul class="footer-about">
       <li>
@@ -73,6 +87,8 @@ locale.value = localStorage.getItem('lang') || 'zh';
     }
   }
   .footer-email {
+    display: block;
+    line-height: inherit;
     font-size: 12px;
     color: #fff;
     margin-top: 16px;
@@ -80,9 +96,14 @@ locale.value = localStorage.getItem('lang') || 'zh';
 
   .copyright {
     font-size: 12px;
-    color: #fff;
-    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.8);
     margin-top: 8px;
+    a {
+      color: inherit;
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+      }
+    }
   }
   .footer-option {
     width: 340px;

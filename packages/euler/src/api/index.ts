@@ -9,5 +9,5 @@ export const openCommunityInfo = {
   name: 'openeuler',
   link: 'https://www.openeuler.org/zh/',
   link_en: 'https://www.openeuler.org/en/',
-  email: 'contact@openeuler.sh',
+  email: 'contact@openeuler.io',
 };
