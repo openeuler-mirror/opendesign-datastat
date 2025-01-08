@@ -1,4 +1,6 @@
+import { testIsPhone } from 'shared/utils/helper';
 import { createRouter, createWebHistory } from 'vue-router';
+import { useCommonStore } from './stores/common';
 
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
@@ -78,4 +80,19 @@ export const routes = [
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// 首次进入判断移动端
+const cancel = router.beforeEach((to) => {
+  cancel();
+  if (
+    to.path.endsWith('/overview') &&
+    !to.path.includes('/mobile') &&
+    testIsPhone()
+  ) {
+    const useCommon = useCommonStore();
+    const path = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
+    useCommon.setDevice(false);
+    return { path };
+  }
 });

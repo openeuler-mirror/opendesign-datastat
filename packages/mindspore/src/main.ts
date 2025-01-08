@@ -7,9 +7,9 @@ import App from './App.vue';
 import { router } from './router';
 import OIcon from 'shared/components/OIcon.vue';
 
-
 // 国际化
 import i18n from './i18n';
+import oa from './shared/analytics';
 const app = createApp(App);
 app.use(i18n);
 
@@ -18,6 +18,9 @@ app.use(createPinia());
 app.component('OIcon', OIcon);
 
 app.mount('#app');
+
+oa.enable(router);
+oa.reportPerformance();
 
 router.afterEach(() => {
   window.scrollTo(0, 0);

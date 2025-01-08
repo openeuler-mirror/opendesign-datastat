@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.4",
+    "@opensig/open-analytics": "^0.0.9",
     "@types/d3": "^7.4.0",
     "axios": "^0.26.0",
     "d3": "^7.4.4",
