@@ -1,5 +1,3 @@
-import 'shared/allow_sensor/sensorsdata.min.js';
-import '@/allow_sensor/sensors.js';
 import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
 import { createApp } from 'vue';
@@ -10,6 +8,7 @@ import OIcon from 'shared/components/OIcon.vue';
 import zhLang from 'element-plus/lib/locale/lang/zh-cn'; // 引入官方的中文国际化
 import locale from './assets/locale/cn'; // 引入自己的
 import ElementPlus from 'element-plus';
+import oa from '@/shared/analytics';
 
 // 国际化
 import i18n from './i18n';
@@ -22,6 +21,10 @@ app.use(router);
 app.use(createPinia());
 app.component('OIcon', OIcon);
 app.mount('#app');
+
+oa.enable(router);
+oa.reportPerformance();
+
 router.afterEach(() => {
   window.scrollTo(0, 0);
 });

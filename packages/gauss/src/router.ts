@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useCommonStore } from './stores/common';
+import { testIsPhone } from 'shared/utils/helper';
 
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
@@ -213,5 +214,20 @@ router.beforeEach((to) => {
     commonStore.lang = 'zh';
   } else {
     commonStore.lang = 'en';
+  }
+});
+
+// 首次进入判断移动端
+const cancel = router.beforeEach((to) => {
+  cancel();
+  if (
+    to.path.endsWith('/overview') &&
+    !to.path.includes('/mobile') &&
+    testIsPhone()
+  ) {
+    const useCommon = useCommonStore();
+    const path = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
+    useCommon.setDevice(false);
+    return { path };
   }
 });

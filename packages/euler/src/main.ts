@@ -1,5 +1,3 @@
-import 'shared/allow_sensor/sensorsdata.min.js';
-import '@/allow_sensor/sensors.js';
 import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
 // import '@authing/native-js-ui-components/lib/index.min.css';
@@ -14,6 +12,7 @@ import locale from './assets/locale/cn'; // 引入自己的
 import ElementPlus from 'element-plus';
 import 'element-plus/theme-chalk/el-message.css';
 import 'shared/styles/index.scss';
+import oa from '@/shared/analytics';
 
 // 国际化
 import i18n from './i18n';
@@ -25,6 +24,9 @@ app.use(ElementPlus, {
 app.use(router);
 app.use(createPinia());
 app.component('OIcon', OIcon);
+
+oa.enable(router);
+oa.reportPerformance();
 
 app.mount('#app');
 
