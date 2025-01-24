@@ -85,14 +85,15 @@ export const router = createRouter({
 // 首次进入判断移动端
 const cancel = router.beforeEach((to) => {
   cancel();
+  const isPhone = testIsPhone();
+  const useCommon = useCommonStore();
+  useCommon.setDevice(!isPhone);
   if (
     to.path.endsWith('/overview') &&
     !to.path.includes('/mobile') &&
-    testIsPhone()
+    isPhone
   ) {
-    const useCommon = useCommonStore();
     const path = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
-    useCommon.setDevice(false);
     return { path };
   }
 });
