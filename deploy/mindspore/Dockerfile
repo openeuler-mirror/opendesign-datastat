@@ -8,8 +8,8 @@ RUN pnpm install
 
 RUN pnpm build:mindspore
 
-FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.24.0-22.03-lts-sp1 as NginxBuilder
-
+FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:latest as NginxBuilder
+RUN yum update -y && yum install -y pcre-devel
 
 COPY --from=Builder /home/mindspore-datastat/web/dist/mindspore /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html

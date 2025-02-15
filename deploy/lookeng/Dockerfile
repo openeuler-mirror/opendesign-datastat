@@ -8,7 +8,7 @@ RUN pnpm install
 
 RUN pnpm build:lookeng
 
-FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:1.24.0-22.03-lts-sp1 as NginxBuilder
+FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:latest as NginxBuilder
 
 COPY --from=Builder /home/openlookeng-datastat/web/dist/openlookeng /usr/share/nginx/html/
 RUN chmod -R 755 /usr/share/nginx/html
