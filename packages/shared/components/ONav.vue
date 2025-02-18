@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { watch, ref, toRefs } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { NavItem } from 'shared/@types/interface';
+import { NavItem } from '../@types/interface';
 const router = useRouter();
 const route = useRoute();
 const props = defineProps({

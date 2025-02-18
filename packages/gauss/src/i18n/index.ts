@@ -2,6 +2,7 @@ import { createI18n } from 'vue-i18n';
 
 import zhLanguage from './lang/zhLanguage';
 import enLanguage from './lang/enLanguage';
+import cookie from './cookie';
 
 const messages = {
   zh: {
@@ -11,6 +12,7 @@ const messages = {
     ...enLanguage,
   },
 };
+cookie(messages);
 const setI18nLang = () => {
   const lang = localStorage.getItem('lang');
   if (lang === null) {

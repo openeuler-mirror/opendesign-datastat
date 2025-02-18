@@ -7,6 +7,8 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import vueJsxPlugin from '@vitejs/plugin-vue-jsx';
+
 export default defineConfig({
   base: '/',
   build: {
@@ -20,6 +22,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    vueJsxPlugin(),
     Icons({
       compiler: 'vue3',
       customCollections: {
@@ -36,7 +39,10 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/shared/styles/element-plus/index.scss" as *;`,
+        additionalData: `
+        @use "@/shared/styles/element-plus/index.scss" as *;
+        @use "shared/styles/mixin/screen.scss" as screen;
+        `,
       },
     },
   },

@@ -49,7 +49,9 @@
               } as any)"
             @click="goTo(val)"
           >
-            <span class="detail-menu-span" @click="goTo(val)"> {{ val.sig_names }}</span>
+            <span class="detail-menu-span" @click="goTo(val)">
+              {{ val.sig_names }}</span
+            >
           </div>
         </div>
       </div>
@@ -94,23 +96,23 @@
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import { useCommonStore } from "@/stores/common";
-import { querySigScoreAll } from "shared/api";
-import { useI18n } from "vue-i18n";
-import { IObject } from "shared/@types/interface";
-import { useStaffStore } from "@/stores/staff";
+import { nextTick, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useCommonStore } from '@/stores/common';
+import { querySigScoreAll } from 'shared/api';
+import { useI18n } from 'vue-i18n';
+import { IObject } from 'shared/@types/interface';
+import { useStaffStore } from '@/stores/staff';
 const useStaff = useStaffStore();
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
 const listData = ref([]);
-const listArry = ref([{ feature: "", arry: [] }] as IObject[]);
+const listArry = ref([{ feature: '', arry: [] }] as IObject[]);
 const getList = () => {
   const query = {
-    community: "opengauss",
+    community: 'opengauss',
   };
   querySigScoreAll(query).then((data) => {
     listData.value = data?.data || [];
@@ -119,7 +121,7 @@ const getList = () => {
         const findOne: any = pre.find((it: any) => it.feature === next.feature);
         if (findOne) {
           findOne.arry.push(next);
-        } else if (next.feature !== "") {
+        } else if (next.feature !== '') {
           pre.push({
             feature: next.feature,
             arry: [next],
@@ -128,7 +130,7 @@ const getList = () => {
         }
         return pre;
       }, [])
-      .sort((a: any, b: any) => b["arry"].length - a["arry"].length);
+      .sort((a: any, b: any) => b['arry'].length - a['arry'].length);
     listArry.value = arry;
   });
 };
@@ -139,7 +141,7 @@ const getInnovationValue = () => {
 };
 const getCommunityValue = () => {
   return listArry.value.filter((item) => {
-    return item.group === "社区治理运营";
+    return item.group === '社区治理运营';
   });
 };
 getList();
@@ -206,7 +208,7 @@ const goTo = (item: Form) => {
   justify-content: center;
   align-items: center;
   // background-color: rgba(0, 47, 167, var(--diaphaneity));
-  background: #7D32EA;
+  background: #7d32ea;
   font-size: 8px;
   font-family: HarmonyOS_Sans_SC;
   line-height: 16px;
@@ -261,7 +263,7 @@ const goTo = (item: Form) => {
   }
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 .el-dialog__header {
   padding: 0px !important;
 }

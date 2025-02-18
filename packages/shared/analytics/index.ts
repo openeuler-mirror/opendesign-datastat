@@ -3,34 +3,77 @@ import {
   OpenAnalytics,
   OpenEventKeys,
 } from '@opensig/open-analytics';
+import { reportAnalytics } from '../api/api-analytics';
+import { COOKIE_AGREED_STATUS, useCookieStore } from '../stores/cookies';
 import { Router } from 'vue-router';
 
-export abstract class OAUtil {
+export class OAUtil {
   service = 'datastat';
-  abstract getInstance(): OpenAnalytics;
+  appKey: string;
+  routerGuards?: (() => void)[];
+  oa: OpenAnalytics;
+  reportPerfCount = 0;
 
-  async enable(router: Router) {
-    const oa = this.getInstance();
-    oa.setHeader(getClientInfo());
-    oa.enableReporting(true);
-    await router.isReady();
-    this.reportPV();
-    router.beforeEach((to, from) => {
-      if (from.path === '/' || to.path === from.path) {
-        return;
-      }
-      to.meta.$referrer = window.location.href;
-    });
-    router.afterEach((to, from) => {
-      if (to.path === from.path) {
-        return;
-      }
-      this.reportPV(to.meta.$referrer as string);
+  constructor(appKey: string, reportUrlSuffix: string) {
+    this.appKey = appKey;
+    this.oa = new OpenAnalytics({
+      appKey: this.appKey,
+      request: (data) => {
+        if (
+          useCookieStore().getUserCookieStatus() !==
+          COOKIE_AGREED_STATUS.ALL_AGREED
+        ) {
+          this.disable();
+          return;
+        }
+        reportAnalytics(reportUrlSuffix, data);
+      },
     });
   }
 
+  enable(router: Router) {
+    this.oa.setHeader(getClientInfo());
+    this.oa.enableReporting(true);
+    this.setupRouterGuards(router);
+    if (this.reportPerfCount >= 1) {
+      return;
+    }
+    this.reportPerfCount++;
+    this.reportPerformance();
+  }
+
+  async setupRouterGuards(router: Router) {
+    await router.isReady();
+    this.reportPV();
+    (this.routerGuards ??= []).push(
+      router.beforeEach((to, from) => {
+        if (from.path === '/' || to.path === from.path) {
+          return;
+        }
+        to.meta.$referrer = window.location.href;
+      }),
+      router.afterEach((to, from) => {
+        if (to.path === from.path) {
+          return;
+        }
+        this.reportPV(to.meta.$referrer as string);
+      })
+    );
+  }
+
   disable() {
-    this.getInstance().enableReporting(false);
+    this.oa.enableReporting(false);
+    if (this.routerGuards) {
+      this.routerGuards.forEach((item) => item());
+      this.routerGuards = [];
+    }
+    [
+      `oa-${this.appKey}-client`,
+      `oa-${this.appKey}-events`,
+      `oa-${this.appKey}-session`,
+    ].forEach((key) => {
+      localStorage.removeItem(key);
+    });
   }
 
   reportPV($referrer?: string) {
@@ -46,7 +89,10 @@ export abstract class OAUtil {
       eventOptions?: any;
     }
   ) {
-    return this.getInstance().report(
+    if (!this.oa.enabled) {
+      return;
+    }
+    return this.oa.report(
       event,
       async () => ({
         $service,
