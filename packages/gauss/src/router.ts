@@ -4,7 +4,10 @@ import { testIsPhone } from 'shared/utils/helper';
 
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
-
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+  },
   {
     path: '/zh/overview',
     name: 'zh_overview',
@@ -198,6 +201,13 @@ export const routes = [
     name: 'en_mobile_all_user',
     component: () => {
       return import('@/views/mobile/person/Index.vue');
+    },
+  },
+  {
+    path: '/404',
+    name: 'not_found',
+    component: () => {
+      return import('@/components/NotFound.vue');
     },
   },
 ];

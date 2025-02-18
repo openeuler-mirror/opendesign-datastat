@@ -3,33 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" href="./favicon.ico" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
     <title>openGauss DATASTAT</title>
   </head>
   <body>
     <div id="app"></div>
-    <div id="ieTips" style="text-align: center;padding:20px 0;display: none;">
+    <div id="ieTips" style="text-align: center; padding: 20px 0; display: none">
       <p>不支持IE，请使用其他浏览器访问！</p>
       <p>IE is not supported, please use another browser to visit!</p>
     </div>
     <script type="module" src="./src/main.ts"></script>
     <script>
-      function isIE() { 
-        if (!!window.ActiveXObject || "ActiveXObject" in window)
+      function isIE() {
+        if (!!window.ActiveXObject || 'ActiveXObject' in window) {
           return true;
-          else
+        } else {
           return false;
-        } 
-        if(isIE()){ 
-          document.querySelector('#ieTips').style.display= 'block'
-        } 
+        }
+      }
+      if (isIE()) {
+        document.querySelector('#ieTips').style.display = 'block';
+      }
     </script>
     <script>
       var _hmt = _hmt || [];
-      (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?0f2023d05716710fab4f4d4352f4c9ce";
-        var s = document.getElementsByTagName("script")[0]; 
+      (function () {
+        var hm = document.createElement('script');
+        hm.src = 'https://hm.baidu.com/hm.js?0f2023d05716710fab4f4d4352f4c9ce';
+        var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(hm, s);
       })();
     </script>

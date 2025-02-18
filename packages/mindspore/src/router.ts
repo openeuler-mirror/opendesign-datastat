@@ -10,6 +10,17 @@ export const routes = [
     redirect: '/zh/overview',
   },
   {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+  },
+  {
+    path: '/404',
+    name: 'not_found',
+    component: () => {
+      return import('@/components/NotFound.vue');
+    },
+  },
+  {
     path: '/zh/overview',
     name: 'zh_overview',
     component: () => {
