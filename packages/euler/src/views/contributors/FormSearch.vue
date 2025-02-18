@@ -87,7 +87,9 @@ const formOptionSwitch = computed(() => {
       active: 'pr',
       list: [
         { label: t('home.prs'), value: 'pr' },
-        { label: t('feature'), value: 'feature' },
+        { label: t('home.issues'), value: 'issue' },
+        { label: t('home.comments'), value: 'comment' },
+        // { label: t('from.LOC'), value: 'cloc' },
       ],
     },
     {

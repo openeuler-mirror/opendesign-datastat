@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useCommonStore } from './stores/common';
 import { querySigInfo, queryUserList } from 'shared/api';
-import { isTest } from 'shared/utils/helper';
+import { isTest, testIsPhone } from 'shared/utils/helper';
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/404'
+    redirect: '/404',
   },
   {
     path: '/zh/overview',
@@ -360,5 +360,21 @@ router.beforeEach((to) => {
   } else {
     commonStore.lang = 'en';
     localStorage.setItem('lang', 'en');
+  }
+});
+
+// 首次进入判断移动端
+const cancel = router.beforeEach((to) => {
+  cancel();
+  const isPhone = testIsPhone();
+  const useCommon = useCommonStore();
+  useCommon.setDevice(!isPhone);
+  if (
+    to.path.endsWith('/overview') &&
+    !to.path.includes('/mobile') &&
+    isPhone
+  ) {
+    const path = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
+    return { path };
   }
 });

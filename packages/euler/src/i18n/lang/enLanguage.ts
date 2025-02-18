@@ -14,8 +14,7 @@ export default {
     comments: 'Comment',
     sigs: 'SIG',
     repos: 'Repository',
-    issuesClose: 'Issue Closed',
-    cve: 'CVE',
+    isv: 'ISV',
   },
   from: {
     type: 'Metric',
@@ -98,7 +97,7 @@ export default {
     legal: 'Legal Notice',
     legalLink: 'https://www.openeuler.org/en/other/legal/',
     atom: 'openEuler is an open source project incubated and operated by the OpenAtom Foundation.',
-    copyright: 'Copyright © 2023 openEuler. All rights reserved.',
+    copyright: 'Copyright © {year} openEuler. All rights reserved.',
   },
   about: {
     explain: 'Data Indicator Interpretation ',

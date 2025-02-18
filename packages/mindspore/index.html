@@ -15,14 +15,15 @@
     <script type="module" src="./src/main.ts"></script>
     <script>
       function isIE() { 
-        if (!!window.ActiveXObject || "ActiveXObject" in window)
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
           return true;
-          else
+        } else {
           return false;
-        } 
-        if(isIE()){ 
-          document.querySelector('#ieTips').style.display= 'block'
-        } 
+        }
+      }
+      if (isIE()) { 
+        document.querySelector('#ieTips').style.display= 'block'
+      } 
     </script>
     <script>
       var _hmt = _hmt || [];

@@ -16,6 +16,7 @@ import { ElMessage } from 'element-plus';
 interface RequestConfig<D = any> extends AxiosRequestConfig {
   data?: D;
   global?: boolean; // 是否为全局请求， 全局请求在清除请求池时，不清除
+  ignoreError?: boolean;
 }
 
 interface RequestInstance extends AxiosInstance {
@@ -139,10 +140,12 @@ const responseInterceptorId = request.interceptors.response.use(
             message: msg,
           });
         } else {
-          ElMessage.error({
-            showClose: true,
-            message: err.message,
-          });
+          if (!(config as RequestConfig).ignoreError) {
+            ElMessage.error({
+              showClose: true,
+              message: err.message,
+            });
+          }
         }
         tokenFailIndicateLogin();
       }

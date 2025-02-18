@@ -161,6 +161,14 @@ export function queryRepos(name: string) {
   const url = `/query/community/repos?community=${name}`;
   return request.get(url).then((res: AxiosResponse) => res.data);
 }
+/**
+ * 获取gauss所有的repos
+ *
+ */
+export function queryCoreRepos(name: string) {
+  const url = `/query/community/coreRepos?community=${name}`;
+  return request.get(url).then((res: AxiosResponse) => res.data);
+}
 
 /**
  * sig侧边栏详情

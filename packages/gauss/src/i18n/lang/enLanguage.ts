@@ -25,6 +25,7 @@ export default {
     all: 'All',
     displayRange: 'Display Range',
     pleasePartner: 'Please enter an organization name',
+    repository: 'Core repository',
   },
   contributionsTitle: 'Community Contribution data',
   userContributor: 'Contribution by Individuals',
@@ -90,7 +91,7 @@ export default {
     privacyLink: 'https://opengauss.org/en/privacyPolicy.html',
     legal: 'Legal Notice',
     legalLink: 'https://opengauss.org/en/legal.html',
-    copyright: 'Copyright © openGauss 2023. All rights reserved.',
+    copyright: 'Copyright © openGauss {year}. All rights reserved.',
   },
   about: {
     explain: 'Data Indicator Interpretation ',

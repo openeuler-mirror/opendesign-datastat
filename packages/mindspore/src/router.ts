@@ -1,4 +1,6 @@
+import { testIsPhone } from 'shared/utils/helper';
 import { createRouter, createWebHistory } from 'vue-router';
+import { useCommonStore } from './stores/common';
 
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
@@ -6,6 +8,17 @@ export const routes = [
   {
     path: '/zh',
     redirect: '/zh/overview',
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+  },
+  {
+    path: '/404',
+    name: 'not_found',
+    component: () => {
+      return import('@/components/NotFound.vue');
+    },
   },
   {
     path: '/zh/overview',
@@ -78,4 +91,20 @@ export const routes = [
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// 首次进入判断移动端
+const cancel = router.beforeEach((to) => {
+  cancel();
+  const isPhone = testIsPhone();
+  const useCommon = useCommonStore();
+  useCommon.setDevice(!isPhone);
+  if (
+    to.path.endsWith('/overview') &&
+    !to.path.includes('/mobile') &&
+    isPhone
+  ) {
+    const path = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
+    return { path };
+  }
 });

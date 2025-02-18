@@ -25,6 +25,7 @@ export default {
     displayRange: '显示范围',
     pleasePartner: '请输入单位名称搜索',
     all: '全部',
+    repository: '核心仓库',
   },
   contributionsTitle: '社区贡献数据',
   userContributor: '个人会员贡献',
@@ -89,7 +90,7 @@ export default {
     privacyLink: 'https://opengauss.org/zh/privacyPolicy.html',
     legal: '法律声明',
     legalLink: 'https://opengauss.org/zh/legal.html',
-    copyright: '版权所有 © openGauss 2023 保留一切权利',
+    copyright: '版权所有 © openGauss {year} 保留一切权利',
   },
   about: {
     explain: '数据指标解释 ',

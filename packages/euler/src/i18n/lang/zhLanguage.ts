@@ -14,8 +14,7 @@ export default {
     comments: '评审 Comment',
     sigs: '特别兴趣小组 SIG',
     repos: '代码仓库 Repository',
-    issuesClose: 'Issue闭环个数',
-    cve: 'CVE闭环个数',
+    isv: '满足兼容 ISV',
   },
   from: {
     type: '度量指标',
@@ -96,7 +95,7 @@ export default {
     legal: '法律声明',
     legalLink: 'https://www.openeuler.org/zh/other/legal/',
     atom: 'openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目',
-    copyright: '版权所有 © 2023 openEuler 保留一切权利',
+    copyright: '版权所有 © {year} openEuler 保留一切权利',
   },
   about: {
     explain: '数据指标解释 ',

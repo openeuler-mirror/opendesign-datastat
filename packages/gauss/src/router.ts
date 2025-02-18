@@ -1,9 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useCommonStore } from './stores/common';
+import { testIsPhone } from 'shared/utils/helper';
 
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
-
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+  },
   {
     path: '/zh/overview',
     name: 'zh_overview',
@@ -199,6 +203,13 @@ export const routes = [
       return import('@/views/mobile/person/Index.vue');
     },
   },
+  {
+    path: '/404',
+    name: 'not_found',
+    component: () => {
+      return import('@/components/NotFound.vue');
+    },
+  },
 ];
 
 export const router = createRouter({
@@ -213,5 +224,21 @@ router.beforeEach((to) => {
     commonStore.lang = 'zh';
   } else {
     commonStore.lang = 'en';
+  }
+});
+
+// 首次进入判断移动端
+const cancel = router.beforeEach((to) => {
+  cancel();
+  const isPhone = testIsPhone();
+  const useCommon = useCommonStore();
+  useCommon.setDevice(!isPhone);
+  if (
+    to.path.endsWith('/overview') &&
+    !to.path.includes('/mobile') &&
+    isPhone
+  ) {
+    const path = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
+    return { path };
   }
 });

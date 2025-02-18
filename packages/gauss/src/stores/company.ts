@@ -35,7 +35,7 @@ export const useCompanyStore = defineStore('company', {
       contributeType: 'PR',
       timeRange: 'all',
       displayRange: '10',
-      repo: 'opengauss/openGauss-server',
+      repo: 'coreRepo',
     },
   }),
   actions: {
