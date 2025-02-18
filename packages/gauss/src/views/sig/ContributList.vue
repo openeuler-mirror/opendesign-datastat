@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import TheProgress from '@/components/TheProgress.vue';
-import OFormRadio from '@/components/OFormRadio.vue';
-import { ref, computed, watch, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { openCommunityInfo } from '@/api/index';
-import { querySigUserContribute } from 'shared/api/index';
-import { sortExp } from 'shared/utils/helper';
-import { IObject } from 'shared/@types/interface';
-import IconUser from '~icons/app/search';
-import OIcon from 'shared/components/OIcon.vue';
-import { useCommonStore } from '@/stores/common';
-import { useRouter } from 'vue-router';
-import { hasPermission } from 'shared/utils/login';
-import ONoDataImage from 'shared/components/ONoDataImage.vue';
+import TheProgress from "@/components/TheProgress.vue";
+import OFormRadio from "@/components/OFormRadio.vue";
+import { ref, computed, watch, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
+import { openCommunityInfo } from "@/api/index";
+import { querySigUserContribute } from "shared/api/index";
+import { sortExp } from "shared/utils/helper";
+import { IObject } from "shared/@types/interface";
+import IconUser from "~icons/app/search";
+import OIcon from "shared/components/OIcon.vue";
+import { useCommonStore } from "@/stores/common";
+import { useRouter } from "vue-router";
+import { hasPermission } from "shared/utils/login";
+import ONoDataImage from "shared/components/ONoDataImage.vue";
 
 const router = useRouter();
 const useCommon = useCommonStore();
@@ -21,22 +21,22 @@ const props = defineProps({
   sig: {
     type: String,
     required: true,
-    default: '',
+    default: "",
   },
 });
 const contributionSelectBox = ref([
   {
-    color: '#7D32EA',
+    color: "#7D32EA",
     isSelected: true,
-    label: 'Maintainer',
-    key: 'maintainers',
+    label: "Maintainer",
+    key: "maintainers",
   },
-  { color: '#feb32a', isSelected: true, label: 'Committer', key: 'committers' },
+  { color: "#feb32a", isSelected: true, label: "Committer", key: "committers" },
   {
-    color: '#4aaead',
+    color: "#4aaead",
     isSelected: true,
-    label: 'Contributor',
-    key: 'contributor',
+    label: "Contributor",
+    key: "contributor",
   },
 ]);
 const filterReallData = () => {
@@ -48,17 +48,17 @@ const filterReallData = () => {
 };
 const reallData = ref([] as IObject[]);
 const param = ref({
-  contributeType: 'pr',
-  timeRange: 'all',
+  contributeType: "pr",
+  timeRange: "all",
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
 } as IObject);
 const memberData = ref([]);
 const memberMax = ref(0);
-const searchInput = ref('');
+const searchInput = ref("");
 const getMemberData = () => {
   querySigUserContribute(param.value).then((data) => {
-    const memberList = data?.data?.sort(sortExp('contribute', false)) || [];
+    const memberList = data?.data?.sort(sortExp("contribute", false)) || [];
     if (memberList.length === 0) {
       memberMax.value = 0;
       memberData.value = [];
@@ -78,47 +78,47 @@ const getMemberData = () => {
 const lastformOption = computed(() => {
   return [
     {
-      label: t('from.type'),
-      id: 'contributeType',
-      active: 'pr',
+      label: t("from.type"),
+      id: "contributeType",
+      active: "pr",
       list: [
-        { label: t('home.prs'), value: 'pr' },
-        { label: t('home.issues'), value: 'issue' },
-        { label: t('home.comments'), value: 'comment' },
+        { label: t("home.prs"), value: "pr" },
+        { label: t("home.issues"), value: "issue" },
+        { label: t("home.comments"), value: "comment" },
       ],
     },
     {
-      label: t('from.timeRange'),
-      id: 'timeRange',
-      active: 'all',
+      label: t("from.timeRange"),
+      id: "timeRange",
+      active: "all",
       list: [
-        { label: t('from.lastonemonth'), value: 'lastonemonth' },
-        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
-        { label: t('from.lastoneyear'), value: 'lastoneyear' },
-        { label: t('from.all'), value: 'all' },
+        { label: t("from.lastonemonth"), value: "lastonemonth" },
+        { label: t("from.lasthalfyear"), value: "lasthalfyear" },
+        { label: t("from.lastoneyear"), value: "lastoneyear" },
+        { label: t("from.all"), value: "all" },
       ],
     },
   ];
 });
 // theform组件调用
-const componentName = 'member';
+const componentName = "member";
 const loading = ref(true);
 const getContributeInfo = (e: IObject) => {
   param.value[e.id] = e.active;
   getMemberData();
   switchType();
 };
-const typeLable = ref('');
+const typeLable = ref("");
 const switchType = () => {
   switch (param.value.contributeType) {
-    case 'pr':
-      typeLable.value = 'home.prs';
+    case "pr":
+      typeLable.value = "home.prs";
       break;
-    case 'issue':
-      typeLable.value = 'home.issues';
+    case "issue":
+      typeLable.value = "home.issues";
       break;
-    case 'comment':
-      typeLable.value = 'home.comments';
+    case "comment":
+      typeLable.value = "home.comments";
       break;
   }
 };
@@ -137,14 +137,15 @@ const currentPage = ref(1);
 // 显示第几页
 const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  if (!val?.isTrusted) {
+  if (val?.isTrusted) {
+  } else {
     currentPage.value = val;
   }
 };
 // 搜索过滤
 
 const querySearch = () => {
-  if (searchInput.value !== '') {
+  if (searchInput.value !== "") {
     const newList = memberData.value.filter((item: any) =>
       item.gitee_id.toLowerCase().includes(searchInput.value)
     );
@@ -156,7 +157,7 @@ const querySearch = () => {
 };
 const clearSearchInput = () => {
   getMemberData();
-  searchInput.value = '';
+  searchInput.value = "";
 };
 
 // 按颜色过滤
@@ -168,8 +169,12 @@ const getcontributeValue = (item: any) => {
 const goToUser = (data: IObject) => {
   const routeData: any = router.resolve({
     path: `/${useCommon.language}/user/${data}`,
+    // query: {
+    //   group: 'sig',
+    //   organization: props.sig,
+    // },
   });
-  window.open(routeData.href, '_blank');
+  window.open(routeData.href, "_blank");
 };
 </script>
 <template>
@@ -192,9 +197,7 @@ const goToUser = (data: IObject) => {
               @clear="clearSearchInput"
             >
               <template #prefix>
-                <o-icon class="search-icon"
-                  ><icon-user></icon-user
-                ></o-icon> </template
+                <o-icon class="search-icon"><icon-user></icon-user></o-icon> </template
             ></el-input>
           </div> </template
       ></o-form-radio>
@@ -221,6 +224,10 @@ const goToUser = (data: IObject) => {
         >
       </div>
     </div>
+    <!-- <div class="leader">
+      <div class="leader-box">Leader</div>
+      <span>SIG Leader</span>
+    </div> -->
     <div v-if="reallData?.length" class="ranking-list">
       <div class="ranking-list-item">
         <p class="caption"></p>
@@ -229,12 +236,7 @@ const goToUser = (data: IObject) => {
           :data="reallData.slice((currentPage - 1) * 10, currentPage * 10)"
           style="width: 100%"
         >
-          <el-table-column
-            prop="rank"
-            align="center"
-            :label="t('Number')"
-            width="120"
-          />
+          <el-table-column prop="rank" align="center" :label="t('Number')" width="120" />
           <el-table-column
             prop="gitee_id"
             align="left"
@@ -271,11 +273,7 @@ const goToUser = (data: IObject) => {
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            align="left"
-            class-name="type-label"
-            :label="t(typeLable)"
-          >
+          <el-table-column align="left" class-name="type-label" :label="t(typeLable)">
             <template #default="scope">
               <div class="box">
                 <span class="num">{{ scope.row.contribute }}</span>
@@ -295,8 +293,8 @@ const goToUser = (data: IObject) => {
     <div v-else><o-no-data-image></o-no-data-image></div>
     <div class="demo-pagination-block">
       <el-pagination
-        v-show="reallData.length > 10"
         class="o-pagination"
+        v-show="reallData.length > 10"
         :current-page="currentPage"
         :page-size="10"
         background
@@ -308,22 +306,24 @@ const goToUser = (data: IObject) => {
           class="el-pagination__jump"
           style="cursor: pointer"
           @click="handleCurrentChange"
-          >{{ t('Goto') }}</span
+          >{{ t("Goto") }}</span
         >
       </el-pagination>
-      <span
-        v-if="reallData.length > 10"
-        class="el-pagination el-pagination__jump"
-        >{{ t('page') }}</span
-      >
+      <span v-if="reallData.length > 10" class="el-pagination el-pagination__jump">{{
+        t("page")
+      }}</span>
     </div>
   </div>
 </template>
 <style scoped lang="scss">
-@import '@/shared/styles/style.scss';
+@import "@/shared/styles/style.scss";
+// .theSecondForm {
+//   // padding-right: 24px;
+// }
 .ranking-list {
   display: grid;
   grid-template-columns: 100%;
+  // padding-right: 24px;
   :deep(.el-scrollbar__bar.is-horizontal) {
     height: 0px;
   }
@@ -423,6 +423,7 @@ const goToUser = (data: IObject) => {
 .usertypecolorbox {
   width: 12px;
   height: 12px;
+  // background: linear-gradient(var(--color));
   background: var(--color);
   border-radius: 50%;
   margin-right: 8px;

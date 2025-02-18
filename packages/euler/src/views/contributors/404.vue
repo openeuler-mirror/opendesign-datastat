@@ -27,7 +27,7 @@ import AppFooter from '@/components/AppFooter.vue';
   margin-top: 10px;
 }
 .png {
-  background-image: url('@/assets/404.png');
+  background-image: url("@/assets/404.png");
   background-repeat: no-repeat;
   background-size: 300px 300px;
   width: 300px;

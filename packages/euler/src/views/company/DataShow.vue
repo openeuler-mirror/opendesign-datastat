@@ -139,6 +139,13 @@ watch(
     getAllData();
   }
 );
+// watch(
+//   () => company.value,
+//   () => {
+//     time.value = 'all';
+//     timeTitle.value = '全部';
+//   }
+// );
 const timeTitle = ref('');
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;

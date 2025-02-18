@@ -26,6 +26,7 @@
     margin: 0 auto;
     position: relative;
     z-index: 9;
+    // text-align: center;
   }
   .o-banner-video,
   .video-layer {

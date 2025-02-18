@@ -59,7 +59,7 @@ export default {
   MailingList: '邮件列表',
   channel: 'IRC频道',
   warehouse: '仓库',
-  slogan: '调优领域相关技术探索；AI辅助性能分析',
+  slogan:'调优领域相关技术探索；AI辅助性能分析',
   active: '活跃度',
   Mergerequest: '合并请求',
   groupRelations: '技术委员会委员与特别兴趣小组关系',

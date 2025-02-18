@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
 import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
-import { queryVersions, queryItems } from 'shared/api/index';
+import { queryVersions } from 'shared/api/index';
 import TheForm from '@/components/TheForm.vue';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
@@ -53,8 +53,6 @@ const formOption = computed(() => {
         { label: t('home.prs'), value: 'pr' },
         { label: t('home.issues'), value: 'issue' },
         { label: t('home.comments'), value: 'comment' },
-        { label: t('home.issuesClose'), value: 'issue_done' },
-        { label: t('home.cve'), value: 'issue_cve' },
       ],
     },
     {
@@ -183,6 +181,9 @@ const getContributeInfo = (item: IObject) => {
   }
 };
 
+// onMounted(() => {
+//   getStatistical();
+// });
 const isMobile: boolean = testIsPhone();
 const formOptionAll = ref<any>([]);
 const getConfig = (val: any) => {
@@ -206,27 +207,16 @@ const getConfig = (val: any) => {
       });
       formOptionAll.value.value = formOptionSwitch;
       useCompany.companyForm.contributeType = 'pr';
-      useCompany.companyForm.version = 'all';
+      useCompany.companyForm.version = useCompany.defaultNum;
       useCompany.companyForm.timeRange = '';
       useCompany.companyForm.displayRange = '10';
       useCompany.getCompanyData();
     });
-  } else if (
-    useCompany.companyValue === 'All' ||
-    useCompany.companyValue === 'allInnoItems'
-  ) {
-    statisticalNum.value = [];
-    formOptionAll.value.value = formOption;
-    useCompany.companyForm.contributeType = 'pr';
-    useCompany.companyForm.timeRange = 'lastonemonth';
-    useCompany.companyForm.version = '';
-    useCompany.companyForm.displayRange = '10';
-    useCompany.getCompanyData();
   } else {
     statisticalNum.value = [];
     formOptionAll.value.value = formOption;
     useCompany.companyForm.contributeType = 'pr';
-    useCompany.companyForm.timeRange = 'all';
+    useCompany.companyForm.timeRange = 'lastonemonth';
     useCompany.companyForm.version = '';
     useCompany.companyForm.displayRange = '10';
     useCompany.getCompanyData();
@@ -238,62 +228,13 @@ watch(
   () => getConfig(useCompany.switchValue),
   { immediate: true }
 );
-
-const selectChange = () => {
-  if (useCompany.companyValue === 'ISO') {
-    useCompany.switchValue = true;
-    useCompany.getCompanyData();
-  } else if (
-    useCompany.companyValue === 'All' ||
-    useCompany.companyValue === 'allInnoItems'
-  ) {
-    useCompany.switchValue = false;
-    useCompany.getCompanyData();
-  } else {
-    useCompany.switchValue = false;
-    useCompany.companyForm.timeRange = 'all';
-    useCompany.getCompanyData();
-  }
-};
-const listItems = ref();
-const getAllList = () => {
-  queryItems({ community: 'openeuler' }).then((res) => {
-    listItems.value = res.data;
-  });
-};
-getAllList();
 </script>
 
 <template>
   <div class="contributions-statistical">
     <div class="switch">
-      <span class="switchTitile">{{ t('from.version') }}</span>
-      <!-- <el-switch v-model="useCompany.switchValue" /> -->
-      <el-select
-        v-model="useCompany.companyValue"
-        :placeholder="t('companyName')"
-        clearable
-        filterable
-        style="width: 300px"
-        @change="selectChange"
-      >
-        <el-option :label="t('from.project')" value="All"></el-option>
-        <el-option :label="t('ISO')" value="ISO"></el-option>
-        <el-option
-          :label="t('from.innproject')"
-          value="allInnoItems"
-        ></el-option>
-        <el-option
-          v-for="item in listItems"
-          :key="item"
-          style="padding: 0 32px 0 40px"
-          :label="item"
-          :value="item"
-        ></el-option>
-        <template #empty>
-          <div class="empty">{{ t('noData') }}</div>
-        </template>
-      </el-select>
+      <span class="switchTitile">{{ t('from.version') }}</span
+      ><el-switch v-model="useCompany.switchValue" />
     </div>
 
     <the-form
@@ -378,12 +319,5 @@ getAllList();
     line-height: 28px;
     font-size: 14px;
   }
-}
-
-.empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #4e5865;
 }
 </style>

@@ -85,6 +85,38 @@ onMounted(() => {
           ></template>
         </o-mobile-template>
       </swiper-slide>
+      <!-- <swiper-slide>
+        <o-mobile-template padding-top="0.75rem">
+          <template #header>
+            {{ 'SIG ' + t('currentVitalityIndex') }}
+          </template>
+          <template #content>
+            <vital-index :sig="sencondTitle"></vital-index>
+          </template>
+        </o-mobile-template>
+      </swiper-slide>
+      <swiper-slide>
+        <o-mobile-template padding-top="0.75rem">
+          <template #header>
+            {{ 'SIG ' + t('historicalVitalityIndicators') }}
+          </template>
+          <template #content>
+            <mobile-historical-trend
+              :sig="sencondTitle"
+            ></mobile-historical-trend
+          ></template>
+        </o-mobile-template>
+      </swiper-slide> -->
+      <!-- <swiper-slide>
+        <o-mobile-template padding-top="0.75rem">
+          <template #header>
+            {{ 'SIG ' + t('companyContributor') }}
+          </template>
+          <template #content>
+            <mobile-table-list :sig="sencondTitle"></mobile-table-list
+          ></template>
+        </o-mobile-template>
+      </swiper-slide> -->
       <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
           <template #header>

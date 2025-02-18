@@ -19,7 +19,13 @@ const route = useRoute();
 const { t, locale } = useI18n();
 
 const navList = computed(() => {
-  return [];
+  return [
+    // {
+    //   id: 'overview',
+    //   label: t('nav.overview'),
+    //   href: '/overview',
+    // },
+  ];
 });
 const language = computed(() => useCommon.language);
 const ISPC = computed(() => useCommon.ISPC);

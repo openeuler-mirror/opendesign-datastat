@@ -169,7 +169,7 @@ const contributeValue = (val: any) => {
             {{ t('companyContributor') }}
           </h3>
           <form-search @search-state="searchStsate" />
-          <div v-if="search404 || useCompany.dataShow" class="search404">
+          <div v-if="search404" class="search404">
             <img class="cover" src="@/assets/404.png" alt="404" />
             <p class="text">{{ t('searchTips') }}</p>
           </div>
@@ -186,7 +186,6 @@ const contributeValue = (val: any) => {
             />
           </div>
         </div>
-        <!-- <SoftwareContribute></SoftwareContribute> -->
         <div class="contributors-panel">
           <h3 id="userContributor" class="title">{{ t('userContributor') }}</h3>
           <the-form

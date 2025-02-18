@@ -11,6 +11,9 @@
     >
       <swiper-slide>
         <o-mobile-template padding-top="0.75rem">
+          <!-- <template #header>
+            {{ 'SIG ' + t('historicalVitalityIndicators') }}
+          </template> -->
           <template #content>
             <info :user="sencondTitle"></info>
           </template>
@@ -40,14 +43,15 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useI18n } from 'vue-i18n';
+import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
-import { queryUserList } from 'shared/api';
+import { querySigName, queryUserList } from 'shared/api';
 import { useRoute, useRouter } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import ContributionDynamic from './ContributionDynamic.vue';
@@ -60,6 +64,7 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const sencondTitle = ref('');
+// sencondTitle.value = route.params.name as string;
 const sigTitle = ref('');
 sigTitle.value = route.query.organization as string;
 const group = ref('');
@@ -90,7 +95,9 @@ const allSigs = ref();
 const drownData = ref([] as any[]);
 const getDrownData = () => {
   const query = {
+    // group: group.value,
     community: openCommunityInfo.name,
+    // name: sigTitle.value,
   };
   queryUserList(query as any).then((data) => {
     allSigs.value = data?.data || {};

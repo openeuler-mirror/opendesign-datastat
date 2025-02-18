@@ -44,6 +44,7 @@ const formOption = computed(() => {
       id: 'displayRange',
       list: [
         { label: 'Top10', value: '10' },
+        // { label: 'Top20', value: '20' },
         { label: t('from.all'), value: 'all' },
       ],
     },

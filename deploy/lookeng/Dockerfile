@@ -14,11 +14,8 @@ COPY --from=Builder /home/openlookeng-datastat/web/dist/openlookeng /usr/share/n
 RUN chmod -R 755 /usr/share/nginx/html
 COPY ./deploy/lookeng/nginx.conf /etc/nginx/nginx.conf
 
-RUN touch /var/run/nginx.pid \
-    && chown -R nginx:nginx /var/log/nginx \ 
-    && chown -R nginx:nginx /var/run/nginx.pid \ 
-    && chown -R nginx:nginx /etc/nginx
+ENV RUN_USER nginx
+ENV RUN_GROUP nginx
 EXPOSE 8080
-USER nginx
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
 

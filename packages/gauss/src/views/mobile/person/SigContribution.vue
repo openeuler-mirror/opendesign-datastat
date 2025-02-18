@@ -156,6 +156,7 @@ const querySearch = () => {
       item.sig_name.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
+    // filterReallData();
   } else {
     getMemberData();
   }
@@ -325,6 +326,8 @@ const goToCompany = (data: IObject) => {
   &-item {
     margin: 16px 0;
     list-style: none;
+    // display: flex;
+    // justify-content: space-between;
     .infos {
       font-size: 16px;
       color: #000000;

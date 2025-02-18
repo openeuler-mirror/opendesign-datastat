@@ -39,5 +39,8 @@ const { title, height, img, width } = toRefs(props);
   font-size: 14px;
   color: #555555;
   justify-content: center;
+  .title {
+    // margin-top: 8px;
+  }
 }
 </style>

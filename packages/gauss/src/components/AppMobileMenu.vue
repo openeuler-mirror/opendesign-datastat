@@ -11,7 +11,7 @@ import {
   companyNavList,
   sigNavList,
   NavConfig,
-  personNavList,
+  personNavList
 } from '@/shared/mobile-menu.config';
 import { IObject } from 'shared/@types/interface';
 import { hasPermission } from 'shared/utils/login';

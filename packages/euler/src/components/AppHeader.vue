@@ -144,6 +144,7 @@ const jumpToUserZone = () => {
         </el-dropdown>
       </div>
 
+      <!-- <div v-if="isTest()" class="opt-user">  -->
       <div class="opt-user">
         <loading-arc v-if="isLoggingIn"></loading-arc>
         <el-dropdown v-else-if="token">
