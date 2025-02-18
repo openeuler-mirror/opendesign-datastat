@@ -21,7 +21,7 @@
         />
       </div>
     </div>
-    <div v-if="hasPermission('SIGread')" class="contributors-panel">
+    <div class="contributors-panel"  v-if="hasPermission('SIGread')">
       <h3 id="companyRelations" class="title">
         {{ t('companyRelations') }}
       </h3>
@@ -131,7 +131,7 @@
 import TheList from '@/components/TheList.vue';
 import ODiagram from 'shared/components/ODiagram.vue';
 import { useI18n } from 'vue-i18n';
-import { ref, computed } from 'vue';
+import { onMounted, ref, computed, watch } from 'vue';
 import { queryCompanySigs, queryTCSigs } from 'shared/api';
 import { useCommonStore } from '@/stores/common';
 import { IObject } from 'shared/@types/interface';
@@ -245,6 +245,7 @@ const goToAllSig = () => {
   }
   .sp {
     display: inline-block;
+    // width: 36px;
     height: 16px;
     font-size: 12px;
     font-family: HarmonyOS_Sans_SC;
@@ -254,6 +255,7 @@ const goToAllSig = () => {
   }
   .spp {
     display: inline-block;
+    // width: 7px;
     height: 16px;
     font-size: 12px;
     font-family: HarmonyOS_Sans_SC;
@@ -356,6 +358,7 @@ const goToAllSig = () => {
   }
 }
 .group-name {
+  // width: 42px;
   height: 22px;
   font-size: 14px;
   font-family: HarmonyOS_Sans_SC;

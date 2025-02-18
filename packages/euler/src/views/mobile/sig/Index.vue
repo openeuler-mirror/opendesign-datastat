@@ -16,8 +16,7 @@ import VitalIndex from './VitalIndex.vue';
 import MobileHistoricalTrend from './MobileHistoricalTrend.vue';
 import MobileTableList from './MobileTableList.vue';
 import MobileContributList from './MobileContributList.vue';
-import MobileIssueList from './MobileIssueList.vue';
-import { hasPermission } from 'shared/utils/login';
+import { hasPermission } from "shared/utils/login";
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -59,6 +58,7 @@ const getDrownData = () => {
       label: item,
       value: item,
     }));
+
   });
 };
 onMounted(() => {
@@ -85,17 +85,7 @@ onMounted(() => {
           ></template>
         </o-mobile-template>
       </swiper-slide>
-      <swiper-slide>
-        <o-mobile-template padding-top="0.75rem">
-          <template #header>
-            {{ 'SIG ' + t('serviceShow') }}
-          </template>
-          <template #content
-            ><mobile-issue-list :sig="sencondTitle"></mobile-issue-list
-          ></template>
-        </o-mobile-template>
-      </swiper-slide>
-      <swiper-slide v-if="hasPermission('SIGread')">
+      <swiper-slide v-if="hasPermission('SIGread')" >
         <o-mobile-template padding-top="0.75rem">
           <template #header>
             {{ 'SIG ' + t('currentVitalityIndex') }}
@@ -105,7 +95,7 @@ onMounted(() => {
           </template>
         </o-mobile-template>
       </swiper-slide>
-      <swiper-slide v-if="hasPermission('SIGread')">
+      <swiper-slide v-if="hasPermission('SIGread')" >
         <o-mobile-template padding-top="0.75rem">
           <template #header>
             {{ 'SIG ' + t('historicalVitalityIndicators') }}
@@ -117,7 +107,7 @@ onMounted(() => {
           ></template>
         </o-mobile-template>
       </swiper-slide>
-      <swiper-slide v-if="hasPermission('SIGread')">
+      <swiper-slide v-if="hasPermission('SIGread')" >
         <o-mobile-template padding-top="0.75rem">
           <template #header>
             {{ 'SIG ' + t('companyContributor') }}

@@ -19,21 +19,16 @@ const route = useRoute();
 const { t, locale } = useI18n();
 
 const navList = computed(() => {
-  return [];
+  return [
+    // {
+    //   id: 'overview',
+    //   label: t('nav.overview'),
+    //   href: '/overview',
+    // },
+  ];
 });
 const language = computed(() => useCommon.language);
 const ISPC = computed(() => useCommon.ISPC);
-// 判断移动端
-const isMobile = () => {
-  const device = ref(true);
-  if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-    device.value = false;
-    const lang = language.value === 'zh' ? '/zh/mobile' : '/en/mobile';
-    router.push(lang);
-  }
-  useCommon.setDevice(device.value);
-};
-isMobile();
 
 // 选择语言
 const options = ref([

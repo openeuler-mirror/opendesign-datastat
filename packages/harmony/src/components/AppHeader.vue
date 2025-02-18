@@ -120,8 +120,7 @@ watch(
               ? openCommunityInfo.link
               : openCommunityInfo.link_en
           "
-          ><p class="community-word">OpenHarmony</p></a
-        >
+          ><p class="community-word">OpenHarmony</p></a>
       </div>
       <ONav :lang="language" :nav-items="navList"></ONav>
       <div class="language">
@@ -246,13 +245,13 @@ $color: #ffffff;
   .community-logo {
     height: 32px;
   }
-  .community-word {
-    font-size: 28px;
-    color: #ffffff;
-    height: 32px;
-    line-height: 28px;
-    font-weight: 600;
-  }
+  .community-word{
+   font-size: 28px;
+   color: #ffffff;
+   height: 32px;
+   line-height: 28px;
+   font-weight: 600;
+}
 }
 @media screen and (max-width: 700px) {
   .header-logo .logo,

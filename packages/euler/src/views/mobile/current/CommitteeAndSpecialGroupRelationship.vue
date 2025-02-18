@@ -120,9 +120,7 @@ const lowSig = computed(() =>
 );
 const hightSig = computed(() => groupData.value.slice(0, number.value));
 const goToSig = (item: any) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/mobile/sig/${item}`
-  );
+  const routeData: any = router.resolve(`/${useCommon.language}/mobile/sig/${item}`);
   window.open(routeData.href, '_self');
 };
 </script>

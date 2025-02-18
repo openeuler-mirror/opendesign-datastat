@@ -17,9 +17,10 @@ import {
 import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
 import communityLogoWhite from '@/assets/openeuler-logo.png';
+import Bitmap from '@/assets/Bitmap.png';
 import chevronDown from '~icons/app/chevron-down';
-import { testIsPhone } from 'shared/utils/helper';
 import LoadingArc from './LoadingArc.vue';
+import { isTest } from 'shared/utils/helper';
 const { token } = getUserAuth();
 const { guardAuthClient, isLoggingIn } = useStoreData();
 let dialogVisible = ref(false);
@@ -47,20 +48,6 @@ const navList = computed(() => {
 
 const language = computed(() => useCommon.language);
 const ISPC = computed(() => useCommon.ISPC);
-
-// 判断移动端
-const isMobile = () => {
-  const device = ref(true);
-  if (testIsPhone()) {
-    device.value = false;
-    const lang = language.value === 'zh' ? '/zh/mobile' : '/en/mobile';
-    if (!window.location.pathname.includes(lang)) {
-      router.push(lang);
-    }
-  }
-  useCommon.setDevice(device.value);
-};
-isMobile();
 
 // 选择语言;
 const options = ref([
@@ -157,6 +144,7 @@ const jumpToUserZone = () => {
         </el-dropdown>
       </div>
 
+      <!-- <div v-if="isTest()" class="opt-user">  -->
       <div class="opt-user">
         <loading-arc v-if="isLoggingIn"></loading-arc>
         <el-dropdown v-else-if="token">

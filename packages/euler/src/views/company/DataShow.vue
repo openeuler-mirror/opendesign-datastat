@@ -48,9 +48,9 @@
 </template>
 <script setup lang="ts">
 import { toRefs, ref, onMounted, watch } from 'vue';
-import { queryCompanyUserContribute, queryCompanyUsers } from 'shared/api';
+import { queryCompanyUserContribute, queryCompanySigDetails } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
-import { processing, toThousands } from 'shared/utils/helper';
+import { toThousands } from 'shared/utils/helper';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -123,9 +123,8 @@ const getcontributeListData = () => {
     timeRange: time.value,
     community: 'openeuler',
   };
-  queryCompanyUsers(query).then((data) => {
-    const Data = processing(data?.data || []);
-    contributors.value = Data.sigData['0'];
+  queryCompanySigDetails(query).then((data) => {
+    contributors.value = data?.data.length;
   });
 };
 const getAllData = () => {
@@ -140,6 +139,13 @@ watch(
     getAllData();
   }
 );
+// watch(
+//   () => company.value,
+//   () => {
+//     time.value = 'all';
+//     timeTitle.value = '全部';
+//   }
+// );
 const timeTitle = ref('');
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;

@@ -39,6 +39,7 @@ const querySigInfoData = () => {
 };
 const getllData = () => {
   querySigInfoData();
+  // getCubeData();
 };
 watch(
   () => props.sig,
@@ -92,6 +93,22 @@ watch(
                 </a>
               </div>
             </div>
+            <!-- <div class="first">
+              <div class="Mentor"></div>
+              <div class="List">
+                <span>Mentors：</span>
+                <span
+                  v-for="item in sigInfo.mentor"
+                  :key="item.value"
+                  class="item"
+                >
+                  {{ item }}
+                </span>
+                <span v-if="!sigInfo.mentor" class="noitem">
+                  {{ t('noMentor') }}
+                </span>
+              </div>
+            </div> -->
             <div class="first">
               <div class="store"></div>
               <div class="List">
@@ -120,6 +137,8 @@ watch(
   min-height: 900px;
 }
 .main {
+  //   display: grid;
+  //   grid-template-columns: 28% 72%;
   &-left {
     &-sp {
       display: flex;
@@ -181,6 +200,7 @@ watch(
           background-image: url('@/assets/cube.png');
           width: 24px;
           height: 24px;
+          //   margin-right: 8px;
         }
       }
       .slogan {
@@ -191,6 +211,7 @@ watch(
   }
 }
 .atlas {
+  // width: 350px;
   display: flex;
   flex-direction: column;
 }

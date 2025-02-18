@@ -7,6 +7,7 @@ import { formatNumber, percentageTotal } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
 import { hasPermission, hasPermissions } from 'shared/utils/login';
+import { isTest } from 'shared/utils/helper';
 const router = useRouter();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
@@ -69,15 +70,6 @@ const switchType = () => {
     case 'cloc':
       typeLable.value = t('from.LOC');
       break;
-    case 'issue_cve':
-      typeLable.value = t('home.cve');
-      break;
-    case 'issue_done':
-      typeLable.value = t('home.issuesClose');
-      break;
-    case 'feature':
-      typeLable.value = t('feature');
-      break;
   }
 };
 switchType();
@@ -104,6 +96,7 @@ const goToCompany = (data: IObject) => {
       `/${useCommon.language}/company/${data.company_cn}`
     );
     window.open(routeData.href, '_blank');
+  } else {
   }
 };
 </script>
@@ -222,12 +215,12 @@ const goToCompany = (data: IObject) => {
                 >{{ percentageTotal(item.contribute, useCompany.total) }}</span
               >
             </div>
-            <span v-if="progressFormat(item.contribute) <= 80" class="val"
+            <span v-if="progressFormat(item.contribute) < 80" class="val"
               >{{ formatNumber(item.contribute) }}
             </span>
             <span
               v-if="
-                progressFormat(item.contribute) <= 80 &&
+                progressFormat(item.contribute) < 80 &&
                 hasPermission('companyread_all')
               "
               class="val"
@@ -314,6 +307,7 @@ const goToCompany = (data: IObject) => {
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        // cursor: pointer;
       }
     }
   }
@@ -332,6 +326,7 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    // padding-right: 0px;
     transition: all 0.3s ease-in-out;
     span {
       padding-right: 1rem;

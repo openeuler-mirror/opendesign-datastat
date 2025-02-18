@@ -386,6 +386,7 @@ const getcontributeValue = (item: any) => {
 .usertypecolorbox {
   width: 12px;
   height: 12px;
+  // background: linear-gradient(var(--color));
   background: var(--color);
   border-radius: 50%;
   margin-right: 8px;

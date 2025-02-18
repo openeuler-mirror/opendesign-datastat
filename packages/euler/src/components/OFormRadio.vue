@@ -57,6 +57,7 @@ let form = ref(
   align-items: center;
   margin-bottom: 14px;
   .label {
+    // width:88px;
     margin-right: 24px;
   }
 }

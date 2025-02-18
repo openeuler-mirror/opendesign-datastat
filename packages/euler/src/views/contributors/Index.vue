@@ -15,11 +15,8 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import titleBg from '@/assets/title-bg.png';
 import chevronsUp from '~icons/app/chevrons-up';
 import AuthorityManagement from './AuthorityManagement.vue';
-import SoftwareContribute from './SoftwareContribute.vue';
 import { hasPermission } from 'shared/utils/login';
 import { IObject } from 'shared/@types/interface';
-import { useCompanyStore } from '@/stores/company';
-const useCompany = useCompanyStore();
 const { t, locale } = useI18n();
 const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
@@ -172,7 +169,7 @@ const contributeValue = (val: any) => {
             {{ t('companyContributor') }}
           </h3>
           <form-search @search-state="searchStsate" />
-          <div v-if="search404 || useCompany.dataShow" class="search404">
+          <div v-if="search404" class="search404">
             <img class="cover" src="@/assets/404.png" alt="404" />
             <p class="text">{{ t('searchTips') }}</p>
           </div>
@@ -189,7 +186,6 @@ const contributeValue = (val: any) => {
             />
           </div>
         </div>
-        <!-- <SoftwareContribute></SoftwareContribute> -->
         <div class="contributors-panel">
           <h3 id="userContributor" class="title">{{ t('userContributor') }}</h3>
           <the-form

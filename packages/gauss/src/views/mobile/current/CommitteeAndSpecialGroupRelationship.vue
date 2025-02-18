@@ -120,9 +120,7 @@ const lowSig = computed(() =>
 );
 const hightSig = computed(() => groupData.value.slice(0, number.value));
 const goToSig = (item: any) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/mobile/sig/${item}`
-  );
+  const routeData: any = router.resolve(`/${useCommon.language}/mobile/sig/${item}`);
   window.open(routeData.href, '_self');
 };
 </script>
@@ -235,6 +233,7 @@ const goToSig = (item: any) => {
   text-align-last: justify;
   text-align: justify;
   width: 60px;
+  // margin-left: 24px;
 }
 .group-email {
   font-size: 12px;
@@ -247,6 +246,7 @@ const goToSig = (item: any) => {
   }
 }
 .group-name {
+  // width: 42px;
   height: 22px;
   font-size: 12px;
   font-family: HarmonyOS_Sans_SC;
@@ -254,6 +254,7 @@ const goToSig = (item: any) => {
   line-height: 22px;
   text-align-last: justify;
   text-align: justify;
+  // padding: 5px;
 }
 .diagram {
   display: flex;

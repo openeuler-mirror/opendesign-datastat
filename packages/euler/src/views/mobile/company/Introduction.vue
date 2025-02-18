@@ -4,7 +4,7 @@ import { IObject } from 'shared/@types/interface';
 import { onMounted, ref, watch, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { sigsProcessing, processing } from 'shared/utils/helper';
+import { sigsProcessing, processing, toThousands } from 'shared/utils/helper';
 import {
   queryCompanySigDetails,
   queryCompanyUserContribute,
@@ -12,7 +12,9 @@ import {
   queryCompanySigs,
 } from 'shared/api';
 import OEchartCircularPile from 'shared/components/OEchartCircularPile.vue';
+import { useRouter } from 'vue-router';
 import DataShow from '@/views/company/DataShow.vue';
+const router = useRouter();
 const useCommon = useCommonStore();
 const route = useRoute();
 const sencondTitle = ref('');
@@ -152,6 +154,32 @@ onMounted(() => {
 });
 </script>
 <template>
+  <!-- <div class="left-first">
+    <div class="left-first-child">
+      <span>{{ t('Mergerequest') }} PR</span>
+      <div class="left-first-child-data">
+        {{ toThousands(mergeRequest) }}
+      </div>
+    </div>
+    <div class="left-first-child">
+      <span title="Needs & Problems Issue">{{ t('NeedsProblems') }} Issue</span>
+      <div class="left-first-child-data">
+        {{ toThousands(issueData) }}
+      </div>
+    </div>
+    <div class="left-first-child">
+      <span title="123">{{ t('review') }} Comment</span>
+      <div class="left-first-child-data">
+        {{ toThousands(comment) }}
+      </div>
+    </div>
+    <div class="left-first-child">
+      <span title="Number of contributors">{{ t('Numbercontributors') }}</span>
+      <div class="left-first-child-data">
+        {{ toThousands(contributors) }}
+      </div>
+    </div>
+  </div> -->
   <data-show :company="title"></data-show>
   <div class="circularPile">
     <div class="circularPile-sp">
@@ -176,6 +204,7 @@ onMounted(() => {
   </div>
 </template>
 <style lang="scss" scoped>
+// @import '@/shared/styles/style.scss';
 .left-first {
   width: 100%;
   height: 176px;

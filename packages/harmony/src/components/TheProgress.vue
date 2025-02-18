@@ -32,6 +32,7 @@ const props = defineProps({
 const { componentName, memberList, usertype } = toRefs(props);
 const usePersonal = usePersonalStore();
 const useStaff = useStaffStore();
+// const progressColor = ref('#002FA7');
 const progressColor = () => {
   if (componentName.value === 'member' && usertype.value === 'contributor') {
     return '#4AAEAD';

@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { formType } from 'shared/@types/interface';
-import { IObject } from 'shared/@types/interface';
-import { useCompanyStore } from '@/stores/company';
-import { useCommonStore } from '@/stores/common';
-import { openCommunityInfo } from '@/api/index';
-import IconUser from '~icons/app/search';
-import OIcon from 'shared/components/OIcon.vue';
-import OFormRadio from '@/components/OFormRadio.vue';
-import { querySigCompanyContribute } from 'shared/api/index';
-import { sortExp, formatNumber } from 'shared/utils/helper';
-import { ceil } from 'lodash-es';
-import { useRouter } from 'vue-router';
-import ONoDataImage from 'shared/components/ONoDataImage.vue';
-import { hasPermission, hasPermissions } from 'shared/utils/login';
+import { ref, onMounted, computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import { formType } from "shared/@types/interface";
+import { IObject } from "shared/@types/interface";
+import { useCompanyStore } from "@/stores/company";
+import { useCommonStore } from "@/stores/common";
+import { openCommunityInfo } from "@/api/index";
+import IconUser from "~icons/app/search";
+import OIcon from "shared/components/OIcon.vue";
+import OFormRadio from "@/components/OFormRadio.vue";
+import { querySigCompanyContribute } from "shared/api/index";
+import { sortExp, formatNumber } from "shared/utils/helper";
+import { ceil } from "lodash-es";
+import { useRouter } from "vue-router";
+import ONoDataImage from "shared/components/ONoDataImage.vue";
+import { hasPermission, hasPermissions } from "shared/utils/login";
+import { isTest } from "shared/utils/helper";
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();
@@ -24,15 +25,15 @@ const props = defineProps({
   sig: {
     type: String,
     required: true,
-    default: '',
+    default: "",
   },
 });
 const param = ref({
-  contributeType: 'pr',
-  timeRange: 'all',
+  contributeType: "pr",
+  timeRange: "all",
   community: openCommunityInfo.name,
   sig: computed(() => props.sig),
-  displayRange: '10',
+  displayRange: "10",
 } as IObject);
 const memberData = ref([] as IObject[]);
 const memberMax = ref(0);
@@ -45,28 +46,22 @@ const getMemberData = () => {
     memberList.value =
       (data.data &&
         data.data
-          .sort(sortExp('contribute', false))
+          .sort(sortExp("contribute", false))
           .filter((item: any) => item.contribute !== 0)) ||
       [];
     memberMax.value = ceil(memberList.value[0]?.contribute + 1, 0) || 0;
     memberList.value.forEach((item) => {
-      if (
-        item.company_cn !== '个人贡献者' ||
-        item.company_en !== 'independent'
-      ) {
+      if (item.company_cn !== "个人贡献者" || item.company_en !== "independent") {
         item.index = rankNum.value++;
       } else {
-        item.index = '*';
+        item.index = "*";
       }
     });
     rankNum.value = 1;
-    if (param.value.displayRange === 'all') {
+    if (param.value.displayRange === "all") {
       return (memberData.value = memberList.value);
     }
-    memberData.value = memberList.value.slice(
-      0,
-      Number(param.value.displayRange)
-    );
+    memberData.value = memberList.value.slice(0, Number(param.value.displayRange));
     sumContribute.value = memberData.value.reduce((total, currentValue) => {
       return total + currentValue.contribute;
     }, 0);
@@ -80,34 +75,34 @@ const progressFormat = (item: number) => {
 const formOption = computed(() => {
   return [
     {
-      label: t('from.type'),
-      id: 'contributeType',
-      active: 'pr',
+      label: t("from.type"),
+      id: "contributeType",
+      active: "pr",
       list: [
-        { label: t('home.prs'), value: 'pr' },
-        { label: t('home.issues'), value: 'issue' },
-        { label: t('home.comments'), value: 'comment' },
+        { label: t("home.prs"), value: "pr" },
+        { label: t("home.issues"), value: "issue" },
+        { label: t("home.comments"), value: "comment" },
       ],
     },
     {
-      label: t('from.timeRange'),
-      id: 'timeRange',
-      active: 'all',
+      label: t("from.timeRange"),
+      id: "timeRange",
+      active: "all",
       list: [
-        { label: t('from.lastonemonth'), value: 'lastonemonth' },
-        { label: t('from.lasthalfyear'), value: 'lasthalfyear' },
-        { label: t('from.lastoneyear'), value: 'lastoneyear' },
-        { label: t('from.all'), value: 'all' },
+        { label: t("from.lastonemonth"), value: "lastonemonth" },
+        { label: t("from.lasthalfyear"), value: "lasthalfyear" },
+        { label: t("from.lastoneyear"), value: "lastoneyear" },
+        { label: t("from.all"), value: "all" },
       ],
     },
     {
-      label: t('from.displayRange'),
-      id: 'displayRange',
-      active: '10',
+      label: t("from.displayRange"),
+      id: "displayRange",
+      active: "10",
       list: [
-        { label: 'Top10', value: '10' },
-        { label: 'Top20', value: '20' },
-        { label: t('from.all'), value: 'all' },
+        { label: "Top10", value: "10" },
+        { label: "Top20", value: "20" },
+        { label: t("from.all"), value: "all" },
       ],
     },
   ];
@@ -119,35 +114,35 @@ const getContributeInfo = (e: IObject) => {
   switchType();
 };
 // 格式化统计周期文字
-const timeRangeText = ref('');
+const timeRangeText = ref("");
 const switchTime = () => {
   switch (param.value.timeRange) {
-    case 'lastonemonth':
-      timeRangeText.value = t('from.lastonemonth');
+    case "lastonemonth":
+      timeRangeText.value = t("from.lastonemonth");
       break;
-    case 'lasthalfyear':
-      timeRangeText.value = t('from.lasthalfyear');
+    case "lasthalfyear":
+      timeRangeText.value = t("from.lasthalfyear");
       break;
-    case 'lastoneyear':
-      timeRangeText.value = t('from.lastoneyear');
+    case "lastoneyear":
+      timeRangeText.value = t("from.lastoneyear");
       break;
     default:
-      timeRangeText.value = t('from.all');
+      timeRangeText.value = t("from.all");
       break;
   }
 };
 switchTime();
-const typeLable = ref('');
+const typeLable = ref("");
 const switchType = () => {
   switch (param.value.contributeType) {
-    case 'pr':
-      typeLable.value = t('home.prs');
+    case "pr":
+      typeLable.value = t("home.prs");
       break;
-    case 'issue':
-      typeLable.value = t('home.issues');
+    case "issue":
+      typeLable.value = t("home.issues");
       break;
-    case 'comment':
-      typeLable.value = t('home.comments');
+    case "comment":
+      typeLable.value = t("home.comments");
       break;
   }
 };
@@ -155,7 +150,7 @@ switchType();
 
 const isSearch = ref(false);
 // 搜索过滤
-const searchInput = ref('');
+const searchInput = ref("");
 const querySearch = (queryString: string, cb: any) => {
   let queryList = memberList.value;
   const results = queryString
@@ -171,13 +166,13 @@ const querySearch = (queryString: string, cb: any) => {
 };
 const createFilter = (queryString: string) => {
   return (list: formType) => {
-    const items = language.value === 'zh' ? list.company_cn : list.company_en;
+    const items = language.value === "zh" ? list.company_cn : list.company_en;
     return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
   };
 };
 // 搜索结果
 const handleSelect = (item: IObject) => {
-  param.value.displayRange = '1';
+  param.value.displayRange = "1";
   memberList.value.forEach((element: IObject) => {
     if (element.company_cn === item.company_cn) {
       memberData.value = [item];
@@ -188,20 +183,20 @@ const handleSelect = (item: IObject) => {
 // 回车判断结果
 const myKeydown = () => {
   if (isSearch.value) {
-    emits('searchState', isSearch.value);
+    emits("searchState", isSearch.value);
   }
 };
 
 // 清除搜索
 const clearSearchInput = () => {
   isSearch.value = false;
-  emits('searchState', isSearch.value);
-  param.value.displayRange = '10';
+  emits("searchState", isSearch.value);
+  param.value.displayRange = "10";
   getMemberData();
-  searchInput.value = '';
+  searchInput.value = "";
 };
 
-const emits = defineEmits(['searchState']);
+const emits = defineEmits(["searchState"]);
 
 // 如果是选择条件是显示范围则前端处理数据
 // 否则请求接口
@@ -215,21 +210,20 @@ watch(
 onMounted(() => getMemberData());
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  if (hasPermission('companyread_all') || hasPermissions(data.company_cn)) {
+  if (
+    (hasPermission('companyread_all') || hasPermissions(data.company_cn))
+  ) {
     const routeData: any = router.resolve(
       `/${useCommon.language}/company/${data.company_cn}`
     );
-    window.open(routeData.href, '_blank');
+    window.open(routeData.href, "_blank");
   }
 };
 </script>
 
 <template>
   <div class="contributions-statistical">
-    <o-form-radio
-      :option="formOption"
-      @get-contribute-info="getContributeInfo($event)"
-    >
+    <o-form-radio :option="formOption" @get-contribute-info="getContributeInfo($event)">
       <template #searchInput>
         <div class="searchInput">
           <el-autocomplete
@@ -247,9 +241,7 @@ const goToCompany = (data: IObject) => {
             @clear="clearSearchInput"
           >
             <template #prefix>
-              <o-icon class="search-icon"
-                ><icon-user></icon-user
-              ></o-icon> </template
+              <o-icon class="search-icon"><icon-user></icon-user></o-icon> </template
           ></el-autocomplete>
         </div>
       </template>
@@ -263,19 +255,17 @@ const goToCompany = (data: IObject) => {
         class="bar-content-item"
       >
         <p class="infos">
+          <!-- <span class="index">{{ item.index }}</span> -->
           <span
-            v-if="
-              item.company_cn === '个人贡献者' ||
-              item.company_en === 'independent'
-            "
+            v-if="item.company_cn === '个人贡献者' || item.company_en === 'independent'"
             class="name"
             :style="{
               color: '#555555',
             }"
             >{{
-              useCommon.language === 'zh'
+              useCommon.language === "zh"
                 ? item.company_cn
-                : item.company_en === ''
+                : item.company_en === ""
                 ? item.company_cn
                 : item.company_en
             }}</span
@@ -292,21 +282,19 @@ const goToCompany = (data: IObject) => {
             "
             :style="{
               cursor:
-                hasPermission('companyread_all') ||
-                hasPermissions(item.company_cn)
+                (hasPermission('companyread_all') || hasPermissions(item.company_cn))
                   ? 'pointer'
                   : 'auto',
               color:
-                hasPermission('companyread_all') ||
-                hasPermissions(item.company_cn)
+                (hasPermission('companyread_all') || hasPermissions(item.company_cn))
                   ? '#002FA7'
                   : '#555555',
             }"
             @click="goToCompany(item)"
             >{{
-              useCommon.language === 'zh'
+              useCommon.language === "zh"
                 ? item.company_cn
-                : item.company_en === ''
+                : item.company_en === ""
                 ? item.company_cn
                 : item.company_en
             }}</span
@@ -322,15 +310,16 @@ const goToCompany = (data: IObject) => {
           <template #content>
             <div class="lable">
               {{ timeRangeText }}
-              <span class="text">{{ t('de') }}</span>
+              <span class="text">{{ t("de") }}</span>
               {{ typeLable }}
             </div>
             <div class="info">
               <p>
+                <!-- <span class="index">{{ item.index }}</span> -->
                 {{
-                  useCommon.language === 'zh'
+                  useCommon.language === "zh"
                     ? item.company_cn
-                    : item.company_en === ''
+                    : item.company_en === ""
                     ? item.company_cn
                     : item.company_en
                 }}
@@ -338,9 +327,9 @@ const goToCompany = (data: IObject) => {
               <span class="num">{{ item.contribute }} </span>
               <span
                 >{{
-                  (
-                    Math.round((item.contribute / sumContribute) * 10000) / 100
-                  ).toFixed(1) + '%'
+                  (Math.round((item.contribute / sumContribute) * 10000) / 100).toFixed(
+                    1
+                  ) + "%"
                 }}
               </span>
             </div>
@@ -377,7 +366,7 @@ const goToCompany = (data: IObject) => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/shared/styles/style.scss';
+@import "@/shared/styles/style.scss";
 .searchInput {
   width: 100%;
   margin: 10px 0 20px;
@@ -437,7 +426,7 @@ const goToCompany = (data: IObject) => {
         width: 1px;
         border-left: 1px dashed #ccc;
         bottom: 20px;
-        content: '';
+        content: "";
       }
       &:last-child {
         &::after {
@@ -521,6 +510,7 @@ const goToCompany = (data: IObject) => {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
+    // min-width: 280px;
     .index {
       color: #9097a3;
     }

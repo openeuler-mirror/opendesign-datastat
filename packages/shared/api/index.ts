@@ -161,6 +161,14 @@ export function queryRepos(name: string) {
   const url = `/query/community/repos?community=${name}`;
   return request.get(url).then((res: AxiosResponse) => res.data);
 }
+/**
+ * 获取gauss所有的repos
+ *
+ */
+export function queryCoreRepos(name: string) {
+  const url = `/query/community/coreRepos?community=${name}`;
+  return request.get(url).then((res: AxiosResponse) => res.data);
+}
 
 /**
  * sig侧边栏详情
@@ -239,47 +247,8 @@ export function queryUserList(params: object) {
 /**
  *版本信息
  */
-export function queryVersions(params: object) {
+ export function queryVersions(params: object) {
   const url = '/query/versions';
-  return request
-    .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data);
-}
-
-/**
- *新增新特性
- */
-export function queryProject(params: object) {
-  const url = '/query/project';
-  return request
-    .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data);
-}
-/**
- *新增新特性全量数据
- */
-export function queryList(params: object) {
-  const url = '/query/list';
-  return request
-    .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data);
-}
-
-/**
- *新增全量数据
- */
-export function queryItems(params: object) {
-  const url = '/query/innovation_items';
-  return request
-    .get(url, { params, global: true })
-    .then((res: AxiosResponse) => res.data);
-}
-
-/**
- *新增sigCve数据
- */
-export function queryDefect(params: object) {
-  const url = '/query/sig_defect';
   return request
     .get(url, { params, global: true })
     .then((res: AxiosResponse) => res.data);

@@ -27,8 +27,7 @@ locale.value = localStorage.getItem('lang') || 'zh';
         />
         <span class="line"></span>
         <a target="_blank" :href="openCommunityInfo.link"
-          ><p class="community-word">OpenHarmony</p></a
-        >
+          ><p class="community-word">OpenHarmony</p></a>
       </div>
       <div class="footer-email">{{ openCommunityInfo.email }}</div>
       <p class="copyright">{{ t('footer.copyright') }}</p>
@@ -81,7 +80,7 @@ locale.value = localStorage.getItem('lang') || 'zh';
     .community-logo {
       height: 32px;
     }
-    .community-word {
+      .community-word{
       font-size: 28px;
       color: #ffffff;
       height: 32px;

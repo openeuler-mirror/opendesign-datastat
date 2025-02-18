@@ -1,9 +1,9 @@
 <template>
   <h3 id="currentVitalityIndex" class="title">
-    {{ sencondTitle + ' ' + t('currentVitalityIndex') }}
+    {{ sencondTitle + " " + t("currentVitalityIndex") }}
   </h3>
   <div class="rank">
-    <span>{{ t('communityRankings') }}</span>
+    <span>{{ t("communityRankings") }}</span>
     <span> # </span>
     <span class="rank-num">{{ sorceData.rank }} </span>
     <span>/ {{ props.drownData.length }}</span>
@@ -18,12 +18,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { getSigScore } from 'shared/api';
-import { IObject } from 'shared/@types/interface';
-import { useI18n } from 'vue-i18n';
-import { openCommunityInfo } from '@/api';
-import OEchartGauge from 'shared/components/OEchartGauge.vue';
+import { ref } from "vue";
+import { getSigScore } from "shared/api";
+import { IObject } from "shared/@types/interface";
+import { useI18n } from "vue-i18n";
+import { openCommunityInfo } from "@/api";
+import OEchartGauge from "shared/components/OEchartGauge.vue";
 const { t } = useI18n();
 // 获取活力指数
 const props = defineProps({
@@ -37,7 +37,7 @@ const querySorceData = () => {
   const params = {
     community: openCommunityInfo.name,
     sig: props.sencondTitle,
-    timeRange: 'lastonemonth',
+    timeRange: "lastonemonth",
   };
 
   getSigScore(params).then((data) => {

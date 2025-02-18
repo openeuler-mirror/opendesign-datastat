@@ -87,7 +87,7 @@
                 </p>
               </div>
               <div class="info">
-                <div style="cursor: pointer" @click="goTo(val)">查看详情</div>
+                <div @click="goTo(val)" style="cursor: pointer">查看详情</div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
@@ -186,7 +186,7 @@
                 </p>
               </div>
               <div class="info">
-                <div style="cursor: pointer" @click="goTo(val)">查看详情</div>
+                <div @click="goTo(val)" style="cursor: pointer">查看详情</div>
                 <div>
                   <el-icon :size="16" class="right-btn" @click="goTo(val)">
                     <right class="app-text-btn" />
@@ -374,7 +374,7 @@ const goTo = (item: any) => {
 .lable {
   min-width: 160px;
 }
-.titlenumberIndex {
+.titlenumberIndex{
   position: absolute;
   right: 16px;
 }

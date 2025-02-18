@@ -2,7 +2,7 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ t(timeTitle) }}{{ t('zhcontribut') }}
+        {{ t(timeTitle) }}{{t('zhcontribut')}}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
@@ -12,34 +12,32 @@
           class="dropdownItem"
           @click="clickDrownItem(item)"
         >
-          {{ t(item.label) }}{{ t('zhcontribut') }}</el-dropdown-item
+          {{ t(item.label)}}{{t('zhcontribut')}}</el-dropdown-item
         >
       </template>
     </el-dropdown>
   </div>
   <div class="left-first">
     <div class="left-first-child">
-      <span :title="`${t('Mergerequest')} PR`">{{ t('Mergerequest') }} PR</span>
+      <span :title="`${t('Mergerequest')} PR`">{{ t("Mergerequest") }} PR</span>
       <div class="left-first-child-data">
         {{ toThousands(mergeRequest) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('NeedsProblems')} Issue`"
-        >{{ t('NeedsProblems') }} Issue</span
-      >
+      <span :title="`${t('NeedsProblems')} Issue`">{{ t("NeedsProblems") }} Issue</span>
       <div class="left-first-child-data">
         {{ toThousands(issueData) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('review')} Comment`">{{ t('review') }} Comment</span>
+      <span :title="`${t('review')} Comment`">{{ t("review") }} Comment</span>
       <div class="left-first-child-data">
         {{ toThousands(comment) }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('SIGNumber')}`">{{ t('SIGNumber') }}</span>
+      <span :title="`${t('SIGNumber')}`">{{ t("SIGNumber") }}</span>
       <div class="left-first-child-data">
         {{ toThousands(contributors) }}
       </div>
@@ -47,17 +45,17 @@
   </div>
 </template>
 <script setup lang="ts">
-import { toRefs, ref, onMounted, watch } from 'vue';
-import { queryUserSigContribute, queryUserContributeDetails } from 'shared/api';
-import { IObject } from 'shared/@types/interface';
-import { toThousands } from 'shared/utils/helper';
-import { useI18n } from 'vue-i18n';
+import { toRefs, ref, onMounted, watch } from "vue";
+import { queryUserSigContribute, queryUserContributeDetails } from "shared/api";
+import { IObject } from "shared/@types/interface";
+import { toThousands } from "shared/utils/helper";
+import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const props = defineProps({
   user: {
     type: String,
     required: true,
-    default: '',
+    default: "",
   },
 });
 const { user } = toRefs(props);
@@ -67,14 +65,14 @@ const comment = ref(0);
 const contributors = ref(0);
 const timeRange = [
   {
-    label: 'from.lastonemonth',
-    value: 'lastonemonth',
+    label: "from.lastonemonth",
+    value: "lastonemonth",
   },
-  { label: 'from.lasthalfyear', value: 'lasthalfyear' },
-  { label: 'from.lastoneyear', value: 'lastoneyear' },
-  { label: 'from.all', value: 'all' },
+  { label: "from.lasthalfyear", value: "lasthalfyear" },
+  { label: "from.lastoneyear", value: "lastoneyear" },
+  { label: "from.all", value: "all" },
 ];
-const time = ref('');
+const time = ref("");
 const getItemListData = (data: IObject[], template: string) => {
   return data.reduce((sum, e) => sum + Number(e[template]), 0);
 };
@@ -82,11 +80,12 @@ const getprlistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'pr',
+    community: "openeuler",
+    contributeType: "pr",
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
+    // mergeRequest.value = getItemListData(value, "contribute");
     mergeRequest.value = value.totalCount;
   });
 };
@@ -94,11 +93,12 @@ const siglistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'pr',
+    community: "openeuler",
+    contributeType: "pr",
   };
   queryUserSigContribute(query).then((data) => {
     const value = data?.data || [];
+    // mergeRequest.value = getItemListData(value, "contribute");
     contributors.value = value.length;
   });
 };
@@ -107,11 +107,12 @@ const getissuelistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'issue',
+    community: "openeuler",
+    contributeType: "issue",
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
+    // issueData.value = getItemListData(value, "contribute");
     issueData.value = value.totalCount;
   });
 };
@@ -120,19 +121,32 @@ const getcommentlistData = () => {
   const query = {
     user: user.value,
     timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'comment',
+    community: "openeuler",
+    contributeType: "comment",
   };
   queryUserContributeDetails(query).then((data) => {
     const value = data || [];
+    // comment.value = getItemListData(value, 'contribute');
     comment.value = value.totalCount;
   });
 };
+// const getcontributeListData = () => {
+//   const query = {
+//     company: company.value,
+//     timeRange: time.value,
+//     community: 'openeuler',
+//   };
+//   queryCompanyUsers(query).then((data) => {
+//     const Data = processing(data?.data || []);
+//     contributors.value = Data.sigData['0'];
+//   });
+// };
 const getAllData = () => {
   getprlistData();
   getissuelistData();
   getcommentlistData();
   siglistData();
+  // getcontributeListData();
 };
 watch(
   () => user.value,
@@ -140,15 +154,15 @@ watch(
     getAllData();
   }
 );
-const timeTitle = ref('');
+const timeTitle = ref("");
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
   timeTitle.value = item.label;
   getAllData();
 };
 onMounted(() => {
-  time.value = 'all';
-  timeTitle.value = 'from.all';
+  time.value = "all";
+  timeTitle.value = "from.all";
   getAllData();
 });
 </script>
@@ -179,13 +193,14 @@ onMounted(() => {
   }
 }
 .btnc {
-  background-image: url('@/assets/linedown.png');
+  background-image: url("@/assets/linedown.png");
   width: 24px;
   height: 24px;
   margin-left: 8px;
 }
 .main-left-title {
   display: flex;
+  // width: 160px;
   height: 24px;
   font-size: 16px;
   font-family: PingFangSC-Medium, PingFang SC;

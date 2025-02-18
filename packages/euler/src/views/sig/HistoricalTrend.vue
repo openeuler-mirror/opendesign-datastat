@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import OEchartLine from 'shared/components/OEchartLine.vue';
 import OFormRadio from '@/components/OFormRadio.vue';
-import { computed, ref, watch, onMounted } from 'vue';
+import { computed, ref, watch ,onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getSigRadarScore, getSigScore } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
@@ -64,6 +64,7 @@ const querySorceData = () => {
                 data: [_data],
               };
             });
+
           } else {
             Object.keys(keyToI18n).forEach((item, index) => {
               const _data = {
@@ -76,6 +77,7 @@ const querySorceData = () => {
           return pre;
         }, []) || [];
       echartData.value.push(...addData);
+      console.log(echartData.value)
     });
   });
 };
@@ -99,9 +101,7 @@ const getContributeInfo = (e: IObject) => {
   selectTime.value = e.active;
   querySorceData();
 };
-onMounted(() => {
-  querySorceData();
-});
+onMounted(() => { querySorceData();})
 </script>
 <template>
   <div>

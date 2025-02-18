@@ -14,10 +14,12 @@ import { useCommonStore } from '@/stores/common';
 import { hasPermission, hasPermissions } from 'shared/utils/login';
 import TheForm from '@/components/TheForm.vue';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
+import MenberAndGroupRelationship from './current/MenberAndGroupRelationship.vue';
 import {
   formatNumber,
   toThousands,
   percentageTotal,
+  getYearByOffset,
 } from 'shared/utils/helper';
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
@@ -29,6 +31,7 @@ import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialG
 import { useRoute, useRouter } from 'vue-router';
 import { IObject } from 'shared/@types/interface';
 import MobileTemplate from '@/components/MobileTemplate.vue';
+import { Right } from '@element-plus/icons-vue';
 import { useStaffStore } from '@/stores/staff';
 const useStaff = useStaffStore();
 const router = useRouter();
@@ -187,6 +190,7 @@ const goToCompany = (data: IObject) => {
   ) {
     data;
     router.push(`/${useCommon.language}/mobile/company/${data.company_cn}`);
+  } else {
   }
 };
 const goToSigs = (title: any) => {
@@ -258,6 +262,10 @@ const goToUser = (data: IObject) => {
         <p class="overview-page2-item">
           {{ t('home.repos')
           }}<span class="num">{{ toThousands(useCommon.allData.repos) }}</span>
+        </p>
+        <p class="overview-page2-item">
+          {{ t('home.isv')
+          }}<span class="num">{{ toThousands(useCommon.allData.isv) }}</span>
         </p>
       </div>
       <p class="time">{{ useCommon.time }}</p>
@@ -434,6 +442,52 @@ const goToUser = (data: IObject) => {
         </template>
       </mobile-template>
     </swiper-slide>
+    <!-- <el-dialog
+      v-model="useStaff.dialogFormVisible"
+      top="40vh"
+      :show-close="false"
+    >
+      <div class="info">
+        <h3>{{ useStaff.title }}</h3>
+        <p>
+          <span class="index">{{ t('ranking') }}</span>
+          <span class="numberIndex"> #{{ useStaff.sigRank }}</span>
+        </p>
+      </div>
+      <div class="info">
+        <p>
+          <span class="index">{{ t('active') }}</span>
+          <span class="numberIndex">
+            {{
+              (Math.round(useStaff.sigContrubution * 100) / 100).toFixed(2)
+            }}</span
+          >
+        </p>
+      </div>
+      <div class="info">
+        <p>
+          <span style="cursor: pointer" @click="goToSigs(useStaff.title)">{{
+            t('viewDetail')
+          }}</span>
+          <span>
+            <el-icon
+              :size="16"
+              class="right-btn"
+              @click="goToSigs(useStaff.title)"
+            >
+              <right class="app-text-btn" />
+            </el-icon>
+          </span>
+        </p>
+      </div>
+    </el-dialog> -->
+    <!-- <swiper-slide>
+      <o-mobile-template header="companyRelations">
+        <template #content>
+          <menber-and-group-relationship></menber-and-group-relationship>
+        </template>
+      </o-mobile-template>
+    </swiper-slide> -->
     <swiper-slide>
       <o-mobile-template header="groupRelations">
         <template #content>
@@ -464,8 +518,14 @@ const goToUser = (data: IObject) => {
           <a :href="t('footer.legalLink')">{{ t('footer.legal') }}</a>
         </div>
         <div class="foot-item-cy">
-          <p class="mail">{{ openCommunityInfo.email }}</p>
-          <p class="cy">{{ t('footer.copyright') }}</p>
+          <p class="mail">
+            <a :href="`mailto:${openCommunityInfo.email}`" target="_blank">{{
+              openCommunityInfo.email
+            }}</a>
+          </p>
+          <p class="cy">
+            {{ t('footer.copyright', { year: getYearByOffset() }) }}
+          </p>
         </div>
       </div>
     </swiper-slide>
@@ -658,6 +718,9 @@ const goToUser = (data: IObject) => {
         p {
           font-size: 12px;
           color: #555;
+          a {
+            color: inherit;
+          }
         }
         .cy {
           color: #999;
