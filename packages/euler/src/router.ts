@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useCommonStore } from './stores/common';
 import { querySigInfo, queryUserList } from 'shared/api';
-import { isTest, testIsPhone } from 'shared/utils/helper';
+import { testIsPhone } from 'shared/utils/helper';
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
   {

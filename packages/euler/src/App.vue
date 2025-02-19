@@ -2,6 +2,7 @@
 import AppHeader from '@/components/AppHeader.vue';
 import { setStoreData, useStoreData } from 'shared/utils/login';
 import { openCommunityInfo } from './api';
+import CookieNotice from './components/CookieNotice.vue';
 
 setStoreData(openCommunityInfo.name);
 const { loginIframeSrc } = useStoreData();
@@ -15,6 +16,7 @@ const { loginIframeSrc } = useStoreData();
         <component :is="Component" />
       </transition>
     </router-view>
+    <CookieNotice />
   </div>
   <iframe
     v-else
@@ -30,6 +32,22 @@ const { loginIframeSrc } = useStoreData();
   height: 100vh;
 }
 #app {
+  --layout-content-max-width: 1544px;
+  --layout-content-padding: 64px;
+  --layout-header-height: 80px;
+
+  @include screen.respond-to('<=laptop') {
+    --layout-content-max-width: 100%;
+    --layout-content-padding: 40px;
+  }
+
+  @include screen.respond-to('<=pad') {
+    --layout-content-padding: 32px;
+  }
+
+  @include screen.respond-to('phone') {
+    --layout-content-padding: 24px;
+  }
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

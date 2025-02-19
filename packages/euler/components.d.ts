@@ -11,6 +11,7 @@ declare module 'vue' {
     AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     AppHeaderMobile: typeof import('./src/components/AppHeaderMobile.vue')['default']
     AppMobileMenu: typeof import('./src/components/AppMobileMenu.vue')['default']
+    CookieNotice: typeof import('./src/components/CookieNotice.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']

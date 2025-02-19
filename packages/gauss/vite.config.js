@@ -1,6 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
 import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
@@ -21,6 +22,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    vueJsx(),
     Icons({
       compiler: 'vue3',
       customCollections: {
@@ -37,7 +39,10 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/shared/styles/element-plus/index.scss" as *;`,
+        additionalData: `
+        @use "@/shared/styles/element-plus/index.scss" as *;
+        @use "shared/styles/mixin/screen.scss" as screen;
+        `,
       },
     },
   },
