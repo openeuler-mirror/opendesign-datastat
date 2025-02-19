@@ -75,7 +75,7 @@ const pendingPool: Map<string, any> = new Map();
  * 请求拦截
  */
 const requestInterceptorId = request.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config) => {
     // 定义取消请求
     config.cancelToken = new axios.CancelToken((cancelFn) => {
       if (!config.url) {
@@ -106,7 +106,7 @@ const requestInterceptorId = request.interceptors.request.use(
  * 响应拦截
  */
 const responseInterceptorId = request.interceptors.response.use(
-  (response: AxiosResponse) => {
+  (response) => {
     const { config } = response;
     // 请求完成，移除请求池
     if (config.url) {
@@ -115,12 +115,12 @@ const responseInterceptorId = request.interceptors.response.use(
 
     return Promise.resolve(handleResponse(response));
   },
-  (err: AxiosError) => {
+  (err: AxiosError<any>) => {
     const { config } = err;
 
     // 非取消请求发生异常，同样将请求移除请求池
-    if (!axios.isCancel(err) && config.url) {
-      pendingPool.delete(config.url);
+    if (!axios.isCancel(err) && config?.url) {
+      pendingPool.delete(config?.url);
     }
 
     if (err.response) {
@@ -155,11 +155,11 @@ const responseInterceptorId = request.interceptors.response.use(
     else {
       // 被取消的请求
       if (axios.isCancel(err)) {
-        throw new axios.Cancel(err.message || `请求'${config.url}'被取消`);
-      } else if (err.stack && err.stack.includes('timeout')) {
-        err.message = '请求超时!';
+        throw new axios.Cancel(err.message || `请求'${config?.url}'被取消`);
+      } else if ((err as any).stack && (err as any).stack.includes('timeout')) {
+        (err as any).message = '请求超时!';
       } else {
-        err.message = '连接服务器失败!';
+        (err as any).message = '连接服务器失败!';
       }
     }
     return Promise.reject(err);

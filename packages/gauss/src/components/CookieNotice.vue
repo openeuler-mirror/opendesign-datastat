@@ -30,12 +30,14 @@ const COOKIE_DOMAIN = import.meta.env.VITE_COOKIE_DOMAIN;
 const analysisAllowed = ref(false);
 const isBoolean = (val: unknown) => typeof val === 'boolean';
 
+const isNoticeVisible = ref(false);
+
 // 显示/隐藏cookie提示
 const toggleNoticeVisible = (val: boolean) => {
   if (isBoolean(val)) {
-    cookieStore.isNoticeVisible = val;
+    isNoticeVisible.value = val;
   } else {
-    cookieStore.isNoticeVisible = !cookieStore.isNoticeVisible;
+    isNoticeVisible.value = !isNoticeVisible.value;
   }
 };
 
@@ -138,7 +140,7 @@ watch(
 </script>
 
 <template>
-  <div v-if="cookieStore.isNoticeVisible" class="cookie-notice">
+  <div v-if="isNoticeVisible" class="cookie-notice">
     <div class="cookie-notice-content">
       <div class="cookie-notice-wrap">
         <div class="cookie-notice-left">
