@@ -1,5 +1,6 @@
 const messages = {
   zh: {
+    about: '关于cookies',
     title: 'openGauss社区重视您的隐私',
     desc: '我们在本网站上使用Cookie，包括第三方Cookie，以便网站正常运行和提升浏览体验。单击“全部接受”即表示您同意这些目的；单击“全部拒绝”即表示您拒绝非必要的Cookie；单击“管理Cookie”以选择接受或拒绝某些Cookie。需要了解更多信息或随时更改您的Cookie首选项，请参阅我们的',
     link: '《关于cookies》',
@@ -17,6 +18,7 @@ const messages = {
     setting: ' Cookie 设置',
   },
   en: {
+    about: 'About Cookies',
     title: 'openGauss Community Respects Your Privacy',
     desc: 'This site uses cookies from us and our partners to improve your browsing experience and make the site work properly. By clicking "Accept All", you consent to the use of cookies. By clicking "Reject All", you disable the use of unnecessary cookies. You can manage your cookie settings by clicking "Manage Cookies". For more information or to change your cookie settings, please refer to our',
     link: 'About Cookies',

@@ -1,4 +1,5 @@
 export default {
+  about: 'About Cookies',
   title: 'MindSpore Community Respects Your Privacy.',
   desc: 'his site uses cookies from us and our partners to improve your browsing experience and make the site work properly. By clicking "Accept All", you consent to the use of cookies. By clicking "Reject All", you disable the use of unnecessary cookies. You can manage your cookie settings by clicking "Manage Cookies". For more information or to change your cookie settings, please refer to our ',
   link: 'About Cookies',
