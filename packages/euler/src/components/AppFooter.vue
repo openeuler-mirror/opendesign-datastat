@@ -15,6 +15,7 @@ const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
 
 locale.value = localStorage.getItem('lang') || 'zh';
+const aboutCookie = computed(() => `https://www.openeuler.org/${locale.value || 'zh'}/other/cookies/`)
 </script>
 
 <template>
@@ -61,6 +62,11 @@ locale.value = localStorage.getItem('lang') || 'zh';
       <li>
         <a :href="t('footer.legalLink')" target="_blank">{{
           t('footer.legal')
+        }}</a>
+      </li>
+      <li>
+        <a :href="aboutCookie" target="_blank">{{
+          t('cookie.about')
         }}</a>
       </li>
     </ul>
