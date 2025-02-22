@@ -46,7 +46,9 @@ export const useCompanyStore = defineStore('company', {
         timeRange: this.companyForm.timeRange,
         repo: this.companyForm.repo,
       };
-      this.companyForm.repo === '' ? delete params.repo : params;
+      if (this.companyForm.repo === '') {
+        delete params.repo
+      }
       try {
         const res = await queryCompanyContribute(params);
         if (res.code === 200) {

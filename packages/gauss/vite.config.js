@@ -1,4 +1,4 @@
-import path from 'path';
+import nodePath from 'path';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
@@ -16,7 +16,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@/': `${path.resolve(__dirname, './src')}/`,
+      '@/': `${nodePath.resolve(__dirname, './src')}/`,
       'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
     },
   },

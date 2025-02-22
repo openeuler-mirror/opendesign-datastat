@@ -23,7 +23,9 @@ export const usePersonalStore = defineStore('personal', {
         timeRange: this.personalForm.timeRange,
         repo: this.personalForm.repo,
       };
-      this.personalForm.repo === '' ? delete params.repo : params;
+      if (this.personalForm.repo === '') {
+        delete params.repo
+      }
       try {
         const res = await queryUserContribute(params);
         if (res.code === 200) {

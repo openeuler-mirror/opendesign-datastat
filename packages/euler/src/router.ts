@@ -1,8 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useCommonStore } from './stores/common';
 import { querySigInfo, queryUserList } from 'shared/api';
 import { testIsPhone } from 'shared/utils/helper';
-export const routes = [
+
+const getParams = () => {
+  const name = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
+  const params = {
+    community: 'openeuler',
+    sig: name,
+  };
+  return params;
+};
+
+export const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/zh/overview' },
   {
     path: '/:pathMatch(.*)*',
@@ -52,14 +62,7 @@ export const routes = [
       return import('@/views/sig/Index.vue');
     },
     beforeEnter: (to: any, from: any, next: any) => {
-      const name = window.location.href.substring(
-        window.location.href.lastIndexOf('/') + 1,
-        window.location.href.length
-      );
-      const params = {
-        community: 'openeuler',
-        sig: name,
-      };
+      const params = getParams();
       querySigInfo(params).then((data) => {
         if (data.data.length === 0) {
           next('/404');
@@ -83,14 +86,10 @@ export const routes = [
       return import('@/views/person/index.vue');
     },
     beforeEnter: (to: any, from: any, next: any) => {
-      const name = window.location.href.substring(
-        window.location.href.lastIndexOf('/') + 1,
-        window.location.href.length
-      );
-      const params = {
+      queryUserList({
         community: 'openeuler',
-      };
-      queryUserList(params).then((data) => {
+      }).then((data) => {
+        const name = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
         if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
           next();
         } else {
@@ -106,14 +105,10 @@ export const routes = [
       return import('@/views/person/index.vue');
     },
     beforeEnter: (to: any, from: any, next: any) => {
-      const name = window.location.href.substring(
-        window.location.href.lastIndexOf('/') + 1,
-        window.location.href.length
-      );
-      const params = {
+      queryUserList({
         community: 'openeuler',
-      };
-      queryUserList(params).then((data) => {
+      }).then((data) => {
+        const name = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
         if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
           next();
         } else {
@@ -227,15 +222,7 @@ export const routes = [
       return import('@/views/sig/Index.vue');
     },
     beforeEnter: (to: any, from: any, next: any) => {
-      const name = window.location.href.substring(
-        window.location.href.lastIndexOf('/') + 1,
-        window.location.href.length
-      );
-      const params = {
-        community: 'openeuler',
-        sig: name,
-      };
-      querySigInfo(params).then((data) => {
+      querySigInfo(getParams()).then((data) => {
         if (data.data.length === 0) {
           next('/404');
         } else {
@@ -258,14 +245,10 @@ export const routes = [
       return import('@/views/person/index.vue');
     },
     beforeEnter: (to: any, from: any, next: any) => {
-      const name = window.location.href.substring(
-        window.location.href.lastIndexOf('/') + 1,
-        window.location.href.length
-      );
-      const params = {
+      queryUserList({
         community: 'openeuler',
-      };
-      queryUserList(params).then((data) => {
+      }).then((data) => {
+        const name = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
         if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
           next();
         } else {
@@ -369,11 +352,7 @@ const cancel = router.beforeEach((to) => {
   const isPhone = testIsPhone();
   const useCommon = useCommonStore();
   useCommon.setDevice(!isPhone);
-  if (
-    to.path.endsWith('/overview') &&
-    !to.path.includes('/mobile') &&
-    isPhone
-  ) {
+  if (to.path.endsWith('/overview') && !to.path.includes('/mobile') && isPhone) {
     const path = useCommon.language === 'zh' ? '/zh/mobile' : '/en/mobile';
     return { path };
   }
