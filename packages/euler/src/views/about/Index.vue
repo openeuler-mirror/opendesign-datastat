@@ -150,8 +150,8 @@ const dataListEN = [
               rel="noopener noreferrer"
               >https://www.openeuler.org</a
             >成员发布的商品信息）可能涉嫌侵犯其合法权益，应该及时向openEuler社区<a
-              href="mailto:contact@openeuler.sh"
-              >contact@openeuler.sh</a
+              href="mailto:contact@openeuler.io"
+              >contact@openeuler.io</a
             >提出书面权利通知，并提供身份证明、权属证明、具体链接（URL）及详细侵权情况证明。
             openEuler社区在收到上述法律文件后，将会依法尽快移除相关涉嫌侵权的内容。
           </p>
@@ -182,7 +182,7 @@ const dataListEN = [
             website (including but not limited to the commodity information
             posted by community members on this website) infringes upon legal
             rights or interests shall notify openEuler community
-            <a href="mailto:contact@openeuler.sh">contact@openeuler.sh</a> in
+            <a href="mailto:contact@openeuler.io">contact@openeuler.io</a> in
             written form and provide the identity, ownership certification,
             associated link (URL), and proof of infringement. openEuler
             community will remove the content related to the alleged
