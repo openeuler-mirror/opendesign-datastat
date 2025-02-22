@@ -32,6 +32,12 @@ export class OAUtil {
   }
 
   enable(router: Router) {
+    // baidu
+    const hm = document.createElement('script');
+    hm.src = 'https://hm.baidu.com/hm.js?0f2023d05716710fab4f4d4352f4c9ce';
+    hm.classList.add('analytics-script');
+    document.head.append(hm);
+
     this.oa.setHeader(getClientInfo());
     this.oa.enableReporting(true);
     this.setupRouterGuards(router);
@@ -62,6 +68,10 @@ export class OAUtil {
   }
 
   disable() {
+    const scripts = document.querySelectorAll('script.analytics-script');
+    scripts.forEach((script) => {
+      script.remove();
+    });
     this.oa.enableReporting(false);
     if (this.routerGuards) {
       this.routerGuards.forEach((item) => item());
