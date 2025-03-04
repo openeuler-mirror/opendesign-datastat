@@ -227,6 +227,14 @@ watch(
   width: 100%;
   .o-button {
     --e-button-font-size-mini: 14px;
+    border: 1px solid rgb(51,102,255);
+    color: rgb(51,102,255);
+    border-radius: 40px;
+
+    &:hover {
+      color: rgb(133,167,255);
+      border-color: rgb(133,167,255);
+    }
   }
   .o-button + .o-button {
     margin-left: 16px;
@@ -290,6 +298,14 @@ watch(
     line-height: 18px;
     color: var(--e-color-text3);
     margin-top: 8px;
+
+    a {
+      color: rgba(51,102,255);
+    }
+
+    a:hover {
+      color: rgba(133,167,255);
+    }
   }
 }
 
