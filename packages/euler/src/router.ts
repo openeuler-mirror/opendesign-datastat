@@ -337,12 +337,12 @@ export const router = createRouter({
 // 设置语言
 router.beforeEach((to) => {
   const commonStore = useCommonStore();
-  if (!to.fullPath.includes('en')) {
-    commonStore.lang = 'zh';
-    localStorage.setItem('lang', 'zh');
-  } else {
+  if (to.fullPath.startsWith('/en')) {
     commonStore.lang = 'en';
     localStorage.setItem('lang', 'en');
+  } else {
+    commonStore.lang = 'zh';
+    localStorage.setItem('lang', 'zh');
   }
 });
 
