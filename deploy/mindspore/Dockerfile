@@ -1,11 +1,11 @@
-FROM gplane/pnpm as Builder
+FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/node:latest as Builder
 
 RUN mkdir -p /home/mindspore-datastat/web
 WORKDIR /home/mindspore-datastat/web
 COPY . /home/mindspore-datastat/web
 
+RUN npm install pnpm -g
 RUN pnpm install
-
 RUN pnpm build:mindspore
 
 FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:latest as NginxBuilder

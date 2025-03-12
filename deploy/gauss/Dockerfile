@@ -1,11 +1,12 @@
-FROM gplane/pnpm as Builder
+FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/node:latest as Builder
 
 RUN mkdir -p /home/opengauss-datastat/web
 WORKDIR /home/opengauss-datastat/web
 COPY . /home/opengauss-datastat/web
 
-RUN pnpm install
+RUN npm install pnpm -g
 
+RUN pnpm install
 RUN pnpm build:gauss
 
 FROM swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/nginx:latest as NginxBuilder
