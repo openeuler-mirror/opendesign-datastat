@@ -9,7 +9,7 @@ import {
 import { useScreen } from 'shared/hooks/useScreen';
 import { useI18n } from 'vue-i18n';
 
-import IconClose from '~icons/app/icon-close.svg';
+import IconClose from './IconClose.vue';
 import { useRoute, useRouter } from 'vue-router';
 import oa from '@/shared/analytics';
 
@@ -242,6 +242,27 @@ watch(
   }
 }
 
+.dialog-footer .o-button {
+  border-radius: 32px;
+  --o-button-bg-color_hover: var(--o-color-kleinblue5);
+  --o-button-bg-color_active: var(--o-color-kleinblue4);
+  --o-button-border_hover: 1px solid var(--o-color-kleinblue5);
+  --o-button-border_active: 1px solid var(--o-color-kleinblue4);
+  transition: all 0.2s cubic-bezier(.2, 0, 0, 1);
+  html[class="dark"] & {
+    --o-button-bg-color_hover: var(--o-color-kleinblue7);
+    --o-button-bg-color_active: var(--o-color-kleinblue8);
+    --o-button-border_hover: 1px solid var(--o-color-kleinblue7);
+    --o-button-border_active: 1px solid var(--o-color-kleinblue8);
+  }
+  &:hover {
+    color: var(--o-color-white);
+  }
+  &:active {
+    color: var(--o-color-white);
+  }
+}
+
 .cookie-notice-content {
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(5px);
@@ -312,6 +333,25 @@ watch(
   }
 
   .o-button {
+    border-radius: 32px;
+    --o-button-bg-color_hover: var(--o-color-kleinblue5);
+    --o-button-bg-color_active: var(--o-color-kleinblue4);
+    --o-button-border_hover: 1px solid var(--o-color-kleinblue5);
+    --o-button-border_active: 1px solid var(--o-color-kleinblue4);
+    transition: all 0.2s cubic-bezier(.2, 0, 0, 1);
+    html[class="dark"] & {
+      --o-button-bg-color_hover: var(--o-color-kleinblue7);
+      --o-button-bg-color_active: var(--o-color-kleinblue8);
+      --o-button-border_hover: 1px solid var(--o-color-kleinblue7);
+      --o-button-border_active: 1px solid var(--o-color-kleinblue8);
+    }
+    &:hover {
+      color: var(--o-color-white);
+    }
+    &:active {
+      color: var(--o-color-white);
+    }
+
     @media (max-width: 840px) {
       width: 100%;
       justify-content: center;
@@ -322,13 +362,9 @@ watch(
 .cookie-notice-close {
   position: absolute;
   top: 12px;
-  right: 24px;
+  right: 44px;
   cursor: pointer;
   transform-origin: center;
-  color: var(--e-color-text1);
-  &:hover {
-    color: var(--e-color-brand1);
-  }
 }
 
 :deep(.el-dialog) {

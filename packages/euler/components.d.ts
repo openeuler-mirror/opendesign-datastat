@@ -37,6 +37,7 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    IconClose: typeof import('./src/components/IconClose.vue')['default']
     LoadingArc: typeof import('./src/components/LoadingArc.vue')['default']
     MobileTemplate: typeof import('./src/components/MobileTemplate.vue')['default']
     OFormRadio: typeof import('./src/components/OFormRadio.vue')['default']
