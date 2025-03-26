@@ -296,7 +296,7 @@ watch(
   .cookie-desc {
     font-size: 12px;
     line-height: 18px;
-    color: var(--e-color-text3);
+    color: rgba(0, 0, 0, 0.8);
     margin-top: 8px;
 
     a {
