@@ -75,6 +75,7 @@ onMounted(() => {
     oa.enable(router);
   } else {
     oa.disable();
+    oa.removeHM();
   }
 });
 
@@ -106,6 +107,7 @@ const rejectAll = () => {
   );
   toggleNoticeVisible(false);
   oa.disable();
+  oa.removeHM();
 };
 
 const handleSave = () => {

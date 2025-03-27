@@ -6,6 +6,7 @@ import {
 import { reportAnalytics } from '../api/api-analytics';
 import { COOKIE_AGREED_STATUS, useCookieStore } from '../stores/cookies';
 import { Router } from 'vue-router';
+import { removeCookie } from 'utils/cookies';
 
 export class OAUtil {
   service = 'datastat';
@@ -24,6 +25,7 @@ export class OAUtil {
           COOKIE_AGREED_STATUS.ALL_AGREED
         ) {
           this.disable();
+          this.removeHM();
           return;
         }
         reportAnalytics(reportUrlSuffix, data);
@@ -74,6 +76,29 @@ export class OAUtil {
     ].forEach((key) => {
       localStorage.removeItem(key);
     });
+  }
+
+  removeHM() {
+    const hm = /^hm/i;
+    document.cookie
+      .split(';')
+      .map((c) => c.trim())
+      .forEach((c) => {
+        const key = decodeURIComponent(c.split('=')[0]);
+        if (hm.test(key)) {
+          removeCookie(key);
+        }
+      });
+    [sessionStorage, localStorage].forEach((storage) => {
+      const keys = [];
+      for (let i = 0; i < storage.length; i++) {
+        const key = storage.key(i)!;
+        if (hm.test(key)) {
+          keys.push(key);
+        }
+      }
+      keys.forEach(key => storage.removeItem(key));
+    })
   }
 
   reportPV($referrer?: string) {
