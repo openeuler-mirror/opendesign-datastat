@@ -6,7 +6,7 @@ import {
 import { reportAnalytics } from '../api/api-analytics';
 import { COOKIE_AGREED_STATUS, useCookieStore } from '../stores/cookies';
 import { Router } from 'vue-router';
-import { removeCookie } from 'utils/cookies';
+import { removeCookie } from '../utils/cookies';
 
 export class OAUtil {
   service = 'datastat';
