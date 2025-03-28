@@ -86,7 +86,7 @@ export class OAUtil {
       .forEach((c) => {
         const key = decodeURIComponent(c.split('=')[0]);
         if (hm.test(key)) {
-          removeCookie(key);
+          removeCookie(key, { domain: location.hostname });
         }
       });
     [sessionStorage, localStorage].forEach((storage) => {
@@ -97,8 +97,8 @@ export class OAUtil {
           keys.push(key);
         }
       }
-      keys.forEach(key => storage.removeItem(key));
-    })
+      keys.forEach((key) => storage.removeItem(key));
+    });
   }
 
   reportPV($referrer?: string) {

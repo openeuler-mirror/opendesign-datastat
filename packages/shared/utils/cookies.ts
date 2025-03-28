@@ -28,6 +28,6 @@ export function setCookie(
  * 删除cookie
  * @param key cookie的key
  */
-export function removeCookie(key: string) {
-  Cookies.remove(key);
+export function removeCookie(key: string, opt?: object) {
+  Cookies.remove(key, opt || {});
 }
