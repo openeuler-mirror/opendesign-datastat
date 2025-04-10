@@ -97,8 +97,8 @@ watch(
   }
 );
 const jumpToUserZone = () => {
-  const origin = import.meta.env.VITE_LOGIN_ORIGIN;
-  window.open(`${origin}/${useCommon.language}/profile`, '_black');
+  const origin = import.meta.env.VITE_WORKSPACE.replace('{lang}', useCommon.language);
+  window.open(origin, '_blank');
 };
 </script>
 

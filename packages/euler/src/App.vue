@@ -18,12 +18,7 @@ const { loginIframeSrc } = useStoreData();
     </router-view>
     <CookieNotice />
   </div>
-  <iframe
-    v-else
-    :src="loginIframeSrc"
-    class="login-iframe"
-    frameborder="0"
-  ></iframe>
+  <iframe v-else :src="loginIframeSrc" class="login-iframe" frameborder="0"></iframe>
 </template>
 
 <style lang="scss">
