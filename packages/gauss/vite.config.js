@@ -17,6 +17,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@/': `${nodePath.resolve(__dirname, './src')}/`,
+      'shared/': `${nodePath.resolve(__dirname, '../', 'shared')}/`,
       'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
     },
   },
