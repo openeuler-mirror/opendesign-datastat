@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { usePersonalStore } from '@/stores/personal';
 import { useStaffStore } from '@/stores/staff';
 import { toRefs } from 'vue';
@@ -36,47 +35,33 @@ const props = defineProps({
 const { componentName, memberList, usertype } = toRefs(props);
 const usePersonal = usePersonalStore();
 const useStaff = useStaffStore();
-// const progressColor = ref('#002FA7');
 const progressColor = () => {
   if (componentName.value === 'member' && usertype.value === 'contributor') {
     return '#4AAEAD';
-  } else if (
-    componentName.value === 'member' &&
-    usertype.value === 'maintainers'
-  ) {
-    return '#7D32EA';
-  } else if (
-    componentName.value === 'member' &&
-    usertype.value === 'committers'
-  ) {
-    return '#FEB32A';
-  } else {
+  }
+  if (componentName.value === 'member' && usertype.value === 'maintainers') {
     return '#7D32EA';
   }
+  if (componentName.value === 'member' && usertype.value === 'committers') {
+    return '#FEB32A';
+  }
+  return '#7D32EA';
 };
 
 // 动态计算参数赋值
 const progressFormat = (item: number) => {
   if (componentName.value === 'staff') {
-    return useStaff.staffMaxNum ? (100 / useStaff.staffMaxNum) * item : 0;
-  } else if (componentName.value === 'member') {
-    return memberList.value ? (100 / memberList.value) * item : 0;
-  } else {
-    return usePersonal.personalMaxNum
-      ? (100 / usePersonal.personalMaxNum) * item
-      : 0;
+    return Math.floor(useStaff.staffMaxNum ? (100 / useStaff.staffMaxNum) * item : 0);
   }
+  if (componentName.value === 'member') {
+    return Math.floor(memberList.value ? (100 / memberList.value) * item : 0);
+  }
+  return Math.floor(usePersonal.personalMaxNum ? (100 / usePersonal.personalMaxNum) * item : 0);
 };
 </script>
 
 <template>
-  <el-progress
-    :style="{ width }"
-    :show-text="false"
-    :stroke-width="8"
-    :color="progressColor()"
-    :percentage="progressFormat(props.item)"
-  />
+  <el-progress :style="{ width }" :show-text="false" :stroke-width="8" :color="progressColor()" :percentage="progressFormat(props.item)" />
 </template>
 
 <style lang="scss" scoped>

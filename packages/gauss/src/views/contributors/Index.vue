@@ -17,7 +17,6 @@ import titleBg from "@/assets/title-bg.png";
 import chevronsUp from "~icons/app/chevrons-up";
 import AuthorityManagement from "./AuthorityManagement.vue";
 import OGAnchor from "shared/components/OGAnchor.vue";
-import { isTest } from "shared/utils/helper";
 const useCommon = useCommonStore();
 const useCompany = useCompanyStore();
 const { t, locale } = useI18n();

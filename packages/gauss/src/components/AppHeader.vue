@@ -7,23 +7,12 @@ import ONav from 'shared/components/ONav.vue';
 import { useRouter, useRoute } from 'vue-router';
 import AppHeaderMobile from './AppHeaderMobile.vue';
 import { IObject } from 'shared/@types/interface';
-import {
-  showGuard,
-  logout,
-  useStoreData,
-  getUserAuth,
-} from 'shared/utils/login';
 
 import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
 import communityLogoWhite from '@/assets/opengauss-logo.png';
-import Bitmap from '@/assets/Bitmap.png';
 import chevronDown from '~icons/app/chevron-down';
-import LoadingArc from './LoadingArc.vue';
 
-const { token } = getUserAuth();
-const { guardAuthClient, isLoggingIn } = useStoreData();
-let dialogVisible = ref(false);
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -81,8 +70,7 @@ watch(
   }
 );
 const webSiteTitle = () => {
-  document.title =
-    language.value === 'zh' ? 'openGauss 贡献看板' : 'openGauss DATASTAT';
+  document.title = language.value === 'zh' ? 'openGauss 贡献看板' : 'openGauss DATASTAT';
 };
 webSiteTitle();
 
@@ -93,106 +81,35 @@ watch(
   },
   (path) => {
     const p = path.split('/').slice(-1).toString();
-    isAbout.value = p === 'about' ? true : false;
+    isAbout.value = p === 'about';
   }
 );
-const jumpToUserZone = () => {
-  window.open(
-    'https://jldibemigdfj.authing.cn/u?app_id=62679eab0b22b146d2ea0a3a',
-    '_blank'
-  );
-};
 </script>
 
 <template>
   <div v-if="ISPC" class="app-header" :class="{ isabout: isAbout }">
     <div class="wrap">
       <div class="header-logo">
-        <img
-          class="logo"
-          alt="logo"
-          :src="language == 'zh' ? logoWhiteZh : logoWhite"
-          @click="goHome"
-        />
+        <img class="logo" alt="logo" :src="language == 'zh' ? logoWhiteZh : logoWhite" @click="goHome" />
         <span class="line"></span>
-        <a
-          target="_blank"
-          :href="
-            language == 'zh'
-              ? openCommunityInfo.link
-              : openCommunityInfo.link_en
-          "
+        <a target="_blank" :href="language == 'zh' ? openCommunityInfo.link : openCommunityInfo.link_en"
           ><img class="community-logo" :src="communityLogoWhite"
         /></a>
       </div>
       <ONav :lang="language" :nav-items="navList"></ONav>
       <div class="language">
         <el-dropdown popper-class="language-change" @command="handleCommand">
-          <span class="el-dropdown-link">
-            {{ language == 'zh' ? '中文' : 'English' }}</span
-          >
+          <span class="el-dropdown-link"> {{ language == 'zh' ? '中文' : 'English' }}</span>
           <o-icon><chevron-down></chevron-down></o-icon>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(item, key) in options"
-                :key="key"
-                :class="{ active: language === item.value }"
-                :command="item"
-                >{{ item.label }}</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-
-      <!-- <div class="opt-user">
-        <loading-arc v-if="isLoggingIn"></loading-arc>
-        <el-dropdown v-else-if="token">
-          <div class="el-dropdown-link">
-            <img
-              :src="photoSrc"
-              :alt="guardAuthClient.nickname || 'LogOut'"
-              class="img"
-            />
-          </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="jumpToUserZone()">{{
-                t('personalCenter')
-              }}</el-dropdown-item>
-              <el-dropdown-item @click="dialogVisible = true">{{
-                t('logout')
+              <el-dropdown-item v-for="(item, key) in options" :key="key" :class="{ active: language === item.value }" :command="item">{{
+                item.label
               }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <div v-else class="login" @click="showGuard(openCommunityInfo.name)">
-          {{ t('login') }}
-        </div>
       </div>
-      <el-dialog
-        v-model="dialogVisible"
-        :title="t('pleaseConfirm')"
-        width="30%"
-      >
-        <span>{{ t('titleConfirm') }}</span>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">{{
-              t('Cancel')
-            }}</el-button>
-            <el-button
-              type="primary"
-              @click="
-                dialogVisible = false;
-                logout(openCommunityInfo.name);
-              "
-              >{{ t('Confirm') }}</el-button
-            >
-          </span>
-        </template>
-      </el-dialog> -->
     </div>
   </div>
   <div v-else class="app-header-mo">

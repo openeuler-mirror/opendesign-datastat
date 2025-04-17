@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { formType } from "shared/@types/interface";
 import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
 import OIcon from "shared/components/OIcon.vue";
 import MobileOFormRadio from "../sig/MobileOFormRadio.vue";
 import OMobilePagination from "shared/components/OMobilePagination.vue";
-import { toThousands } from "shared/utils/helper";
 import { queryUserSigContribute, queryUserContributeDetails } from "shared/api/index";
 import ONoDataImage from "shared/components/ONoDataImage.vue";
-import MainPR from "@/assets/MainPR.png";
 import CommonPR from "@/assets/CommonPR.png";
 import comment from "@/assets/comment.png";
 import noclick from "@/assets/noclick.png";
@@ -149,14 +146,8 @@ const switchType = () => {
 };
 switchType();
 
-const filterReallData = (val: any) => {
+const filterReallData = () => {
   if (param.value.contributeType === "comment") {
-    // reallData.value = reallData.value.filter((item) => {
-    //   return commentSelectBox.value.some((it) => {
-    //     return it.isSelected && item.is_invalid_comment === it.key;
-    //   });
-    // });
-    // commentType.value = val;
     if (infoFirst.value === 1 && infoSeconed.value === 0) {
       commentType.value = "normal";
     } else if (infoFirst.value === 0 && infoSeconed.value === 1) {
@@ -167,49 +158,16 @@ const filterReallData = (val: any) => {
       commentType.value = "all";
     }
     getDetailsData();
-  } else {
-    // reallData.value = reallData.value.filter((item) => {
-    //   return contributionSelectBox.value.some((it) => {
-    //     return it.isSelected && item.is_main_feature === it.key;
-    //   });
-    // });
-    // comment_type.value = 'normal';
-    // getDetailsData();
   }
 };
 
 // 搜索结果
 const reallData = ref([] as IObject[]);
-const querySearch = (val: any) => {
+const querySearch = () => {
   if (searchInput.value !== "") {
-    // const newList = detailsData.value.filter(
-    //   (item: any) =>
-    //     item.info.toLowerCase().includes(searchInput.value) ||
-    //     item.repo.toLowerCase().includes(searchInput.value) ||
-    //     item.time
-    //       .split("T")
-    //       .slice(0, 1)
-    //       .toString()
-    //       .toLowerCase()
-    //       .includes(searchInput.value)
-    // );
-    // param.value = {
-    //   user: computed(() => props.sig),
-    //   community: 'openeuler',
-    //   contributeType: typeData.value,
-    //   // pageSize: computed(() => value.value),
-    //   timeRange: timeData.value,
-    //   page: computed(() => currentPage.value),
-    //   pageSize: computed(() => pageSize.value),
-    //   filter: searchInput.value,
-    // };
-
     getDetailsData();
-    // reallData.value = newList;
-    // filterReallData(val);
   } else {
-    filterReallData(val);
-    // getDetailsData();
+    filterReallData();
   }
 };
 const clearSearchInput = () => {
@@ -236,24 +194,6 @@ watch(
     getDetailsData();
   }
 );
-// const options = [
-//   {
-//     value: '10',
-//     label: '10',
-//   },
-//   {
-//     value: '20',
-//     label: '20',
-//   },
-//   {
-//     value: '50',
-//     label: '50',
-//   },
-// ];
-// const istrue = ref(true);
-// const changeTage = () => {
-//   istrue.value = !istrue.value;
-// };
 const selData = ref();
 const getprlistData = () => {
   const query = {
@@ -289,12 +229,6 @@ const getDetailsData = () => {
       detailsData.value = value["data"];
       reallData.value = value["data"];
       cursorValue.value = data?.cursor || "";
-      // if (
-      //   param.value.contributeType === 'pr' ||
-      //   param.value.contributeType === 'comment'
-      // ) {
-      //   filterReallData();
-      // }
       loading.value = false;
     })
     .catch(() => (loading.value = false));
@@ -308,35 +242,8 @@ const handleCurrentChange = (val: number) => {
   getDetailsData();
 };
 // 图表筛选
-const contributionSelectBox = ref([
-  {
-    color: MainPR,
-    isSelected: true,
-    label: "key",
-    key: 1,
-  },
-  {
-    color: CommonPR,
-    isSelected: true,
-    label: "general",
-    key: 0,
-  },
-]);
 const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
-
-  // if (item.isSelected) {
-  //   commentType.value = "";
-  //   getDetailsData();
-  // } else {
-  //   querySearch(item.type);
-  // }
-  // if (item.isSelected) {
-  //   commentType.value = "";
-  //   getDetailsData();
-  // } else {
-  //   querySearch(item.type);
-  // }
   if (item.isSelected && item.key === 0) {
     infoFirst.value = 1;
   } else if (!item.isSelected && item.key === 0) {
@@ -346,8 +253,6 @@ const changeTage = (item: any) => {
   } else if (!item.isSelected && item.key === 1) {
     infoSeconed.value = 0;
   }
-  // console.log("a", infoFirst.value);
-  // console.log("b", infoSeconed.value);
   if (infoFirst.value === 1 && infoSeconed.value === 0) {
     commentType.value = "normal";
   } else if (infoFirst.value === 0 && infoSeconed.value === 1) {
@@ -376,9 +281,7 @@ const firstquerySearch = () => {
 };
 // 清除搜索
 const firstclearSearchInput = () => {
-  // getDrownData();
   searchInput.value = "";
-  // getDrownData();
 };
 
 // 评论图表筛选
@@ -452,25 +355,9 @@ const commentSelectBox = ref([
       </template>
     </mobile-o-form-radio>
   </div>
-  <!-- <div class="detail" v-if="reallData?.length"> -->
   <div class="detail">
-    <!-- <div v-if="param.contributeType === 'pr'" class="prType">
-      <div
-        v-for="item in contributionSelectBox"
-        :key="item.label"
-        class="color-box"
-        style="cursor: pointer"
-        @click="changeTage(item)"
-      >
-        <img :src="item.color" alt="" />
-        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }"
-          >{{ t(item.label) }} PR</span
-        >
-      </div>
-    </div> -->
     <div v-if="param.contributeType === 'pr' && reallData?.length" class="prType">
       <img :src="CommonPR" alt="" />
-      <!-- <span class="sp">{{ t('general') }} PR</span> -->
       <span class="sp">PR</span>
     </div>
     <div v-if="param.contributeType === 'issue'&& reallData?.length" class="prType">

@@ -11,12 +11,10 @@ import logoBlack from "@/assets/datastat-black.png";
 import logoBlackZh from "@/assets/datastat-zh-black.png";
 import communityLogoSmall from "@/assets/openeuler-small.png";
 import communityLogoSmallWhite from "@/assets/openeuler-small-white.png";
-import Bitmap from "@/assets/Bitmap.png";
 
 import AppMobileMenu from "./AppMobileMenu.vue";
 import { useStoreData, showGuard, logout, getUserAuth } from "shared/utils/login";
 import LoadingArc from "./LoadingArc.vue";
-import { isTest } from "shared/utils/helper";
 const { token } = getUserAuth();
 const useCommon = useCommonStore();
 const route = useRoute();

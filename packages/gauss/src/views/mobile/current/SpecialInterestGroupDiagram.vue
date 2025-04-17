@@ -96,15 +96,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCommonStore } from '@/stores/common';
 import { querySigScoreAll } from 'shared/api';
-import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
-import { useStaffStore } from '@/stores/staff';
-const useStaff = useStaffStore();
-const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
@@ -137,11 +133,6 @@ const getList = () => {
 const getInnovationValue = () => {
   return listArry.value.filter((item) => {
     return item.group === null;
-  });
-};
-const getCommunityValue = () => {
-  return listArry.value.filter((item) => {
-    return item.group === '社区治理运营';
   });
 };
 getList();

@@ -15,7 +15,6 @@ import { ceil } from "lodash-es";
 import { useRouter } from "vue-router";
 import ONoDataImage from "shared/components/ONoDataImage.vue";
 import { hasPermission, hasPermissions } from "shared/utils/login";
-import { isTest } from "shared/utils/helper";
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();

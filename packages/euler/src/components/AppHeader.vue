@@ -17,10 +17,8 @@ import {
 import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
 import communityLogoWhite from '@/assets/openeuler-logo.png';
-import Bitmap from '@/assets/Bitmap.png';
 import chevronDown from '~icons/app/chevron-down';
 import LoadingArc from './LoadingArc.vue';
-import { isTest } from 'shared/utils/helper';
 const { token } = getUserAuth();
 const { guardAuthClient, isLoggingIn } = useStoreData();
 let dialogVisible = ref(false);

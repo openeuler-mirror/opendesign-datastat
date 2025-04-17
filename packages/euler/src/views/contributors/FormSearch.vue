@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
@@ -19,30 +19,6 @@ const language = computed(() => useCommon.language);
 const componentName = 'company';
 // 动态获取统计周期
 const statisticalNum = ref<any>([]);
-const getStatistical = () => {
-  const param = {
-    community: 'openeuler',
-  };
-  if (useCompany.switchValue) {
-    queryVersions(param).then((data) => {
-      const res = data.data;
-      res.map((item: any) => {
-        return statisticalNum.value.push({
-          label: item,
-          value: item,
-        });
-      });
-      // eslint-disable-next-line prefer-destructuring
-      useCompany.defaultNum = res[0];
-      statisticalNum.value.push({
-        label: computed(() => t('from.all')),
-        value: 'all',
-      });
-    });
-  } else {
-    statisticalNum.value = [];
-  }
-};
 const formOption = computed(() => {
   return [
     {

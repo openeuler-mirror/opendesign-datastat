@@ -2,7 +2,6 @@
 import { ref, computed, watch } from 'vue';
 import { useCommonStore } from '@/stores/common';
 import { openCommunityInfo } from '@/api/index';
-import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import logoWhite from '@/assets/datastat.png';
@@ -13,7 +12,6 @@ import communityLogoSmall from '@/assets/mindspore-small.png';
 import communityLogoSmallWhite from '@/assets/mindspore-small-white.png';
 
 const useCommon = useCommonStore();
-const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const isblack = computed(() => (useCommon.swiperIndex < 2 ? true : false));

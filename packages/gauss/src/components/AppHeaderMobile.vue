@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useCommonStore } from '@/stores/common';
 import { openCommunityInfo } from '@/api/index';
 import { useRoute, useRouter } from 'vue-router';
@@ -11,24 +10,12 @@ import logoBlack from '@/assets/datastat-black.png';
 import logoBlackZh from '@/assets/datastat-zh-black.png';
 import communityLogoSmall from '@/assets/opengauss-small.png';
 import communityLogoSmallWhite from '@/assets/opengauss-small-white.png';
-import Bitmap from '@/assets/Bitmap.png';
 
 import AppMobileMenu from './AppMobileMenu.vue';
-import {
-  useStoreData,
-  showGuard,
-  logout,
-  getUserAuth,
-} from 'shared/utils/login';
-import LoadingArc from './LoadingArc.vue';
 
-const { token } = getUserAuth();
 const useCommon = useCommonStore();
 const route = useRoute();
 const router = useRouter();
-const { guardAuthClient, isLoggingIn } = useStoreData();
-let dialogVisible = ref(false);
-const { t } = useI18n();
 const isblack = computed(() => useCommon.isBlackHeader);
 
 const language = computed(() => (useCommon.language === 'zh' ? false : true));

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCommonStore } from '@/stores/common';
 import OAnchor from 'shared/components/OAnchor.vue';
-import { ref, onMounted, watch, reactive, toRefs } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { queryUserList, queryUserOwnertype } from 'shared/api';
@@ -33,9 +33,6 @@ const getDrownData = () => {
   queryUserList(query as any).then((data) => {
     allSigs.value = data?.data || {};
     allSigs.value.sort((a: any, b: any) => a.localeCompare(b));
-    const findOne =
-      allSigs.value.find((item: any) => item === route.params.organization) ||
-      allSigs.value[0];
     // sencondTitle.value = findOne;
     drownData.value = allSigs.value;
     reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));

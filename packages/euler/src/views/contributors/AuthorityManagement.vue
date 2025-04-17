@@ -81,11 +81,6 @@
         <div class="ranking-list-item">
           <el-table
             :data="lowSig"
-            style="
-               {
-                width: 100%;
-              }
-            "
           >
             <el-table-column align="left" width="200" show-overflow-tooltip>
               <template #header>
@@ -131,7 +126,7 @@
 import TheList from '@/components/TheList.vue';
 import ODiagram from 'shared/components/ODiagram.vue';
 import { useI18n } from 'vue-i18n';
-import { onMounted, ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { queryCompanySigs, queryTCSigs } from 'shared/api';
 import { useCommonStore } from '@/stores/common';
 import { IObject } from 'shared/@types/interface';

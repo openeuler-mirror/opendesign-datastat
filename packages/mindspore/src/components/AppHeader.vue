@@ -16,7 +16,7 @@ import chevronDown from '~icons/app/chevron-down';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 
 const navList = computed(() => {
   return [

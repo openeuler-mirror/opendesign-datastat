@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { useCommonStore } from "@/stores/common";
 import OAnchor from "shared/components/OAnchor.vue";
-import OEchartGauge from "shared/components/OEchartGauge.vue";
 import HistoricalTrend from "./HistoricalTrend.vue";
-import CurrentTrend from "./CurrentTrend.vue";
-import { ref, onMounted, watch, computed, nextTick } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import TableList from "./TableList.vue";
 import ContributList from "./ContributList.vue";
-import { querySigRepos, querySigName, getSigScore, querySigInfo } from "shared/api";
+import { querySigName, querySigInfo } from "shared/api";
 import { openCommunityInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
@@ -22,7 +20,7 @@ const router = useRouter();
 const route = useRoute();
 const sencondTitle = ref("");
 const { t } = useI18n();
-const drownData = ref([] as any[]);
+const dropdownData = ref([] as any[]);
 // sencondTitle.value = route.params.name as string;
 const getDrownData = () => {
   let community = "openeuler";
@@ -35,9 +33,9 @@ const getDrownData = () => {
       allSigs.openeuler[0];
     sencondTitle.value = findOne;
     const firstKeys = Object.keys(allSigs);
-    drownData.value = allSigs[firstKeys[0]];
-    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
-    getllData();
+    dropdownData.value = allSigs[firstKeys[0]];
+    dropdownOptions.value = dropdownData.value.sort((a, b) => a.localeCompare(b));
+    getAllData();
   });
 };
 
@@ -51,67 +49,34 @@ const anchorData = computed(() => {
       ]
     : ["userContributor"];
 });
-const clickDrownItem = (item: string) => {
+const clickDropdown = (item: string) => {
   sencondTitle.value = item;
-  getllData();
-};
-const cubeData = ref([] as any[]);
-const getCubeData = () => {
-  const query = {
-    timeRange: "lastonemonth",
-    community: "openeuler",
-    sig: sencondTitle.value,
-  };
-
-  querySigRepos(query).then((data) => {
-    const value = data?.data || {};
-    cubeData.value = value[sencondTitle.value];
-  });
+  getAllData();
 };
 
-const getllData = () => {
+const getAllData = () => {
   clean();
   querySearch();
   querySigInfoData();
-
-  // querySorceData();
-
-  // getCubeData();
 };
 onMounted(() => {
   getDrownData();
 });
-// 获取活力指数
-const sorceData = ref({} as IObject);
-const querySorceData = () => {
-  const params = {
-    community: openCommunityInfo.name,
-    sig: sencondTitle.value,
-    timeRange: "lastonemonth",
-  };
-  nextTick(() => {
-    if (hasPermission("sigRead")) {
-      getSigScore(params).then((data) => {
-        sorceData.value = data.data.pop();
-      });
-    }
-  });
-};
 // 跳转首页
 const goToTetail = () => {
   router.push(`/${useCommon.language}/detail`);
 };
 // 搜索过滤
 const searchInput = ref("");
-const reallData = ref([] as IObject[]);
+const dropdownOptions = ref([] as IObject[]);
 const querySearch = () => {
   if (searchInput.value !== "") {
-    const newList = drownData.value.filter((item: any) =>
+    const newList = dropdownData.value.filter((item: any) =>
       item.toLowerCase().includes(searchInput.value)
     );
-    reallData.value = newList;
+    dropdownOptions.value = newList;
   } else {
-    reallData.value = drownData.value;
+    dropdownOptions.value = dropdownData.value;
   }
 };
 // 清除搜索
@@ -143,7 +108,7 @@ const inputSlider = (value: number) => {
 const showDropdown = (e: any) => {
   if (e) {
     let number = 0;
-    reallData.value.forEach((item: any, index) => {
+    dropdownOptions.value.forEach((item: any, index) => {
       if (item === sencondTitle.value) {
         number = index;
       }
@@ -151,8 +116,6 @@ const showDropdown = (e: any) => {
     inputSlider(number * 32);
   }
 };
-// 计算 gitee 上 sig 仓库的名字(sig 主页)
-// const sigHomeRepo = computed(() => sencondTitle.value.replace(/^sig-/i,''));
 </script>
 <template>
   <div class="container">
@@ -187,9 +150,9 @@ const showDropdown = (e: any) => {
                   </div>
                   <el-scrollbar ref="scrollbarRef" height="400px">
                     <el-dropdown-item
-                      v-for="item in reallData"
+                      v-for="item in dropdownOptions"
                       :key="item.value"
-                      @click="clickDrownItem(item as any)"
+                      @click="clickDropdown(item as any)"
                     >
                       {{ item }}
                     </el-dropdown-item>
@@ -280,7 +243,7 @@ const showDropdown = (e: any) => {
           <div v-if="hasPermission('SIGread')">
             <visual-index
               :sencondTitle="sencondTitle"
-              :drownData="drownData"
+              :drownData="dropdownData"
             ></visual-index>
             <!-- <current-trend :sig="sencondTitle"></current-trend> -->
           </div>

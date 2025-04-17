@@ -7,7 +7,6 @@ import { formatNumber, percentageTotal } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
 import { hasPermission, hasPermissions } from 'shared/utils/login';
-import { isTest } from 'shared/utils/helper';
 const router = useRouter();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
@@ -96,7 +95,6 @@ const goToCompany = (data: IObject) => {
       `/${useCommon.language}/company/${data.company_cn}`
     );
     window.open(routeData.href, '_blank');
-  } else {
   }
 };
 </script>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { querySigRepos, querySigInfo } from 'shared/api';
+import { querySigInfo } from 'shared/api';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 const { t } = useI18n();
@@ -12,18 +12,6 @@ const props = defineProps({
   },
 });
 const { sig } = toRefs(props);
-const cubeData = ref([] as any[]);
-const getCubeData = () => {
-  const query = {
-    timeRange: 'lastonemonth',
-    community: 'opengauss',
-    sig: sig.value,
-  };
-  querySigRepos(query).then((data) => {
-    const value = data?.data || {};
-    cubeData.value = value[sig.value];
-  });
-};
 // 获取侧边栏明细
 const sigInfo = ref({
   mailing_list: '',

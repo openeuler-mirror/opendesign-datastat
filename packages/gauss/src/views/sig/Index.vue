@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { useCommonStore } from "@/stores/common";
 import OGAnchor from "shared/components/OGAnchor.vue";
-import OEchartGauge from "shared/components/OEchartGauge.vue";
 import HistoricalTrend from "./HistoricalTrend.vue";
 import CurrentTrend from "./CurrentTrend.vue";
-import { ref, onMounted, watch, computed, nextTick } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
-import TableList from "./TableList.vue";
 import ContributList from "./ContributList.vue";
-import { querySigRepos, querySigName, getSigScore, querySigInfo } from "shared/api";
+import { querySigName, querySigInfo } from "shared/api";
 import { openCommunityInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
@@ -55,20 +53,6 @@ const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
   getllData();
 };
-const cubeData = ref([] as any[]);
-const getCubeData = () => {
-  const query = {
-    timeRange: "lastonemonth",
-    community: "opengauss",
-    sig: sencondTitle.value,
-  };
-
-  querySigRepos(query).then((data) => {
-    const value = data?.data || {};
-    cubeData.value = value[sencondTitle.value];
-  });
-};
-
 const getllData = () => {
   clean();
   querySearch();
@@ -79,22 +63,6 @@ const getllData = () => {
 onMounted(() => {
   getDrownData();
 });
-// 获取活力指数
-const sorceData = ref({} as IObject);
-const querySorceData = () => {
-  const params = {
-    community: openCommunityInfo.name,
-    sig: sencondTitle.value,
-    timeRange: "lastonemonth",
-  };
-  nextTick(() => {
-    if (hasPermission("sigRead")) {
-      getSigScore(params).then((data) => {
-        sorceData.value = data.data.pop();
-      });
-    }
-  });
-};
 // 跳转首页
 const goToTetail = () => {
   router.push(`/${useCommon.language}/detail`);

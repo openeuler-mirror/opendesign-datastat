@@ -73,9 +73,6 @@ const timeRange = [
   { label: "from.all", value: "all" },
 ];
 const time = ref("");
-const getItemListData = (data: IObject[], template: string) => {
-  return data.reduce((sum, e) => sum + Number(e[template]), 0);
-};
 const getprlistData = () => {
   const query = {
     user: user.value,

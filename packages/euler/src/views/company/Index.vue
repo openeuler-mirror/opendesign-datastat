@@ -6,8 +6,6 @@ import { onMounted, ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import {
-  sigsProcessing,
-  treeProcessing,
   processing,
 } from 'shared/utils/helper';
 import {
@@ -27,7 +25,6 @@ import OIcon from 'shared/components/OIcon.vue';
 import { useRouter } from 'vue-router';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
 import { ElScrollbar } from 'element-plus';
-import { number } from 'echarts';
 import TableList from './TableList.vue';
 import DataShow from './DataShow.vue';
 const router = useRouter();
@@ -59,7 +56,6 @@ const getSencondTitle = (value?: string) => {
     getallData();
   });
 };
-const sigsData = ref({} as IObject);
 const treeData = ref({} as IObject);
 const oechartData = ref({
   D0: 0,
@@ -168,16 +164,6 @@ const getDrownData = () => {
   reallData.value = drownData.value.sort((a, b) =>
     a.value.localeCompare(b.value)
   );
-};
-const getSigsData = () => {
-  const query = {
-    company: sencondTitleValue.value,
-    timeRange: 'all',
-    community: 'openeuler',
-  };
-  queryCompanySigDetails(query).then((data) => {
-    sigsData.value = sigsProcessing(data?.data || []);
-  });
 };
 const clickDrownItem = (item: IObject) => {
   sencondTitle.value = item.label;
@@ -288,8 +274,7 @@ const currentPage = ref(1);
 // 显示第几页
 const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  if (val?.isTrusted) {
-  } else {
+  if (!val?.isTrusted) {
     currentPage.value = val;
   }
 };
@@ -361,10 +346,6 @@ watch(
     currentPage.value = 1;
   }
 );
-const goTo = (item: any) => {
-  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
-  window.open(routeData.href, '_blank');
-};
 const goToHome = () => {
   router.push(`/${useCommon.language}/detail`);
 };
