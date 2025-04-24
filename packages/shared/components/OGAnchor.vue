@@ -127,12 +127,12 @@ const btnInfo = () => {
   </div>
   <div class="box" >
     <div class="box-show" @click="btnInfo">
-      <div class="title"><sapn>意反</sapn><sapn>见馈</sapn></div>
+      <div class="title"><span>意反</span><span>见馈</span></div>
     </div>
   </div>
   <div class="box-down">
     <div class="box-show" @click="scrollToTop">
-      <div class="title"><sapn>回顶</sapn><sapn>到部</sapn></div>
+      <div class="title"><span>回顶</span><span>到部</span></div>
     </div>
   </div>
 </template>

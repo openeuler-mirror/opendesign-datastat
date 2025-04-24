@@ -2,165 +2,102 @@
   <div class="edropdown">
     <el-dropdown placement="bottom-start">
       <div class="main-left-title">
-        {{ t(timeTitle) }}{{t('zhcontribut')}}
+        {{ t(timeTitle) }}{{ t('zhcontribut') }}
         <span class="btnc"></span>
       </div>
       <template #dropdown>
-        <el-dropdown-item
-          v-for="item in timeRange"
-          :key="item.value"
-          class="dropdownItem"
-          @click="clickDrownItem(item)"
-        >
-          {{ t(item.label) }}{{t('zhcontribut')}}</el-dropdown-item
+        <el-dropdown-item v-for="item in timeRange" :key="item.value" class="dropdownItem" @click="clickDrownItem(item)">
+          {{ t(item.label) }}{{ t('zhcontribut') }}</el-dropdown-item
         >
       </template>
     </el-dropdown>
   </div>
   <div class="left-first">
     <div class="left-first-child">
-      <span :title="`${t('Mergerequest')} PR`">{{ t("Mergerequest") }} PR</span>
+      <span :title="`${t('Mergerequest')} PR`">{{ t('Mergerequest') }} PR</span>
       <div class="left-first-child-data">
-        {{ toThousands(mergeRequest) }}
+        {{ displayData.pr }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('NeedsProblems')} Issue`">{{ t("NeedsProblems") }} Issue</span>
+      <span :title="`${t('NeedsProblems')} Issue`">{{ t('NeedsProblems') }} Issue</span>
       <div class="left-first-child-data">
-        {{ toThousands(issueData) }}
+        {{ displayData.issue }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('review')} Comment`">{{ t("review") }} Comment</span>
+      <span :title="`${t('review')} Comment`">{{ t('review') }} Comment</span>
       <div class="left-first-child-data">
-        {{ toThousands(comment) }}
+        {{ displayData.comment }}
       </div>
     </div>
     <div class="left-first-child">
-      <span :title="`${t('SIGNumber')}`">{{ t("SIGNumber") }}</span>
+      <span :title="`${t('SIGNumber')}`">{{ t('SIGNumber') }}</span>
       <div class="left-first-child-data">
-        {{ toThousands(contributors) }}
+        {{ displayData.sig }}
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { toRefs, ref, onMounted, watch } from "vue";
-import { queryUserSigContribute, queryUserContributeDetails } from "shared/api";
-import { IObject } from "shared/@types/interface";
-import { toThousands } from "shared/utils/helper";
-import { useI18n } from "vue-i18n";
+import { toRefs, ref, onMounted, watch, PropType, computed } from 'vue';
+import { IObject } from 'shared/@types/interface';
+import { toThousands } from 'shared/utils/helper';
+import { useI18n } from 'vue-i18n';
+
 const { t } = useI18n();
 const props = defineProps({
   user: {
     type: String,
     required: true,
-    default: "",
+    default: '',
+  },
+  data: {
+    type: Object as PropType<{ pr: number; issue: number; comment: number; sig: number }>,
+    required: true,
   },
 });
+
+const emit = defineEmits(['updateDetail']);
 const { user } = toRefs(props);
-const mergeRequest = ref(0);
-const issueData = ref(0);
-const comment = ref(0);
-const contributors = ref(0);
+
+const displayData = computed(() => {
+  const data = props.data;
+  return {
+    pr: data.pr ? toThousands(data.pr) : '-',
+    issue: data.issue ? toThousands(data.issue) : '-',
+    comment: data.comment ? toThousands(data.comment) : '-',
+    sig: data.sig ? toThousands(data.sig) : '-',
+  };
+})
+
 const timeRange = [
   {
-    label: "from.lastonemonth",
-    value: "lastonemonth",
+    label: 'from.lastonemonth',
+    value: 'lastonemonth',
   },
-  { label: "from.lasthalfyear", value: "lasthalfyear" },
-  { label: "from.lastoneyear", value: "lastoneyear" },
-  { label: "from.all", value: "all" },
+  { label: 'from.lasthalfyear', value: 'lasthalfyear' },
+  { label: 'from.lastoneyear', value: 'lastoneyear' },
+  { label: 'from.all', value: 'all' },
 ];
-const time = ref("");
-const getprlistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "opengauss",
-    contributeType: "pr",
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // mergeRequest.value = getItemListData(value, "contribute");
-    mergeRequest.value = value.totalCount;
-  });
-};
-const siglistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "opengauss",
-    contributeType: "pr",
-  };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    // mergeRequest.value = getItemListData(value, "contribute");
-    contributors.value = value.length;
-  });
-};
+const time = ref('');
 
-const getissuelistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "opengauss",
-    contributeType: "issue",
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // issueData.value = getItemListData(value, "contribute");
-    issueData.value = value.totalCount;
-  });
-};
-
-const getcommentlistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "opengauss",
-    contributeType: "comment",
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // comment.value = getItemListData(value, 'contribute');
-    comment.value = value.totalCount;
-  });
-};
-// const getcontributeListData = () => {
-//   const query = {
-//     company: company.value,
-//     timeRange: time.value,
-//     community: 'opengauss',
-//   };
-//   queryCompanyUsers(query).then((data) => {
-//     const Data = processing(data?.data || []);
-//     contributors.value = Data.sigData['0'];
-//   });
-// };
-const getAllData = () => {
-  getprlistData();
-  getissuelistData();
-  getcommentlistData();
-  siglistData();
-  // getcontributeListData();
-};
 watch(
   () => user.value,
   () => {
-    getAllData();
+    emit('updateDetail', { user: props.user, timeRange: time.value });
   }
 );
-const timeTitle = ref("");
+const timeTitle = ref('');
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
   timeTitle.value = item.label;
-  getAllData();
+  emit('updateDetail', { user: props.user, timeRange: time.value });
 };
 onMounted(() => {
-  time.value = "all";
-  timeTitle.value = "from.all";
-  getAllData();
+  time.value = 'all';
+  timeTitle.value = 'from.all';
+  emit('updateDetail', { user: props.user, timeRange: time.value });
 });
 </script>
 <style scoped lang="scss">
@@ -190,7 +127,7 @@ onMounted(() => {
   }
 }
 .btnc {
-  background-image: url("@/assets/down.png");
+  background-image: url('@/assets/down.png');
   width: 24px;
   height: 24px;
   margin-left: 8px;
@@ -200,7 +137,9 @@ onMounted(() => {
   // width: 160px;
   height: 24px;
   font-size: 16px;
-  font-family: PingFangSC-Medium, PingFang SC;
+  font-family:
+    PingFangSC-Medium,
+    PingFang SC;
   font-weight: 500;
   color: #000000;
   line-height: 24px;

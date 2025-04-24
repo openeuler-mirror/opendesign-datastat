@@ -7,8 +7,8 @@ import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import OFormRadio from '@/components/OFormRadio.vue';
-import { queryUserSigContribute } from 'shared/api/index';
-import { sortExp, formatNumber } from 'shared/utils/helper';
+import { queryUserSigContribute } from 'shared/api/api-new';
+import { formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
@@ -31,33 +31,25 @@ const param = ref({
 } as IObject);
 const memberData = ref([] as IObject[]);
 const memberMax = ref(0);
-const memberList = ref([] as IObject[]);
-const rankNum = ref(1);
-const sumContribute = ref(0);
 
 const getMemberData = () => {
-  queryUserSigContribute(param.value).then((data) => {
-    memberList.value =
-      (data.data &&
-        data.data
-          .sort(sortExp('contribute', false))
+  queryUserSigContribute(param.value).then((res) => {
+    const data =
+      (res.data &&
+        res.data
           .filter((item: any) => item.contribute !== 0)) ||
       [];
-    memberMax.value = ceil(memberList.value[0]?.contribute + 1, 0) || 0;
-    rankNum.value = 1;
+    memberMax.value = ceil(data[0]?.contribute + 1, 0) || 0;
     if (param.value.displayRange === 'all') {
       return (
-        (reallData.value = memberList.value),
-        (memberData.value = memberList.value)
+        (reallData.value = data),
+        (memberData.value = data)
       );
     }
-    memberData.value = memberList.value.slice(
+    memberData.value = data.slice(
       0,
       Number(param.value.displayRange)
     );
-    sumContribute.value = memberData.value.reduce((total, currentValue) => {
-      return total + currentValue.contribute;
-    }, 0);
     reallData.value = memberData.value;
   });
 };
@@ -246,9 +238,7 @@ const goToCompany = (data: IObject) => {
               <span class="num">{{ item.contribute }} </span>
               <span
                 >{{
-                  (
-                    Math.round((item.contribute / sumContribute) * 10000) / 100
-                  ).toFixed(1) + '%'
+                  ((item.percent) * 100).toFixed(1) + '%'
                 }}
               </span>
             </div>

@@ -4,7 +4,8 @@ import OGAnchor from 'shared/components/OGAnchor.vue';
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { queryUserList, queryUserOwnertype } from 'shared/api';
+import { queryUserOwnertype } from 'shared/api';
+import { queryUserContributeCounts, queryUserList } from 'shared/api/api-new';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
@@ -12,6 +13,8 @@ import { ElScrollbar } from 'element-plus';
 import SigContribution from './SigContribution.vue';
 import ContributionDynamic from './ContributionDynamic.vue';
 import DataShow from './DataShow.vue';
+import { debounce } from 'lodash-es';
+import { computed } from 'vue';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -23,19 +26,49 @@ const sigTitle = ref('');
 sigTitle.value = route.query.organization as string;
 const group = ref('');
 group.value = route.query.group as string;
-const allSigs = ref();
+
+const userMap = ref<Map<string, string[]>>();
+
+const accountHome = computed(() => {
+  const accountName = sencondTitle.value;
+  if (userMap.value?.get(accountName)?.includes('gitcode')) {
+    return `https://gitcode.com/${accountName}`
+  }
+  return `https://gitee.com/${accountName}`
+});
+
 const getDrownData = () => {
   const query = {
     // group: group.value,
     community: openCommunityInfo.name,
     // name: sigTitle.value,
   };
-  queryUserList(query as any).then((data) => {
-    allSigs.value = data?.data || {};
-    allSigs.value.sort((a: any, b: any) => a.localeCompare(b));
-    drownData.value = allSigs.value;
-    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
+  queryUserList(query as any).then((res) => {
+    const data = (res?.data || {});
+    userMap.value = Object.entries(data as Record<string, string[]>).reduce((map, [key, val]) => map.set(key, val), new Map());
+    drownData.value = [...userMap.value.keys()].sort((a: any, b: any) => a.localeCompare(b));
     getllData();
+  });
+};
+
+// 贡献详情数据（pr、comment、issue、sig贡献的具体数量）
+const contributeDetailCounts = ref({
+  pr: 0,
+  issue: 0,
+  comment: 0,
+  sig: 0,
+});
+
+const updateCounts = (arg: {user: string; timeRange: string }) => {
+  queryUserContributeCounts({
+    ...arg,
+    community: "opengauss",
+  }).then((res) => {
+    const { sig, pr, comment, issue } = res?.data || {};
+    contributeDetailCounts.value.pr = pr || 0;
+    contributeDetailCounts.value.sig = sig || 0;
+    contributeDetailCounts.value.issue = issue || 0;
+    contributeDetailCounts.value.comment = comment || 0;
   });
 };
 
@@ -61,7 +94,7 @@ const goToTetail = () => {
 // 搜索过滤
 const searchInput = ref('');
 const reallData = ref([] as IObject[]);
-const querySearch = () => {
+const querySearch = debounce(() => {
   if (searchInput.value !== '') {
     const newList = drownData.value.filter((item: any) =>
       item.toLowerCase().includes(searchInput.value)
@@ -70,7 +103,7 @@ const querySearch = () => {
   } else {
     reallData.value = drownData.value;
   }
-};
+}, 300);
 // 清除搜索
 const clearSearchInput = () => {
   // getDrownData();
@@ -81,16 +114,15 @@ const clean = () => {
   searchInput.value = '';
 };
 // 获取侧边栏明细
-const sigInfo = ref({
-  mailing_list: '',
-} as IObject);
+const sigInfo = ref<any[]>([]);
 const querySigInfoData = () => {
   const params = {
     community: openCommunityInfo.name,
     user: sencondTitle.value,
   };
-  queryUserOwnertype(params).then((data) => {
-    sigInfo.value = data?.data || {};
+  queryUserOwnertype(params).then((res) => {
+    sigInfo.value = res?.data || [];
+    if (!sigInfo.value.length) return;
     sigInfo.value.sort((a: any, b: any) =>
       a['sig'].localeCompare(b['sig'], 'zh')
     );
@@ -138,7 +170,7 @@ const goToSig = (data: IObject) => {
         <span class="step-one" @click="goToTetail()">{{
           t('nav.contributors')
         }}</span>
-        <span> > {{ sencondTitle }}</span>
+        <span> &gt; {{ sencondTitle }}</span>
       </div>
       <div class="main">
         <div class="main-left">
@@ -189,7 +221,7 @@ const goToSig = (data: IObject) => {
                 <a
                   style="color: #7D32EA"
                   target="_blank"
-                  :href="`https://gitee.com/${sencondTitle}`"
+                  :href="accountHome"
                 >
                   {{ t('toHome') }}</a
                 >
@@ -235,7 +267,7 @@ const goToSig = (data: IObject) => {
                 </span>
               </div>
             </div>
-            <data-show :user="sencondTitle"></data-show>
+            <data-show :user="sencondTitle" :data="contributeDetailCounts" @update-detail="updateCounts"></data-show>
           </div>
         </div>
         <div class="main-right">
