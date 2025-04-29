@@ -51,7 +51,11 @@ export const useCommonStore = defineStore('common', {
       try {
         const res = await queryAll('opengauss');
         if (res.code === 200) {
-          this.allData = res.data;
+          const data = { ...res.data };
+          ['prs', 'comments', 'issues', 'partners', 'contributors', 'sigs'].forEach((prop) => {
+            delete data[prop];
+          });
+          this.allData = data;
           this.time = getNowFormatDate();
         }
 
