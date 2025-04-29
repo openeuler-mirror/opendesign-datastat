@@ -39,10 +39,10 @@ const progressColor = () => {
   if (componentName.value === 'member' && usertype.value === 'contributor') {
     return '#4AAEAD';
   }
-  if (componentName.value === 'member' && usertype.value === 'maintainers') {
+  if (componentName.value === 'member' && usertype.value === 'maintainer') {
     return '#7D32EA';
   }
-  if (componentName.value === 'member' && usertype.value === 'committers') {
+  if (componentName.value === 'member' && usertype.value === 'committer') {
     return '#FEB32A';
   }
   return '#7D32EA';
