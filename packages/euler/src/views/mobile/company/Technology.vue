@@ -4,7 +4,6 @@ import { IObject } from 'shared/@types/interface';
 import { onMounted, ref, watch, computed, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { treeProcessing } from 'shared/utils/helper';
 import { queryCompanySigDetails, queryCompanySigs } from 'shared/api';
 import OEchartTreemap from 'shared/components/OEchartTreemap.vue';
 import OViewonpc from 'shared/components/OViewonpc.vue';

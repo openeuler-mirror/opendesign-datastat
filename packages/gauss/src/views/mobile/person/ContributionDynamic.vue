@@ -1,16 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { formType } from "shared/@types/interface";
 import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
 import OIcon from "shared/components/OIcon.vue";
 import MobileOFormRadio from "../sig/MobileOFormRadio.vue";
 import OMobilePagination from "shared/components/OMobilePagination.vue";
-import { toThousands } from "shared/utils/helper";
 import { queryUserSigContribute, queryUserContributeDetails } from "shared/api/index";
 import ONoDataImage from "shared/components/ONoDataImage.vue";
-import MainPR from "@/assets/mainPR.png";
 import CommonPR from "@/assets/commonPR.png";
 import comment from "@/assets/comment.png";
 import noclick from "@/assets/noclick.png";
@@ -149,7 +146,7 @@ const switchType = () => {
 };
 switchType();
 
-const filterReallData = (val: any) => {
+const filterReallData = () => {
   if (param.value.contributeType === "comment") {
     // reallData.value = reallData.value.filter((item) => {
     //   return commentSelectBox.value.some((it) => {
@@ -180,7 +177,7 @@ const filterReallData = (val: any) => {
 
 // 搜索结果
 const reallData = ref([] as IObject[]);
-const querySearch = (val: any) => {
+const querySearch = () => {
   if (searchInput.value !== "") {
     // const newList = detailsData.value.filter(
     //   (item: any) =>
@@ -208,7 +205,7 @@ const querySearch = (val: any) => {
     // reallData.value = newList;
     // filterReallData(val);
   } else {
-    filterReallData(val);
+    filterReallData();
     // getDetailsData();
   }
 };
@@ -307,21 +304,6 @@ const handleCurrentChange = (val: number) => {
   currentPage.value = val;
   getDetailsData();
 };
-// 图表筛选
-const contributionSelectBox = ref([
-  {
-    color: MainPR,
-    isSelected: true,
-    label: "key",
-    key: 1,
-  },
-  {
-    color: CommonPR,
-    isSelected: true,
-    label: "general",
-    key: 0,
-  },
-]);
 const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
 

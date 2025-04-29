@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { openCommunityInfo } from '@/api/index';
-import { queryUserContribute } from 'shared/api/index';
-import { sortExp } from 'shared/utils/helper';
+import { queryUserContribute } from 'shared/api/api-new';
 import { IObject } from 'shared/@types/interface';
 
 export const usePersonalStore = defineStore('personal', {
@@ -10,9 +9,9 @@ export const usePersonalStore = defineStore('personal', {
     personalMaxNum: 0, // 个人数据最大参数
     // 筛选参数
     personalForm: {
-      contributeType: 'PR',
+      contributeType: 'pr',
       timeRange: 'lastonemonth',
-      repo: 'opengauss/openGauss-server',
+      repo: 'coreRepo',
     } as IObject,
   }),
   actions: {
@@ -26,13 +25,15 @@ export const usePersonalStore = defineStore('personal', {
       if (this.personalForm.repo === '') {
         delete params.repo
       }
+      if (params.repo?.startsWith('opengauss/')) {
+        params.repo = params.repo.slice(10);
+      }
       try {
         const res = await queryUserContribute(params);
-        if (res.code === 200) {
+        if (res.code === 1) {
           const { data } = res;
-          const userList = data.sort(sortExp('contribute', false));
-          this.personalData = userList.slice(0, 20);
-          this.personalMaxNum = userList[0]?.contribute;
+          this.personalData = data.slice(0, 20);
+          this.personalMaxNum = data[0]?.contribute;
         }
       } catch (error) {
         console.log(error);

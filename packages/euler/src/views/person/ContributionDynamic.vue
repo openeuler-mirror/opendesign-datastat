@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { formType } from "shared/@types/interface";
 import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
 import OIcon from "shared/components/OIcon.vue";
 import OFormRadio from "@/components/OFormRadio.vue";
-import { toThousands } from "shared/utils/helper";
 import { queryUserSigContribute, queryUserContributeDetails } from "shared/api/index";
-import MainPR from "@/assets/MainPR.png";
 import CommonPR from "@/assets/CommonPR.png";
 import comment from "@/assets/comment.png";
 import noclick from "@/assets/noclick.png";
@@ -197,7 +194,7 @@ getDetailsData();
 // 搜索结果
 const reallData = ref([] as IObject[]);
 
-const querySearch = (val: any) => {
+const querySearch = () => {
   if (searchInput.value !== "") {
     // const newList = detailsData.value.filter(
     //   (item: any) =>
@@ -225,7 +222,7 @@ const querySearch = (val: any) => {
     // reallData.value = newList;
     // filterReallData(val);
   } else {
-    filterReallData(val);
+    filterReallData();
     // getDetailsData();
   }
 };
@@ -293,7 +290,7 @@ getprlistData();
 const detailsData = ref();
 const totalCount = ref(0);
 
-const filterReallData = (val: any) => {
+const filterReallData = () => {
   if (param.value.contributeType === "comment") {
     // reallData.value = reallData.value.filter((item) => {
     //   return commentSelectBox.value.some((it) => {
@@ -325,29 +322,12 @@ const filterReallData = (val: any) => {
 // 显示第几页
 const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  if (val?.isTrusted) {
-  } else {
+  if (!val?.isTrusted) {
     currentPage.value = val;
     getDetailsData();
   }
 
 };
-
-// 图表PR筛选
-const contributionSelectBox = ref([
-  {
-    color: MainPR,
-    isSelected: true,
-    label: "key",
-    key: 1,
-  },
-  {
-    color: CommonPR,
-    isSelected: true,
-    label: "general",
-    key: 0,
-  },
-]);
 
 const changeTage = (item: any) => {
   item.isSelected = !item.isSelected;
@@ -400,11 +380,6 @@ const firstclearSearchInput = () => {
   // getDrownData();
   searchInput.value = "";
   // getDrownData();
-};
-
-const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
-const inputSlider = (value: number) => {
-  scrollbarRef.value?.setScrollTop(value);
 };
 </script>
 

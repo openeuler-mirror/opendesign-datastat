@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { openCommunityInfo } from '@/api/index';
-import { sortExp } from 'shared/utils/helper';
-import { queryCompanyContribute } from 'shared/api/index';
+import { queryCompanyContribute } from 'shared/api/api-new';
 import { IObject, companyTypes } from 'shared/@types/interface';
 import { ceil } from 'lodash-es';
 
@@ -32,7 +31,7 @@ export const useCompanyStore = defineStore('company', {
     companyMaxNum: 0,
     // 筛选参数
     companyForm: {
-      contributeType: 'PR',
+      contributeType: 'pr',
       timeRange: 'all',
       displayRange: '10',
       repo: 'coreRepo',
@@ -49,17 +48,20 @@ export const useCompanyStore = defineStore('company', {
       if (this.companyForm.repo === '') {
         delete params.repo
       }
+      if (params.repo?.startsWith('opengauss/')) {
+        params.repo = params.repo.slice(10);
+      }
       try {
         const res = await queryCompanyContribute(params);
-        if (res.code === 200) {
+        if (res.code === 1) {
           const { data } = res;
-          const userList = data.sort(sortExp('contribute', false));
-          this.companyMaxNum = ceil(userList[0].contribute, -2);
+          // const userList = data.sort(sortExp('contribute', false));
+          this.companyMaxNum = ceil(data[0].contribute, -2);
           const rankNum = ref(1);
           // 替换个人贡献者为*
           data.forEach((item: companyTypes) => {
             if (
-              item.company_cn !== '个人贡献者' ||
+              item.company_zh !== '个人贡献者' ||
               item.company_en !== 'independent'
             ) {
               item.index = rankNum.value++;

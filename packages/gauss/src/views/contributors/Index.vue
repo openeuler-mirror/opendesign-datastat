@@ -17,7 +17,6 @@ import titleBg from "@/assets/title-bg.png";
 import chevronsUp from "~icons/app/chevrons-up";
 import AuthorityManagement from "./AuthorityManagement.vue";
 import OGAnchor from "shared/components/OGAnchor.vue";
-import { isTest } from "shared/utils/helper";
 const useCommon = useCommonStore();
 const useCompany = useCompanyStore();
 const { t, locale } = useI18n();
@@ -33,9 +32,9 @@ const formOption = computed(() => {
       id: "contributeType",
       active: "pr",
       list: [
-        { label: t("home.prs"), value: "PR" },
-        { label: t("home.issues"), value: "Issue" },
-        { label: t("home.comments"), value: "Comment" },
+        { label: t("home.prs"), value: "pr" },
+        { label: t("home.issues"), value: "issue" },
+        { label: t("home.comments"), value: "comment" },
       ],
     },
     {
@@ -166,9 +165,9 @@ const anchorData = computed(() => {
                   width="100"
                 />
                 <el-table-column
-                  prop="gitee_id"
+                  prop="user_login"
                   align="left"
-                  label="Gitee ID"
+                  label="用户 ID"
                   show-overflow-tooltip
                   width="180"
                   ><template #default="scope">
@@ -178,8 +177,8 @@ const anchorData = computed(() => {
                           cursor: 'pointer',
                           color: '#7D32EA',
                         }"
-                        @click="goToUser(scope.row.gitee_id)"
-                        >{{ scope.row.gitee_id }}</span
+                        @click="goToUser(scope.row.user_login)"
+                        >{{ scope.row.user_login }}</span
                       >
                     </div>
                   </template></el-table-column
@@ -209,10 +208,10 @@ const anchorData = computed(() => {
                   width="100"
                 />
                 <el-table-column
-                  prop="gitee_id"
+                  prop="user_login"
                   align="left"
                   show-overflow-tooltip
-                  label="Gitee ID"
+                  label="用户 ID"
                   width="180"
                   ><template #default="scope">
                     <div>
@@ -221,8 +220,8 @@ const anchorData = computed(() => {
                           cursor: 'pointer',
                           color: '#7D32EA',
                         }"
-                        @click="goToUser(scope.row.gitee_id)"
-                        >{{ scope.row.gitee_id }}</span
+                        @click="goToUser(scope.row.user_login)"
+                        >{{ scope.row.user_login }}</span
                       >
                     </div>
                   </template></el-table-column

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { usePersonalStore } from '@/stores/personal';
 import { useStaffStore } from '@/stores/staff';
 import { toRefs } from 'vue';

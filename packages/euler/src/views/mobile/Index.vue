@@ -14,7 +14,6 @@ import { useCommonStore } from '@/stores/common';
 import { hasPermission, hasPermissions } from 'shared/utils/login';
 import TheForm from '@/components/TheForm.vue';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
-import MenberAndGroupRelationship from './current/MenberAndGroupRelationship.vue';
 import {
   formatNumber,
   toThousands,
@@ -31,9 +30,6 @@ import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialG
 import { useRoute, useRouter } from 'vue-router';
 import { IObject } from 'shared/@types/interface';
 import MobileTemplate from '@/components/MobileTemplate.vue';
-import { Right } from '@element-plus/icons-vue';
-import { useStaffStore } from '@/stores/staff';
-const useStaff = useStaffStore();
 const router = useRouter();
 const route = useRoute();
 const useCompany = useCompanyStore();
@@ -190,12 +186,7 @@ const goToCompany = (data: IObject) => {
   ) {
     data;
     router.push(`/${useCommon.language}/mobile/company/${data.company_cn}`);
-  } else {
   }
-};
-const goToSigs = (title: any) => {
-  router.push(`/${useCommon.language}/mobile/sig/${title}`);
-  useStaff.dialogFormVisible = false;
 };
 
 // 跳转个人详情

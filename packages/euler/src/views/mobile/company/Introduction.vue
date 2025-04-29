@@ -4,7 +4,7 @@ import { IObject } from 'shared/@types/interface';
 import { onMounted, ref, watch, toRefs } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
-import { sigsProcessing, processing, toThousands } from 'shared/utils/helper';
+import { sigsProcessing, processing } from 'shared/utils/helper';
 import {
   queryCompanySigDetails,
   queryCompanyUserContribute,
@@ -12,9 +12,7 @@ import {
   queryCompanySigs,
 } from 'shared/api';
 import OEchartCircularPile from 'shared/components/OEchartCircularPile.vue';
-import { useRouter } from 'vue-router';
 import DataShow from '@/views/company/DataShow.vue';
-const router = useRouter();
 const useCommon = useCommonStore();
 const route = useRoute();
 const sencondTitle = ref('');

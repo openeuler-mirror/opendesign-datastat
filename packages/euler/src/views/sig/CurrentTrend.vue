@@ -97,16 +97,6 @@ watch(
     initData();
   }
 );
-const tooltipChange = (e: IObject) => {
-  selectedData.value =
-    Object.keys(keyToI18n).find((item) => keyToI18n[item]?.value === e.title) ||
-    'all';
-  getTableData(sorceData.value);
-};
-const tooltipHide = () => {
-  selectedData.value = 'all';
-  getTableData(sorceData.value);
-};
 const initData = () => {
   getPolarData(sorceData.value);
   getTableData(sorceData.value);

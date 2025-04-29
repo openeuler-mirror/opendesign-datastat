@@ -21,7 +21,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { getSigScore } from "shared/api";
 import { IObject } from "shared/@types/interface";
 import { useI18n } from "vue-i18n";

@@ -131,17 +131,13 @@
 import TheList from '@/components/TheList.vue';
 import ODiagram from 'shared/components/ODiagram.vue';
 import { useI18n } from 'vue-i18n';
-import { onMounted, ref, computed, watch } from 'vue';
-import { queryCompanySigs, queryTCSigs } from 'shared/api';
+import { ref } from 'vue';
 import { useCommonStore } from '@/stores/common';
-import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
 import { hasPermission } from 'shared/utils/login';
-import {isTest} from 'shared/utils/helper'
 const { t } = useI18n();
 const router = useRouter();
 const useCommon = useCommonStore();
-const listData = ref([]);
 const diagramData = ref({
   name: 'flare',
   children: [
@@ -167,69 +163,6 @@ const diagramData = ref({
     },
   ],
 });
-const getList = () => {
-  const query = {
-    timeRange: 'lastoneyear',
-    community: 'openeuler',
-  };
-  queryCompanySigs(query).then((data) => {
-    listData.value = data?.data || [];
-    const sigArry = listData.value.reduce((pre: any, next: any) => {
-      pre.push(...next.sigList);
-      return pre;
-    }, []);
-    const sigsData = [...new Set(sigArry)];
-    diagramData.value.children[0].children = sigsData.map((item: any) => {
-      return {
-        name: item,
-        key: item,
-        imports: [],
-      };
-    });
-    diagramData.value.children[1].children = listData.value
-      .filter((items: IObject) => items.sigList.length)
-      .map((item: IObject) => {
-        const imports = item.sigList.map((i: string) => `flare.sig.${i}`);
-        return {
-          name:
-            useCommon.language === 'zh'
-              ? item.company_cn
-              : item.company_en === ''
-              ? item.company_cn
-              : item.company_en,
-          key: item.company_cn,
-          imports,
-        };
-      });
-  });
-};
-// getList();
-// 小组关系列表
-const groupData = ref([]);
-const number = ref(0);
-const getGroup = () => {
-  const query = {
-    community: 'openeuler',
-  };
-  queryTCSigs(query).then((data) => {
-    groupData.value = data?.data || [];
-    number.value = Math.ceil(
-      groupData.value.sort((a: any, b: any) => a.name?.localeCompare(b.name))
-        .length / 2
-    );
-  });
-};
-// getGroup();
-
-const lowSig = computed(() =>
-  groupData.value.slice(number.value, groupData.value.length)
-);
-const hightSig = computed(() => groupData.value.slice(0, number.value));
-
-const goToSig = (item: any) => {
-  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item}`);
-  window.open(routeData.href, '_blank');
-};
 const goToAllSig = () => {
   const routeData: any = router.resolve(`/${useCommon.language}/sig`);
   window.open(routeData.href, '_blank');

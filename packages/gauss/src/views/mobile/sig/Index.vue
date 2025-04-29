@@ -12,9 +12,6 @@ import { useRoute, useRouter } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import DropSelect from '../common/DropSelect.vue';
 import Introduction from './Introduction.vue';
-import VitalIndex from './VitalIndex.vue';
-import MobileHistoricalTrend from './MobileHistoricalTrend.vue';
-import MobileTableList from './MobileTableList.vue';
 import MobileContributList from './MobileContributList.vue';
 
 const { t } = useI18n();

@@ -43,15 +43,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useI18n } from 'vue-i18n';
-import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
-import { querySigName, queryUserList } from 'shared/api';
+import { queryUserList } from 'shared/api';
 import { useRoute, useRouter } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import ContributionDynamic from './ContributionDynamic.vue';

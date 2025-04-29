@@ -23,9 +23,9 @@ const formOption = computed(() => {
       id: 'contributeType',
       active: 'pr',
       list: [
-        { label: t('home.prs'), value: 'PR' },
-        { label: t('home.issues'), value: 'Issue' },
-        { label: t('home.comments'), value: 'Comment' },
+        { label: t('home.prs'), value: 'pr' },
+        { label: t('home.issues'), value: 'issue' },
+        { label: t('home.comments'), value: 'comment' },
       ],
     },
     {

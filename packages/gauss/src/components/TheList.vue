@@ -38,16 +38,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { Right } from "@element-plus/icons-vue";
 import { useCommonStore } from "@/stores/common";
 import { querySigScoreAll } from "shared/api";
-import { useI18n } from "vue-i18n";
 import { IObject } from "shared/@types/interface";
-import { hasPermission } from "shared/utils/login";
-const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
-const showAfter = 200;
 const listData = ref([]);
 const listArry = ref([{ feature: "", arry: [] }] as IObject[]);
 const getList = () => {

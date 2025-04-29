@@ -4,14 +4,12 @@ import OFormRadio from "@/components/OFormRadio.vue";
 import { ref, computed, watch, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { openCommunityInfo } from "@/api/index";
-import { querySigUserContribute } from "shared/api/index";
-import { sortExp } from "shared/utils/helper";
+import { querySigUserContribute } from "shared/api/api-new";
 import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
 import OIcon from "shared/components/OIcon.vue";
 import { useCommonStore } from "@/stores/common";
 import { useRouter } from "vue-router";
-import { hasPermission } from "shared/utils/login";
 import ONoDataImage from "shared/components/ONoDataImage.vue";
 
 const router = useRouter();
@@ -29,9 +27,9 @@ const contributionSelectBox = ref([
     color: "#7D32EA",
     isSelected: true,
     label: "Maintainer",
-    key: "maintainers",
+    key: "maintainer",
   },
-  { color: "#feb32a", isSelected: true, label: "Committer", key: "committers" },
+  { color: "#feb32a", isSelected: true, label: "Committer", key: "committer" },
   {
     color: "#4aaead",
     isSelected: true,
@@ -58,7 +56,7 @@ const memberMax = ref(0);
 const searchInput = ref("");
 const getMemberData = () => {
   querySigUserContribute(param.value).then((data) => {
-    const memberList = data?.data?.sort(sortExp("contribute", false)) || [];
+    const memberList = data?.data || [];
     if (memberList.length === 0) {
       memberMax.value = 0;
       memberData.value = [];
@@ -137,8 +135,7 @@ const currentPage = ref(1);
 // 显示第几页
 const handleCurrentChange = (val: any) => {
   // 改变默认的页数
-  if (val?.isTrusted) {
-  } else {
+  if (!val?.isTrusted) {
     currentPage.value = val;
   }
 };
@@ -147,7 +144,7 @@ const handleCurrentChange = (val: any) => {
 const querySearch = () => {
   if (searchInput.value !== "") {
     const newList = memberData.value.filter((item: any) =>
-      item.gitee_id.toLowerCase().includes(searchInput.value)
+      item.user_login.toLowerCase().includes(searchInput.value)
     );
     reallData.value = newList;
     filterReallData();
@@ -238,25 +235,25 @@ const goToUser = (data: IObject) => {
         >
           <el-table-column prop="rank" align="center" :label="t('Number')" width="120" />
           <el-table-column
-            prop="gitee_id"
+            prop="user_login"
             align="left"
-            label="Gitee ID"
+            label="用户 ID"
             show-overflow-tooltip
             width="200"
             ><template #default="scope">
               <div class="usertype-box">
                 <span
-                  v-show="scope.row.usertype !== 'committers'"
+                  v-show="scope.row.usertype !== 'committer'"
                   class="usertypecolorbox"
                   :style="({
                     '--color':
-                      scope.row.usertype === 'maintainers'
+                      scope.row.usertype === 'maintainer'
                         ? '#7D32EA'
                         : '#4AAEAD',
                   } as any)"
                 ></span>
                 <span
-                  v-show="scope.row.usertype === 'committers'"
+                  v-show="scope.row.usertype === 'committer'"
                   class="usertypecolorbox"
                   :style="({
                     '--color': '#FEB32A',
@@ -267,8 +264,8 @@ const goToUser = (data: IObject) => {
                   :style="{
                     cursor: 'pointer',
                   }"
-                  @click="goToUser(scope.row.gitee_id)"
-                  >{{ scope.row.gitee_id }}</span
+                  @click="goToUser(scope.row.user_login)"
+                  >{{ scope.row.user_login }}</span
                 >
               </div>
             </template>

@@ -53,6 +53,10 @@ export default defineConfig({
         target: 'https://dsapi.osinfra.cn/',
         changeOrigin: true,
       },
+      '/stat': {
+        target: 'https://magicapi.test.osinfra.cn/',
+        changeOrigin: true,
+      },
       '/ip-api/': {
         target: 'http://ip-api.com/json/',
         changeOrigin: true,

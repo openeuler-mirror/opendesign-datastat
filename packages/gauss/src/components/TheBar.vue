@@ -80,16 +80,16 @@ const showAfter = 200;
             class="name"
             :title="
               useCommon.language === 'zh'
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en === ''
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en
             "
             >{{
               useCommon.language === 'zh'
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en === ''
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en
             }}</span
           >
@@ -112,9 +112,9 @@ const showAfter = 200;
                 <span class="index">{{ +index + 1 }}</span>
                 {{
                   useCommon.language === 'zh'
-                    ? item.company_cn
+                    ? item.company_zh
                     : item.company_en === ''
-                    ? item.company_cn
+                    ? item.company_zh
                     : item.company_en
                 }}
               </p>

@@ -48,7 +48,7 @@
 import { toRefs, ref, onMounted, watch } from "vue";
 import { queryUserSigContribute, queryUserContributeDetails } from "shared/api";
 import { IObject } from "shared/@types/interface";
-import { processing, toThousands } from "shared/utils/helper";
+import { toThousands } from "shared/utils/helper";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -71,9 +71,6 @@ const timeRange = [
   { label: "from.all", value: "all" },
 ];
 const time = ref("");
-const getItemListData = (data: IObject[], template: string) => {
-  return data.reduce((sum, e) => sum + Number(e[template]), 0);
-};
 const getprlistData = () => {
   const query = {
     user: user.value,
