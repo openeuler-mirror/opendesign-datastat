@@ -253,7 +253,7 @@ const filterReallData = () => {
     } else if (infoFirst.value === 0 && infoSeconed.value === 0) {
       commentType.value = "noneType";
     } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
-      commentType.value = "all";
+      commentType.value = "";
     }
     getDetailsData();
   }
@@ -268,7 +268,7 @@ const handleCurrentChange = (val: any) => {
   }
 };
 
-const changeTage = (item: any) => {
+const changeTag = (item: any) => {
   item.isSelected = !item.isSelected;
   if (item.isSelected && item.key === 0) {
     infoFirst.value = 1;
@@ -286,7 +286,7 @@ const changeTage = (item: any) => {
   } else if (infoFirst.value === 0 && infoSeconed.value === 0) {
     commentType.value = "noneType";
   } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
-    commentType.value = "all";
+    commentType.value = "";
   }
 
   getDetailsData();
@@ -391,7 +391,7 @@ const clearSigsSearchInput = () => {
         :key="item.label"
         class="color-box"
         style="cursor: pointer"
-        @click="changeTage(item)"
+        @click="changeTag(item)"
       >
         <img :src="item.isSelected ? item.color : noclick" alt="" />
         <span class="sp" :style="{ color: item.isSelected ? '' : '#CCCCCC' }">{{
