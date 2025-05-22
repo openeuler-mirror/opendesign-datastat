@@ -88,9 +88,9 @@ export default {
   footer: {
     about: '关于数据',
     privacy: '隐私政策',
-    privacyLink: 'https://www.openeuler.org/zh/other/privacy/',
+    privacyLink: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/other/privacy/`,
     legal: '法律声明',
-    legalLink: 'https://www.openeuler.org/zh/other/legal/',
+    legalLink: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/other/legal/`,
     atom: 'openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目',
     copyright: '版权所有 © {year} openEuler 保留一切权利',
   },

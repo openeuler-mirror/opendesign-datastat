@@ -10,6 +10,8 @@ const language = computed(() => useCommon.language);
 
 locale.value = localStorage.getItem('lang') || 'zh';
 
+const OPENEULER = import.meta.env.VITE_MAIN_DOMAIN_URL;
+
 const dataList = [
   { label: '社区用户 User', value: '使用开源社区软件包的用户（下载用户）' },
   {
@@ -127,28 +129,28 @@ const dataListEN = [
             openEuler社区在openEuler网站上所提及的非openEuler产品或服务仅仅是为了提供相关信息，并不构成对这些产品、服务的认可或推荐。
             openEuler社区并不就网址上提供的任何产品、服务或信息做出任何声明、保证或认可。
             鉴于<a
-              href="https://www.openeuler.org"
+              :href="OPENEULER"
               target="_blank"
               rel="noopener noreferrer"
-              >https://www.openeuler.org</a
+              >{{ OPENEULER }}</a
             >提供的部分服务属于电子公告牌（BBS）服务，
             <a
-              href="https://www.openeuler.org"
+              :href="OPENEULER"
               target="_blank"
               rel="noopener noreferrer"
-              >https://www.openeuler.org</a
+              >{{ OPENEULER }}</a
             >上关于其成员或其成员发布的相关信息（包括但不限于用户名称、公司名称、
             联系人及联络信息，相关图片、视讯等）的信息均是由成员自行提供，
             成员依法应对其提供的任何信息承担全部责任。 任何企业或个人认为<a
-              href="https://www.openeuler.org"
+              :href="OPENEULER"
               target="_blank"
               rel="noopener noreferrer"
-              >https://www.openeuler.org</a
+              >{{ OPENEULER }}</a
             >网页内容（包括但不限于<a
-              href="https://www.openeuler.org"
+              :href="OPENEULER"
               target="_blank"
               rel="noopener noreferrer"
-              >https://www.openeuler.org</a
+              >{{ OPENEULER }}</a
             >成员发布的商品信息）可能涉嫌侵犯其合法权益，应该及时向openEuler社区<a
               href="mailto:contact@openeuler.io"
               >contact@openeuler.io</a

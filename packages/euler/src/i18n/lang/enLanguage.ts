@@ -90,9 +90,9 @@ export default {
   footer: {
     about: 'About Data',
     privacy: 'Privacy Policy',
-    privacyLink: 'https://www.openeuler.org/en/other/privacy/',
+    privacyLink: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/privacy/`,
     legal: 'Legal Notice',
-    legalLink: 'https://www.openeuler.org/en/other/legal/',
+    legalLink: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/legal/`,
     atom: 'openEuler is an open source project incubated and operated by the OpenAtom Foundation.',
     copyright: 'Copyright © {year} openEuler. All rights reserved.',
   },
