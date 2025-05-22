@@ -41,7 +41,7 @@ export const kebablize = cacheStringFn((str: string): string => {
 export function formatNumber(key: number) {
   let num: number | string = 0;
   if (key === undefined) {
-    num = 0;
+    num = '-';
   } else {
     num = key >= 1e3 ? `${parseInt(`${(key / 1e3) * 10}`) / 10}K` : key;
   }
