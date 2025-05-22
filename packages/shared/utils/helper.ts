@@ -53,7 +53,7 @@ export function formatNumber(key: number) {
 export function toThousands(key: number | 0) {
   let num: number | string = 0;
   if (key === undefined) {
-    num = 0;
+    num = '-';
   } else {
     num = Number(key).toLocaleString('en-US');
   }
