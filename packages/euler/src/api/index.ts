@@ -7,7 +7,7 @@
 
 export const openCommunityInfo = {
   name: 'openeuler',
-  link: 'https://www.openeuler.org/zh/',
-  link_en: 'https://www.openeuler.org/en/',
+  link: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/`,
+  link_en: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/`,
   email: 'contact@openeuler.io',
 };
