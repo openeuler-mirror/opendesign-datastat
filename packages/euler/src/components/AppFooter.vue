@@ -15,7 +15,7 @@ const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
 
 locale.value = localStorage.getItem('lang') || 'zh';
-const aboutCookie = computed(() => `https://www.openeuler.org/${locale.value || 'zh'}/other/cookies/`)
+const aboutCookie = computed(() => `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${locale.value || 'zh'}/other/cookies/`)
 </script>
 
 <template>

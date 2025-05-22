@@ -22,7 +22,7 @@ const router = useRouter();
 
 const route = useRoute();
 const aboutCookiesUrl = computed(
-  () => `https://www.openeuler.org/${locale.value}/other/cookies/`
+  () => `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${locale.value}/other/cookies/`
 );
 
 const COOKIE_DOMAIN = import.meta.env.VITE_COOKIE_DOMAIN;
