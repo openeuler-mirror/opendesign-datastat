@@ -18,7 +18,7 @@ export interface NavItem {
 }
 
 export interface companyTypes {
-  company_zh: string;
+  company_cn: string;
   company_en: string;
   contribute: number;
   index?: number | string;

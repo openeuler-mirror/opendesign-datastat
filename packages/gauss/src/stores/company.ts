@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { openCommunityInfo } from '@/api/index';
 import { queryCompanyContribute } from 'shared/api/api-new';
-import { IObject, companyTypes } from 'shared/@types/interface';
+import { CompanyTypes } from '@/shared/types';
+import { IObject } from 'shared/@types/interface';
 import { ceil } from 'lodash-es';
 
 interface layoutStateTypes {
@@ -59,7 +60,7 @@ export const useCompanyStore = defineStore('company', {
           this.companyMaxNum = ceil(data[0].contribute, -2);
           const rankNum = ref(1);
           // 替换个人贡献者为*
-          data.forEach((item: companyTypes) => {
+          data.forEach((item: CompanyTypes) => {
             if (
               item.company_zh !== '个人贡献者' ||
               item.company_en !== 'independent'
