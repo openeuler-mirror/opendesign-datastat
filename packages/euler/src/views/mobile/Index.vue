@@ -30,6 +30,7 @@ import CommitteeAndSpecialGroupRelationship from './current/CommitteeAndSpecialG
 import { useRoute, useRouter } from 'vue-router';
 import { IObject } from 'shared/@types/interface';
 import MobileTemplate from '@/components/MobileTemplate.vue';
+import { filingData } from '@/shared/data';
 const router = useRouter();
 const route = useRoute();
 const useCompany = useCompanyStore();
@@ -514,9 +515,18 @@ const goToUser = (data: IObject) => {
               openCommunityInfo.email
             }}</a>
           </p>
-          <p class="cy">
-            {{ t('footer.copyright', { year: getYearByOffset() }) }}
-          </p>
+          <div class="cy">
+            <span>
+              {{ t('footer.copyright', { year: getYearByOffset() }) }}
+            </span>
+            <div class="filing">
+              <a :href="filingData.link" target="_blank" class="filing-link">
+                {{ t('footer.filingText1') }}
+              </a>
+              <img :src="filingData.icon" class="filing-img" />
+              <p>{{ t('footer.filingText2') }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </swiper-slide>
@@ -714,8 +724,29 @@ const goToUser = (data: IObject) => {
           }
         }
         .cy {
+          font-size: 12px;
           color: #999;
           margin-top: 8px;
+
+          .filing {
+            p {
+              color: inherit;
+              margin-top: 0;
+            }
+
+            display: flex;
+            gap: 8px;
+            align-items: center;
+
+            .filing-link {
+              color: #999;
+            }
+            .filing-img {
+              height: 16px;
+              width: 16px;
+              align-self: center;
+            }
+          }
         }
       }
       .atom-item {

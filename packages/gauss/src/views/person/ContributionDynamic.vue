@@ -161,11 +161,15 @@ const getDetailsData = () => {
 getDetailsData();
 
 const updateTotalCount = () => {
-  queryUserContributeCounts({
+  const queryParams = {
     ...filterParams.value,
     sig: selectedSig.value === 'all' ? '' : selectedSig.value,
     user: props.sig
-  }).then((res) => {
+  } as Record<string, any>;
+  if (filterParams.value.contributeType === "comment") {
+    queryParams.comment_type = commentType.value;
+  }
+  queryUserContributeCounts(queryParams).then((res) => {
     if (res.data) {
       totalCount.value = res.data;
     }
@@ -289,7 +293,8 @@ const changeTag = (item: any) => {
     commentType.value = "";
   }
 
-  getDetailsData();
+ getDetailsData();
+  updateTotalCount();
 };
 
 // sig组搜索过滤
