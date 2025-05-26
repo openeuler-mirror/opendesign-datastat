@@ -93,6 +93,8 @@ export default {
     legalLink: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/other/legal/`,
     atom: 'openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目',
     copyright: '版权所有 © {year} openEuler 保留一切权利',
+    filingText1: '京ICP备2020036654号-1',
+    filingText2: '京公网安备 11030102011597 号',
   },
   about: {
     explain: '数据指标解释 ',

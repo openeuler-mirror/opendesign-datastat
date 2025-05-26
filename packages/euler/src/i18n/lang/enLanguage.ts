@@ -95,6 +95,8 @@ export default {
     legalLink: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/legal/`,
     atom: 'openEuler is an open source project incubated and operated by the OpenAtom Foundation.',
     copyright: 'Copyright © {year} openEuler. All rights reserved.',
+    filingText1: 'J. ICP B. No. 2020036654-1',
+    filingText2: 'J.G.W.A.B. No. 11030102011597',
   },
   about: {
     explain: 'Data Indicator Interpretation ',

@@ -9,6 +9,7 @@ import logo from '@/assets/datastat.png';
 import logoZh from '@/assets/datastat-zh.png';
 import communityLogo from '@/assets/openeuler-logo.png';
 import atomLogo from '@/assets/atom-pc.svg';
+import { filingData } from '@/shared/data';
 
 const { t, locale } = useI18n();
 const useCommon = useCommonStore();
@@ -38,9 +39,22 @@ const aboutCookie = computed(() => `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lo
         :href="`mailto:${openCommunityInfo.email}`"
         >{{ openCommunityInfo.email }}</a
       >
-      <p class="copyright">
-        {{ t('footer.copyright', { year: getYearByOffset() }) }}
-      </p>
+      <div class="copyright">
+        <p>
+          {{
+            t('footer.copyright', {
+              year: getYearByOffset(),
+            })
+          }}
+        </p>
+        <div class="filing">
+          <a :href="filingData.link" target="_blank" class="filing-link">
+            {{ t('footer.filingText1') }}
+          </a>
+          <img :src="filingData.icon" class="filing-img" />
+          <p>{{ t('footer.filingText2') }}</p>
+        </div>
+      </div>
     </div>
     <div class="footer-option">
       <img class="atom-pc" :src="atomLogo" alt="" />
@@ -107,9 +121,38 @@ const aboutCookie = computed(() => `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lo
 
   .copyright {
     font-size: 12px;
-    color: #fff;
-    opacity: 0.8;
     margin-top: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    gap: 8px;
+    line-height: normal;
+
+    @include screen.respond-to('<=pad') {
+      flex-direction: column;
+      gap: 6px;
+    }
+    @include screen.respond-to('<=pad_v') {
+      margin-top: 4px;
+      gap: 4px;
+    }
+
+    .filing {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+
+      .filing-link {
+        color: rgba(255, 255, 255, 0.6);
+        @include screen.hover {
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+      .filing-img {
+        height: 16px;
+        width: 16px;
+        align-self: center;
+      }
+    }
   }
   .footer-option {
     width: 340px;
