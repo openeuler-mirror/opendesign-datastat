@@ -77,7 +77,6 @@ const querySorceData = () => {
           return pre;
         }, []) || [];
       echartData.value.push(...addData);
-      console.log(echartData.value)
     });
   });
 };
