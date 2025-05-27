@@ -38,6 +38,7 @@ const contributionSelectBox = ref([
   },
 ]);
 const filterReallData = () => {
+  if (reallData.value.length === 0) return;
   reallData.value = reallData.value.filter((item) => {
     return contributionSelectBox.value.some((it) => {
       return it.isSelected && item.usertype === it.key;
@@ -60,6 +61,7 @@ const getMemberData = () => {
     if (memberList.length === 0) {
       memberMax.value = 0;
       memberData.value = [];
+      reallData.value = [];
     } else {
       memberMax.value = memberList[0].contribute;
       memberData.value = memberList.map((item: any, index: any) => ({
@@ -70,6 +72,10 @@ const getMemberData = () => {
     }
     filterReallData();
     currentPage.value = 1;
+  }).catch(() => {
+    memberMax.value = 0;
+    memberData.value = [];
+    reallData.value = [];
   });
 };
 
@@ -221,10 +227,6 @@ const goToUser = (data: IObject) => {
         >
       </div>
     </div>
-    <!-- <div class="leader">
-      <div class="leader-box">Leader</div>
-      <span>SIG Leader</span>
-    </div> -->
     <div v-if="reallData?.length" class="ranking-list">
       <div class="ranking-list-item">
         <p class="caption"></p>

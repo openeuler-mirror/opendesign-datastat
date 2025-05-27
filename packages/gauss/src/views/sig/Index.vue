@@ -209,22 +209,6 @@ const showDropdown = (e: any) => {
                 </a>
               </div>
             </div>
-            <!-- <div class="first">
-              <div class="Mentor"></div>
-              <div class="List">
-                <span>Mentors：</span>
-                <span
-                  v-for="item in sigInfo.mentor"
-                  :key="item.value"
-                  class="item"
-                >
-                  {{ item }}
-                </span>
-                <span v-if="!sigInfo.mentor" class="noitem">
-                  {{ t('noMentor') }}
-                </span>
-              </div>
-            </div> -->
             <div class="first">
               <div class="store"></div>
               <div class="List">
@@ -245,26 +229,6 @@ const showDropdown = (e: any) => {
           </div>
         </div>
         <div class="main-right">
-          <!-- <div v-if="hasPermission('sigRead')" class="contributors-panel">
-            <h3 id="currentVitalityIndex" class="title">
-              {{ sencondTitle + " " + t("currentVitalityIndex") }}
-            </h3>
-            <div class="rank">
-              <span>{{ t("communityRankings") }}</span>
-              <span> # </span>
-              <span class="rank-num">{{ sorceData.rank }} </span>
-              <span>/ {{ drownData.length }}</span>
-            </div>
-            <div class="img">
-              <o-echart-gauge
-                id="combinedActivity"
-                :name="t('combinedActivity')"
-                :value="sorceData.score"
-                width="280px"
-              ></o-echart-gauge>
-              <current-trend :sig="sencondTitle"></current-trend>
-            </div>
-          </div> -->
           <div v-if="hasPermission('sigRead')" class="contributors-panel">
             <VisualIndex :sencondTitle="sencondTitle" :drownData="drownData" />
             <current-trend :sig="sencondTitle"></current-trend>
@@ -275,13 +239,6 @@ const showDropdown = (e: any) => {
             </h3>
             <historical-trend :sig="sencondTitle"></historical-trend>
           </div>
-          <!-- <div class="contributors-panel">
-            <h3 id="companyContributor" class="title">
-              {{ sencondTitle + ' ' + t('companyContributor') }}
-            </h3>
-
-            <table-list :sig="sencondTitle" />
-          </div> -->
           <div class="contributors-panel-last">
             <h3 id="userContributor" class="title">
               {{ sencondTitle + " " + t("userContributor") }}
