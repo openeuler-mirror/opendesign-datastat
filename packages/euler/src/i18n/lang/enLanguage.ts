@@ -93,7 +93,7 @@ export default {
     privacyLink: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/privacy/`,
     legal: 'Legal Notice',
     legalLink: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/legal/`,
-    atom: 'openEuler is an open source project incubated and operated by the OpenAtom Foundation.',
+    atom: 'openEuler, an open source OS incubated by the OpenAtom Foundation for digital infrastructure in server, cloud, edge, embedded scenarios, across Arm, x86, RISC-V, LoongArch, PowerPC, and SW-64 architectures.',
     copyright: 'Copyright © {year} openEuler. All rights reserved.',
     filingText1: 'J. ICP B. No. 2020036654-1',
     filingText2: 'J.G.W.A.B. No. 11030102011597',

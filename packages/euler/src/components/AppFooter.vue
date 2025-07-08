@@ -155,7 +155,7 @@ const aboutCookie = computed(() => `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lo
     }
   }
   .footer-option {
-    width: 340px;
+    width: 400px;
     text-align: center;
     .atom-pc {
       height: 48px;
