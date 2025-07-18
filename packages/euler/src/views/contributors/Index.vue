@@ -18,7 +18,7 @@ import AuthorityManagement from './AuthorityManagement.vue';
 import { hasPermission } from 'shared/utils/login';
 import { IObject } from 'shared/@types/interface';
 const { t, locale } = useI18n();
-const usePersonal = usePersonalStore();
+const personStore = usePersonalStore();
 const useCommon = useCommonStore();
 const router = useRouter();
 locale.value = localStorage.getItem('lang') || 'zh';
@@ -51,17 +51,17 @@ const formOption = computed(() => {
 const componentName = 'personal';
 const loading = ref(true);
 const getContributeInfo = () => {
-  usePersonal.getPersonalData();
+  personStore.getPersonalData();
 };
 onMounted(() => {
-  usePersonal.getPersonalData();
+  personStore.getPersonalData();
   loading.value = false;
 });
-const hightRanking = computed(() => usePersonal.hightRanking);
-const lowRanking = computed(() => usePersonal.lowRanking);
+const highRanking = computed(() => personStore.hightRanking);
+const lowRanking = computed(() => personStore.lowRanking);
 const typeLable = ref('');
 const switchType = () => {
-  switch (usePersonal.personalForm.contributeType) {
+  switch (personStore.personalForm.contributeType) {
     case 'pr':
       typeLable.value = 'home.prs';
       break;
@@ -75,7 +75,7 @@ const switchType = () => {
 };
 switchType();
 watch(
-  () => usePersonal.personalForm.contributeType,
+  () => personStore.personalForm.contributeType,
   () => {
     switchType();
   }
@@ -93,27 +93,15 @@ watch(
   () => isScrollUp.value,
   () => {
     if (isScrollUp.value) {
-      const lang =
-        useCommon.language === 'zh' ? '/zh/overview' : '/en/overview';
+      const lang = useCommon.language === 'zh' ? '/zh/overview' : '/en/overview';
       router.push(lang);
     }
   }
 );
 const anchorData = computed(() => {
   return hasPermission('SIGread')
-    ? [
-        'companyContributor',
-        'userContributor',
-        'groupActive',
-        'companyRelations',
-        'groupRelations',
-      ]
-    : [
-        'companyContributor',
-        'userContributor',
-        'groupActive',
-        'groupRelations',
-      ];
+    ? ['companyContributor', 'userContributor', 'groupActive', 'companyRelations', 'groupRelations']
+    : ['companyContributor', 'userContributor', 'groupActive', 'groupRelations'];
 });
 const goToCompany = () => {
   const routeData: any = router.resolve(`/${useCommon.language}/company`);
@@ -126,31 +114,16 @@ const goToUser = (data: IObject) => {
   });
   window.open(routeData.href, '_blank');
 };
-const checkedComment = ref(['General']);
-const commentValue = ['General', 'Order'];
+
+const commentTypeOptions = ['General', 'Order'];
+personStore.checkedComment = [commentTypeOptions[0]];
+
 watch(
-  () => checkedComment.value,
+  () => personStore.checkedComment,
   () => {
-    usePersonal.checkedComment = checkedComment.value;
-    usePersonal.getPersonalData();
-  },
-  { immediate: true }
-);
-const contributeValue = (val: any) => {
-  if (
-    JSON.stringify(checkedComment.value) === JSON.stringify(['General']) &&
-    usePersonal.personalForm.contributeType === 'comment'
-  ) {
-    return val.valid_comment;
-  } else if (
-    JSON.stringify(checkedComment.value) === JSON.stringify(['Order']) &&
-    usePersonal.personalForm.contributeType === 'comment'
-  ) {
-    return val.invalid_comment;
-  } else {
-    return val.contribute;
+    personStore.getPersonalData();
   }
-};
+);
 </script>
 
 <template>
@@ -175,45 +148,20 @@ const contributeValue = (val: any) => {
           </div>
           <the-bar v-else></the-bar>
           <div v-if="hasPermission('companyread_all')" class="goToCompany">
-            <span class="title" @click="goToCompany">{{
-              t('viewOrganizationDetail')
-            }}</span
-            ><img
-              src="@/assets/right.png"
-              alt=""
-              style="cursor: pointer"
-              @click="goToCompany"
-            />
+            <span class="title" @click="goToCompany">{{ t('viewOrganizationDetail') }}</span
+            ><img src="@/assets/right.png" alt="" style="cursor: pointer" @click="goToCompany" />
           </div>
         </div>
         <div class="contributors-panel">
           <h3 id="userContributor" class="title">{{ t('userContributor') }}</h3>
-          <the-form
-            :option="formOption"
-            :component-name="componentName"
-            @get-contribute-info="getContributeInfo"
-          ></the-form>
+          <the-form :option="formOption" :component-name="componentName" @get-contribute-info="getContributeInfo"></the-form>
 
           <div class="ranking-list">
             <div class="ranking-list-item">
               <p class="caption">Top 1-10</p>
-              <el-table
-                v-loading="loading"
-                :data="hightRanking"
-                style="width: 100%"
-              >
-                <el-table-column
-                  type="index"
-                  align="center"
-                  :label="t('Number')"
-                  width="100"
-                />
-                <el-table-column
-                  prop="gitee_id"
-                  align="left"
-                  label="Gitee ID"
-                  show-overflow-tooltip
-                  width="180"
+              <el-table v-loading="loading" :data="highRanking" style="width: 100%">
+                <el-table-column type="index" align="center" :label="t('Number')" width="100" />
+                <el-table-column prop="user_login" align="left" label="Gitee ID" show-overflow-tooltip width="180"
                   ><template #default="scope">
                     <div>
                       <span
@@ -221,33 +169,23 @@ const contributeValue = (val: any) => {
                           cursor: 'pointer',
                           color: '#002FA7',
                         }"
-                        @click="goToUser(scope.row.gitee_id)"
-                        >{{ scope.row.gitee_id }}</span
+                        @click="goToUser(scope.row.user_login)"
+                        >{{ scope.row.user_login }}</span
                       >
                     </div>
                   </template></el-table-column
                 >
                 <el-table-column class-name="type-label" :label="t(typeLable)">
-                  <template
-                    v-if="usePersonal.personalForm.contributeType === 'comment'"
-                    #header
-                  >
-                    <el-checkbox-group v-model="checkedComment" :min="1">
-                      <el-checkbox
-                        v-for="item in commentValue"
-                        :key="item"
-                        :label="item"
-                        >{{ t(item) }}</el-checkbox
-                      >
+                  <template v-if="personStore.personalForm.contributeType === 'comment'" #header>
+                    <el-checkbox-group v-model="personStore.checkedComment" :min="1">
+                      <el-checkbox v-for="item in commentTypeOptions" :key="item" :label="item">{{ t(item) }}</el-checkbox>
                     </el-checkbox-group>
                   </template>
-                  <template #default="scope">
+                  <template #default="{ row }">
                     <div class="box">
-                      <span class="num">{{ contributeValue(scope.row) }}</span>
+                      <span class="num">{{ row.contribute }}</span>
 
-                      <the-progress
-                        :item="contributeValue(scope.row)"
-                      ></the-progress>
+                      <the-progress :item="row.contribute"></the-progress>
                     </div>
                   </template>
                 </el-table-column>
@@ -255,24 +193,9 @@ const contributeValue = (val: any) => {
             </div>
             <div class="ranking-list-item">
               <p class="caption">Top 11-20</p>
-              <el-table
-                v-loading="loading"
-                :data="lowRanking"
-                style="width: 100%"
-              >
-                <el-table-column
-                  type="index"
-                  :index="indexMethod"
-                  align="center"
-                  :label="t('Number')"
-                  width="100"
-                ></el-table-column>
-                <el-table-column
-                  prop="gitee_id"
-                  align="left"
-                  show-overflow-tooltip
-                  label="Gitee ID"
-                  width="180"
+              <el-table v-loading="loading" :data="lowRanking" style="width: 100%">
+                <el-table-column type="index" :index="indexMethod" align="center" :label="t('Number')" width="100"></el-table-column>
+                <el-table-column prop="user_login" align="left" show-overflow-tooltip label="Gitee ID" width="180"
                   ><template #default="scope">
                     <div>
                       <span
@@ -280,33 +203,23 @@ const contributeValue = (val: any) => {
                           cursor: 'pointer',
                           color: '#002FA7',
                         }"
-                        @click="goToUser(scope.row.gitee_id)"
-                        >{{ scope.row.gitee_id }}</span
+                        @click="goToUser(scope.row.user_login)"
+                        >{{ scope.row.user_login }}</span
                       >
                     </div>
                   </template></el-table-column
                 >
                 <el-table-column class-name="type-label" :label="t(typeLable)">
-                  <template
-                    v-if="usePersonal.personalForm.contributeType === 'comment'"
-                    #header
-                  >
-                    <el-checkbox-group v-model="checkedComment" :min="1">
-                      <el-checkbox
-                        v-for="item in commentValue"
-                        :key="item"
-                        :label="item"
-                        >{{ t(item) }}</el-checkbox
-                      >
+                  <template v-if="personStore.personalForm.contributeType === 'comment'" #header>
+                    <el-checkbox-group v-model="personStore.checkedComment" :min="1">
+                      <el-checkbox v-for="item in commentTypeOptions" :key="item" :label="item">{{ t(item) }}</el-checkbox>
                     </el-checkbox-group>
                   </template>
-                  <template #default="scope">
+                  <template #default="{ row }">
                     <div class="box">
-                      <span class="num">{{ contributeValue(scope.row) }}</span>
+                      <span class="num">{{ row.contribute }}</span>
 
-                      <the-progress
-                        :item="contributeValue(scope.row)"
-                      ></the-progress>
+                      <the-progress :item="row.contribute"></the-progress>
                     </div>
                   </template>
                 </el-table-column>

@@ -7,7 +7,8 @@ import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import TableList from "./TableList.vue";
 import ContributList from "./ContributList.vue";
-import { querySigName, querySigInfo } from "shared/api";
+import { querySigInfo } from "shared/api";
+import { querySigName } from "shared/api/api-new";
 import { openCommunityInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
@@ -18,22 +19,15 @@ import VisualIndex from "./VisualIndex.vue";
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
-const sencondTitle = ref("");
+const sencondTitle = ref(route.params.name as string ?? '');
 const { t } = useI18n();
 const dropdownData = ref([] as any[]);
-// sencondTitle.value = route.params.name as string;
 const getDrownData = () => {
   let community = "openeuler";
 
   querySigName(community).then((data) => {
-    const allSigs = data?.data || {};
-    allSigs.openeuler.sort((a: any, b: any) => a.localeCompare(b));
-    const findOne =
-      allSigs.openeuler.find((item: any) => item === route.params.name) ||
-      allSigs.openeuler[0];
-    sencondTitle.value = findOne;
-    const firstKeys = Object.keys(allSigs);
-    dropdownData.value = allSigs[firstKeys[0]];
+    const allSigs = data?.data || [];
+    dropdownData.value = allSigs;
     dropdownOptions.value = dropdownData.value.sort((a, b) => a.localeCompare(b));
     getAllData();
   });

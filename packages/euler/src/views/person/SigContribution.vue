@@ -7,7 +7,7 @@ import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import OFormRadio from '@/components/OFormRadio.vue';
-import { queryUserSigContribute } from 'shared/api/index';
+import { queryUserSigContribute } from 'shared/api/api-new';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
@@ -245,11 +245,7 @@ const goToCompany = (data: IObject) => {
               </p>
               <span class="num">{{ item.contribute }} </span>
               <span
-                >{{
-                  (
-                    Math.round((item.contribute / sumContribute) * 10000) / 100
-                  ).toFixed(1) + '%'
-                }}
+                >{{ Math.round(item.percent * 100) + '%' }}
               </span>
             </div>
           </template>

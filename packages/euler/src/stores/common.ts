@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { IObject } from 'shared/@types/interface';
-import { queryAll } from 'shared/api/index';
+import { getOveriewAllUsersCount, getOverviewAllData } from 'shared/api/api-new';
 import { getNowFormatDate } from 'shared/utils/helper';
 
 interface stateTypes {
@@ -25,12 +25,12 @@ export const useCommonStore = defineStore('common', {
     moNav: 0,
     companyNav: 0,
     sigNav: 0,
-    personNav:0,
+    personNav: 0,
     // 语言
     lang: '',
     // 时间
     time: '--',
-    allData: [],
+    allData: {},
   }),
   actions: {
     setLanguage(language: string) {
@@ -39,16 +39,19 @@ export const useCommonStore = defineStore('common', {
     setDevice(device: boolean) {
       this.ISPC = device;
     },
-    async getAllData() {
-      try {
-        const res = await queryAll('openeuler');
-        if (res.code === 200) {
-          this.allData = res.data;
-          this.time = getNowFormatDate();
+    getAllData() {
+      this.time = getNowFormatDate();
+      getOverviewAllData('openeuler').then((res) => {
+        if (res.data) {
+          Object.assign(this.allData, res.data);
         }
-      } catch (error) {
-        console.log(error);
-      }
+      });
+      // 社区用户
+      getOveriewAllUsersCount('openeuler').then((res) => {
+        if (res.data) {
+          this.allData.users = res.data.total_count;
+        }
+      });
     },
   },
 });

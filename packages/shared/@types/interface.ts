@@ -5,7 +5,7 @@ export interface IObject<T = any> {
 export interface formType {
   contributeType: string;
   timeRange: string;
-  company_cn: string;
+  company_zh: string;
   company_en: string;
 }
 
@@ -18,7 +18,7 @@ export interface NavItem {
 }
 
 export interface companyTypes {
-  company_cn: string;
+  company_zh: string;
   company_en: string;
   contribute: number;
   index?: number | string;

@@ -127,7 +127,9 @@ import TheList from '@/components/TheList.vue';
 import ODiagram from 'shared/components/ODiagram.vue';
 import { useI18n } from 'vue-i18n';
 import { ref, computed } from 'vue';
-import { queryCompanySigs, queryTCSigs } from 'shared/api';
+import { queryCompanySigs } from 'shared/api';
+import { queryTCSigs } from 'shared/api/api-new';
+
 import { useCommonStore } from '@/stores/common';
 import { IObject } from 'shared/@types/interface';
 import { useRouter } from 'vue-router';
@@ -202,10 +204,7 @@ getList();
 const groupData = ref([]);
 const number = ref(0);
 const getGroup = () => {
-  const query = {
-    community: 'openeuler',
-  };
-  queryTCSigs(query).then((data) => {
+  queryTCSigs({ community: 'openeuler' }).then((data) => {
     groupData.value = data?.data || [];
     number.value = Math.ceil(
       groupData.value.sort((a: any, b: any) => a.name?.localeCompare(b.name))

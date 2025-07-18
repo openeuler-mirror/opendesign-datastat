@@ -5,7 +5,7 @@ import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
 import OIcon from "shared/components/OIcon.vue";
 import OFormRadio from "@/components/OFormRadio.vue";
-import { queryUserSigContribute, queryUserContributeDetails } from "shared/api/index";
+import { queryUserContributeCounts, queryUserContributeDetails } from "shared/api/api-new";
 import CommonPR from "@/assets/CommonPR.png";
 import comment from "@/assets/comment.png";
 import noclick from "@/assets/noclick.png";
@@ -13,6 +13,8 @@ import text from "@/assets/text.png";
 import { Search } from "@element-plus/icons-vue";
 import ONoDataImage from "shared/components/ONoDataImage.vue";
 import { ElScrollbar } from "element-plus";
+import { queryUserSigContribute } from "shared/api/api-new";
+
 const loading = ref(false);
 const { t } = useI18n();
 const props = defineProps({
@@ -43,55 +45,37 @@ const commentSelectBox = ref([
     info: computed(() => infoSeconed.value),
   },
 ]);
-const selvalue = ref("");
+const selectedSig = ref("");
 const pageSize = ref(10);
-const cursorValue = ref();
 // 搜索过滤
 const searchInput = ref("");
 const commentType = ref("");
 // 默认显示第1页
 const currentPage = ref(1);
-const param = ref({
-  user: computed(() => props.sig),
+const totalCount = ref({
+  pr: 0,
+  issue: 0,
+  comment: 0,
+  sig: 0,
+});
+
+const defaultParams = computed(() => ({
+  user: props.sig,
+  page: currentPage.value,
+  pageSize: pageSize.value,
+  filter: searchInput.value,
+  comment_type: commentType.value,
+  sig: selectedSig.value === 'all' ? '' : selectedSig.value,
+}));
+
+const filterParams = ref({
   community: "openeuler",
-  contributeType: "pr",
-  // pageSize: computed(() => value.value),
+  contributeType: "pr" as 'pr' | 'issue' | 'comment',
   timeRange: "all",
-  page: computed(() => currentPage.value),
-  pageSize: computed(() => pageSize.value),
-  filter: computed(() => searchInput.value),
-  comment_type: computed(() => commentType.value),
-} as IObject);
-const selParam = () => {
-  if (selvalue.value !== "all" && selvalue.value !== "") {
-    param.value = {
-      user: props.sig,
-      sig: computed(() => selvalue.value),
-      community: "openeuler",
-      contributeType: typeData.value,
-      // pageSize: computed(() => value.value),
-      timeRange: timeData.value,
-      // page: 1,
-      // pageSize: 10,
-      page: computed(() => currentPage.value),
-      pageSize: computed(() => pageSize.value),
-      filter: computed(() => searchInput.value),
-      comment_type: computed(() => commentType.value),
-    };
-  } else {
-    param.value = {
-      user: props.sig,
-      community: "openeuler",
-      contributeType: typeData.value,
-      // pageSize: computed(() => value.value),
-      timeRange: timeData.value,
-      page: computed(() => currentPage.value),
-      pageSize: computed(() => pageSize.value),
-      filter: computed(() => searchInput.value),
-      comment_type: computed(() => commentType.value),
-    };
-  }
-};
+});
+
+const displayTotalCount = computed(() => totalCount.value?.[filterParams.value.contributeType] || 0);
+
 // 组织贡献from
 const formOption = computed(() => {
   return [
@@ -119,122 +103,65 @@ const formOption = computed(() => {
   ];
 });
 const getContributeInfo = (e: IObject) => {
-  param.value[e.id] = e.active;
-  switchTime();
-  switchType();
+  filterParams.value[e.id as keyof typeof filterParams.value] = e.active;
   getDetailsData();
+  updateTotalCount();
 };
-// 格式化统计周期文字
-const timeRangeText = ref("");
-const timeData = ref("");
-const switchTime = () => {
-  switch (param.value.timeRange) {
-    case "lastonemonth":
-      timeRangeText.value = t("from.lastonemonth");
-      timeData.value = "lastonemonth";
-      break;
-    case "lasthalfyear":
-      timeRangeText.value = t("from.lasthalfyear");
-      timeData.value = "lasthalfyear";
-      break;
-    case "lastoneyear":
-      timeRangeText.value = t("from.lastoneyear");
-      timeData.value = "lastoneyear";
-      break;
-    default:
-      timeRangeText.value = t("from.all");
-      timeData.value = "all";
-      break;
-  }
-};
-switchTime();
-const typeLable = ref("");
-const typeData = ref("");
-const switchType = () => {
-  switch (param.value.contributeType) {
-    case "pr":
-      typeLable.value = t("home.prs");
-      typeData.value = "pr";
-      break;
-    case "issue":
-      typeLable.value = t("home.issues");
-      typeData.value = "issue";
-      break;
-    case "comment":
-      typeLable.value = t("home.comments");
-      typeData.value = "comment";
-      break;
-  }
-};
-switchType();
 
 // 获取表格数据
 const getDetailsData = () => {
   loading.value = true;
-  queryUserContributeDetails(param.value)
-    .then((data) => {
-      const value = data?.data || [];
-      totalCount.value = value["total"];
-      detailsData.value = value["data"];
-      reallData.value = value["data"];
-      cursorValue.value = data?.cursor || "";
-      // if (
-      //   param.value.contributeType === "pr" ||
-      //   param.value.contributeType === "comment"
-      // ) {
-      //   filterReallData();
-      // }
+  queryUserContributeDetails({
+    ...defaultParams.value,
+    ...filterParams.value,
+  }, filterParams.value.contributeType)
+    .then((res) => {
+      const data = res?.data || [];
+      reallData.value = data.sort((a: any, b: any)=> {
+        return a.time < b.time ? 1 : -1;
+      });
       loading.value = false;
-      // currentPage.value = 1;
     })
     .catch(() => (loading.value = false));
 };
 getDetailsData();
+
+const updateTotalCount = () => {
+  const queryParams = {
+    ...filterParams.value,
+    sig: selectedSig.value === 'all' ? '' : selectedSig.value,
+    user: props.sig
+  } as Record<string, any>;
+  if (filterParams.value.contributeType === "comment") {
+    queryParams.comment_type = commentType.value;
+  }
+  queryUserContributeCounts(queryParams).then((res) => {
+    if (res.data) {
+      totalCount.value = res.data;
+    }
+  });
+};
+updateTotalCount();
 
 // 搜索结果
 const reallData = ref([] as IObject[]);
 
 const querySearch = () => {
   if (searchInput.value !== "") {
-    // const newList = detailsData.value.filter(
-    //   (item: any) =>
-    //     item.info.toLowerCase().includes(searchInput.value) ||
-    //     item.repo.toLowerCase().includes(searchInput.value) ||
-    //     item.time
-    //       .split("T")
-    //       .slice(0, 1)
-    //       .toString()
-    //       .toLowerCase()
-    //       .includes(searchInput.value)
-    // );
-    // param.value = {
-    //   user: computed(() => props.sig),
-    //   community: 'openeuler',
-    //   contributeType: typeData.value,
-    //   // pageSize: computed(() => value.value),
-    //   timeRange: timeData.value,
-    //   page: computed(() => currentPage.value),
-    //   pageSize: computed(() => pageSize.value),
-    //   filter: searchInput.value,
-    // };
-
     getDetailsData();
-    // reallData.value = newList;
-    // filterReallData(val);
   } else {
     filterReallData();
-    // getDetailsData();
   }
 };
 const clearSearchInput = () => {
   getDetailsData();
-  // searchInput.value = "";
 };
 watch(
   () => props.sig,
   () => {
     getprlistData();
     getDetailsData();
+    updateTotalCount();
   }
 );
 watch(
@@ -244,10 +171,11 @@ watch(
   }
 );
 watch(
-  () => selvalue.value,
+  () => selectedSig.value,
   () => {
-    selParam();
+    // selParam();
     getDetailsData();
+    updateTotalCount();
   }
 );
 const options = [
@@ -264,7 +192,7 @@ const options = [
     label: "50",
   },
 ];
-const selData = ref();
+const userSigs = ref<string[]>([]);
 const getprlistData = () => {
   const query = {
     user: props.sig,
@@ -276,28 +204,18 @@ const getprlistData = () => {
     const value = data?.data || [];
     const seldata: any = [];
     value.map((item: any) => {
-      seldata.push({
-        name: item.sig_name,
-      });
+      seldata.push(item.sig_name);
     });
-    selData.value = seldata.sort((a: { name: string }, b: { name: string }) =>
-      a.name.localeCompare(b.name)
+    userSigs.value = seldata.sort((a: string, b: string) =>
+      a.localeCompare(b)
     );
-    firstreallData.value = selData.value;
+    userSigsOptions.value = userSigs.value;
   });
 };
 getprlistData();
-const detailsData = ref();
-const totalCount = ref(0);
 
 const filterReallData = () => {
-  if (param.value.contributeType === "comment") {
-    // reallData.value = reallData.value.filter((item) => {
-    //   return commentSelectBox.value.some((it) => {
-    //     return it.isSelected && item.is_invalid_comment === it.key;
-    //   });
-    // });
-    // commentType.value = val;
+  if (filterParams.value.contributeType === "comment") {
     if (infoFirst.value === 1 && infoSeconed.value === 0) {
       commentType.value = "normal";
     } else if (infoFirst.value === 0 && infoSeconed.value === 1) {
@@ -305,17 +223,9 @@ const filterReallData = () => {
     } else if (infoFirst.value === 0 && infoSeconed.value === 0) {
       commentType.value = "noneType";
     } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
-      commentType.value = "all";
+      commentType.value = "";
     }
     getDetailsData();
-  } else {
-    // reallData.value = reallData.value.filter((item) => {
-    //   return contributionSelectBox.value.some((it) => {
-    //     return it.isSelected && item.is_main_feature === it.key;
-    //   });
-    // });
-    // comment_type.value = 'normal';
-    // getDetailsData();
   }
 };
 
@@ -326,18 +236,10 @@ const handleCurrentChange = (val: any) => {
     currentPage.value = val;
     getDetailsData();
   }
-
 };
 
-const changeTage = (item: any) => {
+const changeTag = (item: any) => {
   item.isSelected = !item.isSelected;
-
-  // if (item.isSelected) {
-  //   commentType.value = "";
-  //   getDetailsData();
-  // } else {
-  //   querySearch(item.type);
-  // }
   if (item.isSelected && item.key === 0) {
     infoFirst.value = 1;
   } else if (!item.isSelected && item.key === 0) {
@@ -347,8 +249,6 @@ const changeTage = (item: any) => {
   } else if (!item.isSelected && item.key === 1) {
     infoSeconed.value = 0;
   }
-  // console.log("a", infoFirst.value);
-  // console.log("b", infoSeconed.value);
   if (infoFirst.value === 1 && infoSeconed.value === 0) {
     commentType.value = "normal";
   } else if (infoFirst.value === 0 && infoSeconed.value === 1) {
@@ -356,30 +256,29 @@ const changeTage = (item: any) => {
   } else if (infoFirst.value === 0 && infoSeconed.value === 0) {
     commentType.value = "noneType";
   } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
-    commentType.value = "all";
+    commentType.value = "";
   }
 
-  getDetailsData();
+ getDetailsData();
+  updateTotalCount();
 };
 
-// first搜索过滤
-const firstsearchInput = ref();
-const firstreallData = ref([] as IObject[]);
-const firstquerySearch = () => {
-  if (firstsearchInput.value !== "") {
-    const newList = selData.value.filter((item: any) =>
-      item.name.toLowerCase().includes(firstsearchInput.value)
+// sig组搜索过滤
+const sigsSearchInput = ref();
+const userSigsOptions = ref<string[]>([]);
+const sigsQuerySearch = () => {
+  if (sigsSearchInput.value !== "") {
+    const newList = userSigs.value?.filter((item: any) =>
+      item.toLowerCase().includes(sigsSearchInput.value)
     );
-    firstreallData.value = newList;
+    userSigsOptions.value = newList;
   } else {
-    firstreallData.value = selData.value;
+    userSigsOptions.value = userSigs.value;
   }
 };
 // 清除搜索
-const firstclearSearchInput = () => {
-  // getDrownData();
+const clearSigsSearchInput = () => {
   searchInput.value = "";
-  // getDrownData();
 };
 </script>
 
@@ -388,28 +287,28 @@ const firstclearSearchInput = () => {
     <div class="sel">
       <div class="title">SIG {{ t("filtrate") }}</div>
       <el-select
-        v-model="selvalue"
+        v-model="selectedSig"
         :placeholder="t('from.all')"
         size="large"
         popper-class="remove-scrollbar"
       >
         <el-input
-          v-model="firstsearchInput"
+          v-model="sigsSearchInput"
           clearable
           :debounce="300"
           class="w-50 m-2"
           :placeholder="t('enterSIG')"
           :prefix-icon="Search"
-          @input="firstquerySearch"
-          @clear="firstclearSearchInput"
+          @input="sigsQuerySearch"
+          @clear="clearSigsSearchInput"
         />
         <el-scrollbar class="Escrollbar">
           <el-option :label="t('from.all')" value="all" />
           <el-option
-            v-for="item in firstreallData"
-            :key="item.name"
-            :label="item.name"
-            :value="item.name"
+            v-for="item in userSigsOptions"
+            :key="item"
+            :label="item"
+            :value="item"
           />
         </el-scrollbar>
       </el-select>
@@ -436,34 +335,20 @@ const firstclearSearchInput = () => {
     </o-form-radio>
   </div>
   <div class="detail">
-    <!-- <div v-if="param.contributeType === 'pr'" class="prType">
-      <div
-        v-for="item in contributionSelectBox"
-        :key="item.label"
-        class="color-box"
-        style="cursor: pointer"
-        @click="changeTage(item)"
-      >
-        <img :src="item.color" alt="" />
-        <span class="sp" :style="{ color: item.isSelected ? '#002fa7' : '' }"
-          >{{ t(item.label) }} PR</span
-        >
-      </div>
-    </div> -->
-    <div v-if="param.contributeType === 'pr' && reallData?.length" class="prType">
+    <div v-if="filterParams.contributeType === 'pr' && reallData?.length" class="prType">
       <img :src="CommonPR" alt="" />
       <span class="sp">PR</span>
     </div>
-    <div v-if="param.contributeType === 'issue' && reallData?.length" class="prType">
+    <div v-if="filterParams.contributeType === 'issue' && reallData?.length" class="prType">
       <img src="@/assets/!.png" alt="" /> <span class="sp">Issue</span>
     </div>
-    <div v-if="param.contributeType === 'comment'" class="prType">
+    <div v-if="filterParams.contributeType === 'comment'" class="prType">
       <div
         v-for="item in commentSelectBox"
         :key="item.label"
         class="color-box"
         style="cursor: pointer"
-        @click="changeTage(item)"
+        @click="changeTag(item)"
       >
         <img :src="item.isSelected ? item.color : noclick" alt="" />
         <span class="sp" :style="{ color: item.isSelected ? '' : '#CCCCCC' }">{{
@@ -474,7 +359,7 @@ const firstclearSearchInput = () => {
 
     <div v-if="reallData?.length" class="page">
       <span class="sp"
-        >{{ t("total") }}<span class="num">{{ totalCount }}</span
+        >{{ t("total") }}<span class="num">{{ displayTotalCount }}</span
         >{{ t("result") }}</span
       >
       <span
@@ -506,36 +391,36 @@ const firstclearSearchInput = () => {
         <div class="infos">
           <div class="infos-img">
             <img
-              v-if="param.contributeType === 'pr' && item.is_main_feature === 1"
+              v-if="filterParams.contributeType === 'pr' && item.is_main_feature === 1"
               src="@/assets/MainPR.png"
               alt=""
             />
             <img
-              v-if="param.contributeType === 'pr' && item.is_main_feature === 0"
+              v-if="filterParams.contributeType === 'pr' && item.is_main_feature === 0"
               src="@/assets/CommonPR.png"
               alt=""
             />
-            <img v-if="param.contributeType === 'issue'" src="@/assets/!.png" alt="" />
+            <img v-if="filterParams.contributeType === 'issue'" src="@/assets/!.png" alt="" />
             <img
-              v-if="param.contributeType === 'comment' && item.is_invalid_comment === 1"
+              v-if="filterParams.contributeType === 'comment' && item.is_invalid_comment === 1"
               src="@/assets/text.png"
               alt=""
             />
             <img
-              v-if="param.contributeType === 'comment' && item.is_invalid_comment === 0"
+              v-if="filterParams.contributeType === 'comment' && item.is_invalid_comment === 0"
               src="@/assets/comment.png"
               alt=""
             />
           </div>
           <div class="infos-text">
-            <span v-if="param.contributeType === 'comment'">{{ t("comment") }} </span
+            <span v-if="filterParams.contributeType === 'comment'">{{ t("comment") }} </span
             ><span v-else>{{ t("In") }}</span>
             <a class="index" :href="`https://gitee.com/${item.repo}`" target="_blank">{{
               item.repo
             }}</a
-            ><span v-if="param.contributeType === 'pr'"
+            ><span v-if="filterParams.contributeType === 'pr'"
               >{{ t("create") }} Pull Request</span
-            ><span v-else-if="param.contributeType === 'issue'"
+            ><span v-else-if="filterParams.contributeType === 'issue'"
               >{{ t("create") }} {{ t("task") }}</span
             ><span v-else> {{ t("de") }} Pull Request</span>
             <a :href="item.url" target="_blank" class="rigth-index"
@@ -550,14 +435,14 @@ const firstclearSearchInput = () => {
   <div class="demo-pagination-block">
     <el-pagination
       class="o-pagination"
-      v-show="totalCount / pageSize > 1"
+      v-show="displayTotalCount / pageSize > 1"
       :currentPage="currentPage"
       v-model:page-size="pageSize"
       background
       layout="prev, pager, next,slot, jumper"
-      :total="totalCount"
+      :total="displayTotalCount"
       @current-change="handleCurrentChange"
-      ><span>{{ currentPage }}/{{ Math.ceil(totalCount / pageSize) }}</span
+      ><span>{{ currentPage }}/{{ Math.ceil(displayTotalCount / pageSize) }}</span
       ><span
         class="el-pagination__jump"
         style="cursor: pointer"
@@ -565,7 +450,7 @@ const firstclearSearchInput = () => {
         >{{ t("Goto") }}</span
       ></el-pagination
     >
-    <span v-if="totalCount / pageSize > 1" class="pageSpan">{{
+    <span v-if="displayTotalCount / pageSize > 1" class="pageSpan">{{
       t("page")
     }}</span>
   </div>

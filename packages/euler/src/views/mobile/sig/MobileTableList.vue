@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { formType } from "shared/@types/interface";
 import { IObject } from "shared/@types/interface";
 import { useCompanyStore } from "@/stores/company";
 import { useCommonStore } from "@/stores/common";
@@ -15,6 +14,14 @@ import { useRouter } from "vue-router";
 import MobileOFormRadio from "./MobileOFormRadio.vue";
 import ONoDataImage from "shared/components/ONoDataImage.vue";
 import { hasPermission, hasPermissions } from "shared/utils/login";
+
+interface formType {
+  contributeType: string;
+  timeRange: string;
+  company_cn: string;
+  company_en: string;
+}
+
 const router = useRouter();
 const { t } = useI18n();
 const useCompany = useCompanyStore();

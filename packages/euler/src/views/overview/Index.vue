@@ -36,6 +36,8 @@ const goContributors = () => {
 onMounted(() => {
   useCommon.getAllData();
 });
+
+
 </script>
 
 <template>
@@ -49,37 +51,37 @@ onMounted(() => {
         <div class="community-info">
           <p class="title">{{ t('home.contributors') }}</p>
           <p class="num">
-            {{ toThousands(useCommon.allData.contributors) }}
+            {{ toThousands(useCommon.allData.contributor_all) }}
           </p>
         </div>
         <div class="community-info">
           <p class="title">{{ t('home.partners') }}</p>
-          <p class="num">{{ toThousands(useCommon.allData.partners) }}</p>
+          <p class="num">{{ toThousands(useCommon.allData.company_all) }}</p>
         </div>
         <div class="community-panel">
           <div class="community-info">
             <p class="title">{{ t('home.prs') }}</p>
-            <p class="num">{{ formatNumber(useCommon.allData.prs) }}</p>
+            <p class="num">{{ formatNumber(useCommon.allData.merged_pr_all) }}</p>
           </div>
           <div class="community-info">
             <p class="title">{{ t('home.issues') }}</p>
-            <p class="num">{{ formatNumber(useCommon.allData.issues) }}</p>
+            <p class="num">{{ formatNumber(useCommon.allData.issue_all) }}</p>
           </div>
           <div class="community-info">
             <p class="title">{{ t('home.comments') }}</p>
-            <p class="num">{{ formatNumber(useCommon.allData.comments) }}</p>
+            <p class="num">{{ formatNumber(useCommon.allData.comment_all) }}</p>
           </div>
           <div class="community-info">
             <p class="title">{{ t('home.sigs') }}</p>
-            <p class="num">{{ formatNumber(useCommon.allData.sigs) }}</p>
+            <p class="num">{{ formatNumber(useCommon.allData.sig_all) }}</p>
           </div>
           <div class="community-info">
             <p class="title">{{ t('home.repos') }}</p>
-            <p class="num">{{ toThousands(useCommon.allData.repos) }}</p>
+            <p class="num">{{ toThousands(useCommon.allData.repo_all) }}</p>
           </div>
           <div class="community-info">
             <p class="title">{{ t('home.isv') }}</p>
-            <p class="num">{{ toThousands(useCommon.allData.isv) }}</p>
+            <p class="num">{{ toThousands(useCommon.allData.isv_all) }}</p>
           </div>
         </div>
       </div>
