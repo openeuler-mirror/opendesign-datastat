@@ -17,8 +17,9 @@ import {
 import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
 import communityLogoWhite from '@/assets/openeuler-logo.png';
-import chevronDown from '~icons/app/chevron-down';
+import IconLocale from '~icons/app/icon-locale.svg';
 import LoadingArc from './LoadingArc.vue';
+
 const { token } = getUserAuth();
 const { guardAuthClient, isLoggingIn } = useStoreData();
 let dialogVisible = ref(false);
@@ -124,10 +125,10 @@ const jumpToUserZone = () => {
       <ONav :lang="language" :nav-items="navList"></ONav>
       <div class="language">
         <el-dropdown popper-class="language-change" @command="handleCommand">
-          <span class="el-dropdown-link">
-            {{ language == 'zh' ? '中文' : 'English' }}</span
-          >
-          <o-icon><chevron-down></chevron-down></o-icon>
+          <div class="lang-change-icon">
+            <IconLocale />
+            <div class="lang-icon-label">{{ language === 'zh' ? '中' : 'EN' }}</div>
+          </div>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
@@ -264,6 +265,24 @@ $color: #ffffff;
 
     .o-icon {
       margin-left: 5px;
+    }
+  }
+
+  .lang-change-icon {
+    font-size: 24px;
+    position: relative;
+    svg {
+      width: 1em;
+      height: 1em;
+    }
+    .lang-icon-label {
+      position: absolute;
+      right: 0%;
+      bottom: 0%;
+      font-size: 10px;
+      width: 12px;
+      height: 12px;
+      background-color: var(--e-color-bg2);
     }
   }
 }
