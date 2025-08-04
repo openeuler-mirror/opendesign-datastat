@@ -1,42 +1,50 @@
 <script setup lang="ts">
 import { useCommonStore } from '@/stores/common';
 import OAnchor from 'shared/components/OAnchor.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { queryUserList, queryUserOwnertype } from 'shared/api';
+import { queryUserOwnertype } from 'shared/api/api-new';
 import { openCommunityInfo } from '@/api';
-import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
 import { ElScrollbar } from 'element-plus';
 import SigContribution from './SigContribution.vue';
 import ContributionDynamic from './ContributionDynamic.vue';
 import DataShow from './DataShow.vue';
+import useVirtualList from 'shared/hooks/useVirtualList';
+import { queryUserContributeCounts } from 'shared/api/api-new';
+import { usePersonalStore } from '@/stores/personal';
+
+const userStore = usePersonalStore();
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
 const sencondTitle = ref('');
 const { t } = useI18n();
-const drownData = ref([] as any[]);
 sencondTitle.value = route.params.name as string;
 const sigTitle = ref('');
 sigTitle.value = route.query.organization as string;
 const group = ref('');
 group.value = route.query.group as string;
-const allSigs = ref();
-const getDrownData = () => {
-  const query = {
-    // group: group.value,
-    community: openCommunityInfo.name,
-    // name: sigTitle.value,
-  };
-  queryUserList(query as any).then((data) => {
-    allSigs.value = data?.data || {};
-    allSigs.value.sort((a: any, b: any) => a.localeCompare(b));
-    // sencondTitle.value = findOne;
-    drownData.value = allSigs.value;
-    reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
-    getllData();
+
+// 贡献详情数据（pr、comment、issue、sig贡献的具体数量）
+const contributeDetailCounts = ref({
+  pr: 0,
+  issue: 0,
+  comment: 0,
+  sig: 0,
+});
+
+const updateCounts = (arg: { user: string; timeRange: string }) => {
+  queryUserContributeCounts({
+    ...arg,
+    community: 'openeuler',
+  }).then((res) => {
+    const { sig, pr, comment, issue } = res?.data || {};
+    contributeDetailCounts.value.pr = pr || 0;
+    contributeDetailCounts.value.sig = sig || 0;
+    contributeDetailCounts.value.issue = issue || 0;
+    contributeDetailCounts.value.comment = comment || 0;
   });
 };
 
@@ -52,7 +60,6 @@ const getllData = () => {
   querySigInfoData();
 };
 onMounted(() => {
-  getDrownData();
   querySigInfoData();
 });
 // 跳转首页
@@ -61,72 +68,59 @@ const goToTetail = () => {
 };
 // 搜索过滤
 const searchInput = ref('');
-const reallData = ref([] as IObject[]);
+const allUserList = ref<string[]>(Array.from(userStore.allUsers?.keys() ?? []));
 const querySearch = () => {
   if (searchInput.value !== '') {
-    const newList = drownData.value.filter((item: any) =>
+    allUserList.value = Array.from(userStore.allUsers?.keys() ?? []).filter((item: any) =>
       item.toLowerCase().includes(searchInput.value)
     );
-    reallData.value = newList;
   } else {
-    reallData.value = drownData.value;
+    allUserList.value = Array.from(userStore.allUsers?.keys() ?? []);
   }
 };
 // 清除搜索
 const clearSearchInput = () => {
-  // getDrownData();
   searchInput.value = '';
-  // getDrownData();
 };
 const clean = () => {
   searchInput.value = '';
 };
 // 获取侧边栏明细
-const sigInfo = ref({
-  mailing_list: '',
-} as IObject);
+const sigInfo = ref<{ sig_name: string; role: string[] }[]>([]);
 const querySigInfoData = () => {
   const params = {
     community: openCommunityInfo.name,
     user: sencondTitle.value,
   };
   queryUserOwnertype(params).then((data) => {
-    sigInfo.value = data?.data || {};
-    sigInfo.value.sort((a: any, b: any) =>
-      a['sig'].localeCompare(b['sig'], 'zh')
-    );
-    sigInfo.value.forEach((item: any, index: any) => {
-      if (item.sig === 'TC') {
+    sigInfo.value = data?.data || [];
+    sigInfo.value.forEach((item, index) => {
+      item.role.sort((a: any, b: any) => b.length - a.length);
+      if (item.sig_name === 'TC') {
         sigInfo.value.unshift(sigInfo.value.splice(index, 1)[0]);
       }
     });
-    sigInfo.value.map((item: any) =>
-      item.type.sort((a: any, b: any) => b.length - a.length)
-    );
-    sigInfo.value.sort((a: any, b: any) =>
-      b['type'][0].localeCompare(a['type'][0], 'zh')
-    );
   });
 };
 
 // querySigInfoData();
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
+const scrollWrapper = computed(() => scrollbarRef.value?.wrap$!)
+const { visibleData, totalHeight, windowOffset, update } = useVirtualList(scrollWrapper, allUserList, 32);
+
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
+  update();
 };
+
 const showDropdown = (e: any) => {
   if (e) {
-    let number = 0;
-    reallData.value.forEach((item: any, index) => {
-      if (item === sencondTitle.value) {
-        number = index;
-      }
-    });
+    const number = userStore.allUsers?.get(sencondTitle.value) ?? 0;
     inputSlider(number * 32);
   }
 };
 
-const goToSig = (data: IObject) => {
+const goToSig = (data: string) => {
   const routeData: any = router.resolve(`/${useCommon.language}/sig/${data}`);
   window.open(routeData.href, '_blank');
 };
@@ -167,14 +161,16 @@ const goToSig = (data: IObject) => {
                       @clear="clearSearchInput"
                     />
                   </div>
-                  <el-scrollbar ref="scrollbarRef" height="400px">
-                    <el-dropdown-item
-                      v-for="item in reallData"
-                      :key="item.value"
-                      @click="clickDrownItem(item as any)"
-                    >
-                      {{ item }}
-                    </el-dropdown-item>
+                  <el-scrollbar ref="scrollbarRef" height="400px" :view-style="{ height: `${totalHeight}px` }">
+                    <div :style="{ transform: `translateY(${windowOffset}px)` }">
+                      <el-dropdown-item
+                        v-for="item in visibleData"
+                        :key="item"
+                        @click="clickDrownItem(item as any)"
+                      >
+                        {{ item }}
+                      </el-dropdown-item>
+                    </div>
                   </el-scrollbar>
                 </template>
               </el-dropdown>
@@ -200,43 +196,37 @@ const goToSig = (data: IObject) => {
               <div class="Maintainer"></div>
               <div class="List">
                 <span>{{ t('community') }}： </span>
-                <span v-for="items in sigInfo" :key="items.value" class="item">
+                <span v-for="sig in sigInfo" :key="sig.sig_name" class="item">
                   <span
-                    v-if="items.sig === 'TC'"
+                    v-if="sig.sig_name === 'TC'"
                     class="usertypecolorboxTC"
-                    :style="({
-                              '--color': '45deg, #B461F6 0%, #7D32EA 100%',
-                            } as any)"
+                    :style="({ '--color': '45deg, #B461F6 0%, #7D32EA 100%' } as any)"
                     >TC</span
                   >
                   <span
-                    v-if="items.sig !== 'TC'"
+                    v-if="sig.sig_name !== 'TC'"
                     style="cursor: pointer"
-                    @click="goToSig(items.sig)"
-                    >{{ items.sig }}</span
+                    @click="goToSig(sig.sig_name)"
+                    >{{ sig.sig_name }}</span
                   >
 
-                  <span v-for="item in items.type" :key="item.value"
+                  <span v-for="item in sig.role" :key="item"
                     ><span
-                      v-if="item === 'committers'"
+                      v-if="item === 'committer'"
                       class="usertypecolorbox"
-                      :style="({
-                              '--color': '225deg, #FEB32A 0%, #F6D365 100%',
-                            } as any)"
+                      :style="({ '--color': '225deg, #FEB32A 0%, #F6D365 100%' } as any)"
                       >Committer</span
                     ><span
-                      v-if="item === 'maintainers' && items.sig !== 'TC'"
+                      v-if="item === 'maintainer' && sig.sig_name !== 'TC'"
                       class="usertypecolorbox"
-                      :style="({
-                              '--color': '45deg, #005CD3 0%, #002FA7 100%',
-                            } as any)"
+                      :style="({ '--color': '45deg, #005CD3 0%, #002FA7 100%' } as any)"
                       >Maintainer
                     </span></span
                   >
                 </span>
               </div>
             </div>
-            <data-show :user="sencondTitle"></data-show>
+            <data-show :user="sencondTitle" :data="contributeDetailCounts" @update-detail="updateCounts"></data-show>
           </div>
         </div>
         <div class="main-right">

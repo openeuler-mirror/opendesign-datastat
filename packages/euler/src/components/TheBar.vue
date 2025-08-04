@@ -85,14 +85,14 @@ const showAfter = 200;
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
   if (
-    hasPermissions(data.company_cn) ||
+    hasPermissions(data.company_zh) ||
     (hasPermission('companyread_all') &&
-      data.company_cn !== '个人贡献者' &&
+      data.company_zh !== '个人贡献者' &&
       data.company_en !== 'independent')
   ) {
     data;
     const routeData: any = router.resolve(
-      `/${useCommon.language}/company/${data.company_cn}`
+      `/${useCommon.language}/company/${data.company_zh}`
     );
     window.open(routeData.href, '_blank');
   }
@@ -111,7 +111,7 @@ const goToCompany = (data: IObject) => {
           <span class="index">{{ item.index }}</span>
           <span
             v-if="
-              item.company_cn === '个人贡献者' ||
+              item.company_zh === '个人贡献者' ||
               item.company_en === 'independent'
             "
             class="name"
@@ -120,9 +120,9 @@ const goToCompany = (data: IObject) => {
             }"
             >{{
               useCommon.language === 'zh'
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en === ''
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en
             }}</span
           >
@@ -131,19 +131,19 @@ const goToCompany = (data: IObject) => {
             class="name"
             :title="
               useCommon.language === 'zh'
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en === ''
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en
             "
             :style="{
               cursor:
-                hasPermissions(item.company_cn) ||
+                hasPermissions(item.company_zh) ||
                 hasPermission('companyread_all')
                   ? 'pointer'
                   : 'auto',
               color:
-                hasPermissions(item.company_cn) ||
+                hasPermissions(item.company_zh) ||
                 hasPermission('companyread_all')
                   ? '#002FA7'
                   : '#555555',
@@ -151,9 +151,9 @@ const goToCompany = (data: IObject) => {
             @click="goToCompany(item)"
             >{{
               useCommon.language === 'zh'
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en === ''
-                ? item.company_cn
+                ? item.company_zh
                 : item.company_en
             }}</span
           >
@@ -177,9 +177,9 @@ const goToCompany = (data: IObject) => {
 
                 {{
                   useCommon.language === 'zh'
-                    ? item.company_cn
+                    ? item.company_zh
                     : item.company_en === ''
-                    ? item.company_cn
+                    ? item.company_zh
                     : item.company_en
                 }}
               </p>

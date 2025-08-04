@@ -1,3 +1,5 @@
+export * from './api-contribute'
+
 /**
  * 获取授权的相关回调链接
  */

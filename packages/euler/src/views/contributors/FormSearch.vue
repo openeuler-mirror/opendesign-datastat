@@ -5,11 +5,11 @@ import { formType } from 'shared/@types/interface';
 import { IObject } from 'shared/@types/interface';
 import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
-import { queryVersions } from 'shared/api/index';
 import TheForm from '@/components/TheForm.vue';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import { testIsPhone } from 'shared/utils/helper';
+import { queryVersions } from 'shared/api/api-new';
 const { t } = useI18n();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
@@ -101,7 +101,7 @@ const querySearch = (queryString: string, cb: any) => {
 };
 const createFilter = (queryString: string) => {
   return (list: formType) => {
-    const items = language.value === 'zh' ? list.company_cn : list.company_en;
+    const items = language.value === 'zh' ? list.company_zh : list.company_en;
     return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
   };
 };
@@ -111,7 +111,7 @@ const handleSelect = (item: IObject) => {
   useCompany.ranking = 1;
 
   useCompany.rawData.forEach((element: IObject, index: number) => {
-    if (element.company_cn === item.company_cn) {
+    if (element.company_zh === item.company_zh) {
       useCompany.searchRanking = +index + 1;
     }
   });
@@ -169,8 +169,8 @@ const getConfig = (val: any) => {
   if (val) {
     queryVersions(param).then((data) => {
       const res = data.data;
-      res.map((item: any) => {
-        return statisticalNum.value.push({
+      res.forEach((item: any) => {
+        statisticalNum.value.push({
           label: item,
           value: item,
         });
@@ -226,7 +226,7 @@ watch(
             :trigger-on-focus="false"
             clearable
             :debounce="300"
-            :value-key="language === 'zh' ? 'company_cn' : 'company_en'"
+            :value-key="language === 'zh' ? 'company_zh' : 'company_en'"
             size="large"
             :class="{ active: useCompany.searchRanking !== 0 }"
             :placeholder="t('from.pleasePartner')"

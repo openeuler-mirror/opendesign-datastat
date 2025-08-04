@@ -215,13 +215,13 @@ const goToUser = (data: IObject) => {
         <p class="overview-page-item">
           {{ t('home.contributors')
           }}<span class="num">{{
-            toThousands(useCommon.allData.contributors)
+            toThousands(useCommon.allData.contributor_all)
           }}</span>
         </p>
         <p class="overview-page-item">
           {{ t('home.partners')
           }}<span class="num">{{
-            toThousands(useCommon.allData.partners)
+            toThousands(useCommon.allData.company_all)
           }}</span>
         </p>
       </div>
@@ -235,29 +235,29 @@ const goToUser = (data: IObject) => {
       <div class="overview-page2">
         <p class="overview-page2-item">
           {{ t('home.prs') }}
-          <span class="num">{{ formatNumber(useCommon.allData.prs) }}</span>
+          <span class="num">{{ formatNumber(useCommon.allData.merged_pr_all) }}</span>
         </p>
         <p class="overview-page2-item">
           {{ t('home.issues') }}
-          <span class="num">{{ formatNumber(useCommon.allData.issues) }}</span>
+          <span class="num">{{ formatNumber(useCommon.allData.issue_all) }}</span>
         </p>
         <p class="overview-page2-item">
           {{ t('home.comments') }}
           <span class="num">{{
-            formatNumber(useCommon.allData.comments)
+            formatNumber(useCommon.allData.comment_all)
           }}</span>
         </p>
         <p class="overview-page2-item">
           {{ t('home.sigs') }}
-          <span class="num">{{ formatNumber(useCommon.allData.sigs) }}</span>
+          <span class="num">{{ formatNumber(useCommon.allData.sig_all) }}</span>
         </p>
         <p class="overview-page2-item">
           {{ t('home.repos')
-          }}<span class="num">{{ toThousands(useCommon.allData.repos) }}</span>
+          }}<span class="num">{{ toThousands(useCommon.allData.repo_all) }}</span>
         </p>
         <p class="overview-page2-item">
           {{ t('home.isv')
-          }}<span class="num">{{ toThousands(useCommon.allData.isv) }}</span>
+          }}<span class="num">{{ toThousands(useCommon.allData.isv_all) }}</span>
         </p>
       </div>
       <p class="time">{{ useCommon.time }}</p>

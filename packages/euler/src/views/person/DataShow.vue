@@ -21,146 +21,89 @@
     <div class="left-first-child">
       <span :title="`${t('Mergerequest')} PR`">{{ t("Mergerequest") }} PR</span>
       <div class="left-first-child-data">
-        {{ toThousands(mergeRequest) }}
+        {{ displayData.pr }}
       </div>
     </div>
     <div class="left-first-child">
       <span :title="`${t('NeedsProblems')} Issue`">{{ t("NeedsProblems") }} Issue</span>
       <div class="left-first-child-data">
-        {{ toThousands(issueData) }}
+        {{ displayData.issue }}
       </div>
     </div>
     <div class="left-first-child">
       <span :title="`${t('review')} Comment`">{{ t("review") }} Comment</span>
       <div class="left-first-child-data">
-        {{ toThousands(comment) }}
+        {{ displayData.comment }}
       </div>
     </div>
     <div class="left-first-child">
       <span :title="`${t('SIGNumber')}`">{{ t("SIGNumber") }}</span>
       <div class="left-first-child-data">
-        {{ toThousands(contributors) }}
+        {{ displayData.sig }}
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { toRefs, ref, onMounted, watch } from "vue";
-import { queryUserSigContribute, queryUserContributeDetails } from "shared/api";
+import { toRefs, ref, onMounted, watch, computed, PropType } from "vue";
 import { IObject } from "shared/@types/interface";
 import { toThousands } from "shared/utils/helper";
 import { useI18n } from "vue-i18n";
+
+
 const { t } = useI18n();
 const props = defineProps({
   user: {
     type: String,
     required: true,
-    default: "",
+    default: '',
+  },
+  data: {
+    type: Object as PropType<{ pr: number; issue: number; comment: number; sig: number }>,
+    required: true,
   },
 });
+
+const emit = defineEmits(['updateDetail']);
 const { user } = toRefs(props);
-const mergeRequest = ref(0);
-const issueData = ref(0);
-const comment = ref(0);
-const contributors = ref(0);
+
+const displayData = computed(() => {
+  const data = props.data;
+  return {
+    pr: data.pr ? toThousands(data.pr) : '-',
+    issue: data.issue ? toThousands(data.issue) : '-',
+    comment: data.comment ? toThousands(data.comment) : '-',
+    sig: data.sig ? toThousands(data.sig) : '-',
+  };
+})
+
 const timeRange = [
   {
-    label: "from.lastonemonth",
-    value: "lastonemonth",
+    label: 'from.lastonemonth',
+    value: 'lastonemonth',
   },
-  { label: "from.lasthalfyear", value: "lasthalfyear" },
-  { label: "from.lastoneyear", value: "lastoneyear" },
-  { label: "from.all", value: "all" },
+  { label: 'from.lasthalfyear', value: 'lasthalfyear' },
+  { label: 'from.lastoneyear', value: 'lastoneyear' },
+  { label: 'from.all', value: 'all' },
 ];
-const time = ref("");
-const getprlistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "openeuler",
-    contributeType: "pr",
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // mergeRequest.value = getItemListData(value, "contribute");
-    mergeRequest.value = value.totalCount;
-  });
-};
-const siglistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "openeuler",
-    contributeType: "pr",
-  };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    // mergeRequest.value = getItemListData(value, "contribute");
-    contributors.value = value.length;
-  });
-};
+const time = ref('');
 
-const getissuelistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "openeuler",
-    contributeType: "issue",
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // issueData.value = getItemListData(value, "contribute");
-    issueData.value = value.totalCount;
-  });
-};
-
-const getcommentlistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "openeuler",
-    contributeType: "comment",
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // comment.value = getItemListData(value, 'contribute');
-    comment.value = value.totalCount;
-  });
-};
-// const getcontributeListData = () => {
-//   const query = {
-//     company: company.value,
-//     timeRange: time.value,
-//     community: 'openeuler',
-//   };
-//   queryCompanyUsers(query).then((data) => {
-//     const Data = processing(data?.data || []);
-//     contributors.value = Data.sigData['0'];
-//   });
-// };
-const getAllData = () => {
-  getprlistData();
-  getissuelistData();
-  getcommentlistData();
-  siglistData();
-  // getcontributeListData();
-};
 watch(
   () => user.value,
   () => {
-    getAllData();
+    emit('updateDetail', { user: props.user, timeRange: time.value });
   }
 );
-const timeTitle = ref("");
+const timeTitle = ref('');
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
   timeTitle.value = item.label;
-  getAllData();
+  emit('updateDetail', { user: props.user, timeRange: time.value });
 };
 onMounted(() => {
-  time.value = "all";
-  timeTitle.value = "from.all";
-  getAllData();
+  time.value = 'all';
+  timeTitle.value = 'from.all';
+  emit('updateDetail', { user: props.user, timeRange: time.value });
 });
 </script>
 <style scoped lang="scss">

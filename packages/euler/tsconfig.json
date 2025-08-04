@@ -23,6 +23,6 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "env.d.ts"
-  ],
+, "../shared/hooks/useVirtualList.ts"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

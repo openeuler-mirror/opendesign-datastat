@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { openCommunityInfo } from '@/api/index';
-import { sortExp } from 'shared/utils/helper';
 import { IObject, companyTypes } from 'shared/@types/interface';
-import { queryCompanyContribute } from 'shared/api/index';
+import { queryCompanyContribute } from '@/api';
+import { queryCompanyContribute as queryCompanyContributeWithVersionSelected } from 'shared/api/api-new';
 import { ceil } from 'lodash-es';
 interface layoutStateTypes {
   rawData: IObject;
@@ -44,31 +44,31 @@ export const useCompanyStore = defineStore('company', {
   }),
   actions: {
     async getCompanyData() {
-      const params = ref();
+      let params: object;
       if (this.switchValue) {
-        params.value = {
+        params = {
           community: openCommunityInfo.name,
           contributeType: this.companyForm.contributeType,
           version: this.companyForm.version,
         };
       } else {
-        params.value = {
+        params = {
           community: openCommunityInfo.name,
           contributeType: this.companyForm.contributeType,
           timeRange: this.companyForm.timeRange,
         };
       }
       try {
-        const res = await queryCompanyContribute(params.value);
-        if (res.code === 200) {
+        const res = await (this.switchValue ? queryCompanyContribute(params) : queryCompanyContributeWithVersionSelected(params));
+        if (res.code === 1) {
           const { data } = res;
-          const userList = data.sort(sortExp('contribute', false));
-          this.companyMaxNum = ceil(userList[0].contribute, -2);
+          const userList = data;
+          this.companyMaxNum = ceil(userList[0]?.contribute ?? 0, -2);
           const rankNum = ref(1);
           // 替换个人贡献者为*
           data.forEach((item: companyTypes) => {
             if (
-              item.company_cn !== '个人贡献者' ||
+              item.company_zh !== '个人贡献者' ||
               item.company_en !== 'independent'
             ) {
               item.index = rankNum.value++;
