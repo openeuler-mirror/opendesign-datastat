@@ -115,7 +115,6 @@ const getDetailsData = () => {
   queryUserContributeDetails({
     ...defaultParams.value,
     ...filterParams.value,
-    filter: defaultParams.value.filter.toLowerCase(),
   }, filterParams.value.contributeType)
     .then((res) => {
       const data = res?.data || [];
@@ -131,8 +130,7 @@ getDetailsData();
 const updateTotalCount = () => {
   const queryParams = {
     ...filterParams.value,
-    ...pick(defaultParams.value, ['user', 'comment_type', 'sig']),
-    filter: defaultParams.value.filter.toLowerCase(),
+    ...pick(defaultParams.value, ['user', 'comment_type', 'sig', 'filter']),
   };
   queryUserContributeCountsByFilter(queryParams, filterParams.value.contributeType).then((res) => {
     if (res.data) {
