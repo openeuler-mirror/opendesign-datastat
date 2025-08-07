@@ -36,6 +36,13 @@ export function queryUserContributeCounts(params: object) {
   return request.get(url, { params, global: true }).then((res: AxiosResponse) => res.data);
 }
 /**
+ * 开发者详情页面带帅选条件查询个人贡献数量
+ */
+export function queryUserContributeCountsByFilter(params: object, contributeType: string) {
+  const url = `/api-magic/stat/${contributeType}/count`;
+  return request.get(url, { params, global: true }).then((res: AxiosResponse) => res.data);
+}
+/**
  *个人sig组明细
  */
 export function queryUserSigContribute(params: object) {
