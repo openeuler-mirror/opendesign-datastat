@@ -44,11 +44,7 @@ const switchTime = () => {
 };
 switchTime();
 watch(
-  () => [
-    useCompany.companyForm.timeRange,
-    useCommon.language,
-    useCompany.companyForm.version,
-  ],
+  () => [useCompany.companyForm.timeRange, useCommon.language, useCompany.companyForm.version],
   () => {
     switchTime();
   }
@@ -84,16 +80,8 @@ const showAfter = 200;
 
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  if (
-    hasPermissions(data.company_zh) ||
-    (hasPermission('companyread_all') &&
-      data.company_zh !== '个人贡献者' &&
-      data.company_en !== 'independent')
-  ) {
-    data;
-    const routeData: any = router.resolve(
-      `/${useCommon.language}/company/${data.company_zh}`
-    );
+  if (hasPermissions(data.company_zh) || (hasPermission('companyread_all') && data.company_zh !== '个人贡献者' && data.company_en !== 'independent')) {
+    const routeData: any = router.resolve(`/${useCommon.language}/company/${data.company_zh}`);
     window.open(routeData.href, '_blank');
   }
 };
@@ -102,70 +90,32 @@ const goToCompany = (data: IObject) => {
 <template>
   <div class="bar-panel">
     <ul class="bar-content">
-      <li
-        v-for="(item, index) in useCompany.companyData"
-        :key="'com' + index"
-        class="bar-content-item"
-      >
+      <li v-for="(item, index) in useCompany.companyData" :key="'com' + index" class="bar-content-item">
         <p class="infos">
-          <span class="index">{{ item.index }}</span>
-          <span
-            v-if="
-              item.company_zh === '个人贡献者' ||
-              item.company_en === 'independent'
-            "
-            class="name"
-            :style="{
-              color: '#555555',
-            }"
-            >{{
-              useCommon.language === 'zh'
-                ? item.company_zh
-                : item.company_en === ''
-                ? item.company_zh
-                : item.company_en
-            }}</span
-          >
-          <span
-            v-else
-            class="name"
-            :title="
-              useCommon.language === 'zh'
-                ? item.company_zh
-                : item.company_en === ''
-                ? item.company_zh
-                : item.company_en
-            "
-            :style="{
-              cursor:
-                hasPermissions(item.company_zh) ||
-                hasPermission('companyread_all')
-                  ? 'pointer'
-                  : 'auto',
-              color:
-                hasPermissions(item.company_zh) ||
-                hasPermission('companyread_all')
-                  ? '#002FA7'
-                  : '#555555',
-            }"
-            @click="goToCompany(item)"
-            >{{
-              useCommon.language === 'zh'
-                ? item.company_zh
-                : item.company_en === ''
-                ? item.company_zh
-                : item.company_en
-            }}</span
-          >
+          <template v-if="item.company_zh === '个人贡献者' || item.company_en === 'independent'">
+            <span class="index" v-if="item.company_zh === '个人贡献者' || item.company_en === 'independent'">*</span>
+            <span
+              class="name"
+              style="color: #555555"
+              >{{ (useCommon.language === 'en' && item.company_en) || item.company_zh }}</span
+            >
+          </template>
+          <template v-else>
+            <span class="index" >{{ index + 1 }}</span>
+            <span
+              class="name"
+              :title="(useCommon.language === 'en' && item.company_en) || item.company_zh"
+              :style="{
+                cursor: hasPermissions(item.company_zh) || hasPermission('companyread_all') ? 'pointer' : 'auto',
+                color: hasPermissions(item.company_zh) || hasPermission('companyread_all') ? '#002FA7' : '#555555',
+              }"
+              @click="goToCompany(item)"
+              >{{ (useCommon.language === 'en' && item.company_en) || item.company_zh }}</span
+            >
+          </template>
         </p>
 
-        <el-tooltip
-          placement="bottom-start"
-          effect="light"
-          :show-after="showAfter"
-          popper-class="bar-tooltip"
-          :show-arrow="false"
-        >
+        <el-tooltip placement="bottom-start" effect="light" :show-after="showAfter" popper-class="bar-tooltip" :show-arrow="false">
           <template #content>
             <div class="lable">
               {{ timeRangeText }} <span class="text">{{ t('de') }}</span>
@@ -173,57 +123,34 @@ const goToCompany = (data: IObject) => {
             </div>
             <div class="info">
               <p>
-                <span class="index">{{ item.index }}</span>
-
-                {{
-                  useCommon.language === 'zh'
-                    ? item.company_zh
-                    : item.company_en === ''
-                    ? item.company_zh
-                    : item.company_en
-                }}
+                <span class="index" v-if="item.company_zh === '个人贡献者' || item.company_en === 'independent'">*</span>
+                <span class="index" v-else>{{ index + 1 }}</span>
+                {{ (useCommon.language === 'en' && item.company_en) || item.company_zh }}
               </p>
               <span class="num"
                 >{{ item.contribute }}
-                <span
-                  v-if="hasPermission('companyread_all')"
-                  class="percentage"
-                  >{{
-                    percentageTotal(item.contribute, useCompany.total)
-                  }}</span
-                >
+                <span v-if="hasPermission('companyread_all')" class="percentage">{{ percentageTotal(item.contribute, useCompany.total) }}</span>
               </span>
             </div>
           </template>
           <div class="progress">
             <div
               class="progress-inner"
-              :style="{
-                width: progressFormat(item.contribute) + '%',
-              }"
+              :style="{ width: progressFormat(item.contribute) + '%' }"
             >
-              <span v-if="progressFormat(item.contribute) > 80"
-                >{{ formatNumber(item.contribute) }}
-              </span>
-              <span
-                v-if="
-                  progressFormat(item.contribute) > 80 &&
-                  hasPermission('companyread_all')
-                "
-                >{{ percentageTotal(item.contribute, useCompany.total) }}</span
-              >
+              <template v-if="progressFormat(item.contribute) > 80">
+                <span >{{ formatNumber(item.contribute) }}</span>
+                <span v-if="hasPermission('companyread_all')">
+                  {{ percentageTotal(item.contribute, useCompany.total) }}
+                </span>
+              </template>
             </div>
-            <span v-if="progressFormat(item.contribute) < 80" class="val"
-              >{{ formatNumber(item.contribute) }}
-            </span>
-            <span
-              v-if="
-                progressFormat(item.contribute) < 80 &&
-                hasPermission('companyread_all')
-              "
-              class="val"
-              >{{ percentageTotal(item.contribute, useCompany.total) }}</span
-            >
+            <template v-if="progressFormat(item.contribute) <= 80">
+              <span class="val">{{ formatNumber(item.contribute) }}</span>
+              <span v-if="hasPermission('companyread_all')" class="val">
+                {{ percentageTotal(item.contribute, useCompany.total) }}
+              </span>
+            </template>
           </div>
         </el-tooltip>
       </li>
@@ -338,7 +265,8 @@ const goToCompany = (data: IObject) => {
 }
 .bar-tooltip {
   padding: 12px 16px;
-  box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05),
+  box-shadow:
+    4px 8px 16px 0px rgba(10, 11, 13, 0.05),
     0px 0px 32px 0px rgba(10, 11, 13, 0.1);
 
   .lable {

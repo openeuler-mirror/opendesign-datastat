@@ -14,12 +14,7 @@ import { useCommonStore } from '@/stores/common';
 import { hasPermission, hasPermissions } from 'shared/utils/login';
 import TheForm from '@/components/TheForm.vue';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
-import {
-  formatNumber,
-  toThousands,
-  percentageTotal,
-  getYearByOffset,
-} from 'shared/utils/helper';
+import { formatNumber, toThousands, percentageTotal, getYearByOffset } from 'shared/utils/helper';
 import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/openeuler.png';
@@ -179,13 +174,7 @@ const backtop1 = () => {
   slideRef1.value.scrollTop = 0;
 };
 const goToCompany = (data: IObject) => {
-  if (
-    hasPermissions(data.company_cn) ||
-    (hasPermission('companyread_all') &&
-      data.company_cn !== '个人贡献者' &&
-      data.company_en !== 'independent')
-  ) {
-    data;
+  if (hasPermissions(data.company_cn) || (hasPermission('companyread_all') && data.company_cn !== '个人贡献者' && data.company_en !== 'independent')) {
     router.push(`/${useCommon.language}/mobile/company/${data.company_cn}`);
   }
 };
@@ -194,44 +183,27 @@ const goToCompany = (data: IObject) => {
 const goToUser = (data: IObject) => {
   router.push(`/${useCommon.language}/mobile/user/${data}`);
 };
+
+const isIndependent = (item: any) => item.company_zh === '个人贡献者' || item.company_en === 'independent';
 </script>
 <template>
-  <swiper
-    :class="{ black: isblack }"
-    :pagination="true"
-    :modules="modules"
-    @swiper="onSwiper"
-    @slide-change="onSlideChange"
-  >
-    <swiper-slide
-      class="slide-page1"
-      :style="'background-image:url(' + bg_mo + ')'"
-    >
+  <swiper :class="{ black: isblack }" :pagination="true" :modules="modules" @swiper="onSwiper" @slide-change="onSlideChange">
+    <swiper-slide class="slide-page1" :style="'background-image:url(' + bg_mo + ')'">
       <div class="overview-page">
         <p class="overview-page-item">
-          {{ t('home.user')
-          }}<span class="num">{{ toThousands(useCommon.allData.users) }}</span>
+          {{ t('home.user') }}<span class="num">{{ toThousands(useCommon.allData.users) }}</span>
         </p>
         <p class="overview-page-item">
-          {{ t('home.contributors')
-          }}<span class="num">{{
-            toThousands(useCommon.allData.contributor_all)
-          }}</span>
+          {{ t('home.contributors') }}<span class="num">{{ toThousands(useCommon.allData.contributor_all) }}</span>
         </p>
         <p class="overview-page-item">
-          {{ t('home.partners')
-          }}<span class="num">{{
-            toThousands(useCommon.allData.company_all)
-          }}</span>
+          {{ t('home.partners') }}<span class="num">{{ toThousands(useCommon.allData.company_all) }}</span>
         </p>
       </div>
 
       <p class="time">{{ useCommon.time }}</p>
     </swiper-slide>
-    <swiper-slide
-      class="slide-page2"
-      :style="'background-image:url(' + bg_mo + ')'"
-    >
+    <swiper-slide class="slide-page2" :style="'background-image:url(' + bg_mo + ')'">
       <div class="overview-page2">
         <p class="overview-page2-item">
           {{ t('home.prs') }}
@@ -243,21 +215,17 @@ const goToUser = (data: IObject) => {
         </p>
         <p class="overview-page2-item">
           {{ t('home.comments') }}
-          <span class="num">{{
-            formatNumber(useCommon.allData.comment_all)
-          }}</span>
+          <span class="num">{{ formatNumber(useCommon.allData.comment_all) }}</span>
         </p>
         <p class="overview-page2-item">
           {{ t('home.sigs') }}
           <span class="num">{{ formatNumber(useCommon.allData.sig_all) }}</span>
         </p>
         <p class="overview-page2-item">
-          {{ t('home.repos')
-          }}<span class="num">{{ toThousands(useCommon.allData.repo_all) }}</span>
+          {{ t('home.repos') }}<span class="num">{{ toThousands(useCommon.allData.repo_all) }}</span>
         </p>
         <p class="overview-page2-item">
-          {{ t('home.isv')
-          }}<span class="num">{{ toThousands(useCommon.allData.isv_all) }}</span>
+          {{ t('home.isv') }}<span class="num">{{ toThousands(useCommon.allData.isv_all) }}</span>
         </p>
       </div>
       <p class="time">{{ useCommon.time }}</p>
@@ -275,56 +243,22 @@ const goToUser = (data: IObject) => {
             <p class="text">{{ t('searchTips') }}</p>
           </div>
           <ul v-else class="company-content">
-            <li
-              v-for="(item, index) in useCompany.companyData"
-              :key="'com' + index"
-              class="company-content-item"
-            >
+            <li v-for="(item, index) in useCompany.companyData" :key="'com' + index" class="company-content-item">
               <p class="name" @click="goToCompany(item)">
-                <span class="index">{{ item.index }}</span>
-                <span
-                  v-if="
-                    item.company_cn === '个人贡献者' ||
-                    item.company_en === 'independent'
-                  "
-                  class="name"
-                  :style="{
-                    color: '#555555',
-                  }"
-                  >{{
-                    useCommon.language === 'zh'
-                      ? item.company_cn
-                      : item.company_en === ''
-                      ? item.company_cn
-                      : item.company_en
-                  }}</span
-                >
+                <span class="index">{{ index + 1 }}</span>
+                <span v-if="isIndependent(item)" class="name" :style="{ color: '#555555' }">{{
+                  (useCommon.language === 'en' && item.company_en) || item.company_zh
+                }}</span>
                 <span
                   v-else
                   class="name"
-                  :title="
-                    useCommon.language === 'zh'
-                      ? item.company_cn
-                      : item.company_en === ''
-                      ? item.company_cn
-                      : item.company_en
-                  "
+                  :title="(useCommon.language === 'en' && item.company_en) || item.company_zh"
                   :style="{
-                    cursor: hasPermission('companyread_all')
-                      ? 'pointer'
-                      : 'auto',
-                    color: hasPermission('companyread_all')
-                      ? '#002FA7'
-                      : '#555555',
+                    cursor: hasPermission('companyread_all') ? 'pointer' : 'auto',
+                    color: hasPermission('companyread_all') ? '#002FA7' : '#555555',
                   }"
                   @click="goToCompany(item)"
-                  >{{
-                    useCommon.language === 'zh'
-                      ? item.company_cn
-                      : item.company_en === ''
-                      ? item.company_cn
-                      : item.company_en
-                  }}</span
+                  >{{ (useCommon.language === 'en' && item.company_en) || item.company_zh }}</span
                 >
               </p>
               <div class="progress">
@@ -334,32 +268,15 @@ const goToUser = (data: IObject) => {
                     width: progressFormat(item.contribute) + '%',
                   }"
                 >
-                  <span v-if="progressFormat(item.contribute) > 80">
-                    {{ toThousands(item.contribute) }}</span
-                  >
-                  <span
-                    v-if="
-                      progressFormat(item.contribute) > 80 &&
-                      hasPermission('companyread_all')
-                    "
-                    >{{
-                      percentageTotal(item.contribute, useCompany.total)
-                    }}</span
-                  >
-                </div>
-                <span v-if="progressFormat(item.contribute) < 80" class="val">{{
-                  toThousands(item.contribute)
-                }}</span>
-                <span
-                  v-if="
-                    progressFormat(item.contribute) < 80 &&
-                    hasPermission('companyread_all')
-                  "
-                  class="val"
-                  >{{
+                  <span v-if="progressFormat(item.contribute) > 80"> {{ toThousands(item.contribute) }}</span>
+                  <span v-if="progressFormat(item.contribute) > 80 && hasPermission('companyread_all')">{{
                     percentageTotal(item.contribute, useCompany.total)
-                  }}</span
-                >
+                  }}</span>
+                </div>
+                <span v-if="progressFormat(item.contribute) < 80" class="val">{{ toThousands(item.contribute) }}</span>
+                <span v-if="progressFormat(item.contribute) < 80 && hasPermission('companyread_all')" class="val">{{
+                  percentageTotal(item.contribute, useCompany.total)
+                }}</span>
               </div>
             </li>
           </ul>
@@ -373,28 +290,10 @@ const goToUser = (data: IObject) => {
         </div>
         <div class="slide-panel-content">
           <h3 class="title">{{ t('userContributor') }}</h3>
-          <the-form
-            :option="formOption"
-            :component-name="componentName"
-            @get-contribute-info="getContributeInfo"
-          ></the-form>
-          <el-table
-            v-loading="loading"
-            :data="usePersonal.personalData"
-            style="width: 100%"
-          >
-            <el-table-column
-              type="index"
-              width="48"
-              align="center"
-              :label="t('Number')"
-            />
-            <el-table-column
-              prop="gitee_id"
-              align="left"
-              label="Gitee ID"
-              show-overflow-tooltip
-              width="110"
+          <the-form :option="formOption" :component-name="componentName" @get-contribute-info="getContributeInfo"></the-form>
+          <el-table v-loading="loading" :data="usePersonal.personalData" style="width: 100%">
+            <el-table-column type="index" width="48" align="center" :label="t('Number')" />
+            <el-table-column prop="user_login" align="left" label="Gitee ID" show-overflow-tooltip width="110"
               ><template #default="scope">
                 <div>
                   <span
@@ -402,8 +301,8 @@ const goToUser = (data: IObject) => {
                       cursor: 'pointer',
                       color: '#002FA7',
                     }"
-                    @click="goToUser(scope.row.gitee_id)"
-                    >{{ scope.row.gitee_id }}</span
+                    @click="goToUser(scope.row.user_login)"
+                    >{{ scope.row.user_login }}</span
                   >
                 </div>
               </template></el-table-column
@@ -411,15 +310,8 @@ const goToUser = (data: IObject) => {
             <el-table-column :label="t(contributeType)">
               <template #default="scope">
                 <div class="box">
-                  <span class="num">{{
-                    toThousands(scope.row.contribute)
-                  }}</span>
-                  <el-progress
-                    :show-text="false"
-                    :stroke-width="8"
-                    :color="progressColor"
-                    :percentage="personalFormat(scope.row.contribute)"
-                  />
+                  <span class="num">{{ toThousands(scope.row.contribute) }}</span>
+                  <el-progress :show-text="false" :stroke-width="8" :color="progressColor" :percentage="personalFormat(scope.row.contribute)" />
                 </div>
               </template>
             </el-table-column>
@@ -502,18 +394,13 @@ const goToUser = (data: IObject) => {
           <img :src="communityLogo" alt="" />
         </div>
         <div class="foot-item-link">
-          <router-link
-            :to="useCommon.language === 'zh' ? '/zh/about' : '/en/about'"
-            >{{ t('footer.about') }}</router-link
-          >
+          <router-link :to="useCommon.language === 'zh' ? '/zh/about' : '/en/about'">{{ t('footer.about') }}</router-link>
           <a :href="t('footer.privacyLink')">{{ t('footer.privacy') }}</a>
           <a :href="t('footer.legalLink')">{{ t('footer.legal') }}</a>
         </div>
         <div class="foot-item-cy">
           <p class="mail">
-            <a :href="`mailto:${openCommunityInfo.email}`" target="_blank">{{
-              openCommunityInfo.email
-            }}</a>
+            <a :href="`mailto:${openCommunityInfo.email}`" target="_blank">{{ openCommunityInfo.email }}</a>
           </p>
           <div class="cy">
             <span>
@@ -859,7 +746,8 @@ const goToUser = (data: IObject) => {
 }
 .bar-tooltip {
   padding: 12px 16px;
-  box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05),
+  box-shadow:
+    4px 8px 16px 0px rgba(10, 11, 13, 0.05),
     0px 0px 32px 0px rgba(10, 11, 13, 0.1);
   .lable {
     font-size: 12px;

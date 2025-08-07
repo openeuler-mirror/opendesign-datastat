@@ -106,7 +106,7 @@ const createFilter = (queryString: string) => {
   };
 };
 // 搜索结果
-const handleSelect = (item: IObject) => {
+const handleSelect = (item: any) => {
   useCompany.companyForm.displayRange = '1';
   useCompany.ranking = 1;
 

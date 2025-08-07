@@ -31,34 +31,24 @@ const param = ref({
 } as IObject);
 const memberData = ref([] as IObject[]);
 const memberMax = ref(0);
-const memberList = ref([] as IObject[]);
 const rankNum = ref(1);
-const sumContribute = ref(0);
 
 const getMemberData = () => {
-  queryUserSigContribute(param.value).then((data) => {
-    memberList.value =
-      (data.data &&
-        data.data
-          .sort(sortExp('contribute', false))
-          .filter((item: any) => item.contribute !== 0)) ||
-      [];
-    memberMax.value = ceil(memberList.value[0]?.contribute + 1, 0) || 0;
+  queryUserSigContribute(param.value).then((res) => {
+    const data = res.data?.sort(sortExp('contribute', false)).filter((item: any) => item.contribute !== 0) || [];
+    memberMax.value = ceil(data[0]?.contribute + 1, 0) || 0;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
-      return (
-        (reallData.value = memberList.value),
-        (memberData.value = memberList.value)
-      );
+      memberData.value = data;
+    } else {
+      memberData.value = data.slice(0, Number(param.value.displayRange));
     }
-    memberData.value = memberList.value.slice(
-      0,
-      Number(param.value.displayRange)
-    );
-    sumContribute.value = memberData.value.reduce((total, currentValue) => {
-      return total + currentValue.contribute;
-    }, 0);
-    reallData.value = memberData.value;
+    if (searchInput.value) {
+      const searchInputLower = searchInput.value.toLowerCase();
+      sigData.value = memberData.value.filter((item) => item.sig_name.toLowerCase().includes(searchInputLower));
+    } else {
+      sigData.value = memberData.value;
+    }
   });
 };
 // 个人信息
@@ -144,14 +134,11 @@ switchType();
 // 搜索过滤
 const searchInput = ref('');
 // 搜索结果
-const reallData = ref([] as IObject[]);
+const sigData = ref([] as IObject[]);
 const querySearch = () => {
   if (searchInput.value !== '') {
-    const newList = memberData.value.filter((item: any) =>
-      item.sig_name.toLowerCase().includes(searchInput.value)
-    );
-    reallData.value = newList;
-    // filterReallData();
+    const searchInputLower = searchInput.value.toLowerCase();
+    sigData.value = memberData.value.filter((item: any) => item.sig_name.toLowerCase().includes(searchInputLower));
   } else {
     getMemberData();
   }
@@ -172,19 +159,14 @@ onMounted(() => {
 });
 // 跳转社区详情
 const goToCompany = (data: IObject) => {
-  const routeData: any = router.resolve(
-    `/${useCommon.language}/sig/${data.sig_name}`
-  );
+  const routeData: any = router.resolve(`/${useCommon.language}/sig/${data.sig_name}`);
   window.open(routeData.href, '_blank');
 };
 </script>
 
 <template>
   <div class="contributions-statistical">
-    <o-form-radio
-      :option="formOption"
-      @get-contribute-info="getContributeInfo($event)"
-    >
+    <o-form-radio :option="formOption" @get-contribute-info="getContributeInfo($event)">
       <template #searchInput>
         <div class="searchInput">
           <el-input
@@ -198,21 +180,15 @@ const goToCompany = (data: IObject) => {
             @clear="clearSearchInput"
           >
             <template #prefix>
-              <o-icon class="search-icon"
-                ><icon-user></icon-user
-              ></o-icon> </template
+              <o-icon class="search-icon"><icon-user></icon-user></o-icon> </template
           ></el-input>
         </div>
       </template>
     </o-form-radio>
   </div>
-  <div v-if="reallData.length" class="bar-panel">
+  <div v-if="sigData.length" class="bar-panel">
     <ul class="bar-content">
-      <li
-        v-for="(item, index) in reallData"
-        :key="'com' + index"
-        class="bar-content-item"
-      >
+      <li v-for="(item, index) in sigData" :key="'com' + index" class="bar-content-item">
         <p class="infos">
           <span class="index">{{ item.rank }}</span>
           <span
@@ -226,12 +202,7 @@ const goToCompany = (data: IObject) => {
           >
         </p>
 
-        <el-tooltip
-          placement="bottom-start"
-          effect="light"
-          popper-class="bar-tooltip"
-          :show-arrow="false"
-        >
+        <el-tooltip placement="bottom-start" effect="light" popper-class="bar-tooltip" :show-arrow="false">
           <template #content>
             <div class="lable">
               {{ timeRangeText }}
@@ -244,9 +215,7 @@ const goToCompany = (data: IObject) => {
                 {{ item.sig_name }}
               </p>
               <span class="num">{{ item.contribute }} </span>
-              <span
-                >{{ Math.round(item.percent * 100) + '%' }}
-              </span>
+              <span>{{ Math.round(item.percent * 100) + '%' }} </span>
             </div>
           </template>
           <div class="progress">
@@ -256,18 +225,14 @@ const goToCompany = (data: IObject) => {
                 width: progressFormat(item.contribute) + '%',
               }"
             >
-              <span v-if="progressFormat(item.contribute) >= 80">{{
-                formatNumber(item.contribute)
-              }}</span>
+              <span v-if="progressFormat(item.contribute) >= 80">{{ formatNumber(item.contribute) }}</span>
             </div>
-            <span v-if="progressFormat(item.contribute) < 80" class="val">{{
-              formatNumber(item.contribute)
-            }}</span>
+            <span v-if="progressFormat(item.contribute) < 80" class="val">{{ formatNumber(item.contribute) }}</span>
           </div>
         </el-tooltip>
       </li>
     </ul>
-    <div v-if="reallData.length" class="bar-columns">
+    <div v-if="sigData.length" class="bar-columns">
       <div class="num"><span>0</span></div>
       <div class="num">
         <span>{{ formatNumber(memberMax / 2) }}</span>
@@ -277,7 +242,7 @@ const goToCompany = (data: IObject) => {
       </div>
     </div>
   </div>
-   <div v-else><o-no-data-image></o-no-data-image></div>
+  <div v-else><o-no-data-image></o-no-data-image></div>
 </template>
 
 <style lang="scss" scoped>
@@ -410,7 +375,8 @@ const goToCompany = (data: IObject) => {
 }
 .bar-tooltip {
   padding: 12px 16px;
-  box-shadow: 4px 8px 16px 0px rgba(10, 11, 13, 0.05),
+  box-shadow:
+    4px 8px 16px 0px rgba(10, 11, 13, 0.05),
     0px 0px 32px 0px rgba(10, 11, 13, 0.1);
 
   .lable {
