@@ -5,7 +5,7 @@ import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
 import OIcon from "shared/components/OIcon.vue";
 import OFormRadio from "@/components/OFormRadio.vue";
-import { queryUserContributeCounts, queryUserContributeDetails } from "shared/api/api-new";
+import { queryUserContributeDetails, queryUserContributeCountsByFilter } from 'shared/api/api-new';
 import CommonPR from "@/assets/CommonPR.png";
 import comment from "@/assets/comment.png";
 import noclick from "@/assets/noclick.png";
@@ -14,6 +14,7 @@ import { Search } from "@element-plus/icons-vue";
 import ONoDataImage from "shared/components/ONoDataImage.vue";
 import { ElScrollbar } from "element-plus";
 import { queryUserSigContribute } from "shared/api/api-new";
+import { pick } from 'lodash-es';
 
 const loading = ref(false);
 const { t } = useI18n();
@@ -114,6 +115,7 @@ const getDetailsData = () => {
   queryUserContributeDetails({
     ...defaultParams.value,
     ...filterParams.value,
+    filter: defaultParams.value.filter.toLowerCase(),
   }, filterParams.value.contributeType)
     .then((res) => {
       const data = res?.data || [];
@@ -129,13 +131,10 @@ getDetailsData();
 const updateTotalCount = () => {
   const queryParams = {
     ...filterParams.value,
-    sig: selectedSig.value === 'all' ? '' : selectedSig.value,
-    user: props.sig
-  } as Record<string, any>;
-  if (filterParams.value.contributeType === "comment") {
-    queryParams.comment_type = commentType.value;
-  }
-  queryUserContributeCounts(queryParams).then((res) => {
+    ...pick(defaultParams.value, ['user', 'comment_type', 'sig']),
+    filter: defaultParams.value.filter.toLowerCase(),
+  };
+  queryUserContributeCountsByFilter(queryParams, filterParams.value.contributeType).then((res) => {
     if (res.data) {
       totalCount.value = res.data;
     }
@@ -149,12 +148,14 @@ const reallData = ref([] as IObject[]);
 const querySearch = () => {
   if (searchInput.value !== "") {
     getDetailsData();
+    updateTotalCount();
   } else {
     filterReallData();
   }
 };
 const clearSearchInput = () => {
   getDetailsData();
+  updateTotalCount();
 };
 watch(
   () => props.sig,
@@ -225,8 +226,9 @@ const filterReallData = () => {
     } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
       commentType.value = "";
     }
-    getDetailsData();
   }
+  getDetailsData();
+  updateTotalCount();
 };
 
 // 显示第几页
@@ -259,7 +261,7 @@ const changeTag = (item: any) => {
     commentType.value = "";
   }
 
- getDetailsData();
+  getDetailsData();
   updateTotalCount();
 };
 
@@ -379,9 +381,7 @@ const clearSigsSearchInput = () => {
   <div v-if="reallData?.length" v-loading="loading" class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in reallData.sort( (a:any, b:any)=> {
-            return a.time < b.time ? 1 : -1;
-          })"
+        v-for="(item, index) in reallData"
         :key="'com' + index"
         class="bar-content-item"
       >
