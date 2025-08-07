@@ -7,7 +7,11 @@ import { queryCompanyContribute as queryCompanyContributeWithVersionSelected } f
 import { ceil } from 'lodash-es';
 interface layoutStateTypes {
   rawData: IObject;
-  companyData: IObject;
+  companyData: {
+    company_en: string;
+    company_zh: string;
+    contribute: number
+  }[];
   ranking: number | string;
   searchRanking: number;
   totalLength: number;
@@ -62,20 +66,7 @@ export const useCompanyStore = defineStore('company', {
         const res = await (this.switchValue ? queryCompanyContribute(params) : queryCompanyContributeWithVersionSelected(params));
         if (res.code === 1) {
           const { data } = res;
-          const userList = data;
-          this.companyMaxNum = ceil(userList[0]?.contribute ?? 0, -2);
-          const rankNum = ref(1);
-          // 替换个人贡献者为*
-          data.forEach((item: companyTypes) => {
-            if (
-              item.company_zh !== '个人贡献者' ||
-              item.company_en !== 'independent'
-            ) {
-              item.index = rankNum.value++;
-            } else {
-              item.index = '*';
-            }
-          });
+          this.companyMaxNum = ceil(data[0]?.contribute ?? 0, -2);
           this.rawData = data;
 
           // 筛选
@@ -96,13 +87,6 @@ export const useCompanyStore = defineStore('company', {
       } catch (error) {
         console.log(error);
       }
-    },
-  },
-  getters: {
-    rankingFilter: (state) => {
-      return state.ranking > 2
-        ? state.companyData.slice(0, state.ranking)
-        : state.companyData;
     },
   },
 });
