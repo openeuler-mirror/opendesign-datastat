@@ -7,6 +7,7 @@
     "build": "vue-tsc --noEmit && vite build"
   },
   "dependencies": {
+    "@opensig/opendesign": "0.0.65",
     "shared": "workspace:^",
     "unplugin-icons": "^0.14.0"
   }

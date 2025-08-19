@@ -3,6 +3,7 @@ import AppHeader from '@/components/AppHeader.vue';
 import { setStoreData, useStoreData } from 'shared/utils/login';
 import { openCommunityInfo } from './api';
 import CookieNotice from './components/CookieNotice.vue';
+import FeedbackButton from './components/FeedbackButton.vue';
 
 setStoreData(openCommunityInfo.name);
 const { loginIframeSrc } = useStoreData();
@@ -19,6 +20,7 @@ const { loginIframeSrc } = useStoreData();
     <CookieNotice />
   </div>
   <iframe v-else :src="loginIframeSrc" class="login-iframe" frameborder="0"></iframe>
+  <FeedbackButton />
 </template>
 
 <style lang="scss">
