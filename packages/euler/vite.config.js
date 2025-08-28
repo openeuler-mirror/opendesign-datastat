@@ -41,6 +41,8 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
+        @use "@/shared/styles/mixins/common.scss" as common;
+        @use "@/shared/styles/mixins/font.scss" as *;
         @use "@/shared/styles/element-plus/index.scss" as *;
         @use "shared/styles/mixin/screen.scss" as screen;
         `,

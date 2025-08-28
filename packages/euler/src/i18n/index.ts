@@ -3,13 +3,16 @@ import { createI18n } from 'vue-i18n';
 import zhLanguage from './lang/zhLanguage';
 import enLanguage from './lang/enLanguage';
 import cookie from './cookie';
+import feedback from './feedback';
 
 const messages = {
   zh: {
     ...zhLanguage,
+    feedback: feedback.zh
   },
   en: {
     ...enLanguage,
+    feedback: feedback.en
   },
 };
 

@@ -89,16 +89,6 @@ const intoView = (id: string) => {
     doc?.scrollIntoView();
   }, 500);
 };
-const scrollToTop = () => {
-  const body = document.getElementById(props.id) || document.documentElement;
-  body.scrollTop = 0;
-};
-const btnInfo = () => {
-  window.open(
-    'https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0',
-    '_blank'
-  );
-};
 </script>
 <template>
   <div class="md-anchor" :style="{ top }">
@@ -112,16 +102,6 @@ const btnInfo = () => {
       <div class="anchor-link-inner" @click="selectAnchor(item)">
         {{ t(item) }}
       </div>
-    </div>
-  </div>
-  <div class="box">
-    <div class="box-show" @click="btnInfo">
-      <div class="title"><span>意反</span><span>见馈</span></div>
-    </div>
-  </div>
-  <div class="box-down">
-    <div class="box-show" @click="scrollToTop">
-      <div class="title"><span>回顶</span><span>到部</span></div>
     </div>
   </div>
 </template>

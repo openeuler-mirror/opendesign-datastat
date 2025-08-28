@@ -14,6 +14,7 @@ import ElementPlus from 'element-plus';
 import 'element-plus/theme-chalk/el-message.css';
 import 'shared/styles/index.scss';
 import opendesign from 'shared/components/Opendesign';
+import '@opensig/opendesign/es/index.css';
 
 // 国际化
 import i18n from './i18n';
