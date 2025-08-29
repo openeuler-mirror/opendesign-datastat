@@ -1,9 +1,23 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, NavigationGuardWithThis, RouteRecordRaw } from 'vue-router';
 import { useCommonStore } from './stores/common';
 import { querySigInfo } from 'shared/api';
 import { queryUserList } from 'shared/api/api-new';
 import { testIsPhone } from 'shared/utils/helper';
 import { usePersonalStore } from './stores/personal';
+
+const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, next) => {
+  if (!to.params.name) {
+    return next('/404');
+  }
+  const users = (usePersonalStore().allUsers ??= await queryUserList({ community: 'openeuler' })
+    .then((res) => Object.keys(res.data).reduce((map, name, index) => map.set(name, index), new Map<string, number>()))
+    .catch(() => new Map<string, number>()));
+  if (users.has(to.params.name as string)) {
+    next();
+  } else {
+    next('/404');
+  }
+};
 
 const getParams = () => {
   const name = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
@@ -87,19 +101,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => {
       return import('@/views/person/index.vue');
     },
-    beforeEnter: async (to, _, next) => {
-      if (!to.params.name) {
-        return next('/404');
-      }
-      const users = (usePersonalStore().allUsers ??= await queryUserList({ community: 'openeuler' })
-        .then((res) => Object.keys(res.data).reduce((map, name, index) => map.set(name, index), new Map<string, number>()))
-        .catch(() => new Map<string, number>()));
-      if (users.has(to.params.name as string)) {
-        next();
-      } else {
-        next('/404');
-      }
-    },
+    beforeEnter: beforeEnterUserDetail,
   },
   {
     path: '/zh/mobile',
@@ -228,18 +230,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => {
       return import('@/views/person/index.vue');
     },
-    beforeEnter: (to: any, from: any, next: any) => {
-      queryUserList({
-        community: 'openeuler',
-      }).then((data) => {
-        const name = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
-        if (data.data.toString().toLowerCase().includes(name.toLowerCase())) {
-          next();
-        } else {
-          next('/404');
-        }
-      });
-    },
+    beforeEnter: beforeEnterUserDetail,
   },
   {
     path: '/en/user',
