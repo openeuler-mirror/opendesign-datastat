@@ -2,8 +2,5 @@
   "name": "shared",
   "private": true,
   "version": "0.0.1",
-  "scripts": {},
-  "dependencies": {
-    "unplugin-icons": "^0.14.0"
-  }
+  "scripts": {}
 }
