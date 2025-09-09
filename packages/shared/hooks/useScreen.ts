@@ -1,3 +1,4 @@
+import { createSharedComposable } from '@vueuse/core';
 import { ref, reactive, computed, onMounted, onUnmounted, nextTick } from 'vue';
 
 export enum Size {
@@ -39,7 +40,7 @@ const CompareHandler = {
   gt: (a: number, b: number) => a > b,
 };
 
-export const useScreen = () => {
+export const useScreen = createSharedComposable(() => {
   const screenSize = reactive({
     width: 1440,
     height: 0,
@@ -156,4 +157,4 @@ export const useScreen = () => {
     isPadToLaptop, // [601, 1440]
     isPadVToLaptop, // [841, 1440]
   };
-};
+});
