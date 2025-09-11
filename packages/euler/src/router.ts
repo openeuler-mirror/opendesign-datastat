@@ -4,6 +4,7 @@ import { querySigInfo } from 'shared/api';
 import { queryUserList } from 'shared/api/api-new';
 import { testIsPhone } from 'shared/utils/helper';
 import { usePersonalStore } from './stores/personal';
+import i18n from './i18n';
 
 const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, next) => {
   if (!to.params.name) {
@@ -29,7 +30,15 @@ const getParams = () => {
 };
 
 export const routes: RouteRecordRaw[] = [
-  { path: '/', redirect: '/zh/overview' },
+  {
+    path: '/',
+    redirect() {
+      if (location.hostname.endsWith('openeuler.org')) {
+        return '/en/overview'
+      }
+      return '/zh/overview';
+    },
+  },
   {
     path: '/:pathMatch(.*)*',
     redirect: '/404',
@@ -312,12 +321,10 @@ export const router = createRouter({
 // 设置语言
 router.beforeEach((to) => {
   const commonStore = useCommonStore();
-  if (to.fullPath.startsWith('/en')) {
-    commonStore.lang = 'en';
-    localStorage.setItem('lang', 'en');
-  } else {
-    commonStore.lang = 'zh';
-    localStorage.setItem('lang', 'zh');
+  const lang = to.fullPath.startsWith('/en') ? 'en' : 'zh'
+  commonStore.lang = lang;
+  if (i18n.global.locale !== lang) {
+    i18n.global.locale = lang;
   }
 });
 

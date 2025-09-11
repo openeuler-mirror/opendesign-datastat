@@ -106,7 +106,6 @@ const language = computed(() => (useCommon.language === 'zh' ? false : true));
 const languageRadio = ref(language.value);
 const chaneLanguage = () => {
   let lang = languageRadio.value ? 'en' : 'zh';
-  localStorage.setItem('lang', lang);
   locale.value = lang;
   const { pathname } = window.location;
   const newHref = pathname.split('/');
