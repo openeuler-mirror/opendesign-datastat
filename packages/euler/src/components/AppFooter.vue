@@ -15,7 +15,6 @@ const { t, locale } = useI18n();
 const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
 
-locale.value = localStorage.getItem('lang') || 'zh';
 const aboutCookie = computed(() => `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${locale.value || 'zh'}/other/cookies/`)
 </script>
 

@@ -57,7 +57,6 @@ const langAttr = ref<string>('中文');
 // 选择语言
 const handleCommand = (command: IObject): void => {
   langAttr.value = command.label;
-  localStorage.setItem('lang', command.value);
   locale.value = command.value;
   const { pathname } = window.location;
   const newHref = pathname.split('/');
