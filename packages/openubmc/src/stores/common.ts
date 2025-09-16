@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { IObject } from 'shared/@types/interface';
-import { getOveriewAllUsersCount, getOverviewAllData } from 'shared/api/api-new';
+import { getOveriewAllUsersCount } from 'shared/api/api-new';
+import { request } from 'shared/plugins/axios';
 import { getNowFormatDate } from 'shared/utils/helper';
 
 interface stateTypes {
@@ -38,9 +39,9 @@ export const useCommonStore = defineStore('common', {
     },
     getAllData() {
       this.time = getNowFormatDate();
-      getOverviewAllData('openubmc').then((res) => {
-        if (res.data) {
-          Object.assign(this.allData, res.data);
+      request.get('/api-magic/stat_new/overview/count?community=openubmc').then((res) => {
+        if (res.data?.data) {
+          Object.assign(this.allData, res.data.data);
         }
       });
       // 社区用户

@@ -11,22 +11,20 @@ interface Company {
 }
 
 export const useCompanyStore = defineStore('company', {
-  state: () => {
-    return {
-      rawData: [] as Company[],
-      companyData: [] as Company[],
-      // 显示排行数
-      displayCount: 10,
-      searchVal: '',
-      // 获取最大值
-      companyMaxNum: 0,
-      defaultNum: '',
-      companyForm: {
-        contributeType: 'pr',
-        timeRange: [new Date(2024, 10, 1), new Date()] as Date[] | [Date, Date],
-      },
-    };
-  },
+  state: () => ({
+    rawData: [] as Company[],
+    companyData: [] as Company[],
+    // 显示排行数
+    displayCount: 10,
+    searchVal: '',
+    // 获取最大值
+    companyMaxNum: 0,
+    defaultNum: '',
+    companyForm: {
+      contributeType: 'pr',
+      timeRange: [] as Date[] | [Date, Date],
+    },
+  }),
   getters: {
     companyData(state) {
       let res = state.rawData ?? [];

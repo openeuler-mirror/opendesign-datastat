@@ -111,9 +111,10 @@ const toUserDetail = (id: string) => {
 };
 
 const now = new Date();
-now.setHours(0, 0, 0, 0)
+now.setHours(0, 0, 0, 0);
+const start = new Date(2024, 10, 1);
 const disabledDate = (time: Date) => {
-  return time.getTime() > now.getTime()
+  return time < start || time > now;
 }
 </script>
 

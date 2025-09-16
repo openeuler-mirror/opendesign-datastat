@@ -19,7 +19,7 @@ export default function useCommonFilters(_i18n = i18n.global) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const initialTimeRange = [new Date(2024, 10, 1), today];
-  const timeRange = ref<Date[]>(initialTimeRange);
+  const timeRange = ref<Date[]>([]);
   const disabledTimeRange = (date: Date) => {
     return date < initialTimeRange[0] || date > initialTimeRange[1];
   };

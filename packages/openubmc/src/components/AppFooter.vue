@@ -66,7 +66,7 @@ const { t } = useI18n()
           </p>
         </div>
         <div class="footer-attach-wechat" ref="wechatRef">
-          <ElPopover v-if="!lePadV" :wrapper="wechatRef" popper-class="qr-code-popover">
+          <ElPopover v-if="!lePadV" :wrapper="wechatRef" popper-class="qr-code-popover" placement="top">
             <template #reference>
               <div class="qr-popover">
                 <img src="@/assets/category/home/wechat.svg" alt="" />

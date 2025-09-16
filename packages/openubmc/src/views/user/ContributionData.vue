@@ -26,7 +26,7 @@ const displayCountOptions = [
 const contributionData = ref<{ contribute: number; sig_name: string; rank: number; percent: number }[]>([]);
 const displayCount = ref(10);
 const searchSigName = ref('');
-const searchSigNameDebounced = refDebounced(searchSigName)
+const searchSigNameDebounced = refDebounced(searchSigName);
 const displayData = computed(() => {
   let res = contributionData.value;
   if (displayCount.value) {
@@ -49,6 +49,7 @@ const queryData = () => {
     user: userName.value,
   } as Record<string, any>;
   if (timeRange.value?.length === 2) {
+    console.log(timeRange.value[0].constructor)
     params.start = timeRange.value[0].getTime();
     params.end = timeRange.value[1].getTime();
   }

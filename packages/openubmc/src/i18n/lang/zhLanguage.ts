@@ -7,7 +7,7 @@ export default {
   },
   home: {
     moreData: '更多贡献数据',
-    user: '社区用户 User ',
+    user: '下载量 Download ',
     contributors: '贡献者 Contributor',
     partners: '单位成员 Organization Member',
     prs: '合并请求 PR',

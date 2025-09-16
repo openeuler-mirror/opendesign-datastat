@@ -3,19 +3,17 @@ import { defineStore } from 'pinia';
 import { request } from 'shared/plugins/axios';
 
 export const usePersonalStore = defineStore('personal', {
-  state: () => {
-    return {
+  state: () => ({
     personalData: [],
     personalMaxNum: 0, // 个人数据最大参数
     // 筛选参数
     personalForm: {
       contributeType: 'pr',
-      timeRange: [new Date(2024, 10, 1), new Date()] as Date[] | [Date, Date],
+      timeRange: [] as Date[] | [Date, Date],
     },
     allUsers: [] as string[],
     commentType: '',
-  }
-  },
+  }),
   actions: {
     async getPersonalData() {
       const params = {
