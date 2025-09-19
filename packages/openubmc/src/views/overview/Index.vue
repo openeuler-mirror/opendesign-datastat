@@ -99,10 +99,14 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.home-banner {
+  min-width: fit-content;
+}
 .bg-video {
   height: 100vh;
 }
 .banner-content {
+  min-width: 1024px;
   padding: 100px 0;
   color: #ffffff;
   height: 100vh;

@@ -170,7 +170,7 @@ const { disabledTimeRange } = useCommonFilters()
     <ODivider style="--o-divider-gap: 16px" />
 
     <template v-if="userRoleInfo.length">
-      <p class="user-role-title">
+      <p class="user-role-title title">
         <img :src="cosePng" />
         <span class="user-role-text">社区角色</span>
       </p>
@@ -187,7 +187,7 @@ const { disabledTimeRange } = useCommonFilters()
       <ODivider style="--o-divider-gap: 16px" />
     </template>
 
-    <p>贡献</p>
+    <p class="title">贡献</p>
     <ElDatePicker
       style="margin-top: 24px; --el-date-editor-daterange-width: 100%"
       unlink-panels
@@ -217,8 +217,11 @@ const { disabledTimeRange } = useCommonFilters()
 </template>
 
 <style lang="scss" scoped>
+.title {
+  font-weight: bold;
+}
 .contribute-detail {
-  @include text2;
+  @include h4;
   margin-top: 4px;
   font-weight: bold;
 }
@@ -271,6 +274,7 @@ const { disabledTimeRange } = useCommonFilters()
 }
 
 .content-card {
+  padding: 24px;
   height: 100%;
 }
 </style>

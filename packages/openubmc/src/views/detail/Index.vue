@@ -52,6 +52,7 @@ const toOverview = () => {
 .o-banner {
   height: 224px;
   padding-top: 80px;
+  min-width: 1024px;
 }
 .banner-title {
   cursor: pointer;

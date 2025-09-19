@@ -41,11 +41,11 @@ onMounted(querySigs);
         v-for="item in list"
         :key="item.sig_name"
         :href="`/${route.params.lang}/sig/${item.sig_name}`"
-        :style="{ background: `rgba(var(--o-ubmc-color), ${item.score.toFixed(2)})` }"
+        :style="{ background: `rgba(var(--o-ubmc-color), ${Math.floor(item.score * 100)}%)` }"
         target="_blank"
         rel="noopener noreferrer"
-      >
-        <p>
+      > 
+        <p :style="{ color: item.score >= 0.4 ? '#fff' : 'rgba(0, 0, 0, 0.8)' }">
           {{ item.sig_name }}
         </p>
       </a>
@@ -85,7 +85,6 @@ onMounted(querySigs);
     height: 40px;
 
     p {
-      color: #fff;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;

@@ -41,7 +41,7 @@ const displayData = computed(() => {
   return res;
 });
 
-const max = computed(() => contributionData.value?.[0].contribute ?? 0);
+const max = computed(() => contributionData.value?.[0]?.contribute ?? 0);
 const queryData = () => {
   const params = {
     community: 'openubmc',
@@ -49,7 +49,6 @@ const queryData = () => {
     user: userName.value,
   } as Record<string, any>;
   if (timeRange.value?.length === 2) {
-    console.log(timeRange.value[0].constructor)
     params.start = timeRange.value[0].getTime();
     params.end = timeRange.value[1].getTime();
   }
@@ -61,7 +60,11 @@ const queryData = () => {
         contributionData.value = [];
         return;
       }
-      contributionData.value = res.data;
+      const max = res.data[0].contribute;
+      contributionData.value = res.data.map((item: any) => ({
+        ...item,
+        percent: Math.floor(item.contribute * 100 / max)
+      }));
     })
     .catch(() => (contributionData.value = []));
 };
@@ -124,14 +127,14 @@ const toSigDetail = (id: string) => router.push({ name: 'sig-detail', params: { 
                     {{ item.sig_name }}
                   </p>
                   <span class="num">{{ item.contribute }} </span>
-                  <span>{{ Math.round(item.percent * 100) + '%' }} </span>
+                  <span>{{ item.percent + '%' }} </span>
                 </div>
               </template>
               <div class="progress">
-                <div class="progress-inner" :style="{ width: item.contribute + '%' }">
-                  <span v-if="item.contribute >= 80">{{ formatNumber(item.contribute) }}</span>
+                <div class="progress-inner" :style="{ width: item.percent + '%' }">
+                  <span v-if="item.percent >= 80">{{ formatNumber(item.contribute) }}</span>
                 </div>
-                <span v-if="item.contribute < 80" class="val">{{ formatNumber(item.contribute) }}</span>
+                <span v-if="item.percent < 80" class="val">{{ formatNumber(item.contribute) }}</span>
               </div>
             </ElTooltip>
           </li>
@@ -156,6 +159,10 @@ const toSigDetail = (id: string) => router.push({ name: 'sig-detail', params: { 
   </SectionCard>
 </template>
 <style lang="scss" scoped>
+.o-divider {
+  --o-divider-gap: 24px;
+}
+
 .empty-pic {
   display: flex;
   flex-direction: column;

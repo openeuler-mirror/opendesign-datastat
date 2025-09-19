@@ -156,7 +156,7 @@ const logoutConfirm = () => {
 .app-header {
   background-color: v-bind(backgroundColor);
   position: absolute;
-  width: 100%;
+  min-width: 1024px;
   left: 0;
   right: 0;
   z-index: 99;

@@ -217,6 +217,10 @@ const disabledDate = (time: Date) => {
 </template>
 
 <style lang="scss" scoped>
+.o-divider {
+  --o-divider-gap: 24px;
+}
+
 .section-card {
   height: 100%;
 }
@@ -272,6 +276,6 @@ const disabledDate = (time: Date) => {
 .search-toggle {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 </style>

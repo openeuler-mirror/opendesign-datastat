@@ -36,9 +36,9 @@ const { disabledTimeRange } = useCommonFilters();
     <template #header>{{ t('common.companyContributor') }}</template>
     <div class="unit-member-contribution">
       <ElForm label-width="auto" label-position="right" style="--el-text-color-regular: #000">
-        <ElFormItem :label="t('common.from.version')">
+        <!-- <ElFormItem :label="t('common.from.version')">
           <OToggle v-model:checked="versionChecked">{{ t('common.from.all') }}</OToggle>
-        </ElFormItem>
+        </ElFormItem> -->
         <ElFormItem :label="t('common.from.type')">
           <ToggleRadios v-model="companyStore.companyForm.contributeType" :options="contributionTypeOptions" @change="companyStore.getCompanyData" />
         </ElFormItem>

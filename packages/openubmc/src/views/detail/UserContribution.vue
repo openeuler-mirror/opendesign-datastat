@@ -5,10 +5,12 @@ import useCommonFilters from '@/composables/useCommonFilters';
 import { usePersonalStore } from '@/stores/person';
 import { ODivider, OLink, ORadio, ORadioGroup } from '@opensig/opendesign';
 import { createReusableTemplate } from '@vueuse/core';
+import { useScreen } from 'shared/hooks/useScreen';
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 
+const { lePad } = useScreen()
 const route = useRoute();
 const personStore = usePersonalStore();
 const { t } = useI18n();
@@ -76,7 +78,7 @@ const { disabledTimeRange } = useCommonFilters();
       <ODivider direction="h" style="--o-divider-gap: 24px" />
 
       <div class="ranking-list">
-        <Define v-slot="{ data, title }">
+        <Define v-slot="{ data, title, index }">
           <div class="ranking-list-item">
             <p class="caption">{{ title }}</p>
             <el-table
@@ -85,7 +87,7 @@ const { disabledTimeRange } = useCommonFilters();
               style="width: 100%"
               :header-cell-style="{ backgroundColor: 'rgb(232, 232, 235)', color: '#000', fontWeight: '500px' }"
             >
-              <el-table-column type="index" align="center" :label="t('common.Number')" width="100" />
+              <el-table-column type="index" align="center" :index="index ?? 1" :label="t('common.Number')" width="100" />
               <el-table-column prop="user_login" align="left" label="GitCode ID" show-overflow-tooltip width="180"
                 ><template #default="scope">
                   <OLink color="primary" :href="`/${route.params.lang}/user/${scope.row.user_login}`" target="_blank" rel="noreferrer noopener">
@@ -113,8 +115,8 @@ const { disabledTimeRange } = useCommonFilters();
           </div>
         </Define>
 
-        <Reuse :data="personStore.highRanking" title="Top 1-10" />
-        <Reuse :data="personStore.lowRanking" title="Top 11-20" />
+        <Reuse :data="personStore.highRanking" :title="lePad ? 'Top 1-20' : 'Top 1-10'" />
+        <Reuse :data="personStore.lowRanking" title="Top 11-20" :index="11" />
       </div>
     </div>
   </SectionCard>
@@ -136,6 +138,12 @@ const { disabledTimeRange } = useCommonFilters();
 
   .el-progress-bar__outer {
     background: none;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .ranking-list-item {
+    margin-right: 0;
   }
 }
 
