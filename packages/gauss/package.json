@@ -7,7 +7,6 @@
     "build": "vue-tsc --noEmit && vite build"
   },
   "dependencies": {
-    "shared": "workspace:^",
-    "unplugin-icons": "^0.14.0"
+    "shared": "workspace:^"
   }
 }

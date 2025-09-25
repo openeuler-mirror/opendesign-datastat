@@ -77,7 +77,7 @@ export function getUserAuth() {
 }
 
 // 退出登录
-export function logout(community: string) {
+export function logout() {
   location.href = `${import.meta.env.VITE_LOGIN_ORIGIN}/logout?redirect_uri=${
     window?.location?.origin
   }`;
@@ -92,7 +92,7 @@ export function goToHome() {
     window.location.href = `/${lang}/mobile`;
   }
 }
-export function showGuard(community: string) {
+export function showGuard() {
   const origin = import.meta.env.VITE_LOGIN_ORIGIN;
   const lang = window.localStorage.getItem('lang');
   location.href = `${origin}/login?redirect_uri=${location.href}&lang=${lang}`;

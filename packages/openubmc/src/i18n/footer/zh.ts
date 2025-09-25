@@ -1,0 +1,18 @@
+export default {
+  learn: '学习',
+  documentCenter: '文档中心',
+  videoTeaching: '视频教学',
+  community: '社区',
+  sigCenter: 'SIG中心',
+  forums: '论坛',
+  support: '支持',
+  FAQs: '常见FAQ',
+  problemFeedback: '问题反馈',
+  friendlyLink: '友情链接',
+  copyright: '版权所有 © {year} openUBMC 保留一切权利',
+  recordal: '粤A2-20044005号-293',
+  beian: '粤公网安备 44030002006086号',
+  privacyPolicy: '隐私政策',
+  legalStatement: '法律声明',
+  aboutCookies: '关于cookies',
+};
