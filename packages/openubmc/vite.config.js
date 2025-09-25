@@ -63,6 +63,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api-magic/, ''),
       },
+      '/api-dsapi': {
+        target: 'https://dapi.test.osinfra.cn/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-dsapi/, ''),
+      },
       '/api-id': {
         target: 'https://omapi.test.osinfra.cn/',
         changeOrigin: true,
