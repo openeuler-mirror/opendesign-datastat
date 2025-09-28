@@ -71,6 +71,7 @@ const listData = ref<
     time: string;
     url: string;
     no: string;
+    type: string;
   }[]
 >([]);
 const page = ref(1);
@@ -200,14 +201,14 @@ const onPageChange = () => {
         <div class="list-data-item" v-if="contributionType !== 'comment'">
           在
           <OLink hover-underline color="primary" :href="`https://gitcode.com/${item.repo}`" rel="noopener noreferrer" target="_blank">{{ item.repo }}</OLink>
-          创建了<OLink hover-underline color="primary" :href="item.url" rel="noopener noreferrer" target="_blank"
+          合入了<OLink hover-underline color="primary" :href="item.url" rel="noopener noreferrer" target="_blank"
             >{{ contributionType === 'pr' ? 'Pull Request' : 'Issue' }} {{ item.info }}</OLink
           >
         </div>
         <div class="list-data-item" v-else>
           评论了
           <OLink hover-underline color="primary" :href="`https://gitcode.com/${item.repo}`" rel="noopener noreferrer" target="_blank">{{ item.repo }}</OLink>
-          的Pull Request<OLink hover-underline color="primary" :href="item.url" rel="noopener noreferrer" target="_blank">{{ item.info }}</OLink>
+          的{{ item.type === 'pr_comment' ? 'Pull Request' : 'Issue' }}<OLink hover-underline color="primary" :href="item.url" rel="noopener noreferrer" target="_blank">{{ item.info }}</OLink>
         </div>
       </template>
     </template>
