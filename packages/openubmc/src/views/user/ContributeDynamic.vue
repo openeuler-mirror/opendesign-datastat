@@ -201,9 +201,10 @@ const onPageChange = () => {
         <div class="list-data-item" v-if="contributionType !== 'comment'">
           在
           <OLink hover-underline color="primary" :href="`https://gitcode.com/${item.repo}`" rel="noopener noreferrer" target="_blank">{{ item.repo }}</OLink>
-          合入了<OLink hover-underline color="primary" :href="item.url" rel="noopener noreferrer" target="_blank"
-            >{{ contributionType === 'pr' ? 'Pull Request' : 'Issue' }} {{ item.info }}</OLink
-          >
+          {{ contributionType === 'pr' ? '合入' : '创建' }}了
+          <OLink hover-underline color="primary" :href="item.url" rel="noopener noreferrer" target="_blank">
+            {{ contributionType === 'pr' ? 'Pull Request' : 'Issue' }} {{ item.info }}
+          </OLink>
         </div>
         <div class="list-data-item" v-else>
           评论了
