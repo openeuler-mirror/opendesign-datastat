@@ -86,6 +86,7 @@ const { t } = useI18n()
 </template>
 
 <style lang="scss" scoped>
+@use 'shared/styles/mixin/hover.scss' as *;
 .app-footer {
   // height: 100%;
   color: rgb(var(--o-white));

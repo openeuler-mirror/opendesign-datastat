@@ -10,6 +10,8 @@ declare module 'vue' {
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     AppHeader: typeof import('./src/components/AppHeader.vue')['default']
     CommonLayout: typeof import('./src/components/CommonLayout.vue')['default']
+    ContentWrapper: typeof import('./src/components/ContentWrapper.vue')['default']
+    CookieNotice: typeof import('./src/components/CookieNotice.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']

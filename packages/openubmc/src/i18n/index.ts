@@ -3,6 +3,7 @@ import zhLanguage from './lang/zhLanguage';
 import enLanguage from './lang/enLanguage';
 import header from './header'
 import footer from './footer'
+import cookie from './cookie';
 
 export default createI18n({
   legacy: false,
@@ -11,7 +12,8 @@ export default createI18n({
     zh: {
       common: zhLanguage,
       header: header.zh,
-      footer: footer.zh
+      footer: footer.zh,
+      cookie: cookie.zh,
     },
     en: {
       common: enLanguage,
