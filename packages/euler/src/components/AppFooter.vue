@@ -87,6 +87,7 @@ const aboutCookie = computed(() => `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lo
 </template>
 
 <style lang="scss" scoped>
+@use 'shared/styles/mixin/hover.scss' as *;
 .footer {
   // margin-top: 64px;
   height: 200px;
@@ -142,7 +143,7 @@ const aboutCookie = computed(() => `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lo
 
       .filing-link {
         color: rgba(255, 255, 255, 0.6);
-        @include screen.hover {
+        @include hover {
           color: rgba(255, 255, 255, 1);
         }
       }
