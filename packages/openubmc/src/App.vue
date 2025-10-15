@@ -5,6 +5,7 @@ import en from 'element-plus/es/locale/lang/en';
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import useLoginStore from './stores/login';
+import CookieNotice from './components/CookieNotice.vue';
 
 const { locale } = useI18n();
 
@@ -25,6 +26,7 @@ onMounted(() => {
       </transition>
     </router-view>
   </ElConfigProvider>
+  <CookieNotice />
 </template>
 
 <style lang="scss">
