@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
@@ -103,6 +103,7 @@ const formOption = computed(() => {
   ];
 });
 const getContributeInfo = (e: IObject) => {
+  nextTick(() => getUserSigs());
   filterParams.value[e.id as keyof typeof filterParams.value] = e.active;
   getDetailsData();
   updateTotalCount();
@@ -159,7 +160,7 @@ const clearSearchInput = () => {
 watch(
   () => props.sig,
   () => {
-    getprlistData();
+    getUserSigs();
     getDetailsData();
     updateTotalCount();
   }
@@ -193,12 +194,12 @@ const options = [
   },
 ];
 const userSigs = ref<string[]>([]);
-const getprlistData = () => {
+const getUserSigs = () => {
   const query = {
     user: props.sig,
     timeRange: "all",
     community: "openeuler",
-    contributeType: "pr",
+    contributeType: filterParams.value.contributeType,
   };
   queryUserSigContribute(query).then((data) => {
     const value = data?.data || [];
@@ -212,7 +213,7 @@ const getprlistData = () => {
     userSigsOptions.value = userSigs.value;
   });
 };
-getprlistData();
+getUserSigs();
 
 const filterReallData = () => {
   if (filterParams.value.contributeType === "comment") {
