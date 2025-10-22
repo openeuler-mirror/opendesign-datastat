@@ -138,12 +138,11 @@ const searchInput = ref('');
 // 搜索结果
 const reallData = ref([] as IObject[]);
 const querySearch = () => {
-  if (searchInput.value !== '') {
-    const newList = memberData.value.filter((item: any) =>
-      item.sig_name.toLowerCase().includes(searchInput.value)
+  if (searchInput.value.trim() !== '') {
+    const searchStr = searchInput.value.trim().toLowerCase();
+    reallData.value = memberData.value.filter((item: any) =>
+      item.sig_name.toLowerCase().includes(searchStr)
     );
-    reallData.value = newList;
-    // filterReallData();
   } else {
     getMemberData();
   }

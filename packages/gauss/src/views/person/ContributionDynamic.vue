@@ -163,6 +163,7 @@ getDetailsData();
 const updateTotalCount = () => {
   const queryParams = {
     ...filterParams.value,
+    filter: searchInput.value,
     sig: selectedSig.value === 'all' ? '' : selectedSig.value,
     user: props.sig
   } as Record<string, any>;
@@ -186,6 +187,7 @@ const querySearch = () => {
   } else {
     filterReallData();
   }
+  updateTotalCount();
 };
 const clearSearchInput = () => {
   getDetailsData();
