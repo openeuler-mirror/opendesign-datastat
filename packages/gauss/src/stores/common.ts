@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import { queryAll } from 'shared/api/index';
-import { getOverviewContributeData, getOverviewOrgMemberCount, getOverviewSigCount, getOverviewContributorCount, queryCoreRepos } from 'shared/api/api-new';
+import { getOverviewContributeData, getOverviewOrgMemberCount, getOverviewSigCount, getOverviewContributorCount, queryCoreRepos, getOveriewAllUsersCount } from 'shared/api/api-new';
 import { IObject } from 'shared/@types/interface';
 import { getNowFormatDate } from 'shared/utils/helper';
+import { request } from 'shared/plugins/axios';
 
 interface stateTypes {
   language: string;
@@ -31,7 +32,7 @@ export const useCommonStore = defineStore('common', {
     lang: '',
     // 时间
     time: '--',
-    allData: [],
+    allData: {} as Record<string, number | string>,
     selectScroll: true,
     // 仓库列表
     reposData: [],
@@ -48,7 +49,19 @@ export const useCommonStore = defineStore('common', {
       this.ISPC = device;
     },
     async getAllData() {
-      try {
+      this.time = getNowFormatDate();
+      request.get('/api-magic/stat_new/overview/count?community=opengauss').then((res) => {
+        if (res.data?.data) {
+          Object.assign(this.allData, res.data.data);
+        }
+      });
+      // 社区用户
+      getOveriewAllUsersCount('opengauss').then((res) => {
+        if (res.data) {
+          this.allData.users = res.data.total_count;
+        }
+      });
+      /* try {
         const res = await queryAll('opengauss');
         if (res.code === 200) {
           const data = { ...res.data };
@@ -85,7 +98,7 @@ export const useCommonStore = defineStore('common', {
         }
       } catch (error) {
         console.log(error);
-      }
+      } */
     },
     getContributeData() {
       getOverviewContributeData('opengauss').then((res) => {

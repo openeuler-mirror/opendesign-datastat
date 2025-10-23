@@ -69,7 +69,7 @@ const querySearch = (queryString: string, cb: any) => {
 };
 const createFilter = (queryString: string) => {
   return (list: formType) => {
-    const items = language.value === 'zh' ? list.company_cn : list.company_en;
+    const items = language.value === 'zh' ? list.company_zh : list.company_en;
     return items.toLowerCase().indexOf(queryString.toLowerCase()) > -1;
   };
 };
@@ -114,8 +114,7 @@ const getContributeInfo = (item: IObject) => {
     if (useCompany.companyForm.displayRange === 'all') {
       useCompany.ranking = useCompany.totalLength;
     } else {
-      useCompany.ranking =
-        useCompany.companyForm.displayRange === '10' ? 10 : 20;
+      useCompany.ranking = useCompany.companyForm.displayRange === '10' ? 10 : 20;
     }
   }
 
@@ -133,11 +132,7 @@ onMounted(() => {
 
 <template>
   <div class="contributions-statistical">
-    <the-form
-      :option="formOption"
-      :component-name="componentName"
-      @get-contribute-info="getContributeInfo"
-    >
+    <the-form :option="formOption" :component-name="componentName" @get-contribute-info="getContributeInfo">
       <template #searchInput>
         <div class="searchInput">
           <el-autocomplete
@@ -146,7 +141,7 @@ onMounted(() => {
             :trigger-on-focus="false"
             clearable
             :debounce="300"
-            :value-key="language === 'zh' ? 'company_cn' : 'company_en'"
+            :value-key="language === 'zh' ? 'company_zh' : 'company_en'"
             size="large"
             :placeholder="t('from.pleasePartner')"
             :class="{ active: useCompany.searchRanking !== 0 }"
@@ -155,9 +150,7 @@ onMounted(() => {
             @clear="clearSearchInput"
           >
             <template #prefix>
-              <o-icon class="search-icon"
-                ><icon-user></icon-user
-              ></o-icon> </template
+              <o-icon class="search-icon"><icon-user></icon-user></o-icon> </template
           ></el-autocomplete>
         </div>
       </template>

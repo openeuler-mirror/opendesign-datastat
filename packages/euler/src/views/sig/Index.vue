@@ -2,13 +2,12 @@
 import { useCommonStore } from "@/stores/common";
 import OAnchor from "shared/components/OAnchor.vue";
 import HistoricalTrend from "./HistoricalTrend.vue";
-import { ref, onMounted, computed } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import TableList from "./TableList.vue";
 import ContributList from "./ContributList.vue";
 import { querySigInfo } from "shared/api";
-import { querySigName } from "shared/api/api-new";
 import { openCommunityInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
@@ -16,22 +15,14 @@ import { ElScrollbar } from "element-plus";
 import AppFooter from "@/components/AppFooter.vue";
 import { hasPermission } from "shared/utils/login";
 import VisualIndex from "./VisualIndex.vue";
+import useSigStore from "@/stores/sig";
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
 const sencondTitle = ref(route.params.name as string ?? '');
 const { t } = useI18n();
-const dropdownData = ref([] as any[]);
-const getDrownData = () => {
-  let community = "openeuler";
-
-  querySigName(community).then((data) => {
-    const allSigs = data?.data || [];
-    dropdownData.value = allSigs;
-    dropdownOptions.value = dropdownData.value.sort((a, b) => a.localeCompare(b));
-    getAllData();
-  });
-};
+const sigStore = useSigStore();
+const allSigs = ref(sigStore.allSigs);
 
 const anchorData = computed(() => {
   return hasPermission("SIGread")
@@ -53,29 +44,24 @@ const getAllData = () => {
   querySearch();
   querySigInfoData();
 };
-onMounted(() => {
-  getDrownData();
-});
 // 跳转首页
 const goToTetail = () => {
   router.push(`/${useCommon.language}/detail`);
 };
 // 搜索过滤
 const searchInput = ref("");
-const dropdownOptions = ref([] as IObject[]);
+const dropdownOptions = ref(allSigs.value);
 const querySearch = () => {
   if (searchInput.value !== "") {
-    const newList = dropdownData.value.filter((item: any) =>
+    dropdownOptions.value = allSigs.value.filter((item: any) =>
       item.toLowerCase().includes(searchInput.value)
     );
-    dropdownOptions.value = newList;
   } else {
-    dropdownOptions.value = dropdownData.value;
+    dropdownOptions.value = allSigs.value;
   }
 };
 // 清除搜索
 const clearSearchInput = () => {
-  getDrownData();
   searchInput.value = "";
 };
 const clean = () => {
@@ -145,7 +131,7 @@ const showDropdown = (e: any) => {
                   <el-scrollbar ref="scrollbarRef" height="400px">
                     <el-dropdown-item
                       v-for="item in dropdownOptions"
-                      :key="item.value"
+                      :key="item"
                       @click="clickDropdown(item as any)"
                     >
                       {{ item }}
@@ -237,7 +223,7 @@ const showDropdown = (e: any) => {
           <div v-if="hasPermission('SIGread')">
             <visual-index
               :sencondTitle="sencondTitle"
-              :drownData="dropdownData"
+              :drownData="allSigs"
             ></visual-index>
             <!-- <current-trend :sig="sencondTitle"></current-trend> -->
           </div>

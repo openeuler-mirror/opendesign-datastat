@@ -5,6 +5,7 @@ import { queryUserList } from 'shared/api/api-new';
 import { testIsPhone } from 'shared/utils/helper';
 import { usePersonalStore } from './stores/personal';
 import i18n from './i18n';
+import useSigStore from './stores/sig';
 
 const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, next) => {
   if (!to.params.name) {
@@ -20,21 +21,12 @@ const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, 
   }
 };
 
-const getParams = () => {
-  const name = window.location.href.substring(window.location.href.lastIndexOf('/') + 1, window.location.href.length);
-  const params = {
-    community: 'openeuler',
-    sig: name,
-  };
-  return params;
-};
-
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect() {
       if (location.hostname.endsWith('openeuler.org')) {
-        return '/en/overview'
+        return '/en/overview';
       }
       return '/zh/overview';
     },
@@ -86,9 +78,8 @@ export const routes: RouteRecordRaw[] = [
     component: () => {
       return import('@/views/sig/Index.vue');
     },
-    beforeEnter: (to: any, from: any, next: any) => {
-      const params = getParams();
-      querySigInfo(params).then((data) => {
+    beforeEnter: (to, from, next) => {
+      querySigInfo({ community: 'openeuler', sig: to.params.name }).then((data) => {
         if (data.data.length === 0) {
           next('/404');
         } else {
@@ -102,6 +93,14 @@ export const routes: RouteRecordRaw[] = [
     name: 'zh_all_sig',
     component: () => {
       return import('@/views/sig/Index.vue');
+    },
+    async beforeEnter() {
+      const sigStore = useSigStore();
+      if (!sigStore.allSigs.length) {
+        await sigStore.getAllSigs();
+      }
+      const sig = sigStore.allSigs[0];
+      return `/zh/sig/${sig}`;
     },
   },
   {
@@ -216,8 +215,8 @@ export const routes: RouteRecordRaw[] = [
     component: () => {
       return import('@/views/sig/Index.vue');
     },
-    beforeEnter: (to: any, from: any, next: any) => {
-      querySigInfo(getParams()).then((data) => {
+    beforeEnter: (to, from, next) => {
+      querySigInfo({ community: 'openeuler', sig: to.params.name }).then((data) => {
         if (data.data.length === 0) {
           next('/404');
         } else {
@@ -231,6 +230,14 @@ export const routes: RouteRecordRaw[] = [
     name: 'en_all_sig',
     component: () => {
       return import('@/views/sig/Index.vue');
+    },
+    async beforeEnter() {
+      const sigStore = useSigStore();
+      if (!sigStore.allSigs.length) {
+        await sigStore.getAllSigs();
+      }
+      const sig = sigStore.allSigs[0];
+      return `/en/sig/${sig}`;
     },
   },
   {
@@ -321,7 +328,7 @@ export const router = createRouter({
 // 设置语言
 router.beforeEach((to) => {
   const commonStore = useCommonStore();
-  const lang = to.fullPath.startsWith('/en') ? 'en' : 'zh'
+  const lang = to.fullPath.startsWith('/en') ? 'en' : 'zh';
   commonStore.lang = lang;
   if (i18n.global.locale !== lang) {
     i18n.global.locale = lang;
