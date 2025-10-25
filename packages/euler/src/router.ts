@@ -5,7 +5,6 @@ import { queryUserList } from 'shared/api/api-new';
 import { testIsPhone } from 'shared/utils/helper';
 import { usePersonalStore } from './stores/personal';
 import i18n from './i18n';
-import useSigStore from './stores/sig';
 
 const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, next) => {
   if (!to.params.name) {
@@ -93,15 +92,7 @@ export const routes: RouteRecordRaw[] = [
     name: 'zh_all_sig',
     component: () => {
       return import('@/views/sig/Index.vue');
-    },
-    async beforeEnter() {
-      const sigStore = useSigStore();
-      if (!sigStore.allSigs.length) {
-        await sigStore.getAllSigs();
-      }
-      const sig = sigStore.allSigs[0];
-      return `/zh/sig/${sig}`;
-    },
+    }
   },
   {
     path: '/zh/user/:name',
@@ -230,14 +221,6 @@ export const routes: RouteRecordRaw[] = [
     name: 'en_all_sig',
     component: () => {
       return import('@/views/sig/Index.vue');
-    },
-    async beforeEnter() {
-      const sigStore = useSigStore();
-      if (!sigStore.allSigs.length) {
-        await sigStore.getAllSigs();
-      }
-      const sig = sigStore.allSigs[0];
-      return `/en/sig/${sig}`;
     },
   },
   {
