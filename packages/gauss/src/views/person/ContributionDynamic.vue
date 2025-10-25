@@ -5,7 +5,7 @@ import { IObject } from "shared/@types/interface";
 import IconUser from "~icons/app/search";
 import OIcon from "shared/components/OIcon.vue";
 import OFormRadio from "@/components/OFormRadio.vue";
-import { queryUserContributeDetails, queryUserContributeCounts, queryUserSigContribute } from "shared/api/api-new";
+import { queryUserContributeCountsByFilter, queryUserContributeDetails, queryUserSigContribute } from "shared/api/api-new";
 import CommonPR from "@/assets/commonPR.png";
 import comment from "@/assets/comment.png";
 import noclick from "@/assets/noclick.png";
@@ -13,6 +13,7 @@ import text from "@/assets/text.png";
 import { Search } from "@element-plus/icons-vue";
 import ONoDataImage from "shared/components/ONoDataImage.vue";
 import { ElScrollbar } from "element-plus";
+
 const loading = ref(false);
 const { t } = useI18n();
 const props = defineProps({
@@ -170,7 +171,7 @@ const updateTotalCount = () => {
   if (filterParams.value.contributeType === "comment") {
     queryParams.comment_type = commentType.value;
   }
-  queryUserContributeCounts(queryParams).then((res) => {
+  queryUserContributeCountsByFilter(queryParams, queryParams.contributeType).then((res) => {
     if (res.data) {
       totalCount.value = res.data;
     }
@@ -261,8 +262,8 @@ const filterReallData = () => {
     } else if (infoFirst.value === 1 && infoSeconed.value === 1) {
       commentType.value = "";
     }
-    getDetailsData();
   }
+  getDetailsData();
 };
 
 // 显示第几页
@@ -295,7 +296,7 @@ const changeTag = (item: any) => {
     commentType.value = "";
   }
 
- getDetailsData();
+  getDetailsData();
   updateTotalCount();
 };
 
