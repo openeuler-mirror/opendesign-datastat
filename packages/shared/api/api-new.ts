@@ -31,10 +31,11 @@ export function queryUserList(params: object) {
 /**
  * 开发者详情页面查询个人全部贡献数量
  */
-export function queryUserContributeCounts(params: any) {
-  const url = `/api-magic/stat_new/${params.contributeType}/count`;
+export function queryUserContributeCounts(params: object) {
+  const url = '/api-magic/stat/count';
   return request.get(url, { params, global: true }).then((res: AxiosResponse) => res.data);
 }
+
 /**
  * 开发者详情页面带帅选条件查询个人贡献数量
  */

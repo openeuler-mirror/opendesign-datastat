@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
-import { queryAll } from 'shared/api/index';
-import { getOverviewContributeData, getOverviewOrgMemberCount, getOverviewSigCount, getOverviewContributorCount, queryCoreRepos, getOveriewAllUsersCount } from 'shared/api/api-new';
+import { getOverviewContributeData, queryCoreRepos, getOveriewAllUsersCount } from 'shared/api/api-new';
 import { IObject } from 'shared/@types/interface';
 import { getNowFormatDate } from 'shared/utils/helper';
 import { request } from 'shared/plugins/axios';
@@ -61,44 +60,6 @@ export const useCommonStore = defineStore('common', {
           this.allData.users = res.data.total_count;
         }
       });
-      /* try {
-        const res = await queryAll('opengauss');
-        if (res.code === 200) {
-          const data = { ...res.data };
-          ['prs', 'comments', 'issues', 'partners', 'contributors', 'sigs'].forEach((prop) => {
-            delete data[prop];
-          });
-          this.allData = data;
-          this.time = getNowFormatDate();
-        }
-
-        const [contributeRes, orgMemberRes, contributorRes, sigRes] = await Promise.all([
-          getOverviewContributeData('opengauss'),
-          getOverviewOrgMemberCount('opengauss'),
-          getOverviewContributorCount('opengauss'),
-          getOverviewSigCount('opengauss'),
-        ]);
-        // pr，issue，comment数量
-        if (contributeRes && contributeRes.code === 1 && contributeRes.data) {
-          this.allData.prs = contributeRes.data.pr;
-          this.allData.comments = contributeRes.data.comment;
-          this.allData.issues = contributeRes.data.issue;
-        }
-        // 单位会员个数
-        if (orgMemberRes && orgMemberRes.code === 1 && orgMemberRes.data) {
-          this.allData.partners = orgMemberRes.data.partner;
-        }
-        // 贡献者人数
-        if (contributorRes && contributorRes.code === 1 && contributorRes.data) {
-          this.allData.contributors = contributorRes.data.contributor;
-        }
-        // sig个数
-        if (sigRes && sigRes.code === 1 && sigRes.data) {
-          this.allData.sigs = sigRes.data.sig;
-        }
-      } catch (error) {
-        console.log(error);
-      } */
     },
     getContributeData() {
       getOverviewContributeData('opengauss').then((res) => {
