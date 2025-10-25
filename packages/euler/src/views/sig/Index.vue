@@ -7,7 +7,7 @@ import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import TableList from "./TableList.vue";
 import ContributList from "./ContributList.vue";
-import { querySigInfo } from "shared/api";
+import { querySigInfo, querySigName } from "shared/api";
 import { openCommunityInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
@@ -15,14 +15,29 @@ import { ElScrollbar } from "element-plus";
 import AppFooter from "@/components/AppFooter.vue";
 import { hasPermission } from "shared/utils/login";
 import VisualIndex from "./VisualIndex.vue";
-import useSigStore from "@/stores/sig";
+
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
 const sencondTitle = ref(route.params.name as string ?? '');
 const { t } = useI18n();
-const sigStore = useSigStore();
-const allSigs = ref(sigStore.allSigs);
+const dropdownData = ref([] as any[]);
+const getDrownData = () => {
+  const community = "openeuler";
+
+  querySigName(community).then((data) => {
+    const allSigs = data?.data || {};
+    allSigs[community].sort((a: any, b: any) => a.localeCompare(b));
+    const findOne =
+      allSigs[community].find((item: any) => item === route.params.name) ||
+      allSigs[community][0];
+    sencondTitle.value = findOne;
+    const firstKeys = Object.keys(allSigs);
+    dropdownData.value = allSigs[firstKeys[0]];
+    dropdownOptions.value = dropdownData.value.sort((a, b) => a.localeCompare(b));
+    getAllData();
+  });
+};
 
 const anchorData = computed(() => {
   return hasPermission("SIGread")
@@ -50,14 +65,14 @@ const goToTetail = () => {
 };
 // 搜索过滤
 const searchInput = ref("");
-const dropdownOptions = ref(allSigs.value);
+const dropdownOptions = ref(dropdownData.value);
 const querySearch = () => {
   if (searchInput.value !== "") {
-    dropdownOptions.value = allSigs.value.filter((item: any) =>
+    dropdownOptions.value = dropdownData.value.filter((item: any) =>
       item.toLowerCase().includes(searchInput.value)
     );
   } else {
-    dropdownOptions.value = allSigs.value;
+    dropdownOptions.value = dropdownData.value;
   }
 };
 // 清除搜索
@@ -82,7 +97,7 @@ const querySigInfoData = () => {
   });
 };
 onMounted(() => {
-  getAllData();
+  getDrownData();
 });
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
@@ -226,7 +241,7 @@ const showDropdown = (e: any) => {
           <div v-if="hasPermission('SIGread')">
             <visual-index
               :sencondTitle="sencondTitle"
-              :drownData="allSigs"
+              :drownData="dropdownData"
             ></visual-index>
             <!-- <current-trend :sig="sencondTitle"></current-trend> -->
           </div>
