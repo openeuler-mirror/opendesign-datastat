@@ -2,7 +2,7 @@
 import { useCommonStore } from "@/stores/common";
 import OAnchor from "shared/components/OAnchor.vue";
 import HistoricalTrend from "./HistoricalTrend.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import TableList from "./TableList.vue";
@@ -81,6 +81,9 @@ const querySigInfoData = () => {
     sigInfo.value = data?.data[0] || {};
   });
 };
+onMounted(() => {
+  getAllData();
+});
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
