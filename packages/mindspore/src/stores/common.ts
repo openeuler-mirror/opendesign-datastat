@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { queryAll } from 'shared/api/index';
 import { IObject } from 'shared/@types/interface';
 import { getNowFormatDate } from 'shared/utils/helper';
+import { request } from 'shared/plugins/axios';
 
 interface stateTypes {
   language: string;
@@ -24,7 +24,7 @@ export const useCommonStore = defineStore('common', {
     lang: '',
     // 时间
     time: '--',
-    allData: [],
+    allData: {},
   }),
   actions: {
     setLanguage(language: string) {
@@ -34,15 +34,12 @@ export const useCommonStore = defineStore('common', {
       this.ISPC = device;
     },
     async getAllData() {
-      try {
-        const res = await queryAll('mindspore');
-        if (res.code === 200) {
-          this.allData = res.data;
-          this.time = getNowFormatDate();
+      this.time = getNowFormatDate();
+      request.get('/api-magic/stat/overview/count?community=mindspore').then((res) => {
+        if (res.data?.data) {
+          Object.assign(this.allData, res.data.data);
         }
-      } catch (error) {
-        console.log(error);
-      }
+      });
     },
   },
 });
