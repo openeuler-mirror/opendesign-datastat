@@ -5,7 +5,7 @@ import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { queryUserOwnertype } from 'shared/api';
-import { queryUserContributeCounts, queryUserList } from 'shared/api/api-new';
+import { queryUserAccountUrl, queryUserContributeCounts, queryUserList } from 'shared/api/api-new';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import { Search } from '@element-plus/icons-vue';
@@ -88,9 +88,9 @@ const clickDrownItem = (item: string) => {
 };
 
 const getUserAccountUrl = () => {
-  request.get('/stat/user/info', { params: { community: 'opengauss', user: sencondTitle.value } }).then((res) => {
-    if (res.data?.code === 1) {
-      accountUrl.value = res.data.data?.html_url ?? '';
+  queryUserAccountUrl({ community: 'opengauss', user: sencondTitle.value }).then((res) => {
+    if (res?.code === 1) {
+      accountUrl.value = res.data.html_url ?? '';
     }
   });
 };
