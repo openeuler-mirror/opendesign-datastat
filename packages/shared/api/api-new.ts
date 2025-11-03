@@ -6,6 +6,10 @@ export interface ResType<T = any> {
   data: T;
 }
 
+export function queryUserAccountUrl(params: { community: string; user: string }) {
+  return request.get('/api-magic/stat/user/info', { params }).then((res: AxiosResponse) => res.data);
+}
+
 /**
  * 查询社区贡献
  */
