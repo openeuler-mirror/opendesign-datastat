@@ -10,6 +10,7 @@ import { useRoute, useRouter } from 'vue-router';
 import IconGitCode from '~icons/app/gitcode.svg';
 import IconMail from '~icons/app/mail.svg';
 
+const HOME_URL = import.meta.env.VITE_MAIN_DOMAIN_URL;
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -91,7 +92,7 @@ onMounted(() => {
       <OOption v-for="sig in filteredAllSigs" :key="sig" :value="sig" :label="sig" />
     </OSelect>
     <p style="margin-top: 14px">
-      <OLink color="primary" hover-underline style="--link-gap: 10px" :href="`https://www.openubmc.cn/sig/${sigName}`" target="_blank" rel="noopener noreferrer">
+      <OLink color="primary" hover-underline style="--link-gap: 10px" :href="`${HOME_URL}/sig/${sigName}?group=${sigName}`" target="_blank" rel="noopener noreferrer">
         <template #icon
           ><OIcon style="font-size: 24px"><IconGitCode /></OIcon
         ></template>
