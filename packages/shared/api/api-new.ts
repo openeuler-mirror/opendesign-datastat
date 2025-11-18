@@ -10,6 +10,10 @@ export function queryUserAccountUrl(params: { community: string; user: string })
   return request.get('/api-magic/stat/user/info', { params }).then((res: AxiosResponse) => res.data);
 }
 
+export function querySigInfo(params: { community: string; sig: string }) {
+  return request.get('/api-magic/stat/sig/info', { params }).then((res: AxiosResponse) => res.data ?? {});
+}
+
 /**
  * 查询社区贡献
  */

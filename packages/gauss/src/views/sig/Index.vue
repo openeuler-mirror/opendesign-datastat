@@ -7,7 +7,7 @@ import { ref, onMounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import ContributList from "./ContributList.vue";
-import { querySigName, querySigInfo } from "shared/api";
+import { querySigName } from "shared/api";
 import { openCommunityInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
@@ -15,6 +15,7 @@ import { ElScrollbar } from "element-plus";
 import AppFooter from "@/components/AppFooter.vue";
 import { hasPermission } from "shared/utils/login";
 import VisualIndex from "./VisualIndex.vue";
+import { querySigInfo } from "shared/api/api-new";
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -92,15 +93,17 @@ const clean = () => {
 const sigInfo = ref({
   mailing_list: "",
 } as IObject);
-const querySigInfoData = () => {
+const querySigInfoData = async () => {
   const params = {
     community: openCommunityInfo.name,
     sig: sencondTitle.value,
   };
 
-  querySigInfo(params).then((data) => {
-    sigInfo.value = data?.data[0] || {};
-  });
+  const res = await querySigInfo(params);
+  if (res?.code !== 1) {
+    sigInfo.value = {};
+  }
+  sigInfo.value = res?.data || {};
 };
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const inputSlider = (value: number) => {
@@ -172,7 +175,7 @@ const showDropdown = (e: any) => {
                 <a
                   style="color: #7d32ea"
                   target="_blank"
-                  :href="`https://gitee.com/opengauss/tc/tree/master/sigs/${sencondTitle}`"
+                  :href="`https://gitcode.com/opengauss/tc/tree/master/sigs/${sencondTitle}`"
                 >
                   {{ t("toHome") }}</a
                 >
@@ -198,15 +201,17 @@ const showDropdown = (e: any) => {
               <div class="Maintainer"></div>
               <div class="List">
                 <span>Maintainers： </span>
-                <a
-                  v-for="item in sigInfo.maintainers"
-                  :key="item.value"
-                  class="item"
-                  target="_blank"
-                  :href="`https://gitee.com/${item}`"
-                >
-                  @{{ item }}
-                </a>
+                <template v-if="Array.isArray(sigInfo.maintainers)">
+                  <a
+                    v-for="item in sigInfo.maintainers"
+                    :key="item"
+                    class="item"
+                    target="_blank"
+                    :href="`https://gitcode.com/${item}`"
+                  >
+                    @{{ item }}
+                  </a>
+                </template>
               </div>
             </div>
             <div class="first">
@@ -214,15 +219,17 @@ const showDropdown = (e: any) => {
               <div class="List">
                 <span>{{ t("warehouse") }}：</span>
                 <div class="atlas">
-                  <a
-                    v-for="item in sigInfo.repos"
-                    :key="item"
-                    class="item"
-                    :href="`https://gitee.com/opengauss/${item}`"
-                    target="_blank"
-                  >
-                    ./{{ item }}
-                  </a>
+                  <template v-if="Array.isArray(sigInfo.repositories)">
+                    <a
+                      v-for="item in sigInfo.repositories"
+                      :key="item"
+                      class="item"
+                      :href="`https://gitcode.com/${item}`"
+                      target="_blank"
+                    >
+                      ./{{ item }}
+                    </a>
+                  </template>
                 </div>
               </div>
             </div>
