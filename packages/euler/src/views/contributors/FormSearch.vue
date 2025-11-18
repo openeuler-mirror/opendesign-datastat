@@ -10,6 +10,7 @@ import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import { testIsPhone } from 'shared/utils/helper';
 import { queryVersions } from 'shared/api/api-new';
+import { debounce } from 'lodash-es';
 const { t } = useI18n();
 const useCompany = useCompanyStore();
 const useCommon = useCommonStore();
@@ -88,9 +89,7 @@ const isSearch = ref(false);
 const searchInput = ref('');
 const querySearch = (queryString: string, cb: any) => {
   let queryList = useCompany.rawData;
-  const results = queryString
-    ? queryList.filter(createFilter(queryString))
-    : queryList;
+  const results = queryString ? queryList.filter(createFilter(queryString)) : queryList;
 
   if (results.length > 0) {
     isSearch.value = false;
@@ -126,6 +125,12 @@ const myKeydown = () => {
   }
 };
 
+const onSearchInput = debounce((str: string) => {
+  if (!str) {
+    clearSearchInput();
+  }
+}, 200);
+
 // 清除搜索
 const clearSearchInput = () => {
   isSearch.value = false;
@@ -146,8 +151,7 @@ const getContributeInfo = (item: IObject) => {
     if (useCompany.companyForm.displayRange === 'all') {
       useCompany.ranking = useCompany.totalLength;
     } else {
-      useCompany.ranking =
-        useCompany.companyForm.displayRange === '10' ? 10 : 20;
+      useCompany.ranking = useCompany.companyForm.displayRange === '10' ? 10 : 20;
     }
   }
   if (useCompany.searchRanking !== 0) {
@@ -213,11 +217,7 @@ watch(
       ><el-switch v-model="useCompany.switchValue" />
     </div>
 
-    <the-form
-      :option="formOptionAll.value"
-      :component-name="componentName"
-      @get-contribute-info="getContributeInfo"
-    >
+    <the-form :option="formOptionAll.value" :component-name="componentName" @get-contribute-info="getContributeInfo">
       <template #searchInput>
         <div class="searchInput" :class="{ inputHeight: isMobile }">
           <el-autocomplete
@@ -233,11 +233,10 @@ watch(
             @select="handleSelect"
             @keydown.enter="myKeydown"
             @clear="clearSearchInput"
+            @input="onSearchInput"
           >
             <template #prefix>
-              <o-icon class="search-icon"
-                ><icon-user></icon-user
-              ></o-icon> </template
+              <o-icon class="search-icon"><icon-user></icon-user></o-icon> </template
           ></el-autocomplete>
         </div>
       </template>
