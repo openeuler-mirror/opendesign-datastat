@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
 import { openCommunityInfo } from '@/api/index';
-import { IObject, companyTypes } from 'shared/@types/interface';
+import { IObject } from 'shared/@types/interface';
 import { queryCompanyContribute } from '@/api';
 import { queryCompanyContribute as queryCompanyContributeWithVersionSelected } from 'shared/api/api-new';
 import { ceil } from 'lodash-es';
@@ -10,7 +9,8 @@ interface layoutStateTypes {
   companyData: {
     company_en: string;
     company_zh: string;
-    contribute: number
+    index: number | string;
+    contribute: number;
   }[];
   ranking: number | string;
   searchRanking: number;
@@ -70,17 +70,27 @@ export const useCompanyStore = defineStore('company', {
           this.rawData = data;
 
           // 筛选
-          const newData = data.filter((i: IObject) => i.contribute > 0);
+          if (data[0].company_zh === '个人贡献者') {
+            const temp = data[1];
+            data[1] = data[0];
+            data[0] = temp;
+          }
+          let index = 1;
+          const newData = data
+            .filter((i: IObject) => i.contribute > 0)
+            .map((i: any) => {
+              return {
+                ...i,
+                index: i.company_zh === '个人贡献者' ? '*' : index++,
+              };
+            });
           const initVal = 0;
           this.total = newData.reduce((acc: number, cur: IObject) => {
             return acc + cur.contribute;
           }, initVal);
           this.totalLength = newData.length;
 
-          this.ranking =
-            this.companyForm.displayRange === 'all'
-              ? this.totalLength
-              : this.companyForm.displayRange;
+          this.ranking = this.companyForm.displayRange === 'all' ? this.totalLength : this.companyForm.displayRange;
 
           this.companyData = newData.slice(0, this.ranking);
         }

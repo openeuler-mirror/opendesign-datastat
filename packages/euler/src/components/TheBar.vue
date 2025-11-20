@@ -90,29 +90,19 @@ const goToCompany = (data: IObject) => {
 <template>
   <div class="bar-panel">
     <ul class="bar-content">
-      <li v-for="(item, index) in useCompany.companyData" :key="'com' + index" class="bar-content-item">
+      <li v-for="(item) in useCompany.companyData" :key="item.company_zh" class="bar-content-item">
         <p class="infos">
-          <template v-if="item.company_zh === '个人贡献者' || item.company_en === 'independent'">
-            <span class="index" v-if="item.company_zh === '个人贡献者' || item.company_en === 'independent'">*</span>
-            <span
-              class="name"
-              style="color: #555555"
-              >{{ (useCommon.language === 'en' && item.company_en) || item.company_zh }}</span
-            >
-          </template>
-          <template v-else>
-            <span class="index" >{{ index + 1 }}</span>
-            <span
-              class="name"
-              :title="(useCommon.language === 'en' && item.company_en) || item.company_zh"
-              :style="{
-                cursor: hasPermissions(item.company_zh) || hasPermission('companyread_all') ? 'pointer' : 'auto',
-                color: hasPermissions(item.company_zh) || hasPermission('companyread_all') ? '#002FA7' : '#555555',
-              }"
-              @click="goToCompany(item)"
-              >{{ (useCommon.language === 'en' && item.company_en) || item.company_zh }}</span
-            >
-          </template>
+          <span class="index" >{{ item.index }}</span>
+          <span
+            class="name"
+            :title="(useCommon.language === 'en' && item.company_en) || item.company_zh"
+            :style="{
+              cursor: hasPermissions(item.company_zh) || hasPermission('companyread_all') ? 'pointer' : 'auto',
+              color: hasPermissions(item.company_zh) || hasPermission('companyread_all') ? '#002FA7' : '#555555',
+            }"
+            @click="goToCompany(item)"
+            >{{ (useCommon.language === 'en' && item.company_en) || item.company_zh }}</span
+          >
         </p>
 
         <el-tooltip placement="bottom-start" effect="light" :show-after="showAfter" popper-class="bar-tooltip" :show-arrow="false">
