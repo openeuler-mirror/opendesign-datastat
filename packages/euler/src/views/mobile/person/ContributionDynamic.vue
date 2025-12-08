@@ -417,7 +417,7 @@ const commentSelectBox = ref([
           <div class="infos-text">
             <span v-if="param.contributeType === 'comment'">{{ t("comment") }} </span
             ><span v-else>{{ t("In") }}</span>
-            <a class="index" :href="`https://gitee.com/${item.repo}`" target="_blank">{{
+            <a class="index" :href="`https://atomgit.com/${item.repo}`" target="_blank">{{
               item.repo
             }}</a
             ><span v-if="param.contributeType === 'pr'"

@@ -13,7 +13,7 @@
                 <div class="group-father">
                   <span class="group-name">{{ scope.row.name }}</span>
                   <a
-                    :href="`http://gitee.com/${scope.row.user}`"
+                    :href="`http://atomgit.com/${scope.row.user}`"
                     class="group-email"
                     >@{{ scope.row.user }}</a
                   >
@@ -58,7 +58,7 @@
                 <div class="group-father">
                   <span class="group-name">{{ scope.row.name }}</span>
                   <a
-                    :href="`http://gitee.com/${scope.row.user}`"
+                    :href="`http://atomgit.com/${scope.row.user}`"
                     class="group-email"
                     >@{{ scope.row.user }}</a
                   >

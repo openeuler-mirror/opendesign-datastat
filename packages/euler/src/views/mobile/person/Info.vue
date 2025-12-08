@@ -8,7 +8,7 @@
       <a
         style="color: #002fa7"
         target="_blank"
-        :href="`https://gitee.com/${props.user}`"
+        :href="`https://atomgit.com/${props.user}`"
       >
         {{ t('toHome') }}</a
       >

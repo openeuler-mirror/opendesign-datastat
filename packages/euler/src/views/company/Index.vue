@@ -613,7 +613,7 @@ const getcontributeValue = (item: any) => {
                   <el-table-column
                     prop="gitee_id"
                     align="left"
-                    label="Gitee ID"
+                    label="AtomGit ID"
                     show-overflow-tooltip
                     width="400"
                     ><template #default="scope">

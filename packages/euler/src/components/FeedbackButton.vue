@@ -165,8 +165,8 @@ const floatData = computed(() => {
         img: IconEdit,
         id: 'feedback',
         text: '意见反馈',
-        tip: '在Gitee中反馈意见',
-        link: `https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0`,
+        tip: '在AtomGit中反馈意见',
+        link: `https://atomgit.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0`,
       },
       {
         img: IconFAQ,
@@ -183,7 +183,7 @@ const floatData = computed(() => {
       id: 'feedback',
       text: 'Feedback',
       tip: 'Your voice matters',
-      link: `https://gitee.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0`,
+      link: `https://atomgit.com/openeuler/infrastructure/issues/new?issue%5Bassignee id%5D=0&issue%5Bmilestone id%5D=0`,
     },
     {
       img: IconFAQ,

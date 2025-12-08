@@ -186,7 +186,7 @@ const goToSig = (data: string) => {
                 <a
                   style="color: #002fa7"
                   target="_blank"
-                  :href="`https://gitee.com/${sencondTitle}`"
+                  :href="`https://atomgit.com/${sencondTitle}`"
                 >
                   {{ t('toHome') }}</a
                 >
