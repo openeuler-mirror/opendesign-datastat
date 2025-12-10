@@ -140,7 +140,7 @@ export default {
   comment: '评论了',
   In: '在',
   login: '登录',
-  personalCenter: '个人中心',
+  personalCenter: '个人贡献',
   logout: '退出登录',
   Confirm: '确认',
   Cancel: '取消',
