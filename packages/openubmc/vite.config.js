@@ -69,7 +69,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api-dsapi/, ''),
       },
       '/api-id': {
-        target: 'https://omapi.test.osinfra.cn/',
+        target: 'https://usercenter.openubmc.test.osinfra.cn/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api-id/, ''),
       },

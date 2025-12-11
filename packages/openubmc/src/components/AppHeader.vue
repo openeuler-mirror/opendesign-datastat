@@ -73,8 +73,8 @@ const isAbout = computed(() => {
   return p === 'about';
 });
 
-const jumpToUserZone = () => {
-  window.open('https://www.openubmc.cn/my/collections', '_blank');
+const jumpToUserContribute = () => {
+  router.push({ name: 'user-detail', params: { id: loginStore.username } })
 };
 
 const logoutConfirm = () => {
@@ -126,7 +126,7 @@ const logoutConfirm = () => {
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="jumpToUserZone">{{ t('common.personalCenter') }}</el-dropdown-item>
+              <el-dropdown-item @click="jumpToUserContribute">{{ t('common.personalCenter') }}</el-dropdown-item>
               <el-dropdown-item @click="dialogVisible = true">{{ t('common.logout') }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
