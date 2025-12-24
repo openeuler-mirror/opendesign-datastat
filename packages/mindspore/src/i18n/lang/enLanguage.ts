@@ -6,7 +6,7 @@ export default {
   },
   home: {
     moreData: 'Explore more details',
-    user: 'User',
+    user: 'Download',
     contributors: 'Contributor',
     partners: 'Organization Member',
     prs: 'PR',
