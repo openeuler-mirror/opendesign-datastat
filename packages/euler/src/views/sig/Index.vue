@@ -7,8 +7,8 @@ import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import TableList from "./TableList.vue";
 import ContributList from "./ContributList.vue";
-import { querySigInfo, querySigName } from "shared/api";
-import { openCommunityInfo } from "@/api";
+import { querySigName } from "shared/api";
+import { getSigInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
 import { ElScrollbar } from "element-plus";
@@ -19,7 +19,7 @@ import VisualIndex from "./VisualIndex.vue";
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
-const sencondTitle = ref(route.params.name as string ?? '');
+const sigName = ref(route.params.name as string ?? '');
 const { t } = useI18n();
 const dropdownData = ref([] as any[]);
 const getDrownData = () => {
@@ -31,11 +31,11 @@ const getDrownData = () => {
     const findOne =
       allSigs[community].find((item: any) => item === route.params.name) ||
       allSigs[community][0];
-    sencondTitle.value = findOne;
+    sigName.value = findOne;
     const firstKeys = Object.keys(allSigs);
     dropdownData.value = allSigs[firstKeys[0]];
     dropdownOptions.value = dropdownData.value.sort((a, b) => a.localeCompare(b));
-    getAllData();
+    getAllData(!Object.keys(sigInfo.value).length);
   });
 };
 
@@ -50,14 +50,16 @@ const anchorData = computed(() => {
     : ["userContributor"];
 });
 const clickDropdown = (item: string) => {
-  sencondTitle.value = item;
+  sigName.value = item;
   getAllData();
 };
 
-const getAllData = () => {
+const getAllData = (getSigInfo = true) => {
   clean();
   querySearch();
-  querySigInfoData();
+  if (getSigInfo) {
+    querySigInfoData();
+  }
 };
 // 跳转首页
 const goToTetail = () => {
@@ -83,17 +85,10 @@ const clean = () => {
   searchInput.value = "";
 };
 // 获取侧边栏明细
-const sigInfo = ref({
-  mailing_list: "",
-} as IObject);
+const sigInfo = ref<IObject>(route.meta.sigInfo ?? {});
 const querySigInfoData = () => {
-  const params = {
-    community: openCommunityInfo.name,
-    sig: sencondTitle.value,
-  };
-
-  querySigInfo(params).then((data) => {
-    sigInfo.value = data?.data[0] || {};
+  getSigInfo(sigName.value).then((res) => {
+    sigInfo.value = res.data;
   });
 };
 onMounted(() => {
@@ -105,12 +100,23 @@ const inputSlider = (value: number) => {
 };
 const showDropdown = (e: any) => {
   if (e) {
-    let number = 0;
-    dropdownOptions.value.forEach((item: any, index) => {
-      if (item === sencondTitle.value) {
-        number = index;
+    let number = -1;
+    let left = 0;
+    let right = dropdownOptions.value.length - 1;
+    while (left < right) {
+      const mid = left + Math.floor((right - left) / 2);
+      const current = dropdownOptions.value[mid];
+      if (current === sigName.value) {
+        number = mid;
+        break;
       }
-    });
+      if (sigName.value.localeCompare(current) > 0) {
+        left = mid + 1;
+        continue;
+      }
+      right = mid - 1;
+    }
+    if (number === -1) number = left;
     inputSlider(number * 32);
   }
 };
@@ -121,7 +127,7 @@ const showDropdown = (e: any) => {
     <div class="wrap">
       <div class="step">
         <span class="step-one" @click="goToTetail()">{{ t("nav.contributors") }}</span>
-        <span> > {{ sencondTitle }}</span>
+        <span> > {{ sigName }}</span>
       </div>
       <div class="main">
         <div class="main-left">
@@ -129,7 +135,7 @@ const showDropdown = (e: any) => {
             <div class="edropdown">
               <el-dropdown placement="bottom-start" @visible-change="showDropdown">
                 <div class="main-left-title">
-                  {{ sencondTitle }}
+                  {{ sigName }}
                   <span class="btnc"></span>
                 </div>
 
@@ -169,7 +175,7 @@ const showDropdown = (e: any) => {
                 <a
                   style="color: #002fa7"
                   target="_blank"
-                  :href="`https://gitee.com/openeuler/community/tree/master/sig/${sencondTitle}`"
+                  :href="`https://atomgit.com/openeuler/community/tree/master/sig/${sigName}`"
                 >
                   {{ t("toHome") }}</a
                 >
@@ -196,13 +202,13 @@ const showDropdown = (e: any) => {
               <div class="List">
                 <span>Maintainers： </span>
                 <a
-                  v-for="item in sigInfo.maintainers"
-                  :key="item.value"
+                  v-for="item in sigInfo.maintainer_info"
+                  :key="item.user_login"
                   class="item"
                   target="_blank"
-                  :href="`https://gitee.com/${item}`"
+                  :href="item.user_homepage_url"
                 >
-                  @{{ item }}
+                  @{{ item.user_login }}
                 </a>
               </div>
             </div>
@@ -224,10 +230,10 @@ const showDropdown = (e: any) => {
                 <span>{{ t("warehouse") }}：</span>
                 <div class="atlas">
                   <a
-                    v-for="item in sigInfo.repos"
+                    v-for="item in sigInfo.repositories"
                     :key="item"
                     class="item"
-                    :href="`https://gitee.com/${item}`"
+                    :href="`https://atomgit.com/${item}`"
                     target="_blank"
                   >
                     ./{{ item }}
@@ -240,7 +246,7 @@ const showDropdown = (e: any) => {
         <div class="main-right">
           <div v-if="hasPermission('SIGread')">
             <visual-index
-              :sencondTitle="sencondTitle"
+              :sencondTitle="sigName"
               :drownData="dropdownData"
             ></visual-index>
             <!-- <current-trend :sig="sencondTitle"></current-trend> -->
@@ -248,22 +254,22 @@ const showDropdown = (e: any) => {
 
           <div v-if="hasPermission('SIGread')" class="contributors-panel">
             <h3 id="historicalVitalityIndicators" class="title">
-              {{ sencondTitle + " " + t("historicalVitalityIndicators") }}
+              {{ sigName + " " + t("historicalVitalityIndicators") }}
             </h3>
-            <historical-trend :sig="sencondTitle"></historical-trend>
+            <historical-trend :sig="sigName"></historical-trend>
           </div>
           <div class="contributors-panel" v-if="hasPermission('SIGread')">
             <h3 id="companyContributor" class="title">
-              {{ sencondTitle + " " + t("companyContributor") }}
+              {{ sigName + " " + t("companyContributor") }}
             </h3>
 
-            <table-list :sig="sencondTitle" />
+            <table-list :sig="sigName" />
           </div>
           <div class="contributors-panel-last">
             <h3 id="userContributor" class="title">
-              {{ sencondTitle + " " + t("userContributor") }}
+              {{ sigName + " " + t("userContributor") }}
             </h3>
-            <contribut-list :sig="sencondTitle"></contribut-list>
+            <contribut-list :sig="sigName"></contribut-list>
           </div>
         </div>
       </div>

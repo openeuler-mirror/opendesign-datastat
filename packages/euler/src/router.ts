@@ -5,6 +5,7 @@ import { queryUserList } from 'shared/api/api-new';
 import { testIsPhone } from 'shared/utils/helper';
 import { usePersonalStore } from './stores/personal';
 import i18n from './i18n';
+import { getSigInfo } from './api';
 
 const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, next) => {
   if (!to.params.name) {
@@ -77,14 +78,16 @@ export const routes: RouteRecordRaw[] = [
     component: () => {
       return import('@/views/sig/Index.vue');
     },
-    beforeEnter: (to, from, next) => {
-      querySigInfo({ community: 'openeuler', sig: to.params.name }).then((data) => {
-        if (data.data.length === 0) {
-          next('/404');
-        } else {
-          next();
+    beforeEnter: async (to) => {
+      try {
+        const res = await getSigInfo(to.params.name as string);
+        if (!res.data) {
+          return '/404';
         }
-      });
+        to.meta.sigInfo = res.data;
+      } catch (error) {
+        return '/404';
+      }
     },
   },
   {
