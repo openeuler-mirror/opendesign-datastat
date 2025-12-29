@@ -38,7 +38,7 @@ const contributeDetailCounts = ref({
 const updateCounts = (arg: { user: string; timeRange: string }) => {
   queryUserContributeCounts({
     ...arg,
-    community: 'openeuler',
+    community: 'openeuleropen',
   }).then((res) => {
     const { sig, pr, comment, issue } = res?.data || {};
     contributeDetailCounts.value.pr = pr || 0;

@@ -101,7 +101,7 @@ const featureTranslateMap = reactive<Record<string, string>>({});
 
 const getList = () => {
   const query = {
-    community: "openeuler",
+    community: "openeuleropen",
   };
   querySigScoreAll(query).then((res) => {
     if (!res?.data) return;

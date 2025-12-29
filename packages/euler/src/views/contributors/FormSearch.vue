@@ -168,7 +168,7 @@ const isMobile: boolean = testIsPhone();
 const formOptionAll = ref<any>([]);
 const getConfig = (val: any) => {
   const param = {
-    community: 'openeuler',
+    community: 'openeuleropen',
   };
   if (val) {
     queryVersions(param).then((data) => {

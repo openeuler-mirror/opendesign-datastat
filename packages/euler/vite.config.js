@@ -56,7 +56,7 @@ export default defineConfig({
         changeOrigin: true,
       },
       '/api-magic': {
-        target: 'https://magicapi.test.osinfra.cn/',
+        target: 'https://magicapi.osinfra.cn/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api-magic/, ''),
       },

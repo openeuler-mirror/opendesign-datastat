@@ -11,7 +11,7 @@ const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, 
   if (!to.params.name) {
     return next('/404');
   }
-  const users = (usePersonalStore().allUsers ??= await queryUserList({ community: 'openeuler' })
+  const users = (usePersonalStore().allUsers ??= await queryUserList({ community: 'openeuleropen' })
     .then((res) => Object.keys(res.data).reduce((map, name, index) => map.set(name, index), new Map<string, number>()))
     .catch(() => new Map<string, number>()));
   if (users.has(to.params.name as string)) {
@@ -210,7 +210,7 @@ export const routes: RouteRecordRaw[] = [
       return import('@/views/sig/Index.vue');
     },
     beforeEnter: (to, from, next) => {
-      querySigInfo({ community: 'openeuler', sig: to.params.name }).then((data) => {
+      querySigInfo({ community: 'openeuleropen', sig: to.params.name }).then((data) => {
         if (data.data.length === 0) {
           next('/404');
         } else {
