@@ -69,12 +69,6 @@ export const useCompanyStore = defineStore('company', {
           this.companyMaxNum = ceil(data[0]?.contribute ?? 0, -2);
           this.rawData = data;
 
-          // 筛选
-          if (data[0].company_zh === '个人贡献者') {
-            const temp = data[1];
-            data[1] = data[0];
-            data[0] = temp;
-          }
           let index = 1;
           const newData = data
             .filter((i: IObject) => i.contribute > 0)
@@ -83,7 +77,8 @@ export const useCompanyStore = defineStore('company', {
                 ...i,
                 index: i.company_zh === '个人贡献者' ? '*' : index++,
               };
-            });
+            })
+            .sort((a, b) => b.contribute - a.contribute);
           const initVal = 0;
           this.total = newData.reduce((acc: number, cur: IObject) => {
             return acc + cur.contribute;
