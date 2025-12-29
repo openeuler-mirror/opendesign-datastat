@@ -217,7 +217,7 @@ const goToUser = (data: IObject) => {
       <el-table-column
         prop="gitee_id"
         align="left"
-        label="AtomGit ID"
+        label="ID"
         show-overflow-tooltip
         ><template #default="scope">
           <div class="usertype-box">

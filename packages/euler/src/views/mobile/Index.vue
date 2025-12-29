@@ -293,7 +293,7 @@ const isIndependent = (item: any) => item.company_zh === '个人贡献者' || it
           <the-form :option="formOption" :component-name="componentName" @get-contribute-info="getContributeInfo"></the-form>
           <el-table v-loading="loading" :data="usePersonal.personalData" style="width: 100%">
             <el-table-column type="index" width="48" align="center" :label="t('Number')" />
-            <el-table-column prop="user_login" align="left" label="AtomGit ID" show-overflow-tooltip width="110"
+            <el-table-column prop="user_login" align="left" label="ID" show-overflow-tooltip width="110"
               ><template #default="scope">
                 <div>
                   <span
