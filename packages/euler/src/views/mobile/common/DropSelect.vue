@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-import { cloneDeep } from 'lodash-es';
+import { computed, onBeforeMount, PropType, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
 import { ElScrollbar } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
+import useVirtualList from 'shared/hooks/useVirtualList';
 
 const { t } = useI18n();
 const props = defineProps({
@@ -16,14 +16,24 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  dropdownItemIndexGetter: {
+    type: Function as PropType<(find: string) => number>,
+    required: false,
+  }
 });
+
+const emit = defineEmits(['update:value']);
 
 // 搜索过滤
 const searchInput = ref('');
 const reallData = ref([] as IObject[]);
 const initReallData = () => {
-  reallData.value = cloneDeep(props.data);
+  reallData.value = [...props.data];
 };
+
+onBeforeMount(() => {
+  initReallData();
+})
 
 watch(
   () => props.data,
@@ -32,32 +42,37 @@ watch(
   },
   { deep: true }
 );
-watch(
-  () => props.value,
-  (val) => getLabel(val)
-);
-const getLabel = (val?: string) => {
-  if (val) {
-    sencondTitle.value =
-      reallData.value.find((item) => item.value === val)?.label || val;
-  } else {
-    sencondTitle.value = reallData.value[0]?.label;
-  }
-};
+
 // 顶部选择
-const sencondTitle = ref('');
+const sencondTitle = computed({
+  set(v) {
+    emit('update:value', v);
+  },
+  get() {
+    return props.value;
+  }
+});
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
+const scrollWrapper = computed(() => scrollbarRef.value?.wrap$!)
+const { visibleData, totalHeight, windowOffset } = useVirtualList(scrollWrapper, reallData, 32);
 const inputSlider = (value: number) => {
   scrollbarRef.value?.setScrollTop(value);
 };
 const showDropdown = (e: any) => {
   if (e) {
     let number = 0;
-    reallData.value.forEach((item: any, index) => {
-      if (item.label === sencondTitle.value) {
-        number = index;
+    if (typeof props.dropdownItemIndexGetter === 'function') {
+      number = props.dropdownItemIndexGetter(sencondTitle.value);
+    } else {
+      let index = 0;
+      for (const item of reallData.value) {
+        if (item.label === sencondTitle.value) {
+          number = index;
+          break;
+        }
+        index++;
       }
-    });
+    }
     inputSlider(number * 32);
   }
 };
@@ -79,12 +94,10 @@ const clearSearchInput = () => {
 const clean = () => {
   searchInput.value = '';
 };
-const emit = defineEmits(['update:value']);
 
 const clickDrownItem = (item: IObject) => {
   clean();
-  initReallData();
-  emit('update:value', item.value);
+  sencondTitle.value = item.value;
 };
 </script>
 
@@ -113,15 +126,17 @@ const clickDrownItem = (item: IObject) => {
           />
         </div>
 
-        <el-scrollbar ref="scrollbarRef" always height="400px">
-          <el-dropdown-item
-            v-for="item in reallData"
-            :key="item.value"
-            class="dropdownItem"
-            @click="clickDrownItem(item)"
-          >
-            {{ item.label }}</el-dropdown-item
-          >
+        <el-scrollbar ref="scrollbarRef" always height="400px" :view-style="{ height: `${totalHeight}px` }">
+          <div :style="{ transform: `translateY(${windowOffset}px)` }">
+            <el-dropdown-item
+              v-for="item in visibleData"
+              :key="item.value"
+              class="dropdownItem"
+              @click="clickDrownItem(item as any)"
+            >
+              {{ item.label }}</el-dropdown-item
+            >
+          </div>
         </el-scrollbar>
       </template>
     </el-dropdown>

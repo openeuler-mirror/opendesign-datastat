@@ -25,7 +25,6 @@ watch(
   () => props.total,
   (total) => {
     totalPage.value = Math.ceil(total / props.pageSize);
-    changePage(1);
   }
 );
 const emit = defineEmits(['currentChange']);

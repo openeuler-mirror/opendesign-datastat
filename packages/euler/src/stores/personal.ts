@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { openCommunityInfo } from '@/api/index';
-import { queryUserContribute } from 'shared/api/api-new';
+import { queryUserContribute, queryUserList } from 'shared/api/api-new';
 interface Form {
   contributeType: string;
   timeRange: string;
@@ -18,6 +18,18 @@ export const usePersonalStore = defineStore('personal', {
     allUsers: null as null | Map<string, number>,
   }),
   actions: {
+    async queryAllUsers() {
+      try {
+        const res = await queryUserList({ community: 'openeuleropen' });
+        if (res) {
+          this.allUsers = Object.keys(res.data).reduce((map, name, index) => map.set(name, index), new Map<string, number>());
+        } else {
+          this.allUsers = new Map();
+        }
+      } catch (error) {
+        this.allUsers = new Map();
+      }
+    },
     async getPersonalData() {
       const params = {
         community: openCommunityInfo.name,

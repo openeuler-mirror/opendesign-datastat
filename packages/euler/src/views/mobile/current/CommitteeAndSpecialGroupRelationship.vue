@@ -92,9 +92,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ref, computed } from 'vue';
-import { queryTCSigs } from 'shared/api';
 import { useCommonStore } from '@/stores/common';
 import { useRouter } from 'vue-router';
+import { queryTCSigs } from 'shared/api/api-new';
 const { t } = useI18n();
 const router = useRouter();
 const useCommon = useCommonStore();
@@ -103,7 +103,7 @@ const groupData = ref([]);
 const number = ref(0);
 const getGroup = () => {
   const query = {
-    community: 'openeuler',
+    community: 'openeuleropen',
   };
   queryTCSigs(query).then((data) => {
     groupData.value = data?.data || [];

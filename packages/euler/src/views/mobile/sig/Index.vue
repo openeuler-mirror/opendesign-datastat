@@ -44,17 +44,17 @@ watch(
 );
 
 // 顶部选择
-const sencondTitle = ref('');
-const drownData = ref([] as IObject[]);
+const sigName = ref('');
+const dropdownData = ref([] as IObject[]);
 const getDrownData = () => {
   let community = 'openeuler';
   querySigName(community).then((data) => {
     const allSigs = data?.data?.openeuler || [];
     allSigs.sort((a: any, b: any) => a.localeCompare(b));
     const { name } = route.params;
-    sencondTitle.value =
+    sigName.value =
       allSigs.find((item: any) => item === name) || allSigs[0] || name;
-    drownData.value = allSigs.map((item: string) => ({
+    dropdownData.value = allSigs.map((item: string) => ({
       label: item,
       value: item,
     }));
@@ -70,7 +70,7 @@ onMounted(() => {
 <template>
   <div class="company">
     <div class="edropdown">
-      <drop-select v-model:value="sencondTitle" :data="drownData"></drop-select>
+      <drop-select v-model:value="sigName" :data="dropdownData"></drop-select>
     </div>
     <swiper
       :pagination="true"
@@ -81,7 +81,7 @@ onMounted(() => {
       <swiper-slide>
         <o-mobile-template header="introduction" padding-top="0.75rem">
           <template #content>
-            <introduction :sig="sencondTitle"></introduction
+            <introduction :sig="sigName"></introduction
           ></template>
         </o-mobile-template>
       </swiper-slide>
@@ -91,7 +91,7 @@ onMounted(() => {
             {{ 'SIG ' + t('currentVitalityIndex') }}
           </template>
           <template #content>
-            <vital-index :sig="sencondTitle"></vital-index>
+            <vital-index :sig="sigName"></vital-index>
           </template>
         </o-mobile-template>
       </swiper-slide>
@@ -102,7 +102,7 @@ onMounted(() => {
           </template>
           <template #content>
             <mobile-historical-trend
-              :sig="sencondTitle"
+              :sig="sigName"
             ></mobile-historical-trend
           ></template>
         </o-mobile-template>
@@ -113,7 +113,7 @@ onMounted(() => {
             {{ 'SIG ' + t('companyContributor') }}
           </template>
           <template #content>
-            <mobile-table-list :sig="sencondTitle"></mobile-table-list
+            <mobile-table-list :sig="sigName"></mobile-table-list
           ></template>
         </o-mobile-template>
       </swiper-slide>
@@ -123,7 +123,7 @@ onMounted(() => {
             {{ 'SIG ' + t('userContributor') }}
           </template>
           <template #content
-            ><mobile-contribut-list :sig="sencondTitle"></mobile-contribut-list
+            ><mobile-contribut-list :sig="sigName"></mobile-contribut-list
           ></template>
         </o-mobile-template>
       </swiper-slide>

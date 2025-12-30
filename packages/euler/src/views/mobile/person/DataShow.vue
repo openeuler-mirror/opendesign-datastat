@@ -33,7 +33,7 @@
     <div class="left-first-child">
       <span >{{ t('review') }} Comment</span>
       <div class="left-first-child-data">
-        {{ toThousands(comment) }}
+        {{ toThousands(commentData) }}
       </div>
     </div>
     <div class="left-first-child">
@@ -46,10 +46,10 @@
 </template>
 <script setup lang="ts">
 import { toRefs, ref, onMounted, watch } from 'vue';
-import { queryUserSigContribute,queryUserContributeDetails } from 'shared/api';
 import { IObject } from 'shared/@types/interface';
 import { toThousands } from 'shared/utils/helper';
 import { useI18n } from 'vue-i18n';
+import { queryUserContributeCounts } from 'shared/api/api-new';
 
 const { t } = useI18n();
 const props = defineProps({
@@ -62,7 +62,7 @@ const props = defineProps({
 const { user } = toRefs(props);
 const mergeRequest = ref(0);
 const issueData = ref(0);
-const comment = ref(0);
+const commentData = ref(0);
 const contributors = ref(0);
 const timeRange = [
   { label: "from.lastonemonth", value: "lastonemonth" },
@@ -71,91 +71,28 @@ const timeRange = [
   { label: "from.all", value: "all" },
 ];
 const time = ref('');
-const getprlistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'pr',
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // mergeRequest.value = getItemListData(value, "contribute");
-    mergeRequest.value = value.totalCount;
-  });
-};
 
-const siglistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: "openeuler",
-    contributeType: "pr",
-  };
-  queryUserSigContribute(query).then((data) => {
-    const value = data?.data || [];
-    // mergeRequest.value = getItemListData(value, "contribute");
-    contributors.value = value.length;
-  });
-};
-const getissuelistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'issue',
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // issueData.value = getItemListData(value, "contribute");
-    issueData.value = value.totalCount;
-  });
-};
-
-const getcommentlistData = () => {
-  const query = {
-    user: user.value,
-    timeRange: time.value,
-    community: 'openeuler',
-    contributeType: 'comment',
-  };
-  queryUserContributeDetails(query).then((data) => {
-    const value = data || [];
-    // comment.value = getItemListData(value, 'contribute');
-    comment.value = value.totalCount;
-  });
-};
-// const getcontributeListData = () => {
-//   const query = {
-//     company: company.value,
-//     timeRange: time.value,
-//     community: 'openeuler',
-//   };
-//   queryCompanyUsers(query).then((data) => {
-//     const Data = processing(data?.data || []);
-//     contributors.value = Data.sigData['0'];
-//   });
-// };
 const getAllData = () => {
-  getprlistData();
-  getissuelistData();
-  getcommentlistData();
-  // getcontributeListData();
-  siglistData();
-};
+  queryUserContributeCounts({
+    user: user.value,
+    timeRange: time.value,
+    community: 'openeuleropen',
+  }).then((res) => {
+    const { sig, pr, comment, issue } = res?.data || {};
+    mergeRequest.value = pr || 0;
+    contributors.value = sig || 0;
+    issueData.value = issue || 0;
+    commentData.value = comment || 0;
+  });
+}
+
 watch(
   () => user.value,
   () => {
     getAllData();
   }
 );
-// watch(
-//   () => company.value,
-//   () => {
-//     time.value = 'all';
-//     timeTitle.value = '全部';
-//   }
-// );
+
 const timeTitle = ref('');
 const clickDrownItem = (item: IObject) => {
   time.value = item.value;
@@ -165,7 +102,7 @@ const clickDrownItem = (item: IObject) => {
 onMounted(() => {
   time.value = 'all';
   timeTitle.value = "from.all";
-  // getAllData();
+  getAllData();
 });
 </script>
 <style scoped lang="scss">

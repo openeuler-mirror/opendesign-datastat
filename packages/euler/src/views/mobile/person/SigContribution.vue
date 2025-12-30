@@ -7,11 +7,11 @@ import { openCommunityInfo } from '@/api/index';
 import IconUser from '~icons/app/search';
 import OIcon from 'shared/components/OIcon.vue';
 import MobileOFormRadio from '../sig/MobileOFormRadio.vue';
-import { queryUserSigContribute } from 'shared/api/index';
 import { sortExp, formatNumber } from 'shared/utils/helper';
 import { ceil } from 'lodash-es';
 import { useRouter } from 'vue-router';
 import ONoDataImage from 'shared/components/ONoDataImage.vue';
+import { queryUserSigContribute } from 'shared/api/api-new';
 const router = useRouter();
 const { t } = useI18n();
 const useCommon = useCommonStore();
@@ -29,37 +29,27 @@ const param = ref({
   user: computed(() => props.user),
   displayRange: '10',
 } as IObject);
-const reallData = ref([] as IObject[]);
+const sigData = ref([] as IObject[]);
 const memberData = ref([] as IObject[]);
 const memberMax = ref(0);
-const memberList = ref([] as IObject[]);
 const rankNum = ref(1);
-const sumContribute = ref(0);
 
 const getMemberData = () => {
-  queryUserSigContribute(param.value).then((data) => {
-    memberList.value =
-      (data.data &&
-        data.data
-          ?.sort(sortExp('contribute', false))
-          ?.filter((item: any) => item.contribute !== 0)) ||
-      [];
-    memberMax.value = ceil(memberList.value[0]?.contribute + 1, 0) || 0;
+  queryUserSigContribute(param.value).then((res) => {
+    const data = res.data?.sort(sortExp('contribute', false)).filter((item: any) => item.contribute !== 0) || [];
+    memberMax.value = ceil(data[0]?.contribute + 1, 0) || 0;
     rankNum.value = 1;
     if (param.value.displayRange === 'all') {
-      return (
-        (reallData.value = memberList.value),
-        (memberData.value = memberList.value)
-      );
+      memberData.value = data;
+    } else {
+      memberData.value = data.slice(0, Number(param.value.displayRange));
     }
-    memberData.value = memberList.value.slice(
-      0,
-      Number(param.value.displayRange)
-    );
-    sumContribute.value = memberData.value.reduce((total, currentValue) => {
-      return total + currentValue.contribute;
-    }, 0);
-    reallData.value = memberData.value;
+    if (searchInput.value) {
+      const searchInputLower = searchInput.value.toLowerCase();
+      sigData.value = memberData.value.filter((item) => item.sig_name.toLowerCase().includes(searchInputLower));
+    } else {
+      sigData.value = memberData.value;
+    }
   });
 };
 // 个人信息
@@ -147,12 +137,9 @@ const searchInput = ref('');
 // 搜索结果
 
 const querySearch = () => {
-  if (searchInput.value !== '') {
-    const newList = memberData.value.filter((item: any) =>
-      item.sig_name.toLowerCase().includes(searchInput.value)
-    );
-    reallData.value = newList;
-    // filterReallData();
+  if (searchInput.value.trim()) {
+    const searchInputLower = searchInput.value.trim().toLowerCase();
+    sigData.value = memberData.value.filter((item: any) => item.sig_name.toLowerCase().includes(searchInputLower));
   } else {
     getMemberData();
   }
@@ -204,10 +191,10 @@ const goToCompany = (data: IObject) => {
       </template>
     </mobile-o-form-radio>
   </div>
-  <div v-if="reallData.length" class="bar-panel">
+  <div v-if="sigData.length" class="bar-panel">
     <ul class="bar-content">
       <li
-        v-for="(item, index) in reallData"
+        v-for="(item, index) in sigData"
         :key="'com' + index"
         class="bar-content-item"
       >

@@ -1,7 +1,7 @@
 <template>
   <div class="company">
     <div class="edropdown">
-      <drop-select v-model:value="sencondTitle" :data="drownData"></drop-select>
+      <drop-select v-model:value="sencondTitle" :data="allUserList" :dropdown-item-index-getter="dropdownItemIndexGetter"></drop-select>
     </div>
     <swiper
       :pagination="true"
@@ -43,27 +43,25 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useI18n } from 'vue-i18n';
 import { useCommonStore } from '@/stores/common';
-import { queryUserList } from 'shared/api';
 import { useRoute, useRouter } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import ContributionDynamic from './ContributionDynamic.vue';
 import SigContribution from './SigContribution.vue';
 import Info from './Info.vue';
 import DropSelect from '../common/DropSelect.vue';
-import { openCommunityInfo } from '@/api';
+import { usePersonalStore } from '@/stores/personal';
 
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const sencondTitle = ref('');
-// sencondTitle.value = route.params.name as string;
+const sencondTitle = ref<string>(route.params.name as string ?? '');
 const sigTitle = ref('');
 sigTitle.value = route.query.organization as string;
 const group = ref('');
@@ -72,6 +70,19 @@ const useCommon = useCommonStore();
 useCommon.isBlackHeader = false;
 const modules = [Pagination];
 const swiperRef: any = ref(null);
+const personStore = usePersonalStore();
+const allUserList = computed(() => [...personStore.allUsers?.keys() ?? []].map(v => ({ label: v, value: v })));
+onMounted(async () => {
+  if (!personStore.allUsers?.size) {
+    await personStore.queryAllUsers();
+  }
+  if (!personStore.allUsers?.has(sencondTitle.value)) {
+    router.replace('/404');
+  }
+});
+const dropdownItemIndexGetter = (find: string) => {
+  return personStore.allUsers?.get(find) ?? 0;
+};
 const onSwiper = (swiper: any) => {
   swiperRef.value = swiper;
 };
@@ -90,29 +101,6 @@ watch(
     swiperRef.value.slideTo(index);
   }
 );
-const allSigs = ref();
-const drownData = ref([] as any[]);
-const getDrownData = () => {
-  const query = {
-    // group: group.value,
-    community: openCommunityInfo.name,
-    // name: sigTitle.value,
-  };
-  queryUserList(query as any).then((data) => {
-    allSigs.value = data?.data || {};
-    allSigs.value.sort((a: any, b: any) => a.localeCompare(b));
-    const { name } = route.params;
-    sencondTitle.value =
-      allSigs.value.find((item: any) => item === name) ||
-      allSigs.value[0] ||
-      name;
-    drownData.value = allSigs.value.map((item: string) => ({
-      label: item,
-      value: item,
-    }));
-  });
-};
-getDrownData();
 </script>
 <style scoped lang="scss">
 .swiper {

@@ -209,14 +209,16 @@ export const routes: RouteRecordRaw[] = [
     component: () => {
       return import('@/views/sig/Index.vue');
     },
-    beforeEnter: (to, from, next) => {
-      querySigInfo({ community: 'openeuleropen', sig: to.params.name }).then((data) => {
-        if (data.data.length === 0) {
-          next('/404');
-        } else {
-          next();
+    beforeEnter: async (to) => {
+      try {
+        const res = await getSigInfo(to.params.name as string);
+        if (!res.data) {
+          return '/404';
         }
-      });
+        to.meta.sigInfo = res.data;
+      } catch (error) {
+        return '/404';
+      }
     },
   },
   {
