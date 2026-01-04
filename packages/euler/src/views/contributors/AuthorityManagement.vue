@@ -90,7 +90,7 @@
                 <div class="group-father">
                   <span class="group-name">{{ scope.row.name }}</span>
                   <a
-                    :href="`http://atomgit.com/${scope.row.user}`"
+                    :href="scope.row.html_url"
                     target="_blank"
                     class="group-email"
                     >@{{ scope.row.user }}</a

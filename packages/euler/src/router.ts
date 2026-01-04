@@ -21,6 +21,18 @@ const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, 
   }
 };
 
+const beforeEnterSigDetail: NavigationGuardWithThis<undefined> = async (to) => {
+  try {
+    const res = await getSigInfo(to.params.name as string);
+    if (!res.data) {
+      return '/404';
+    }
+    to.meta.sigInfo = res.data;
+  } catch (error) {
+    return '/404';
+  }
+};
+
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -78,17 +90,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => {
       return import('@/views/sig/Index.vue');
     },
-    beforeEnter: async (to) => {
-      try {
-        const res = await getSigInfo(to.params.name as string);
-        if (!res.data) {
-          return '/404';
-        }
-        to.meta.sigInfo = res.data;
-      } catch (error) {
-        return '/404';
-      }
-    },
+    beforeEnter: beforeEnterSigDetail
   },
   {
     path: '/zh/sig',
@@ -209,17 +211,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => {
       return import('@/views/sig/Index.vue');
     },
-    beforeEnter: async (to) => {
-      try {
-        const res = await getSigInfo(to.params.name as string);
-        if (!res.data) {
-          return '/404';
-        }
-        to.meta.sigInfo = res.data;
-      } catch (error) {
-        return '/404';
-      }
-    },
+    beforeEnter: beforeEnterSigDetail
   },
   {
     path: '/en/sig',
