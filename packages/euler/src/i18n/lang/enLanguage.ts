@@ -116,7 +116,7 @@ export default {
   noData: 'No data available',
   noContributor: 'No contributor',
   noSIGPart: 'No SIG participation',
-  enterGitee: 'Please enter a Gitee ID',
+  enterGitee: 'Please enter a ID',
   enterSIG: 'Please enter a SIG',
   enterWord: 'Please enter a keyword search',
   noMentor: 'No mentor',

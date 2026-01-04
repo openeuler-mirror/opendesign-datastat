@@ -4,7 +4,7 @@ import OAnchor from 'shared/components/OAnchor.vue';
 import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { queryUserOwnertype } from 'shared/api/api-new';
+import { queryUserAccountUrl, queryUserOwnertype } from 'shared/api/api-new';
 import { openCommunityInfo } from '@/api';
 import { Search } from '@element-plus/icons-vue';
 import { ElScrollbar } from 'element-plus';
@@ -48,10 +48,18 @@ const updateCounts = (arg: { user: string; timeRange: string }) => {
   });
 };
 
+const accountUrl = ref('');
+
+const getUserAccountUrl = async () => {
+  const res = await queryUserAccountUrl({ community: 'openeuler', user: sencondTitle.value });
+  accountUrl.value = res.data.html_url ?? '';
+};
+
 const anchorData = ['SIGContribution', 'DynamicContribute'];
 const clickDrownItem = (item: string) => {
   sencondTitle.value = item;
   getllData();
+  getUserAccountUrl();
 };
 
 const getllData = () => {
@@ -61,6 +69,7 @@ const getllData = () => {
 };
 onMounted(() => {
   querySigInfoData();
+  getUserAccountUrl();
 });
 // 跳转首页
 const goToTetail = () => {
@@ -186,7 +195,7 @@ const goToSig = (data: string) => {
                 <a
                   style="color: #002fa7"
                   target="_blank"
-                  :href="`https://gitee.com/${sencondTitle}`"
+                  :href="accountUrl"
                 >
                   {{ t('toHome') }}</a
                 >

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { querySigInfo } from 'shared/api';
-import { openCommunityInfo } from '@/api';
+import { getSigInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 const { t } = useI18n();
 const props = defineProps({
@@ -17,12 +16,8 @@ const sigInfo = ref({
   mailing_list: '',
 } as IObject);
 const querySigInfoData = () => {
-  const params = {
-    community: openCommunityInfo.name,
-    sig: sig.value,
-  };
-  querySigInfo(params).then((data) => {
-    sigInfo.value = data?.data[0] || {};
+  getSigInfo(sig.value).then((res) => {
+    sigInfo.value = res.data;
   });
 };
 const getllData = () => {
@@ -47,7 +42,7 @@ watch(
             <div class="first">
               <div class="home"></div>
               <div class="toHome">
-                <a style="color: #002fa7" :href="`https://gitee.com/openeuler/community/tree/master/sig/${sig}`">
+                <a style="color: #002fa7" :href="`https://atomgit.com/openeuler/community/tree/master/sig/${sig}`">
                   {{ t('toHome') }}</a
                 >
               </div>
@@ -72,12 +67,12 @@ watch(
               <div class="List">
                 <span>Maintainers： </span>
                 <a
-                  v-for="item in sigInfo.maintainers"
-                  :key="item.value"
+                  v-for="item in sigInfo.maintainer_info"
+                  :key="item.user_login"
                   class="item"
-                  :href="`https://gitee.com/${item}`"
+                  :href="item.user_homepage_url"
                 >
-                  @{{ item }}
+                  @{{ item.user_login }}
                 </a>
               </div>
             </div>
@@ -103,10 +98,10 @@ watch(
                 <span>{{ t('warehouse') }}：</span>
                 <div class="atlas">
                   <a
-                    v-for="item in sigInfo.repos"
+                    v-for="item in sigInfo.repositories"
                     :key="item"
                     class="item"
-                    :href="`https://gitee.com/${item}`"
+                    :href="`https://atomgit.com/${item}`"
                   >
                     ./{{ item }}
                   </a>

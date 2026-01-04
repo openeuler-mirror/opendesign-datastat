@@ -8,7 +8,7 @@
     </div>
     <div class="Innovation">{{ t('repositoryTechnology') }}</div>
 
-    <div v-for="value in getInnovationValue()" :key="value.feature">
+    <div v-for="value in innovationData" :key="value.feature">
       <div
         :key="value.feature"
         placement="bottom-end"
@@ -31,9 +31,7 @@
 
       <div class="wrapper">
         <div
-          v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
-              (a.sig_names + '').localeCompare(b.sig_names + '')
-            )"
+          v-for="(val, ind) in value.arry"
           :key="ind"
           placement="bottom-end"
           effect="light"
@@ -50,14 +48,14 @@
             @click="goTo(val)"
           >
             <span class="detail-menu-span" @click="goTo(val)">
-              {{ val.sig_names }}</span
+              {{ val.sig_name }}</span
             >
           </div>
         </div>
       </div>
     </div>
     <div class="Community">{{ t('governanceAndOperation') }}</div>
-    <div v-for="value in getCommunityValue()" :key="value.feature">
+    <div v-for="value in communityData" :key="value.feature">
       <div :key="value.feature">
         <div
           class="start-menu menu-item"
@@ -73,9 +71,7 @@
 
       <div class="wrapper">
         <div
-          v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
-              (a.sig_names + '').localeCompare(b.sig_names + '')
-            )"
+          v-for="(val, ind) in value.arry"
           :key="ind"
         >
           <div
@@ -87,7 +83,7 @@
             @click="goTo(val)"
           >
             <span class="detail-menu-span" @click="goTo(val)">
-              {{ val.sig_names }}</span
+              {{ val.sig_name }}</span
             >
           </div>
         </div>
@@ -96,64 +92,48 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, shallowRef } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCommonStore } from '@/stores/common';
-import { querySigScoreAll } from 'shared/api';
 import { useI18n } from 'vue-i18n';
-import { IObject } from 'shared/@types/interface';
+import { querySigScoreAll } from 'shared/api/api-new';
 const { t } = useI18n();
 const useCommon = useCommonStore();
 const router = useRouter();
 const showAfter = 200;
-const listData = ref([]);
-const listArry = ref([{ feature: '', arry: [] }] as IObject[]);
+const communityData = shallowRef<{ feature: string, arry: any[] }[]>([]);
+const innovationData = shallowRef<{ feature: string, arry: any[] }[]>([]);
+const featureTranslateMap = reactive<Record<string, string>>({});
 const getList = () => {
   const query = {
-    community: 'openeuler',
+    community: "openeuler",
   };
-  querySigScoreAll(query).then((data) => {
-    listData.value = data?.data || [];
-    const arry = listData.value
-      .reduce((pre: any, next: any) => {
-        const findOne: any = pre.find((it: any) => it.feature === next.feature);
-        if (findOne) {
-          findOne.arry.push(next);
-        } else if (next.feature !== '') {
-          pre.push({
-            feature: next.feature,
-            arry: [next],
-            group: next.group,
-          });
-        }
-        return pre;
-      }, [])
-      .sort((a: any, b: any) => b['arry'].length - a['arry'].length);
-    listArry.value = arry;
-  });
-};
-const getInnovationValue = () => {
-  return listArry.value.filter((item) => {
-    return item.group === '代码仓管理/技术创新';
-  });
-};
-const getCommunityValue = () => {
-  return listArry.value.filter((item) => {
-    return item.group === '社区治理运营';
+  querySigScoreAll(query).then((res) => {
+    if (!res?.data) return;
+    const commMap = new Map<string, any[]>();
+    const innovMap = new Map<string, any[]>();
+    for (const item of res.data) {
+      featureTranslateMap[item.feature_zh] = item.feature_en;
+      const map = item.group_zh === '代码仓管理/技术创新' ? innovMap : commMap;
+      const findOne = map.get(item.feature_zh);
+      if (findOne) {
+        findOne.push(item);
+      } else {
+        map.set(item.feature_zh, [item]);
+      }
+    }
+    communityData.value = Array.from(commMap.entries()).map(([feature, arry]) => ({ feature, arry })).sort((a, b) => b.arry.length - a.arry.length);
+    innovationData.value = Array.from(innovMap.entries()).map(([feature, arry]) => ({ feature, arry })).sort((a, b) => b.arry.length - a.arry.length);
   });
 };
 getList();
 interface Form {
-  sig_names: string;
+  sig_name: string;
   rank: number;
   score: number;
 }
 const goTo = (item: Form) => {
-  // useStaff.dialogFormVisible = true;
-  // useStaff.title = item.sig_names;
-  // useStaff.sigRank = item.rank;
-  // useStaff.sigContrubution = item.score;
-  router.push(`/${useCommon.language}/mobile/sig/${item.sig_names}`);
+  router.push(`/${useCommon.language}/mobile/sig/${item.sig_name}`);
 };
 </script>
 <style scoped lang="scss">

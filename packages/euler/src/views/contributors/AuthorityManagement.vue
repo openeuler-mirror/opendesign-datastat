@@ -45,14 +45,14 @@
               <template #header>
                 <span class="list-title"> {{ t('Committee') }} </span>
               </template>
-              <template #default="scope">
+              <template #default="{ row }">
                 <div class="group-father">
-                  <span class="group-name">{{ scope.row.name }}</span>
+                  <span class="group-name">{{ row.name }}</span>
                   <a
-                    :href="`http://gitee.com/${scope.row.user}`"
+                    :href="row.html_url"
                     target="_blank"
                     class="group-email"
-                    >@{{ scope.row.user }}</a
+                    >@{{ row.user }}</a
                   >
                 </div>
               </template></el-table-column
@@ -90,7 +90,7 @@
                 <div class="group-father">
                   <span class="group-name">{{ scope.row.name }}</span>
                   <a
-                    :href="`http://gitee.com/${scope.row.user}`"
+                    :href="`http://atomgit.com/${scope.row.user}`"
                     target="_blank"
                     class="group-email"
                     >@{{ scope.row.user }}</a

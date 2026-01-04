@@ -249,7 +249,7 @@ const goToUser = (data: IObject) => {
           <el-table-column
             prop="user_login"
             align="left"
-            label="Gitee ID"
+            label="ID"
             show-overflow-tooltip
             width="200"
             ><template #default="scope">

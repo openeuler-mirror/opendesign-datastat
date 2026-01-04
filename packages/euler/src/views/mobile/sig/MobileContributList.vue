@@ -3,13 +3,13 @@ import TheProgress from '@/components/TheProgress.vue';
 import { ref, computed, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { openCommunityInfo } from '@/api/index';
-import { querySigUserContribute } from 'shared/api/index';
 import { sortExp } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import OMobilePagination from 'shared/components/OMobilePagination.vue';
 import MobileOFormRadio from './MobileOFormRadio.vue';
 import { useRouter } from 'vue-router';
 import { useCommonStore } from '@/stores/common';
+import { querySigUserContribute } from 'shared/api/api-new';
 const useCommon = useCommonStore();
 const router = useRouter();
 const { t } = useI18n();
@@ -25,9 +25,9 @@ const contributionSelectBox = ref([
     color: '#002fa7',
     isSelected: true,
     label: 'Maintainer',
-    key: 'maintainers',
+    key: 'maintainer',
   },
-  { color: '#feb32a', isSelected: true, label: 'Committer', key: 'committers' },
+  { color: '#feb32a', isSelected: true, label: 'Committer', key: 'committer' },
   {
     color: '#4aaead',
     isSelected: true,
@@ -137,9 +137,10 @@ const handleCurrentChange = (val: number) => {
 // 搜索过滤
 
 const querySearch = () => {
-  if (searchInput.value !== '') {
+  if (searchInput.value.trim()) {
+    const lwc = searchInput.value.trim().toLowerCase();
     const newList = memberData.value.filter((item: any) =>
-      item.gitee_id.toLowerCase().includes(searchInput.value)
+      item.user_login.toLowerCase().includes(lwc)
     );
     reallData.value = newList;
     filterReallData();
@@ -206,24 +207,24 @@ const goToUser = (data: IObject) => {
           width="40"
         />
         <el-table-column
-          prop="gitee_id"
+          prop="user_login"
           align="left"
-          label="Gitee ID"
+          label="ID"
           show-overflow-tooltip
           ><template #default="scope">
             <div class="usertype-box">
               <span
-                v-show="scope.row.usertype !== 'committers'"
+                v-show="scope.row.usertype !== 'committer'"
                 class="usertypecolorbox"
                 :style="({
                     '--color':
-                      scope.row.usertype === 'maintainers'
+                      scope.row.usertype === 'maintainer'
                         ? '#002FA7'
                         : '#4AAEAD',
                   } as any)"
               ></span>
               <span
-                v-show="scope.row.usertype === 'committers'"
+                v-show="scope.row.usertype === 'committer'"
                 class="usertypecolorbox"
                 :style="({
                     '--color': '#FEB32A',
@@ -234,8 +235,8 @@ const goToUser = (data: IObject) => {
                 :style="{
                   cursor: 'pointer',
                 }"
-                @click="goToUser(scope.row.gitee_id)"
-                >{{ scope.row.gitee_id }}</span
+                @click="goToUser(scope.row.user_login)"
+                >{{ scope.row.user_login }}</span
               >
             </div>
           </template>

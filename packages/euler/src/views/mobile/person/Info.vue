@@ -5,13 +5,9 @@
   <div class="first">
     <div class="home"></div>
     <div class="toHome">
-      <a
-        style="color: #002fa7"
-        target="_blank"
-        :href="`https://gitee.com/${props.user}`"
-      >
-        {{ t('toHome') }}</a
-      >
+      <a style="color: #002fa7" target="_blank" :href="accountUrl">
+        {{ t('toHome') }}
+      </a>
     </div>
   </div>
   <div class="first">
@@ -19,35 +15,12 @@
     <div class="List">
       <span>{{ t('community') }}： </span>
       <span v-for="items in sigInfo" :key="items.value" class="item">
-        <span
-          v-if="items.sig === 'TC'"
-          class="usertypecolorboxTC"
-          :style="({
-                              '--color': '45deg, #B461F6 0%, #7D32EA 100%',
-                            } as any)"
-          >TC</span
-        >
-        <span
-          v-if="items.sig !== 'TC'"
-          style="cursor: pointer"
-          @click="goToSig(items.sig)"
-          >{{ items.sig }}</span
-        >
+        <span v-if="items.sig === 'TC'" class="usertypecolorboxTC" style="--color: 45deg, #b461f6 0%, #7d32ea 100%">TC</span>
+        <span v-if="items.sig !== 'TC'" style="cursor: pointer" @click="goToSig(items.sig)">{{ items.sig }}</span>
 
         <span v-for="item in items.type" :key="item.value"
-          ><span
-            v-if="item === 'committers'"
-            class="usertypecolorbox"
-            :style="({
-                              '--color': '225deg, #FEB32A 0%, #F6D365 100%',
-                            } as any)"
-            >Committer</span
-          ><span
-            v-if="item === 'maintainers' && items.sig !== 'TC'"
-            class="usertypecolorbox"
-            :style="({
-                              '--color': '45deg, #005CD3 0%, #002FA7 100%',
-                            } as any)"
+          ><span v-if="item === 'committers'" class="usertypecolorbox" style="--color: 225deg, #feb32a 0%, #f6d365 100%">Committer</span
+          ><span v-if="item === 'maintainers' && items.sig !== 'TC'" class="usertypecolorbox" style="--color: 45deg, #005cd3 0%, #002fa7 100%"
             >Maintainer
           </span></span
         >
@@ -58,13 +31,12 @@
 </template>
 <script setup lang="ts">
 import { useCommonStore } from '@/stores/common';
-import { ref, watch } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { queryUserOwnertype } from 'shared/api';
-import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 import DataShow from './DataShow.vue';
+import { queryUserAccountUrl } from 'shared/api/api-new';
 const useCommon = useCommonStore();
 const router = useRouter();
 const { t } = useI18n();
@@ -78,36 +50,27 @@ const props = defineProps({
 const sigInfo = ref({
   mailing_list: '',
 } as IObject);
-const querySigInfoData = () => {
-  const params = {
-    community: openCommunityInfo.name,
-    user: props.user,
-  };
-  queryUserOwnertype(params).then((data) => {
-    sigInfo.value = data?.data || {};
-    sigInfo.value?.sort((a: any, b: any) =>
-      a['sig'].localeCompare(b['sig'], 'zh')
-    );
-    sigInfo.value?.forEach((item: any, index: any) => {
-      if (item.sig === 'TC') {
-        sigInfo.value?.unshift(sigInfo.value.splice(index, 1)[0]);
-      }
-    });
-    sigInfo.value?.map((item: any) =>
-      item.type.sort((a: any, b: any) => b.length - a.length)
-    );
-    sigInfo.value?.sort((a: any, b: any) =>
-      b['type'][0].localeCompare(a['type'][0], 'zh')
-    );
-  });
+
+const accountUrl = ref('');
+
+const getUserAccountUrl = async () => {
+  const res = await queryUserAccountUrl({ community: 'openeuler', user: props.user });
+  accountUrl.value = res.data.html_url ?? '';
 };
+
+
+onBeforeMount(() => {
+  getUserAccountUrl();
+});
 
 const goToSig = (data: IObject) => {
   router.push(`/${useCommon.language}/sig/${data}`);
 };
 watch(
   () => props.user,
-  () => querySigInfoData()
+  () => {
+    getUserAccountUrl();
+  }
 );
 </script>
 <style scoped lang="scss">

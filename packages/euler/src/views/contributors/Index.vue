@@ -161,7 +161,7 @@ watch(
               <p class="caption">Top 1-10</p>
               <el-table v-loading="loading" :data="highRanking" style="width: 100%">
                 <el-table-column type="index" align="center" :label="t('Number')" width="100" />
-                <el-table-column prop="user_login" align="left" label="Gitee ID" show-overflow-tooltip width="180"
+                <el-table-column prop="user_login" align="left" label="ID" show-overflow-tooltip width="180"
                   ><template #default="scope">
                     <div>
                       <span
@@ -195,7 +195,7 @@ watch(
               <p class="caption">Top 11-20</p>
               <el-table v-loading="loading" :data="lowRanking" style="width: 100%">
                 <el-table-column type="index" :index="indexMethod" align="center" :label="t('Number')" width="100"></el-table-column>
-                <el-table-column prop="user_login" align="left" show-overflow-tooltip label="Gitee ID" width="180"
+                <el-table-column prop="user_login" align="left" show-overflow-tooltip label="ID" width="180"
                   ><template #default="scope">
                     <div>
                       <span

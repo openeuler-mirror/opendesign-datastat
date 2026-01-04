@@ -114,7 +114,7 @@ export default {
   noData: '暂无数据',
   noContributor: '暂无贡献者',
   noSIGPart: '暂未参与SIG',
-  enterGitee: '请输入Gitee ID搜索',
+  enterGitee: '请输入ID搜索',
   enterSIG: '请输入SIG名称搜索',
   enterWord: '请输入关键词搜索',
   noMentor: '暂无Mentor',

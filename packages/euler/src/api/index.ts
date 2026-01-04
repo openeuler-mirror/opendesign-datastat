@@ -1,3 +1,5 @@
+import { request } from 'shared/plugins/axios';
+
 export * from './api-contribute'
 
 /**
@@ -13,3 +15,8 @@ export const openCommunityInfo = {
   link_en: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/`,
   email: 'contact@openeuler.io',
 };
+
+export const getSigInfo = (sig: string) => {
+  return request.get('/api-magic/stat/sig/info', { params: { community: 'openeuler', sig } })
+    .then(res => res.data ?? {});
+}
