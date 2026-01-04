@@ -76,7 +76,7 @@ const getAllData = () => {
   queryUserContributeCounts({
     user: user.value,
     timeRange: time.value,
-    community: 'openeuleropen',
+    community: 'openeuler',
   }).then((res) => {
     const { sig, pr, comment, issue } = res?.data || {};
     mergeRequest.value = pr || 0;

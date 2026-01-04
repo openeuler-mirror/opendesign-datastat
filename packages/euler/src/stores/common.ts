@@ -41,13 +41,13 @@ export const useCommonStore = defineStore('common', {
     },
     getAllData() {
       this.time = getNowFormatDate();
-      getOverviewAllData('openeuleropen').then((res) => {
+      getOverviewAllData('openeuler').then((res) => {
         if (res.data) {
           Object.assign(this.allData, res.data);
         }
       });
       // 社区用户
-      getOveriewAllUsersCount('openeuleropen').then((res) => {
+      getOveriewAllUsersCount('openeuler').then((res) => {
         if (res.data) {
           this.allData.users = res.data.total_count;
         }

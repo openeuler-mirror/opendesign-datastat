@@ -11,7 +11,7 @@ const beforeEnterUserDetail: NavigationGuardWithThis<undefined> = async (to, _, 
   if (!to.params.name) {
     return next('/404');
   }
-  const users = (usePersonalStore().allUsers ??= await queryUserList({ community: 'openeuleropen' })
+  const users = (usePersonalStore().allUsers ??= await queryUserList({ community: 'openeuler' })
     .then((res) => Object.keys(res.data).reduce((map, name, index) => map.set(name, index), new Map<string, number>()))
     .catch(() => new Map<string, number>()));
   if (users.has(to.params.name as string)) {

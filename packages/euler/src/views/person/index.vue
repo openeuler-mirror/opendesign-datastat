@@ -38,7 +38,7 @@ const contributeDetailCounts = ref({
 const updateCounts = (arg: { user: string; timeRange: string }) => {
   queryUserContributeCounts({
     ...arg,
-    community: 'openeuleropen',
+    community: 'openeuler',
   }).then((res) => {
     const { sig, pr, comment, issue } = res?.data || {};
     contributeDetailCounts.value.pr = pr || 0;
@@ -51,7 +51,7 @@ const updateCounts = (arg: { user: string; timeRange: string }) => {
 const accountUrl = ref('');
 
 const getUserAccountUrl = async () => {
-  const res = await queryUserAccountUrl({ community: 'openeuleropen', user: sencondTitle.value });
+  const res = await queryUserAccountUrl({ community: 'openeuler', user: sencondTitle.value });
   accountUrl.value = res.data.html_url ?? '';
 };
 

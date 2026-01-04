@@ -70,7 +70,7 @@ const defaultParams = computed(() => ({
 }));
 
 const filterParams = ref({
-  community: "openeuleropen",
+  community: "openeuler",
   contributeType: "pr" as 'pr' | 'issue' | 'comment',
   timeRange: "all",
 });
@@ -197,7 +197,7 @@ const getUserSigs = () => {
   const query = {
     user: props.sig,
     timeRange: "all",
-    community: "openeuleropen",
+    community: "openeuler",
     contributeType: filterParams.value.contributeType,
   };
   queryUserSigContribute(query).then((data) => {

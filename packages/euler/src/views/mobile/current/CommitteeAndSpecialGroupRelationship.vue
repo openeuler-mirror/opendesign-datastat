@@ -103,7 +103,7 @@ const groupData = ref([]);
 const number = ref(0);
 const getGroup = () => {
   const query = {
-    community: 'openeuleropen',
+    community: 'openeuler',
   };
   queryTCSigs(query).then((data) => {
     groupData.value = data?.data || [];

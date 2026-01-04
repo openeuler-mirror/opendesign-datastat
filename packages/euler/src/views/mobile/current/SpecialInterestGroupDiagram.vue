@@ -106,7 +106,7 @@ const innovationData = shallowRef<{ feature: string, arry: any[] }[]>([]);
 const featureTranslateMap = reactive<Record<string, string>>({});
 const getList = () => {
   const query = {
-    community: "openeuleropen",
+    community: "openeuler",
   };
   querySigScoreAll(query).then((res) => {
     if (!res?.data) return;

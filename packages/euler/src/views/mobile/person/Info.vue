@@ -54,7 +54,7 @@ const sigInfo = ref({
 const accountUrl = ref('');
 
 const getUserAccountUrl = async () => {
-  const res = await queryUserAccountUrl({ community: 'openeuleropen', user: props.user });
+  const res = await queryUserAccountUrl({ community: 'openeuler', user: props.user });
   accountUrl.value = res.data.html_url ?? '';
 };
 

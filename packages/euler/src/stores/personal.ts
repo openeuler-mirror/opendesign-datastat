@@ -20,7 +20,7 @@ export const usePersonalStore = defineStore('personal', {
   actions: {
     async queryAllUsers() {
       try {
-        const res = await queryUserList({ community: 'openeuleropen' });
+        const res = await queryUserList({ community: 'openeuler' });
         if (res) {
           this.allUsers = Object.keys(res.data).reduce((map, name, index) => map.set(name, index), new Map<string, number>());
         } else {

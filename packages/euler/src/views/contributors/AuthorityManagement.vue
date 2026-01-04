@@ -204,7 +204,7 @@ getList();
 const groupData = ref([]);
 const number = ref(0);
 const getGroup = () => {
-  queryTCSigs({ community: 'openeuleropen' }).then((data) => {
+  queryTCSigs({ community: 'openeuler' }).then((data) => {
     groupData.value = data?.data || [];
     number.value = Math.ceil(
       groupData.value.sort((a: any, b: any) => a.name?.localeCompare(b.name))
