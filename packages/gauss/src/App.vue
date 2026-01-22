@@ -1,6 +1,24 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue';
-import CookieNotice from './components/CookieNotice.vue';
+import { OPlusConfigProvider } from '@opendesign-plus/components';
+import { OElCookieNotice } from '@opendesign-plus/components/element-plus';
+import { nextTick, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+
+const HOME_URL = 'https://opengauss.org';
+const { locale } = useI18n();
+
+const cookieNoticeVisible = ref(false);
+const cookieRef = ref();
+const route = useRoute();
+watch(
+  () => route.path,
+  async () => {
+    await nextTick();
+    cookieRef.value?.check();
+  }
+);
 </script>
 
 <template>
@@ -10,7 +28,14 @@ import CookieNotice from './components/CookieNotice.vue';
       <component :is="Component" />
     </transition>
   </router-view>
-  <CookieNotice />
+  <OPlusConfigProvider :locale="locale">
+    <OElCookieNotice
+      community="openGauss"
+      ref="cookieRef"
+      v-model:visible="cookieNoticeVisible"
+      :detail-url="`${HOME_URL}/${locale}/cookies`"
+    />
+  </OPlusConfigProvider>
 </template>
 
 <style lang="scss">

@@ -3,7 +3,7 @@
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
@@ -22,7 +22,7 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "env.d.ts"
-, "../shared/hooks/useVirtualList.ts"  ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+    "env.d.ts",
+    "../shared/hooks/useVirtualList.ts"
+  ],
 }

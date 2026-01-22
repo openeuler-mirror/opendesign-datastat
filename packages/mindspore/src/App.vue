@@ -1,12 +1,38 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue';
-import CookieNotice from './components/CookieNotice.vue';
+import { OPlusConfigProvider } from '@opendesign-plus/components';
+import { OElCookieNotice } from '@opendesign-plus/components/element-plus';
+import { nextTick, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const { locale } = useI18n();
+
+const cookieNoticeVisible = ref(false);
+const cookieRef = ref();
+watch(
+  () => route.path,
+  async () => {
+    await nextTick();
+    cookieRef.value?.check();
+  }
+);
+
+
 </script>
 
 <template>
   <header><app-header></app-header></header>
   <router-view></router-view>
-  <CookieNotice />
+  <OPlusConfigProvider :locale="locale">
+    <OElCookieNotice
+      community="MindSpore"
+      ref="cookieRef"
+      v-model:visible="cookieNoticeVisible"
+      :detail-url="`https://www.mindspore.cn/cookies/${locale === 'zh' ? '' : 'en'}`"
+    />
+  </OPlusConfigProvider>
 </template>
 
 <style lang="scss">
