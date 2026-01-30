@@ -2,6 +2,7 @@ import 'shared/styles/base.scss';
 import '@/shared/styles/style.scss';
 import '@/shared/opendesign-styles/variable.scss';
 // import '@authing/native-js-ui-components/lib/index.min.css';
+import { initOpenDesignAnalytics } from '@opendesign-plus/plugins/analytics';
 import '@/views/mobile/sig/styles/style.scss';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
@@ -15,9 +16,13 @@ import 'element-plus/theme-chalk/el-message.css';
 import 'shared/styles/index.scss';
 import opendesign from 'shared/components/Opendesign';
 import '@opensig/opendesign/es/index.css';
+import '@/shared/styles/theme.scss';
+import '@/shared/styles/button.scss';
+import '@opendesign-plus/components/styles';
 
 // 国际化
 import i18n from './i18n';
+import { reportAnalytics } from 'shared/api/api-analytics';
 const app = createApp(App);
 app.use(i18n);
 app.use(ElementPlus, {
@@ -28,6 +33,17 @@ app.use(createPinia());
 app.component('OIcon', OIcon);
 app.use(opendesign);
 app.mount('#app');
+
+app.use(initOpenDesignAnalytics, {
+  appKey: 'openEuler',
+  service: 'datastat',
+  isCookieAgreed() {
+    return location.pathname.startsWith('/zh') ? true : document.cookie.includes('agreed-cookiepolicy-en=1');
+  },
+  request(data) {
+    reportAnalytics('openeuler', data);
+  },
+});
 
 router.afterEach(() => {
   window.scrollTo(0, 0);

@@ -2,11 +2,28 @@
 import AppHeader from '@/components/AppHeader.vue';
 import { setStoreData, useStoreData } from 'shared/utils/login';
 import { openCommunityInfo } from './api';
-import CookieNotice from './components/CookieNotice.vue';
+import { OPlusConfigProvider, OCookieNotice } from '@opendesign-plus/components';
 import FeedbackButton from './components/FeedbackButton.vue';
+import { useRoute } from 'vue-router';
+import { nextTick, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 setStoreData(openCommunityInfo.name);
 const { loginIframeSrc } = useStoreData();
+
+const { locale } = useI18n();
+
+const route = useRoute();
+const cookieRef = ref();
+const cookieNoticeVisible = ref(false);
+const MAIN_URL = import.meta.env.VITE_MAIN_DOMAIN_URL;
+watch(
+  [() => route.path],
+  async () => {
+    await nextTick();
+    cookieRef.value?.check();
+  }
+);
 </script>
 
 <template>
@@ -17,7 +34,13 @@ const { loginIframeSrc } = useStoreData();
         <component :is="Component" />
       </transition>
     </router-view>
-    <CookieNotice />
+    <OPlusConfigProvider :locale="locale">
+      <OCookieNotice
+        v-model:visible="cookieNoticeVisible"
+        community="openEuler"
+        :detail-url="`${MAIN_URL}/${locale}/other/cookies/`"
+      />
+    </OPlusConfigProvider>
   </div>
   <iframe v-else :src="loginIframeSrc" class="login-iframe" frameborder="0"></iframe>
   <FeedbackButton />

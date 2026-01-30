@@ -404,14 +404,11 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
 </template>
 
 <style lang="scss" scoped>
-@use '@/shared/styles/mixins/oStyles.scss' as *;
-
 .o-btn {
   border-radius: var(--btn-height);
 }
 
 .feedback {
-  @include o-styles;
   position: fixed;
   bottom: 280px;
   right: 80px;
@@ -470,7 +467,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
           color: var(--o-color-info1);
           cursor: pointer;
 
-          @include common.hover {
+          @include hover {
             color: var(--o-color-primary1);
           }
         }
@@ -508,7 +505,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
           cursor: pointer;
         }
 
-        @include common.hover {
+        @include hover {
           .icon-smile,
           .icon-headset {
             color: var(--o-color-primary1);
@@ -519,7 +516,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
           @include h4;
           transition: all var(--o-duration-m1) var(--o-easing-standard-in);
 
-          @include common.hover {
+          @include hover {
             transform: rotate(180deg);
             color: var(--o-color-primary1);
           }
@@ -672,7 +669,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
             line-height: 18px;
             position: relative;
 
-            @include common.hover {
+            @include hover {
               border: 1px solid var(--o-color-primary1);
             }
 
@@ -706,7 +703,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
 
             a {
               color: var(--o-color-primary1);
-              @include common.hover {
+              @include hover {
                 color: var(--o-color-primary2);
               }
             }
@@ -722,7 +719,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
               border-color: var(--o-color-primary1);
               color: var(--o-color-primary1);
 
-              @include common.hover {
+              @include hover {
                 border-color: var(--o-color-primary2);
                 color: var(--o-color-primary2);
               }
@@ -740,7 +737,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
         color: var(--o-color-info1);
         @include h2;
 
-        @include common.hover {
+        @include hover {
           color: var(--o-color-primary1);
         }
       }
@@ -749,7 +746,6 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
 }
 
 .feedback-mb {
-  @include o-styles;
   position: sticky;
   bottom: 16px;
   z-index: 11;
@@ -781,7 +777,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
       transform: translateY(-50%);
       transition: all 0.25s cubic-bezier(0, 0, 0, 1);
 
-      @include common.hover {
+      @include hover {
         transform: translateY(-50%) rotate(180deg);
         color: var(--o-color-primary1);
       }
@@ -971,7 +967,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
         line-height: 18px;
         position: relative;
         border-radius: var(--o-radius-xs);
-        @include common.hover {
+        @include hover {
           border: 1px solid var(--o-color-control3);
         }
         &.is-focus {
@@ -1076,7 +1072,7 @@ onUnmounted(() => window.removeEventListener('scroll', scrollHandler));
         cursor: pointer;
       }
 
-      @include common.hover {
+      @include hover {
         & .text .text-name {
           color: var(--o-color-primary1);
         }
