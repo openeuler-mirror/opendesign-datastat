@@ -9,6 +9,7 @@ import { useRoute } from 'vue-router';
 const HOME_URL = 'https://opengauss.org';
 const { locale } = useI18n();
 
+const COOKIE_DOMAIN = import.meta.env.VITE_COOKIE_DOMAIN;
 const cookieNoticeVisible = ref(false);
 const cookieRef = ref();
 const route = useRoute();
@@ -34,6 +35,7 @@ watch(
       ref="cookieRef"
       v-model:visible="cookieNoticeVisible"
       :detail-url="`${HOME_URL}/${locale}/cookies`"
+      :cookie-domain="COOKIE_DOMAIN"
     />
   </OPlusConfigProvider>
 </template>
