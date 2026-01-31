@@ -17,6 +17,7 @@ const route = useRoute();
 const cookieRef = ref();
 const cookieNoticeVisible = ref(false);
 const MAIN_URL = import.meta.env.VITE_MAIN_DOMAIN_URL;
+const COOKIE_DOMAIN = import.meta.env.VITE_COOKIE_DOMAIN;
 watch(
   [() => route.path],
   async () => {
@@ -39,6 +40,7 @@ watch(
         v-model:visible="cookieNoticeVisible"
         community="openEuler"
         :detail-url="`${MAIN_URL}/${locale}/other/cookies/`"
+        :cookie-domain="COOKIE_DOMAIN"
       />
     </OPlusConfigProvider>
   </div>

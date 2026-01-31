@@ -9,6 +9,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 const { locale } = useI18n();
 
+const COOKIE_DOMAIN = import.meta.env.VITE_COOKIE_DOMAIN;
 const cookieNoticeVisible = ref(false);
 const cookieRef = ref();
 watch(
@@ -31,6 +32,7 @@ watch(
       ref="cookieRef"
       v-model:visible="cookieNoticeVisible"
       :detail-url="`https://www.mindspore.cn/cookies/${locale === 'zh' ? '' : 'en'}`"
+      :cookie-domain="COOKIE_DOMAIN"
     />
   </OPlusConfigProvider>
 </template>
