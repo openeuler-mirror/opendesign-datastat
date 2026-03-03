@@ -11,6 +11,12 @@ import useCommonFilters from '@/composables/useCommonFilters';
 const companyStore = useCompanyStore();
 const { t } = useI18n();
 
+const commentTypeOptions = computed(() => [
+  { label: t('common.from.all'), value: '' },
+  { label: t('common.General'), value: 'normal' },
+  { label: t('common.Order'), value: 'command' },
+]);
+
 const versionChecked = ref(true);
 const contributionTypeOptions = computed(() => [
   { label: t('common.home.prs'), value: 'pr' },
@@ -40,7 +46,16 @@ const { disabledTimeRange } = useCommonFilters();
           <OToggle v-model:checked="versionChecked">{{ t('common.from.all') }}</OToggle>
         </ElFormItem> -->
         <ElFormItem :label="t('common.from.type')">
-          <ToggleRadios v-model="companyStore.companyForm.contributeType" :options="contributionTypeOptions" @change="companyStore.getCompanyData" />
+          <div>
+            <ToggleRadios v-model="companyStore.companyForm.contributeType" :options="contributionTypeOptions" @change="companyStore.getCompanyData" />
+            <div v-if="companyStore.companyForm.contributeType === 'comment'" style="margin-top: 16px">
+              <ORadioGroup v-model="companyStore.commentType" @change="companyStore.getCompanyData">
+                <ORadio v-for="item in commentTypeOptions" :key="item.value" :value="item.value">
+                  {{ item.label }}
+                </ORadio>
+              </ORadioGroup>
+            </div>
+          </div>
         </ElFormItem>
         <ElFormItem :label="t('common.from.timeRange')">
           <ElDatePicker

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CommonLayout from '@/components/CommonLayout.vue';
 import ToggleRadios from '@/components/ToggleRadios.vue';
-import { OBreadcrumb, OBreadcrumbItem, OCheckbox, OCheckboxGroup, ODivider, OIcon, OIconSearch, OInput, OLink, OPagination } from '@opensig/opendesign';
+import { OBreadcrumb, OBreadcrumbItem, OCheckbox, OCheckboxGroup, ODivider, OIcon, OIconSearch, OInput, OLink, OPagination, ORadio, ORadioGroup } from '@opensig/opendesign';
 import { refDebounced } from '@vueuse/core';
 import { request } from 'shared/plugins/axios';
 import { computed, onMounted, ref, shallowRef, watch } from 'vue';
@@ -27,6 +27,12 @@ watch(
 );
 
 const { contributionTypeOptions, contributionType, contributionTypeLabel, timeRange } = useCommonFilters();
+const commentType = ref('')
+const commentTypeOptions = computed(() => [
+  { label: t('common.from.all'), value: '' },
+  { label: t('common.General'), value: 'normal' },
+  { label: t('common.Order'), value: 'command' },
+]);
 
 const searchGitcodeId = ref('');
 const debouncedSearchGitCodeId = refDebounced(searchGitcodeId, 400);
@@ -86,6 +92,7 @@ const getContributionData = () => {
     community: 'openubmc',
     contributeType: contributionType.value,
     sig: sigName.value,
+    comment_type: commentType.value
   } as Record<string, any>;
   if (timeRange.value?.length === 2) {
     params.start = timeRange.value[0].getTime();
@@ -134,7 +141,16 @@ const disabledDate = (time: Date) => {
           <template #header> {{ sigName }}{{ t('common.userContributor') }} </template>
           <ElForm label-width="auto" label-position="right" style="--el-text-color-regular: #000">
             <ElFormItem :label="t('common.from.type')">
-              <ToggleRadios v-model="contributionType" :options="contributionTypeOptions" @change="getContributionData" />
+              <div>
+                <ToggleRadios v-model="contributionType" :options="contributionTypeOptions" @change="getContributionData" />
+                <div v-if="contributionType === 'comment'" style="margin-top: 16px">
+                  <ORadioGroup v-model="commentType" @change="getContributionData">
+                    <ORadio v-for="item in commentTypeOptions" :key="item.value" :value="item.value">
+                      {{ item.label }}
+                    </ORadio>
+                  </ORadioGroup>
+                </div>
+              </div>
             </ElFormItem>
             <ElFormItem :label="t('common.from.timeRange')">
               <ElDatePicker

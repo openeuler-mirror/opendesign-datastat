@@ -20,6 +20,7 @@ export const useCompanyStore = defineStore('company', {
     // 获取最大值
     companyMaxNum: 0,
     defaultNum: '',
+    commentType: '',
     companyForm: {
       contributeType: 'pr',
       timeRange: [] as Date[] | [Date, Date],
@@ -44,6 +45,7 @@ export const useCompanyStore = defineStore('company', {
       const params = {
         community: openCommunityInfo.name,
         contributeType: this.companyForm.contributeType,
+        comment_type: this.commentType
       } as Record<string, string | number>;
       if (this.companyForm.timeRange?.length === 2) {
         params.start = this.companyForm.timeRange[0].getTime();
