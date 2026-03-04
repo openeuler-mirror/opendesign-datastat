@@ -26,7 +26,7 @@ export const usePersonalStore = defineStore('personal', {
         } else {
           this.allUsers = new Map();
         }
-      } catch (error) {
+      } catch {
         this.allUsers = new Map();
       }
     },

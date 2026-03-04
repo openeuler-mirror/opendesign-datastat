@@ -1,4 +1,4 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 import { FOOTER_LINK, FRIEND_LINK } from '@/config/home';
 import { getYearByOffset } from '@/shared/utils';
 import { RECORDAL_URL, BEIAN_URL } from '@/config/url-config';

@@ -21,7 +21,7 @@ import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/opengauss.png';
 import bg_mo from '@/assets/bg_mo.png';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import MobileTemplate from '@/components/MobileTemplate.vue';
 import { IObject } from 'shared/@types/interface';
 const useCompany = useCompanyStore();

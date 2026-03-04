@@ -179,7 +179,6 @@ const getConfig = (val: any) => {
           value: item,
         });
       });
-      // eslint-disable-next-line prefer-destructuring
       useCompany.defaultNum = res[0];
       statisticalNum.value.push({
         label: computed(() => t('from.all')),

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, NavigationGuardWithThis, RouteRecordRaw } from 'vue-router';
 import { useCommonStore } from './stores/common';
-import { querySigInfo } from 'shared/api';
 import { queryUserList } from 'shared/api/api-new';
 import { testIsPhone } from 'shared/utils/helper';
 import { usePersonalStore } from './stores/personal';
@@ -28,7 +27,7 @@ const beforeEnterSigDetail: NavigationGuardWithThis<undefined> = async (to) => {
       return '/404';
     }
     to.meta.sigInfo = res.data;
-  } catch (error) {
+  } catch {
     return '/404';
   }
 };

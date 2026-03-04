@@ -3,7 +3,7 @@ import CompanyDataBarChart from '@/views/detail/CompanyDataBarChart.vue';
 import SectionCard from '@/components/SectionCard.vue';
 import { useCompanyStore } from '@/stores/company';
 import { ODivider, OIcon, OIconSearch, OInput, ORadio, ORadioGroup, OToggle } from '@opensig/opendesign';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import ToggleRadios from '@/components/ToggleRadios.vue';
 import { useI18n } from 'vue-i18n';
 import useCommonFilters from '@/composables/useCommonFilters';
@@ -17,7 +17,6 @@ const commentTypeOptions = computed(() => [
   { label: t('common.Order'), value: 'command' },
 ]);
 
-const versionChecked = ref(true);
 const contributionTypeOptions = computed(() => [
   { label: t('common.home.prs'), value: 'pr' },
   { label: t('common.home.issues'), value: 'issue' },
@@ -42,9 +41,6 @@ const { disabledTimeRange } = useCommonFilters();
     <template #header>{{ t('common.companyContributor') }}</template>
     <div class="unit-member-contribution">
       <ElForm label-width="auto" label-position="right" style="--el-text-color-regular: #000">
-        <!-- <ElFormItem :label="t('common.from.version')">
-          <OToggle v-model:checked="versionChecked">{{ t('common.from.all') }}</OToggle>
-        </ElFormItem> -->
         <ElFormItem :label="t('common.from.type')">
           <div>
             <ToggleRadios v-model="companyStore.companyForm.contributeType" :options="contributionTypeOptions" @change="companyStore.getCompanyData" />
