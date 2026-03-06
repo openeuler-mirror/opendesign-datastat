@@ -43,7 +43,7 @@ const goContributors = () => {
       <div class="community-content">
         <div class="community-info">
           <p class="title">{{ t('home.user') }}</p>
-          <p class="num">{{ toThousands(useCommon.allData.download_all) }}</p>
+          <p class="num">{{ toThousands(useCommon.allData.users) }}</p>
         </div>
         <div class="community-info">
           <p class="title">{{ t('home.contributors') }}</p>
