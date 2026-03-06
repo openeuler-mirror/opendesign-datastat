@@ -80,7 +80,7 @@ const handleSelect = (item: IObject) => {
   useCompany.ranking = 1;
 
   useCompany.rawData.forEach((element: IObject, index: number) => {
-    if (element.company_cn === item.company_cn) {
+    if (element.company_zh === item.company_zh) {
       useCompany.searchRanking = +index + 1;
     }
   });
