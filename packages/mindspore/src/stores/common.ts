@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { IObject } from 'shared/@types/interface';
 import { getNowFormatDate } from 'shared/utils/helper';
 import { request } from 'shared/plugins/axios';
+import { getOveriewAllUsersCount } from 'shared/api/api-new';
 
 interface stateTypes {
   language: string;
@@ -38,6 +39,12 @@ export const useCommonStore = defineStore('common', {
       request.get('/api-magic/stat/overview/count?community=mindspore').then((res) => {
         if (res.data?.data) {
           Object.assign(this.allData, res.data.data);
+        }
+      });
+      // 社区用户
+      getOveriewAllUsersCount('opengauss').then((res) => {
+        if (res.data) {
+          this.allData.users = res.data.total_count;
         }
       });
     },
