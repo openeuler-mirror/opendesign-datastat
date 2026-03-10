@@ -3,12 +3,12 @@ import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
-const props = defineProps<{
+const _props = defineProps<{
   navs: { name: string; label: string; }[];
 }>();
 
 const emits = defineEmits(['navClick']);
-const navClick = (item: (typeof props.navs)[number]) => {
+const navClick = (item: (typeof _props.navs)[number]) => {
   emits('navClick', item.name);
   router.push({ name: item.name });
 };

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, watch, reactive } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
 import { showGuard, logout } from 'shared/utils/login';
 
 import Logo from '~icons/app/logo.svg';
 import LogoWhite from '~icons/app/logo-white.svg';
-import IconLocale from '~icons/shared/icon-locale.svg';
 import { openCommunityInfo } from '@/shared/common';
 import { OIcon, OIconChevronDown } from '@opensig/opendesign';
 import HeaderNav from './HeaderNav.vue';
@@ -44,7 +43,7 @@ const headerTextColor = computed(() => {
 
 const language = computed(() => locale.value ?? 'zh')
 
-// 选择语言;
+/* // 选择语言;
 const options = reactive([
   { value: 'zh', label: '中文' },
   { value: 'en', label: 'English' },
@@ -54,7 +53,7 @@ const options = reactive([
 const changeLanguage = (command: string) => {
   locale.value = command;
   router.push({ name: route.name, params: { lang: command }});
-};
+}; */
 
 const goHome = () => {
   router.push({ name: 'overview', params: { lang: locale.value ?? 'zh' }});

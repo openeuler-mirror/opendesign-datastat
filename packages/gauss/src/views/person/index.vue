@@ -15,7 +15,6 @@ import ContributionDynamic from './ContributionDynamic.vue';
 import DataShow from './DataShow.vue';
 import { debounce } from 'lodash-es';
 import { computed } from 'vue';
-import { request } from 'shared/plugins/axios';
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed, nextTick } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Pagination } from 'swiper';
+import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { useI18n } from 'vue-i18n';
@@ -21,7 +21,7 @@ import logo from '@/assets/datastat-black.png';
 import logoZh from '@/assets/datastat-zh-black.png';
 import communityLogo from '@/assets/opengauss.png';
 import bg_mo from '@/assets/bg_mo.png';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import MobileTemplate from '@/components/MobileTemplate.vue';
 import { IObject } from 'shared/@types/interface';
 const useCompany = useCompanyStore();
