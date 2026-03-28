@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppHeader from '@/components/AppHeader.vue';
-import { setStoreData, useStoreData } from 'shared/utils/login';
+import { setStoreData } from 'shared/utils/login';
 import { openCommunityInfo } from './api';
 import { OPlusConfigProvider, OCookieNotice } from '@opendesign-plus/components';
 import FeedbackButton from './components/FeedbackButton.vue';
@@ -9,7 +9,6 @@ import { nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 setStoreData(openCommunityInfo.name);
-const { loginIframeSrc } = useStoreData();
 
 const { locale } = useI18n();
 
@@ -28,7 +27,7 @@ watch(
 </script>
 
 <template>
-  <div v-if="!loginIframeSrc">
+  <div>
     <header><app-header></app-header></header>
     <router-view v-slot="{ Component, route }">
       <transition :name="route.meta.transition">
@@ -44,7 +43,6 @@ watch(
       />
     </OPlusConfigProvider>
   </div>
-  <iframe v-else :src="loginIframeSrc" class="login-iframe" frameborder="0"></iframe>
   <FeedbackButton />
 </template>
 
