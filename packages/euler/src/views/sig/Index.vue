@@ -7,7 +7,7 @@ import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import TableList from "./TableList.vue";
 import ContributList from "./ContributList.vue";
-import { querySigName } from "shared/api";
+import { querySigName } from "shared/api/api-new";
 import { getSigInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
@@ -25,15 +25,13 @@ const dropdownData = ref([] as any[]);
 const getDrownData = () => {
   const community = "openeuler";
 
-  querySigName(community).then((data) => {
-    const allSigs = data?.data || {};
-    allSigs[community].sort((a: any, b: any) => a.localeCompare(b));
+  querySigName(community).then((res) => {
+    const allSigs = res?.data || [];
     const findOne =
-      allSigs[community].find((item: any) => item === route.params.name) ||
-      allSigs[community][0];
+      allSigs.find((item: any) => item === route.params.name) ||
+      allSigs[0];
     sigName.value = findOne;
-    const firstKeys = Object.keys(allSigs);
-    dropdownData.value = allSigs[firstKeys[0]];
+    dropdownData.value = allSigs;
     dropdownOptions.value = dropdownData.value.sort((a, b) => a.localeCompare(b));
     getAllData(!Object.keys(sigInfo.value).length);
   });

@@ -13,6 +13,8 @@ import setConfig from './setConfig';
 import { getUserAuth, tokenFailIndicateLogin } from '../../utils/login';
 import { ElMessage } from 'element-plus';
 
+const NO_LOGIN_COMMUNITIES = new Set(['openeuler']);
+
 interface RequestConfig<D = any> extends AxiosRequestConfig {
   data?: D;
   global?: boolean; // 是否为全局请求， 全局请求在清除请求池时，不清除
@@ -88,12 +90,14 @@ const requestInterceptorId = request.interceptors.request.use(
       });
     });
     // 使用token
-    const { token } = getUserAuth();
-    if (token) {
-      const to = {
-        token,
-      };
-      Object.assign(config.headers, to);
+    if (!NO_LOGIN_COMMUNITIES.has(import.meta.env.VITE_COMMUNITY)) {
+      const { token } = getUserAuth();
+      if (token) {
+        const to = {
+          token,
+        };
+        Object.assign(config.headers, to);
+      }
     }
     return config;
   },

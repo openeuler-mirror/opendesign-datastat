@@ -126,7 +126,7 @@
 import TheList from '@/components/TheList.vue';
 import ODiagram from 'shared/components/ODiagram.vue';
 import { useI18n } from 'vue-i18n';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { queryCompanySigs } from 'shared/api';
 import { queryTCSigs } from 'shared/api/api-new';
 
@@ -199,7 +199,11 @@ const getList = () => {
       });
   });
 };
-getList();
+onMounted(() => {
+  if (hasPermission('SIGread')) {
+    getList();
+  }
+});
 // 小组关系列表
 const groupData = ref([]);
 const number = ref(0);

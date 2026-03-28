@@ -13,15 +13,10 @@ import communityLogoSmall from "@/assets/openeuler-small.png";
 import communityLogoSmallWhite from "@/assets/openeuler-small-white.png";
 
 import AppMobileMenu from "./AppMobileMenu.vue";
-import { useStoreData, showGuard, logout, getUserAuth } from "shared/utils/login";
-import LoadingArc from "./LoadingArc.vue";
-const { token } = getUserAuth();
+
 const useCommon = useCommonStore();
 const route = useRoute();
 const router = useRouter();
-const { guardAuthClient, isLoggingIn } = useStoreData();
-let dialogVisible = ref(false);
-const { t } = useI18n();
 const isblack = computed(() => useCommon.isBlackHeader);
 
 const language = computed(() => (useCommon.language === "zh" ? false : true));
@@ -82,53 +77,6 @@ const goMobileHome = () => {
         ><img class="community-logo" :src="communityLogoSmall"
       /></a>
     </template>
-    <div  class="opt-user">
-      <loading-arc v-if="isLoggingIn" style="font-size: 1.5rem"></loading-arc>
-      <el-dropdown v-else-if="token">
-        <div class="el-dropdown-link">
-          <!-- <img :src="photoSrc" :alt="guardAuthClient.nickname || 'LogOut'" class="img" /> -->
-          <el-avatar
-            v-if="guardAuthClient?.photo"
-            :src="guardAuthClient?.photo"
-            :alt="guardAuthClient.nickname || 'LogOut'"
-            class="img"
-          />
-        </div>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item @click="dialogVisible = true">{{
-              t("logout")
-            }}</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-      <img
-        v-else
-        src="@/assets/nologin.png"
-        alt="LogIn"
-        class="img"
-        style="background-color: #fff"
-        @click="showGuard(openCommunityInfo.name)"
-      />
-    </div>
-    <el-dialog v-model="dialogVisible" :title="t('pleaseConfirm')" width="80%">
-      <p style="word-break: break-word">
-        {{ t("titleConfirm") }}
-      </p>
-      <template #footer>
-        <div style="display: flex; justify-content: center">
-          <el-button @click="dialogVisible = false">{{ t("Cancel") }}</el-button>
-          <el-button
-            type="primary"
-            @click="
-              dialogVisible = false;
-              logout(openCommunityInfo.name);
-            "
-            >{{ t("Confirm") }}</el-button
-          >
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 

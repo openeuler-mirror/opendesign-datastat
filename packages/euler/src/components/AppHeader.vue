@@ -7,12 +7,6 @@ import ONav from 'shared/components/ONav.vue';
 import { useRouter, useRoute } from 'vue-router';
 import AppHeaderMobile from './AppHeaderMobile.vue';
 import { IObject } from 'shared/@types/interface';
-import {
-  showGuard,
-  logout,
-  useStoreData,
-  getUserAuth,
-} from 'shared/utils/login';
 
 import logoWhite from '@/assets/datastat.png';
 import logoWhiteZh from '@/assets/datastat-zh.png';
@@ -20,9 +14,6 @@ import communityLogoWhite from '@/assets/openeuler-logo.png';
 import IconLocale from '~icons/app/icon-locale.svg';
 import LoadingArc from './LoadingArc.vue';
 
-const { token } = getUserAuth();
-const { guardAuthClient, isLoggingIn } = useStoreData();
-let dialogVisible = ref(false);
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -142,55 +133,6 @@ const jumpToUserZone = () => {
         </el-dropdown>
       </div>
 
-      <!-- <div v-if="isTest()" class="opt-user">  -->
-      <div class="opt-user">
-        <loading-arc v-if="isLoggingIn"></loading-arc>
-        <el-dropdown v-else-if="token">
-          <div class="el-dropdown-link">
-            <el-avatar
-              v-if="guardAuthClient?.photo"
-              :src="guardAuthClient?.photo"
-              :alt="guardAuthClient.nickname || 'LogOut'"
-              class="img"
-            />
-          </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="jumpToUserZone()">{{
-                t('personalCenter')
-              }}</el-dropdown-item>
-              <el-dropdown-item @click="dialogVisible = true">{{
-                t('logout')
-              }}</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-        <div v-else class="login" @click="showGuard(openCommunityInfo.name)">
-          {{ t('login') }}
-        </div>
-      </div>
-      <el-dialog
-        v-model="dialogVisible"
-        :title="t('pleaseConfirm')"
-        width="30%"
-      >
-        <span>{{ t('titleConfirm') }}</span>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">{{
-              t('Cancel')
-            }}</el-button>
-            <el-button
-              type="primary"
-              @click="
-                dialogVisible = false;
-                logout(openCommunityInfo.name);
-              "
-              >{{ t('Confirm') }}</el-button
-            >
-          </span>
-        </template>
-      </el-dialog>
     </div>
   </div>
   <div v-else class="app-header-mo">
