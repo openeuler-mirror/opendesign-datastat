@@ -310,9 +310,9 @@ const goToUser = (data: IObject) => {
               :label="t('ranking')"
             />
             <el-table-column
-              prop="gitee_id"
+              prop="user_login"
               align="left"
-              label="Gitee ID"
+              label="ID"
               show-overflow-tooltip
               width="110"
               ><template #default="scope">
@@ -322,8 +322,8 @@ const goToUser = (data: IObject) => {
                       cursor: 'pointer',
                       color: '#7D32EA',
                     }"
-                    @click="goToUser(scope.row.gitee_id)"
-                    >{{ scope.row.gitee_id }}</span
+                    @click="goToUser(scope.row.user_login)"
+                    >{{ scope.row.user_login }}</span
                   >
                 </div>
               </template></el-table-column

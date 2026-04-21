@@ -1,19 +1,19 @@
 <template>
   <div class="main-menu">
     <el-row>
-      <div v-for="value in getInnovationValue()" :key="value.feature">
+      <div v-for="value in communityData" :key="value.feature">
         <div class="start-menu menu-item">
-          <span v-if="useCommon.language === 'zh'" class="start-menu-span">{{
-            value.feature
-          }}</span>
-          <span v-if="useCommon.language === 'en'" class="start-menu-span-en">{{
-            value.en_feature
-          }}</span>
+          <span v-if="useCommon.language === 'zh'" class="start-menu-span">
+            {{ value.feature }}
+          </span>
+          <span v-if="useCommon.language === 'en'" class="start-menu-span-en">
+            {{ featureTranslateMap[value.feature] }}
+          </span>
         </div>
         <el-col>
           <div
             v-for="(val, ind) in value.arry.sort((a:any, b:any) =>
-              (a.sig_names + '').localeCompare(b.sig_names + '')
+              (a.sig_name + '').localeCompare(b.sig_name + '')
             )"
             :key="ind"
           >
@@ -23,10 +23,10 @@
                 '--color': '#FFFFFF',
               } as any)"
               @click="goTo(val)"
-              :title="val.sig_names"
+              :title="val.sig_name"
             >
               <span class="detail-menu-span" @click="goTo(val)">
-                {{ val.sig_names }}</span
+                {{ val.sig_name }}</span
               >
             </div>
           </div>
@@ -36,48 +36,37 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { reactive, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import { useCommonStore } from "@/stores/common";
-import { querySigScoreAll } from "shared/api";
-import { IObject } from "shared/@types/interface";
+import { querySigScoreAll } from "shared/api/api-new";
 const useCommon = useCommonStore();
 const router = useRouter();
-const listData = ref([]);
-const listArry = ref([{ feature: "", arry: [] }] as IObject[]);
+const communityData = shallowRef<{ feature: string, arry: any[] }[]>([]);
+const featureTranslateMap = reactive<Record<string, string>>({});
+
 const getList = () => {
   const query = {
     community: "opengauss",
   };
-  querySigScoreAll(query).then((data) => {
-    listData.value = data?.data || [];
-    const arry = listData.value
-      .reduce((pre: any, next: any) => {
-        const findOne: any = pre.find((it: any) => it.feature === next.feature);
-        if (findOne) {
-          findOne.arry.push(next);
-        } else if (next.feature !== "") {
-          pre.push({
-            feature: next.feature,
-            en_feature: next.en_feature,
-            arry: [next],
-            group: next.group,
-          });
-        }
-        return pre;
-      }, [])
-      .sort((a: any, b: any) => b["arry"].length - a["arry"].length);
-    listArry.value = arry;
-  });
-};
-const getInnovationValue = () => {
-  return listArry.value.filter((item) => {
-    return item.group === null;
+  querySigScoreAll(query).then((res) => {
+    if (!res?.data) return;
+    const commMap = new Map<string, any[]>();
+    for (const item of res.data) {
+      featureTranslateMap[item.feature_zh] = item.feature_en;
+      const findOne = commMap.get(item.feature_zh);
+      if (findOne) {
+        findOne.push(item);
+      } else {
+        commMap.set(item.feature_zh, [item]);
+      }
+    }
+    communityData.value = Array.from(commMap.entries()).map(([feature, arry]) => ({ feature, arry })).sort((a, b) => b.arry.length - a.arry.length);
   });
 };
 getList();
 const goTo = (item: any) => {
-  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item.sig_names}`);
+  const routeData: any = router.resolve(`/${useCommon.language}/sig/${item.sig_name}`);
   window.open(routeData.href, "_blank");
 };
 </script>

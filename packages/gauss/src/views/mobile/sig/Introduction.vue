@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, toRefs, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { querySigInfo } from 'shared/api';
+import { querySigInfo } from 'shared/api/api-new';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
 const { t } = useI18n();
@@ -21,8 +21,8 @@ const querySigInfoData = () => {
     community: openCommunityInfo.name,
     sig: sig.value,
   };
-  querySigInfo(params).then((data) => {
-    sigInfo.value = data?.data[0] || {};
+  querySigInfo(params).then((res) => {
+    sigInfo.value = res.data || {};
   });
 };
 const getllData = () => {
@@ -103,7 +103,7 @@ watch(
                 <span>{{ t('warehouse') }}：</span>
                 <div class="atlas">
                   <a
-                    v-for="item in sigInfo.repos"
+                    v-for="item in sigInfo.repositories"
                     :key="item"
                     class="item"
                     :href="`https://gitee.com/opengauss/${item}`"
