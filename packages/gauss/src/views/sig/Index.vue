@@ -7,7 +7,7 @@ import { ref, onMounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import ContributList from "./ContributList.vue";
-import { querySigName } from "shared/api";
+import { querySigName, querySigInfo } from "shared/api/api-new";
 import { openCommunityInfo } from "@/api";
 import { IObject } from "shared/@types/interface";
 import { Search } from "@element-plus/icons-vue";
@@ -15,7 +15,7 @@ import { ElScrollbar } from "element-plus";
 import AppFooter from "@/components/AppFooter.vue";
 import { hasPermission } from "shared/utils/login";
 import VisualIndex from "./VisualIndex.vue";
-import { querySigInfo } from "shared/api/api-new";
+
 const useCommon = useCommonStore();
 const router = useRouter();
 const route = useRoute();
@@ -24,17 +24,14 @@ const { t } = useI18n();
 const drownData = ref([] as any[]);
 // sencondTitle.value = route.params.name as string;
 const getDrownData = () => {
-  let community = "opengauss";
-
-  querySigName(community).then((data) => {
-    const allSigs = data?.data || {};
-    allSigs.opengauss.sort((a: any, b: any) => a.localeCompare(b));
+  querySigName('opengauss').then((res) => {
+    const allSigs = res?.data || [];
+    allSigs.sort((a: any, b: any) => a.localeCompare(b));
     const findOne =
-      allSigs.opengauss.find((item: any) => item === route.params.name) ||
-      allSigs.opengauss[0];
+      allSigs.find((item: any) => item === route.params.name) ||
+      allSigs[0];
     sencondTitle.value = findOne;
-    const firstKeys = Object.keys(allSigs);
-    drownData.value = allSigs[firstKeys[0]];
+    drownData.value = allSigs;
     reallData.value = drownData.value.sort((a, b) => a.localeCompare(b));
     getllData();
   });

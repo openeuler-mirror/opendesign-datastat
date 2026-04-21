@@ -4,7 +4,7 @@ import OGAnchor from 'shared/components/OGAnchor.vue';
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { queryUserOwnertype } from 'shared/api';
+import { queryUserOwnertype } from 'shared/api/api-new';
 import { queryUserAccountUrl, queryUserContributeCounts, queryUserList } from 'shared/api/api-new';
 import { openCommunityInfo } from '@/api';
 import { IObject } from 'shared/@types/interface';
@@ -224,9 +224,9 @@ const goToSig = (data: IObject) => {
               <div class="Maintainer"></div>
               <div class="List">
                 <span>{{ t('community') }}： </span>
-                <span v-for="items in sigInfo" :key="items.value" class="item">
+                <span v-for="sig in sigInfo" :key="sig.sig_name" class="item">
                   <span
-                    v-if="items.sig === 'TC'"
+                    v-if="sig.sig_name === 'TC'"
                     class="usertypecolorboxTC"
                     :style="
                       {
@@ -235,26 +235,18 @@ const goToSig = (data: IObject) => {
                     "
                     >TC</span
                   >
-                  <span v-if="items.sig !== 'TC'" style="cursor: pointer" @click="goToSig(items.sig)">{{ items.sig }}</span>
+                  <span v-if="sig.sig_name !== 'TC'" style="cursor: pointer" @click="goToSig(sig.sig_name)">{{ sig.sig_name }}</span>
 
-                  <span v-for="item in items.type" :key="item.value"
+                  <span v-for="role in sig.role" :key="role"
                     ><span
-                      v-if="item === 'committers'"
+                      v-if="role === 'committer'"
                       class="usertypecolorbox"
-                      :style="
-                        {
-                          '--color': '225deg, #FEB32A 0%, #F6D365 100%',
-                        } as any
-                      "
+                      style="--color: 225deg, #FEB32A 0%, #F6D365 100%"
                       >Committer</span
                     ><span
-                      v-if="item === 'maintainers' && items.sig !== 'TC'"
+                      v-if="role === 'maintainer' && sig.sig !== 'TC'"
                       class="usertypecolorbox"
-                      :style="
-                        {
-                          '--color': '45deg, #B461F6 0%, #7D32EA 100%',
-                        } as any
-                      "
+                      style="--color: 45deg, #B461F6 0%, #7D32EA 100%"
                       >Maintainer
                     </span></span
                   >

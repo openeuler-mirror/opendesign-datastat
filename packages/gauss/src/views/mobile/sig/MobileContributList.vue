@@ -3,7 +3,7 @@ import TheProgress from '@/components/TheProgress.vue';
 import { ref, computed, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { openCommunityInfo } from '@/api/index';
-import { querySigUserContribute } from 'shared/api/index';
+import { querySigUserContribute } from 'shared/api/api-new';
 import { sortExp } from 'shared/utils/helper';
 import { IObject } from 'shared/@types/interface';
 import OMobilePagination from 'shared/components/OMobilePagination.vue';
@@ -206,24 +206,24 @@ const goToUser = (data: IObject) => {
           width="40"
         />
         <el-table-column
-          prop="gitee_id"
+          prop="user_login"
           align="left"
-          label="Gitee ID"
+          label="ID"
           show-overflow-tooltip
           ><template #default="scope">
             <div class="usertype-box">
               <span
-                v-show="scope.row.usertype !== 'committers'"
+                v-show="scope.row.usertype !== 'committer'"
                 class="usertypecolorbox"
                 :style="({
                     '--color':
-                      scope.row.usertype === 'maintainers'
+                      scope.row.usertype === 'maintainer'
                         ? '#7D32EA'
                         : '#4AAEAD',
                   } as any)"
               ></span>
               <span
-                v-show="scope.row.usertype === 'committers'"
+                v-show="scope.row.usertype === 'committer'"
                 class="usertypecolorbox"
                 :style="({
                     '--color': '#FEB32A',
@@ -234,8 +234,8 @@ const goToUser = (data: IObject) => {
                 :style="{
                   cursor: 'pointer',
                 }"
-                @click="goToUser(scope.row.gitee_id)"
-                >{{ scope.row.gitee_id }}</span
+                @click="goToUser(scope.row.user_login)"
+                >{{ scope.row.user_login }}</span
               >
             </div>
           </template>

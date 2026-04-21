@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import { useI18n } from 'vue-i18n';
 import { IObject } from 'shared/@types/interface';
 import { useCommonStore } from '@/stores/common';
-import { querySigName } from 'shared/api';
+import { querySigName } from 'shared/api/api-new';
 import { useRoute, useRouter } from 'vue-router';
 import OMobileTemplate from 'shared/components/OMobileTemplate.vue';
 import DropSelect from '../common/DropSelect.vue';
@@ -46,7 +46,7 @@ const drownData = ref([] as IObject[]);
 const getDrownData = () => {
   let community = 'opengauss';
   querySigName(community).then((data) => {
-    const allSigs = data?.data?.opengauss || [];
+    const allSigs = data?.data || [];
     allSigs.sort((a: any, b: any) => a.localeCompare(b));
     const { name } = route.params;
     sencondTitle.value =
