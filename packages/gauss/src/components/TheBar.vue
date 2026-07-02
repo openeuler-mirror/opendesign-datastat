@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useCompanyStore } from '@/stores/company';
 import { useCommonStore } from '@/stores/common';
@@ -32,7 +32,7 @@ const switchTime = () => {
       break;
   }
 };
-switchTime();
+onMounted(() => switchTime());
 watch(
   () => [useCompany.companyForm.timeRange, useCommon.language],
   () => {
