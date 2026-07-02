@@ -1,2 +1,7 @@
 packages:
   - './packages/*'
+overrides:
+  js-cookie: 3.0.7
+allowBuilds:
+  esbuild: true
+  vue-demi: true
