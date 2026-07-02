@@ -114,7 +114,7 @@ const goToCompany = (data: IObject) => {
             <div class="info">
               <p>
                 <span class="index" v-if="item.company_zh === '个人贡献者' || item.company_en === 'independent'">*</span>
-                <span class="index" v-else>{{ index + 1 }}</span>
+                <span class="index" v-else>{{ item.index }}</span>
                 {{ (useCommon.language === 'en' && item.company_en) || item.company_zh }}
               </p>
               <span class="num"
