@@ -8,7 +8,7 @@ import { getYearByOffset } from 'shared/utils/helper';
 import logo from '@/assets/datastat.png';
 import logoZh from '@/assets/datastat-zh.png';
 import communityLogo from '@/assets/openeuler-logo.png';
-import atomLogo from '@/assets/atom-pc.svg';
+import atomLogo from '@/assets/atom-pc.png';
 import { filingData } from '@/shared/data';
 
 const { t, locale } = useI18n();
