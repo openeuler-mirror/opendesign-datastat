@@ -13,8 +13,6 @@ declare module 'vue' {
     AppMobileMenu: typeof import('./src/components/AppMobileMenu.vue')['default']
     CookieNotice: typeof import('./src/components/CookieNotice.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
-    ElAvatar: typeof import('element-plus/es')['ElAvatar']
-    ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
