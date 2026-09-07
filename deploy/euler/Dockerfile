@@ -4,7 +4,7 @@ RUN mkdir -p /home/openeuler-datastat/web
 WORKDIR /home/openeuler-datastat/web
 COPY . /home/openeuler-datastat/web
 
-RUN npm install pnpm -g
+RUN npm install pnpm@10.12.1 -g
 
 RUN pnpm install
 RUN pnpm build:euler

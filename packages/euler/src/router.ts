@@ -32,6 +32,7 @@ const beforeEnterSigDetail: NavigationGuardWithThis<undefined> = async (to) => {
   }
 };
 
+// 路由列表有更新时，请同步到 build/sitemap-plugin.js 的 STATIC_ROUTES
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
