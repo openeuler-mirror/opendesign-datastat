@@ -25,7 +25,7 @@
               @click="goTo(val)"
               :title="val.sig_name"
             >
-              <span class="detail-menu-span" @click="goTo(val)">
+              <span class="detail-menu-span">
                 {{ val.sig_name }}</span
               >
             </div>

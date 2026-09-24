@@ -172,7 +172,7 @@ const showDropdown = (e: any) => {
                 <a
                   style="color: #7d32ea"
                   target="_blank"
-                  :href="`https://gitcode.com/opengauss/tc/tree/master/sigs/${sencondTitle}`"
+                  :href="`https://atomgit.com/opengauss/tc/tree/master/sigs/${sencondTitle}`"
                 >
                   {{ t("toHome") }}</a
                 >
@@ -204,7 +204,7 @@ const showDropdown = (e: any) => {
                     :key="item"
                     class="item"
                     target="_blank"
-                    :href="`https://gitcode.com/${item}`"
+                    :href="`https://atomgit.com/${item}`"
                   >
                     @{{ item }}
                   </a>
@@ -221,7 +221,7 @@ const showDropdown = (e: any) => {
                       v-for="item in sigInfo.repositories"
                       :key="item"
                       class="item"
-                      :href="`https://gitcode.com/${item}`"
+                      :href="`https://atomgit.com/${item}`"
                       target="_blank"
                     >
                       ./{{ item }}

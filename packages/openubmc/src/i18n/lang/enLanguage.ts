@@ -119,7 +119,7 @@ export default {
   noData: 'No data available',
   noContributor: 'No contributor',
   noSIGPart: 'No SIG participation',
-  enterGitee: 'Please enter a GitCode ID',
+  enterGitee: 'Please enter a AtomGit ID',
   enterSIG: 'Please enter a SIG',
   enterWord: 'Please enter a keyword search',
   noMentor: 'No mentor',

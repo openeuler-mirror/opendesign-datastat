@@ -88,7 +88,7 @@ const { disabledTimeRange } = useCommonFilters();
               :header-cell-style="{ backgroundColor: 'rgb(232, 232, 235)', color: '#000', fontWeight: '500px' }"
             >
               <el-table-column type="index" align="center" :index="index ?? 1" :label="t('common.Number')" width="100" />
-              <el-table-column prop="user_login" align="left" label="GitCode ID" show-overflow-tooltip width="180"
+              <el-table-column prop="user_login" align="left" label="ID" show-overflow-tooltip width="180"
                 ><template #default="scope">
                   <OLink color="primary" :href="`/${route.params.lang}/user/${scope.row.user_login}`" target="_blank" rel="noreferrer noopener">
                     {{ scope.row.user_login }}

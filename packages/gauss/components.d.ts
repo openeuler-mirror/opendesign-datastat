@@ -14,7 +14,6 @@ declare module 'vue' {
     CookieNotice: typeof import('./src/components/CookieNotice.vue')['default']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElCol: typeof import('element-plus/es')['ElCol']
-    ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']

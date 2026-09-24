@@ -34,8 +34,8 @@ const commentTypeOptions = computed(() => [
   { label: t('common.Order'), value: 'command' },
 ]);
 
-const searchGitcodeId = ref('');
-const debouncedSearchGitCodeId = refDebounced(searchGitcodeId, 400);
+const searchAtomGitId = ref('');
+const debouncedSearchAtomGitId = refDebounced(searchAtomGitId, 400);
 
 const userTypeOptions = ref([
   { label: 'Maintainer', value: 'maintainer', color: 'rgb(0, 98, 220)' },
@@ -68,8 +68,8 @@ const filteredDataList = computed(() => {
   if (userType.value.length) {
     res = res.filter((d) => userType.value.includes(d.usertype));
   }
-  if (debouncedSearchGitCodeId.value) {
-    const lowercase = debouncedSearchGitCodeId.value;
+  if (debouncedSearchAtomGitId.value) {
+    const lowercase = debouncedSearchAtomGitId.value;
     res = res.filter((d) => d.user_login.toLocaleLowerCase().includes(lowercase));
   }
   return res;
@@ -169,7 +169,7 @@ const disabledDate = (time: Date) => {
           <ODivider />
 
           <div class="search-toggle">
-            <OInput v-model="searchGitcodeId" :placeholder="t('common.enterGitee')">
+            <OInput v-model="searchAtomGitId" :placeholder="t('common.enterGitee')">
               <template #prefix
                 ><OIcon style="font-size: 16px"><OIconSearch /></OIcon
               ></template>
@@ -194,7 +194,7 @@ const disabledDate = (time: Date) => {
                   <span>{{ $index + 1 }}</span>
                 </template>
               </ElTableColumn>
-              <ElTableColumn label="GitCode ID" width="180">
+              <ElTableColumn label="ID" width="180">
                 <template #default="{ row }">
                   <OLink color="primary" hover-underline style="--link-gap: 4px" @click="toUserDetail(row.user_login)">
                     <template #icon><div class="dot" :style="{ backgroundColor: userTypeColorMap[row.usertype as string] }"></div></template>
