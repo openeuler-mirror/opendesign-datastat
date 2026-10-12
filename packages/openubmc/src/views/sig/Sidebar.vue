@@ -7,7 +7,7 @@ import { request } from 'shared/plugins/axios';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import IconGitCode from '~icons/app/gitcode.svg';
+import IconAtomGit from '~icons/app/atomgit.svg';
 import IconMail from '~icons/app/mail.svg';
 
 const HOME_URL = import.meta.env.VITE_MAIN_DOMAIN_URL;
@@ -94,7 +94,7 @@ onMounted(() => {
     <p style="margin-top: 14px">
       <OLink color="primary" hover-underline style="--link-gap: 10px" :href="`${HOME_URL}/sig/${sigName}?group=${sigName}`" target="_blank" rel="noopener noreferrer">
         <template #icon
-          ><OIcon style="font-size: 24px"><IconGitCode /></OIcon
+          ><OIcon style="font-size: 24px"><IconAtomGit /></OIcon
         ></template>
         {{ t('common.toHome') }}
       </OLink>
@@ -125,8 +125,8 @@ onMounted(() => {
     </SigInfo>
 
     <template v-if="sigInfo">
-      <ReusableSigInfo :data="sigInfo.maintainers" title="Maintainer" link-prefix="https://gitcode.com" />
-      <ReusableSigInfo :data="sigInfo.repositories" :title="t('common.warehouse')" link-prefix="https://gitcode.com" />
+      <ReusableSigInfo :data="sigInfo.maintainers" title="Maintainer" link-prefix="https://atomgit.com" />
+      <ReusableSigInfo :data="sigInfo.repositories" :title="t('common.warehouse')" link-prefix="https://atomgit.com" />
     </template>
   </SectionCard>
 </template>

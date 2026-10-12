@@ -200,15 +200,15 @@ const onPageChange = () => {
         <p class="list-data-item-time">{{ item.time }}</p>
         <div class="list-data-item" v-if="contributionType !== 'comment'">
           在
-          <OLink hover-underline color="primary" :href="`https://gitcode.com/${item.repo}`" rel="noopener noreferrer" target="_blank">{{ item.repo }}</OLink>
+          <OLink hover-underline color="primary" :href="`https://atomgit.com/${item.repo}`" rel="noopener noreferrer" target="_blank">{{ item.repo }}</OLink>
           {{ contributionType === 'pr' ? '合入' : '创建' }}了
-          <OLink hover-underline color="primary" :href="item.url" rel="noopener noreferrer" target="_blank">
+          <OLink hover-underline color="primary" :href="item.url.replace('gitcode.com', 'atomgit.com')" rel="noopener noreferrer" target="_blank">
             {{ contributionType === 'pr' ? 'Pull Request' : 'Issue' }} {{ item.info }}
           </OLink>
         </div>
         <div class="list-data-item" v-else>
           评论了
-          <OLink hover-underline color="primary" :href="`https://gitcode.com/${item.repo}`" rel="noopener noreferrer" target="_blank">{{ item.repo }}</OLink>
+          <OLink hover-underline color="primary" :href="`https://atomgit.com/${item.repo}`" rel="noopener noreferrer" target="_blank">{{ item.repo }}</OLink>
           的{{ item.type === 'pr_comment' ? 'Pull Request' : 'Issue' }}<OLink hover-underline color="primary" :href="item.url" rel="noopener noreferrer" target="_blank">{{ item.info }}</OLink>
         </div>
       </template>

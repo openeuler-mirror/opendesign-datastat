@@ -34,8 +34,9 @@ const accountUrl = ref('');
 const accountHome = computed(() => {
   const accountName = sencondTitle.value;
   let res: string;
-  if (userMap.value?.get(accountName)?.includes('gitcode')) {
-    res = `https://gitcode.com/${accountName}`;
+  const getValue = userMap.value?.get(accountName);
+  if (getValue?.includes('gitcode') || getValue?.includes('atomgit')) {
+    res = `https://atomgit.com/${accountName}`;
   }
   res = `https://gitee.com/${accountName}`;
   if (accountUrl.value) {
@@ -89,7 +90,7 @@ const clickDrownItem = (item: string) => {
 const getUserAccountUrl = () => {
   queryUserAccountUrl({ community: 'opengauss', user: sencondTitle.value }).then((res) => {
     if (res?.code === 1) {
-      accountUrl.value = res.data.html_url ?? '';
+      accountUrl.value = res.data.html_url?.replace('gitcode.com', 'atomgit.com') ?? '';
     }
   });
 };

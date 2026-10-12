@@ -3,7 +3,7 @@ import { ODivider, OIcon, OIconSearch, OInput, OLink, OOption, OSelect, OVirtual
 import { request } from 'shared/plugins/axios';
 import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import IconGitCode from '~icons/app/gitcode.svg';
+import IconAtomGit from '~icons/app/atomgit.svg';
 import cosePng from '@/assets/cose.png';
 import { binarySearch } from '@/shared/utils';
 import { usePersonalStore } from '@/stores/person';
@@ -58,6 +58,7 @@ const getUserInfo = () => {
     .then((res) => res.data ?? {})
     .then((res) => {
       if (res.code !== 1 || !res.data) return;
+      res.data.html_url = res.data.html_url.replace('gitcode.com', 'atomgit.com');
       userInfo.value = res.data;
     });
 };
@@ -161,9 +162,9 @@ const { disabledTimeRange } = useCommonFilters()
     <p style="margin-top: 18px">
       <OLink color="primary" hover-underline style="--link-gap: 10px" :href="userInfo?.html_url ?? ''" target="_blank" rel="noopener noreferrer">
         <template #icon
-          ><OIcon style="font-size: 24px"><IconGitCode /></OIcon
+          ><OIcon style="font-size: 24px"><IconAtomGit /></OIcon
         ></template>
-        gitcode主页
+        AtomGit主页
       </OLink>
     </p>
 
