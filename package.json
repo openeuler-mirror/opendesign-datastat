@@ -36,7 +36,7 @@
     "@opensig/opendesign": "^1.0.1",
     "@types/d3": "^7.4.0",
     "@vueuse/core": "^13.9.0",
-    "axios": "^1.18.0",
+    "axios": "^1.20.0",
     "d3": "^7.4.4",
     "echarts": "^6.1.0",
     "element-plus": "^2.1.4",
