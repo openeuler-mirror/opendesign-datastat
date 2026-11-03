@@ -31,7 +31,7 @@ app.use(initOpenDesignAnalytics, {
   appKey: 'openGauss',
   service: 'datastat',
   isCookieAgreed() {
-    return i18n.global.locale === 'zh' ? true : document.cookie.includes('agreed-cookiepolicy-en=1');
+    return i18n.global.locale.value === 'zh' ? true : document.cookie.includes('agreed-cookiepolicy-en=1');
   },
   request(data) {
     reportAnalytics('opengauss', data);

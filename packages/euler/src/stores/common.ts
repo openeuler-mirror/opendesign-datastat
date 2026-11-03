@@ -10,7 +10,6 @@ interface stateTypes {
   moNav: number;
   companyNav: number;
   sigNav: number;
-  lang: string;
   time: string;
   allData: IObject;
   personNav: number;
@@ -26,8 +25,6 @@ export const useCommonStore = defineStore('common', {
     companyNav: 0,
     sigNav: 0,
     personNav: 0,
-    // 语言
-    lang: '',
     // 时间
     time: '--',
     allData: {},
@@ -35,6 +32,7 @@ export const useCommonStore = defineStore('common', {
   actions: {
     setLanguage(language: string) {
       this.language = language;
+      localStorage.setItem('lang', this.language);
     },
     setDevice(device: boolean) {
       this.ISPC = device;

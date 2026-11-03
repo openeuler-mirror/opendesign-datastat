@@ -14,7 +14,7 @@ const messages = {
 cookie(messages);
 const i18n = createI18n({
   locale: localStorage.getItem('lang') || 'zh',
-  allowComposition: true,
+  legacy: false,
   messages,
 });
 export default i18n;

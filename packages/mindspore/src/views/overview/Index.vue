@@ -8,8 +8,7 @@ import { useCommonStore } from '@/stores/common';
 
 import homeBanner from '@/assets/bg.png';
 const useCommon = useCommonStore();
-const { t, locale } = useI18n();
-locale.value = localStorage.getItem('lang') || 'zh';
+const { t } = useI18n();
 
 // 获取数据
 onMounted(() => {

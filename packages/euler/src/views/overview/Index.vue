@@ -12,11 +12,9 @@ import arrowDown from '~icons/app/chevrons-down';
 
 const router = useRouter();
 const useCommon = useCommonStore();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 
 const { isScrollDown } = useScroll('down');
-
-locale.value = localStorage.getItem('lang') || 'zh';
 
 watch(
   () => isScrollDown.value,

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useCommonStore } from './stores/common';
+import i18n from './i18n';
 import { testIsPhone } from 'shared/utils/helper';
 
 export const routes = [
@@ -219,12 +220,11 @@ export const router = createRouter({
 
 // 设置语言
 router.beforeEach((to) => {
-  const commonStore = useCommonStore();
-  if (to.fullPath.startsWith('/en')) {
-    commonStore.lang = 'en';
-  } else {
-    commonStore.lang = 'zh';
+  const lang = to.fullPath.startsWith('/en') ? 'en' : 'zh';
+  if (i18n.global.locale.value !== lang) {
+    i18n.global.locale.value = lang;
   }
+  localStorage.setItem('lang', lang);
 });
 
 // 首次进入判断移动端

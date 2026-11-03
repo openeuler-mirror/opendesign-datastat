@@ -19,11 +19,9 @@ import AuthorityManagement from "./AuthorityManagement.vue";
 import OGAnchor from "shared/components/OGAnchor.vue";
 const useCommon = useCommonStore();
 const useCompany = useCompanyStore();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const usePersonal = usePersonalStore();
 const router = useRouter();
-
-locale.value = localStorage.getItem("lang") || "zh";
 
 const formOption = computed(() => {
   return [
