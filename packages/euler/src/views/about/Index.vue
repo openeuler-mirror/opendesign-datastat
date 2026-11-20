@@ -3,12 +3,10 @@ import { computed } from 'vue';
 import AppFooter from '@/components/AppFooter.vue';
 import { useCommonStore } from '@/stores/common';
 import { useI18n } from 'vue-i18n';
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const useCommon = useCommonStore();
 useCommon.isBlackHeader = false;
 const language = computed(() => useCommon.language);
-
-locale.value = localStorage.getItem('lang') || 'zh';
 
 const OPENEULER = import.meta.env.VITE_MAIN_DOMAIN_URL;
 

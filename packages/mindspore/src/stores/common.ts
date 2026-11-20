@@ -8,7 +8,6 @@ interface stateTypes {
   language: string;
   ISPC: boolean;
   swiperIndex: number;
-  lang: string;
   time: string;
   moNav: number;
   allData: IObject;
@@ -21,8 +20,6 @@ export const useCommonStore = defineStore('common', {
     // 移动端滑动页数
     swiperIndex: 0,
     moNav: 0,
-    // 语言
-    lang: '',
     // 时间
     time: '--',
     allData: {},
@@ -30,6 +27,7 @@ export const useCommonStore = defineStore('common', {
   actions: {
     setLanguage(language: string) {
       this.language = language;
+      localStorage.setItem('lang', this.language);
     },
     setDevice(device: boolean) {
       this.ISPC = device;

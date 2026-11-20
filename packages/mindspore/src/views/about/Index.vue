@@ -4,10 +4,9 @@ import AppFooter from '@/components/AppFooter.vue';
 import { useCommonStore } from '@/stores/common';
 import { useI18n } from 'vue-i18n';
 
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
-locale.value = localStorage.getItem('lang') || 'zh';
 
 const dataList = [
   { label: '社区用户 User', value: '使用开源社区软件包的用户（下载用户）' },

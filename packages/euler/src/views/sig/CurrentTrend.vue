@@ -123,18 +123,20 @@ onMounted(() => {
     <div class="table">
       <table cellspacing="0" cellpadding="10px" style="width: 100%">
         <thead class="bgcolor">
-          <th align="left" class="border padcell imgtitle">
-            {{ tableTitle }}
-            <span style="margin-left: 8px; cursor: pointer" @click="goData()"
-              ><img src="@/assets/help.png" alt=""
-            /></span>
-          </th>
-          <th align="right" class="border padcell">
-            {{ t('CurrentSIG') }}
-          </th>
-          <th align="right" class="border padcell">
-            {{ t('communityAverage') }}
-          </th>
+          <tr>
+            <th align="left" class="border padcell imgtitle">
+              {{ tableTitle }}
+              <span style="margin-left: 8px; cursor: pointer" @click="goData()"
+                ><img src="@/assets/help.png" alt=""
+              /></span>
+            </th>
+            <th align="right" class="border padcell">
+              {{ t('CurrentSIG') }}
+            </th>
+            <th align="right" class="border padcell">
+              {{ t('communityAverage') }}
+            </th>
+          </tr>
         </thead>
         <tbody>
           <tr v-for="item in tableData" :key="item.title">

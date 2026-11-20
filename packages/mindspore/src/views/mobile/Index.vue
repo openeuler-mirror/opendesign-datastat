@@ -18,8 +18,7 @@ import communityLogo from '@/assets/mindspore.png';
 import bg_mo from '@/assets/bg_mo.png';
 
 const useCommon = useCommonStore();
-const { t, locale } = useI18n();
-locale.value = localStorage.getItem('lang') || 'zh';
+const { t } = useI18n();
 
 const swiperRef: any = ref(null);
 const onSwiper = (swiper: any) => {

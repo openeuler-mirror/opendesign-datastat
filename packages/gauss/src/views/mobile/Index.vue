@@ -29,7 +29,6 @@ const usePersonal = usePersonalStore();
 const useCommon = useCommonStore();
 const { t, locale } = useI18n();
 const router = useRouter();
-locale.value = localStorage.getItem('lang') || 'zh';
 
 const swiperRef: any = ref(null);
 const onSwiper = (swiper: any) => {

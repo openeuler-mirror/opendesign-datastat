@@ -17,11 +17,10 @@ import chevronsUp from '~icons/app/chevrons-up';
 import AuthorityManagement from './AuthorityManagement.vue';
 import { hasPermission } from 'shared/utils/login';
 import { IObject } from 'shared/@types/interface';
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const personStore = usePersonalStore();
 const useCommon = useCommonStore();
 const router = useRouter();
-locale.value = localStorage.getItem('lang') || 'zh';
 const formOption = computed(() => {
   return [
     {

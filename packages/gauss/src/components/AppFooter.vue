@@ -12,7 +12,6 @@ const { t, locale } = useI18n();
 
 const useCommon = useCommonStore();
 const language = computed(() => useCommon.language);
-locale.value = localStorage.getItem('lang') || 'zh';
 const aboutCookie = computed(() => `https://opengauss.org/${locale.value || 'zh'}/cookies/`)
 </script>
 

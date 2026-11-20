@@ -307,12 +307,11 @@ export const router = createRouter({
 
 // 设置语言
 router.beforeEach((to) => {
-  const commonStore = useCommonStore();
   const lang = to.fullPath.startsWith('/en') ? 'en' : 'zh';
-  commonStore.lang = lang;
-  if (i18n.global.locale !== lang) {
-    i18n.global.locale = lang;
+  if (i18n.global.locale.value !== lang) {
+    i18n.global.locale.value = lang;
   }
+  localStorage.setItem('lang', lang);
 });
 
 // 首次进入判断移动端

@@ -1,6 +1,7 @@
 import { testIsPhone } from 'shared/utils/helper';
 import { createRouter, createWebHistory } from 'vue-router';
 import { useCommonStore } from './stores/common';
+import i18n from './i18n';
 
 export const routes = [
   { path: '/', redirect: '/zh/overview' },
@@ -26,9 +27,6 @@ export const routes = [
     component: () => {
       return import('@/views/overview/Index.vue');
     },
-    beforeEnter: () => {
-      localStorage.setItem('lang', 'zh');
-    },
     meta: { transition: 'slide-down' },
   },
   {
@@ -37,18 +35,12 @@ export const routes = [
     component: () => {
       return import('@/views/mobile/Index.vue');
     },
-    beforeEnter: () => {
-      localStorage.setItem('lang', 'zh');
-    },
   },
   {
     path: '/zh/about',
     name: 'zh_about',
     component: () => {
       return import('@/views/about/Index.vue');
-    },
-    beforeEnter: () => {
-      localStorage.setItem('lang', 'zh');
     },
   },
   // en
@@ -62,18 +54,12 @@ export const routes = [
     component: () => {
       return import('@/views/overview/Index.vue');
     },
-    beforeEnter: () => {
-      localStorage.setItem('lang', 'en');
-    },
   },
   {
     path: '/en/mobile',
     name: 'en_mobile',
     component: () => {
       return import('@/views/mobile/Index.vue');
-    },
-    beforeEnter: () => {
-      localStorage.setItem('lang', 'en');
     },
   },
   {
@@ -82,15 +68,21 @@ export const routes = [
     component: () => {
       return import('@/views/about/Index.vue');
     },
-    beforeEnter: () => {
-      localStorage.setItem('lang', 'en');
-    },
   },
 ];
 
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// 设置语言
+router.beforeEach((to) => {
+  const lang = to.fullPath.startsWith('/en') ? 'en' : 'zh';
+  if (i18n.global.locale.value !== lang) {
+    i18n.global.locale.value = lang;
+  }
+  localStorage.setItem('lang', lang);
 });
 
 // 首次进入判断移动端

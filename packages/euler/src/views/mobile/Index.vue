@@ -109,8 +109,6 @@ const searchStsate = (item: boolean) => {
   search404.value = item;
 };
 
-locale.value = localStorage.getItem('lang') || 'zh';
-
 const contributeType = ref('');
 const switchType = () => {
   switch (usePersonal.personalForm.contributeType) {
